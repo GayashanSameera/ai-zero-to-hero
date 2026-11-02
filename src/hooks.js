@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useSyncExternalStore } from 'react'
+import { subscribe, getValue, putValue, getUser } from './sync.js'
 
 export function useHashRoute() {
   const read = () => window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean)
@@ -11,21 +12,16 @@ export function useHashRoute() {
   return parts
 }
 
+// Shared across components, so every user of a key sees updates (including cloud sync).
 export function useStoredState(key, initial) {
-  const [value, setValue] = useState(() => {
-    try {
-      const raw = localStorage.getItem(key)
-      return raw ? JSON.parse(raw) : initial
-    } catch (e) {
-      return initial
-    }
-  })
+  const value = useSyncExternalStore(subscribe, () => getValue(key, initial))
   const set = useCallback(next => {
-    setValue(prev => {
-      const v = typeof next === 'function' ? next(prev) : next
-      try { localStorage.setItem(key, JSON.stringify(v)) } catch (e) { /* storage unavailable */ }
-      return v
-    })
+    const v = typeof next === 'function' ? next(getValue(key, initial)) : next
+    putValue(key, v)
   }, [key])
   return [value, set]
+}
+
+export function useUser() {
+  return useSyncExternalStore(subscribe, getUser)
 }

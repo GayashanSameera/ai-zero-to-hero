@@ -80,6 +80,8 @@ code { font-family: var(--mono); font-size: 0.86em; background: var(--code-bg); 
 }
 .nav-links a:hover, .phase-link:hover { background: var(--accent-soft); }
 .nav-links a.active, .phase-link.active { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+.account { display: flex; flex-direction: column; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 10px; font-size: 0.85rem; }
+.account .error { color: #d14343; }
 .nav-label { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding: 0 10px; }
 .phase-num {
   flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
@@ -139,7 +141,7 @@ button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(
 button.ghost { border-color: transparent; background: transparent; }
 input[type="range"] { width: 100%; accent-color: var(--accent); }
 input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
-input[type="text"], input[type="search"], textarea, select {
+input[type="text"], input[type="search"], input[type="email"], textarea, select {
   font: inherit; font-size: 0.95rem; width: 100%; padding: 9px 12px; border-radius: 8px;
   border: 1px solid var(--line); background: var(--surface); color: var(--ink);
 }

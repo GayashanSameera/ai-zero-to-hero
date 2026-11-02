@@ -1,7 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { phases, findPhase, allTopics, topicKey } from './content/index.js'
 import { labs } from './labs/index.js'
-import { useHashRoute, useStoredState } from './hooks.js'
+import { useHashRoute, useStoredState, useUser } from './hooks.js'
+import { supabase, sendLoginLink, signOut } from './sync.js'
 import { CodeBlock, Quiz } from './components/Common.jsx'
 import Exam, { TopicExamQuestions } from './components/Exam.jsx'
 
@@ -134,6 +135,7 @@ function Sidebar({ open, route, learned, toggleTheme }) {
         <a href="#/glossary" className={section === 'glossary' ? 'active' : ''}>🔎 වචන හොයන්න (Glossary)</a>
         <a href="#/exam" className={section === 'exam' ? 'active' : ''}>📝 Exam Practice (NCA-GENL + CCAR-F)</a>
       </div>
+      <Account />
       <div className="nav-label">Roadmap</div>
       <div className="nav-links">
         {phases.map(p => {
@@ -161,6 +163,42 @@ function Sidebar({ open, route, learned, toggleTheme }) {
         })}
       </div>
     </nav>
+  )
+}
+
+function Account() {
+  const user = useUser()
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState(null)
+  if (!supabase) return null
+
+  if (user) {
+    return (
+      <div className="account">
+        <span className="muted">☁️ Progress sync: <strong>{user.email}</strong></span>
+        <button type="button" onClick={signOut}>Sign out</button>
+      </div>
+    )
+  }
+
+  const submit = async e => {
+    e.preventDefault()
+    setStatus('sending')
+    try {
+      await sendLoginLink(email.trim())
+      setStatus('sent')
+    } catch (err) {
+      setStatus(err.message)
+    }
+  }
+  return (
+    <form className="account" onSubmit={submit}>
+      <span className="muted">ඕනෑම device එකකින් progress බලන්න email එකෙන් sign in වෙන්න.</span>
+      <input type="email" required placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+      <button type="submit" className="primary" disabled={status === 'sending'}>Email login link</button>
+      {status === 'sent' && <span className="muted">Inbox එක බලන්න, link එක click කරන්න.</span>}
+      {status && status !== 'sent' && status !== 'sending' && <span className="error">{status}</span>}
+    </form>
   )
 }
 
