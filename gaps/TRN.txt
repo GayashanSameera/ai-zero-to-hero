@@ -1,0 +1,42 @@
+TRN-003 Span corruption
+TRN-005 Deduplication
+TRN-008 Continued pretraining
+TRN-010 Instruction tuning goal
+TRN-015 Merging LoRA weights
+TRN-017 NF4 data type
+TRN-022 Catastrophic forgetting
+TRN-036 Gradient accumulation
+TRN-037 Gradient checkpointing
+TRN-051 Checkpointing
+TRN-052 Compute-optimal scaling
+TRN-056 Reading a LoraConfig
+TRN-057 Interpreting trainable parameters
+TRN-058 Effective batch size
+TRN-066 Cost of gradient checkpointing
+TRN-067 NaN losses in FP16
+TRN-071 Mitigating forgetting
+TRN-074 When fine-tuning wins
+TRN-077 Reward hacking symptom
+TRN-081 Sequence packing
+TRN-083 Placing tensor parallelism
+TRN-084 Pipeline bubble
+TRN-087 Gradient synchronization
+TRN-089 Scaling loss for accumulation
+TRN-098 Fuzzy deduplication
+TRN-099 Benchmark decontamination
+TRN-100 Data mixture weighting
+TRN-108 IA3
+TRN-115 PPO clipped objective
+TRN-119 FP8 delayed scaling
+TRN-123 Pipeline bubble calculation
+TRN-124 Interleaved pipeline schedule
+TRN-125 Megatron MLP partitioning
+TRN-129 Selective activation recomputation
+TRN-134 Model FLOPs Utilization
+TRN-136 DoRA
+TRN-137 rsLoRA scaling
+TRN-139 TIES-merging
+TRN-140 NEFTune
+TRN-143 Elastic Weight Consolidation
+TRN-144 Re-warming in continued pretraining
+TRN-147 Critical batch size

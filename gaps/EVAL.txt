@@ -1,0 +1,57 @@
+EVAL-012 pass@k meaning
+EVAL-013 Why functional correctness for code
+EVAL-015 HellaSwag
+EVAL-018 TruthfulQA
+EVAL-019 Chatbot Arena
+EVAL-023 IFEval
+EVAL-024 Verbosity bias
+EVAL-027 Inter-annotator agreement
+EVAL-028 Cohen's kappa
+EVAL-038 Validating an automatic metric
+EVAL-047 METEOR
+EVAL-048 BERTScore
+EVAL-049 chrF
+EVAL-051 Accuracy pitfall
+EVAL-053 Unbiased pass@k calculation
+EVAL-055 BLEU brevity penalty
+EVAL-057 SacreBLEU
+EVAL-058 Cohen's kappa calculation
+EVAL-059 Agreement with many raters
+EVAL-060 Mitigating position bias
+EVAL-061 Pairwise vs pointwise judging
+EVAL-063 Validating an LLM judge
+EVAL-064 Detecting contamination
+EVAL-065 Canary strings
+EVAL-071 Multiple comparisons
+EVAL-072 Peeking
+EVAL-074 Practical vs statistical significance
+EVAL-076 Novelty effect
+EVAL-081 Benchmark saturation
+EVAL-083 Multiple seeds
+EVAL-084 GPU nondeterminism
+EVAL-090 Interpreting an ablation table
+EVAL-091 Conflicting metrics
+EVAL-093 Multiple-choice scoring in harnesses
+EVAL-094 Length-normalized accuracy
+EVAL-100 Atomic-fact evaluation
+EVAL-102 Temporal split
+EVAL-104 Maintaining a golden set
+EVAL-105 Paired comparison
+EVAL-108 Goodhart's law
+EVAL-110 Overlap metrics for dialogue
+EVAL-111 Diversity metrics
+EVAL-120 Perturbed benchmark check
+EVAL-121 Bradley–Terry vs online Elo
+EVAL-124 Reference-guided judging
+EVAL-125 Kappa paradox
+EVAL-126 Panel of judges
+EVAL-127 CUPED variance reduction
+EVAL-130 Randomization unit
+EVAL-133 Calibration after alignment
+EVAL-141 Metric choice and "emergence"
+EVAL-142 Prompt-format sensitivity
+EVAL-143 Divergent MMLU numbers
+EVAL-144 Nondeterminism at temperature 0
+EVAL-146 Simpson's paradox
+EVAL-149 Contamination-resistant benchmarks
+EVAL-150 Judge–human agreement ceiling

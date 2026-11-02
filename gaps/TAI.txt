@@ -1,0 +1,83 @@
+TAI-001 NVIDIA Trustworthy AI principles
+TAI-002 Transparency principle
+TAI-004 Historical bias
+TAI-006 Measurement bias
+TAI-009 Equal opportunity
+TAI-012 Datasheets for datasets
+TAI-020 Data poisoning
+TAI-021 Model theft
+TAI-022 Insecure output handling
+TAI-026 Topical rails
+TAI-032 Watermarking
+TAI-033 Content provenance (C2PA)
+TAI-035 EU AI Act tiers
+TAI-036 NIST AI RMF functions
+TAI-041 Model licenses
+TAI-042 Excessive agency
+TAI-043 Sensitive information disclosure
+TAI-044 Overreliance
+TAI-045 Unbounded consumption
+TAI-046 Bias amplification
+TAI-047 Content moderation classifiers
+TAI-048 Four-fifths rule
+TAI-049 Nondiscrimination principle
+TAI-050 Privacy principle
+TAI-051 Pseudonymization vs anonymization
+TAI-054 Disparate impact ratio
+TAI-055 Equal opportunity gap
+TAI-056 Calibration within groups
+TAI-057 Fairness impossibility
+TAI-058 Pre-processing mitigation
+TAI-059 Post-processing mitigation
+TAI-061 Stereotype benchmarks
+TAI-063 Toxicity metrics
+TAI-066 RAG faithfulness failures
+TAI-067 k-anonymity
+TAI-072 Reducing memorization
+TAI-073 Defending against indirect injection
+TAI-074 Mitigating excessive agency
+TAI-075 Markdown exfiltration
+TAI-076 Many-shot jailbreaking
+TAI-077 Adversarial suffixes
+TAI-078 Accessibility of AI features
+TAI-079 Encoded jailbreaks
+TAI-080 Poisoned knowledge base
+TAI-081 Backdoored fine-tune
+TAI-082 Defending against model extraction
+TAI-085 Dialog rails and Colang
+TAI-089 NemoGuard NIMs
+TAI-091 Automated LLM vulnerability scanning
+TAI-092 Attack success rate
+TAI-093 Human oversight models
+TAI-094 Automation bias
+TAI-095 Out-of-scope uses
+TAI-097 NVIDIA Model Card++
+TAI-102 Weaknesses of text watermarks
+TAI-103 Limits of C2PA
+TAI-104 AI-text detectors in education
+TAI-106 Dataset licensing
+TAI-110 NIST AI RMF in practice
+TAI-111 Training energy estimate
+TAI-113 Quantifying the impossibility result
+TAI-114 Fairness through unawareness
+TAI-115 Intersectional evaluation
+TAI-117 Deepfake detector generalization
+TAI-121 Laplace mechanism
+TAI-123 Evaluating membership inference attacks
+TAI-125 Machine unlearning
+TAI-126 Byzantine-robust federated learning
+TAI-127 Confidential computing
+TAI-129 Spotlighting untrusted input
+TAI-130 The "lethal trifecta"
+TAI-131 Persistence of backdoors
+TAI-132 Scale of poisoning required
+TAI-135 Evaluating a guardrail
+TAI-138 Attack success under repeated attempts
+TAI-139 SHAP additivity
+TAI-142 Detecting a green-list watermark
+TAI-144 Durable provenance
+TAI-145 GPAI systemic-risk threshold
+TAI-147 Incident response sequence
+TAI-148 Logging versus privacy
+TAI-149 Carbon footprint estimate
+TAI-150 Sycophancy

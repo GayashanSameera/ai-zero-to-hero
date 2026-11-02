@@ -1,0 +1,55 @@
+PR-023 Sycophancy
+PR-024 Lost in the middle
+PR-026 Arithmetic limitation
+PR-027 Tokenization quirk
+PR-029 Instruction clarity
+PR-033 Hallucination cause
+PR-034 Output format specification
+PR-044 Statelessness
+PR-050 Output prefilling
+PR-056 Unparseable JSON output
+PR-059 Wrong tool chosen
+PR-060 Large tool catalogs
+PR-061 Runaway agent loop
+PR-065 Reducing sycophancy
+PR-072 Reflexion
+PR-073 Limits of self-correction
+PR-074 Prompt sensitivity
+PR-077 Benefit of prompt chaining
+PR-080 Refine vs map-reduce
+PR-083 Tool failure handling
+PR-084 Program-aided reasoning
+PR-085 Separating reasoning from the answer
+PR-087 Automatic CoT exemplars
+PR-091 LangChain LCEL
+PR-095 Multi-agent debate
+PR-096 Multi-agent drawbacks
+PR-098 Invented tool arguments
+PR-099 Constraining argument values
+PR-103 Structuring prompts with tags
+PR-104 Allowing abstention
+PR-106 Chain-of-verification
+PR-109 DSPy
+PR-110 Interpreting a prompt A/B test
+PR-114 What matters in demonstrations
+PR-116 Theoretical view of ICL
+PR-117 Many-shot effects
+PR-118 Budget forcing
+PR-121 Tree-of-thoughts search
+PR-122 Tree-of-thoughts cost
+PR-123 Graph of thoughts
+PR-124 LATS
+PR-125 ReWOO
+PR-127 Toolformer
+PR-128 Agent reliability: pass^k
+PR-129 Compounding errors
+PR-130 Skeleton-of-Thought
+PR-133 Origin of sycophancy
+PR-136 Verifier-guided best-of-N
+PR-137 Overthinking in reasoning models
+PR-140 Effective context length
+PR-142 MemGPT
+PR-145 Idempotent tools
+PR-146 MCP wire protocol
+PR-147 Tool poisoning
+PR-150 Trajectory evaluation

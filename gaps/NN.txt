@@ -1,0 +1,41 @@
+NN-001 Artificial neuron
+NN-002 Why nonlinearity
+NN-007 SwiGLU
+NN-011 LayerNorm
+NN-012 LayerNorm vs BatchNorm
+NN-018 Why transformers replaced RNNs
+NN-036 Weight tying
+NN-042 Chinchilla ratio
+NN-059 Untied embeddings
+NN-065 ALiBi
+NN-070 BatchNorm limitation
+NN-072 SwiGLU structure
+NN-073 SwiGLU parameters
+NN-074 FlashAttention idea
+NN-075 FlashAttention facts
+NN-081 Chinchilla calculation
+NN-083 Kaplan vs Chinchilla
+NN-084 Beyond Chinchilla-optimal
+NN-087 [CLS] token
+NN-091 nn.MultiheadAttention shape
+NN-092 SDPA is_causal
+NN-096 Teacher forcing
+NN-103 Classifier-free guidance
+NN-104 Fréchet Inception Distance
+NN-105 Reparameterization trick
+NN-108 Head divisibility
+NN-111 Doubling context
+NN-114 FlashAttention memory
+NN-115 FlashAttention-2
+NN-117 Position interpolation
+NN-118 RoPE relative property
+NN-119 ALiBi slopes
+NN-120 Attention sinks
+NN-123 Training SSMs efficiently
+NN-130 Logit soft-capping
+NN-132 Chinchilla loss form
+NN-134 Inference FLOPs
+NN-143 DDIM sampling
+NN-148 FlashAttention backward
+NN-149 Converting MHA to GQA
+NN-150 Sliding-window receptive field

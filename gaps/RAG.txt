@@ -1,0 +1,49 @@
+RAG-009 Normalized vectors
+RAG-010 L2 vs cosine equivalence
+RAG-022 Exact identifiers
+RAG-029 Milvus
+RAG-041 Stale index
+RAG-042 Changing embedding model
+RAG-043 Lost in the middle
+RAG-057 MRR calculation
+RAG-059 nDCG
+RAG-060 HNSW efSearch
+RAG-061 IVF nprobe
+RAG-066 Why RRF
+RAG-070 Conversational query rewriting
+RAG-072 Mitigating lost in the middle
+RAG-078 Diagnosing generation failures
+RAG-079 Diagnosing retrieval failures
+RAG-080 Post-filtering pitfall
+RAG-086 Matryoshka embeddings
+RAG-087 Instruction prefixes
+RAG-091 Scanned documents
+RAG-096 Incremental updates
+RAG-097 Deleting documents
+RAG-100 Recursive splitting
+RAG-101 Section headers in chunks
+RAG-103 No relevant results
+RAG-107 Hard negatives
+RAG-108 In-batch negatives
+RAG-110 Similarity score interpretation
+RAG-113 Anisotropy of raw encoders
+RAG-115 MIPS to nearest neighbor
+RAG-116 HNSW deletions
+RAG-117 IVF centroid staleness
+RAG-118 Asymmetric distance computation
+RAG-121 PQ refinement
+RAG-123 ColBERT late interaction
+RAG-124 ColBERT calculation
+RAG-125 nDCG calculation
+RAG-126 InfoNCE temperature
+RAG-127 False negatives in mining
+RAG-129 HyDE failure mode
+RAG-130 Corrective retrieval
+RAG-136 RRF k parameter
+RAG-137 MMR calculation
+RAG-138 Contextual chunk enrichment
+RAG-142 Embedding inversion risk
+RAG-143 Recency handling
+RAG-144 Zero-downtime re-indexing
+RAG-148 Reranker recall ceiling
+RAG-150 Out-of-domain generalization

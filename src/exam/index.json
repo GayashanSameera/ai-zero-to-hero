@@ -1,0 +1,144 @@
+[
+ {
+  "id": "01-ai-fundamentals",
+  "num": "01",
+  "title": "AI and Machine Learning Fundamentals",
+  "prefix": "FUN",
+  "count": 150,
+  "related": [
+   "ml-deep-dive",
+   "ml"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "02-neural-networks-and-transformers",
+  "num": "02",
+  "title": "Neural Networks and Transformer Architecture",
+  "prefix": "NN",
+  "count": 150,
+  "related": [
+   "architecture",
+   "deep-learning"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "03-tokenization-and-llm-inference",
+  "num": "03",
+  "title": "Tokenization, Decoding and LLM Inference",
+  "prefix": "TOK",
+  "count": 150,
+  "related": [
+   "inference",
+   "llm"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "04-prompting-llm-behavior-and-agents",
+  "num": "04",
+  "title": "Prompt Engineering, LLM Behavior and Agents",
+  "prefix": "PR",
+  "count": 150,
+  "related": [
+   "prompting-agents",
+   "genai"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "05-embeddings-retrieval-and-rag",
+  "num": "05",
+  "title": "Embeddings, Retrieval and RAG",
+  "prefix": "RAG",
+  "count": 150,
+  "related": [
+   "rag-deep-dive",
+   "genai"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "06-model-training-and-adaptation",
+  "num": "06",
+  "title": "LLM Training, Fine-Tuning and Adaptation",
+  "prefix": "TRN",
+  "count": 150,
+  "related": [
+   "training",
+   "llm"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "07-evaluation-and-experimentation",
+  "num": "07",
+  "title": "Evaluation and Experimentation",
+  "prefix": "EVAL",
+  "count": 150,
+  "related": [
+   "evaluation"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "08-nvidia-stack-python-and-deployment",
+  "num": "08",
+  "title": "NVIDIA Software Stack, Python Tooling and Deployment",
+  "prefix": "DEP",
+  "count": 150,
+  "related": [
+   "nvidia",
+   "mlops"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ },
+ {
+  "id": "09-trustworthy-and-responsible-ai",
+  "num": "09",
+  "title": "Trustworthy and Responsible AI",
+  "prefix": "TAI",
+  "count": 150,
+  "related": [
+   "trustworthy"
+  ],
+  "levels": [
+   52,
+   60,
+   38
+  ]
+ }
+]

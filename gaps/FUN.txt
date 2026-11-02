@@ -1,0 +1,35 @@
+FUN-008 Recognizing overfitting
+FUN-009 Fixing underfitting
+FUN-018 L1 sparsity
+FUN-033 Prioritizing recall
+FUN-042 Generative vs discriminative
+FUN-055 Stratified splitting
+FUN-056 Handling class imbalance
+FUN-058 Interpreting ROC-AUC
+FUN-071 Loss stuck at ln(K)
+FUN-077 KL divergence properties
+FUN-079 Scale sensitivity of algorithms
+FUN-081 Imputing missing values
+FUN-085 Why random forests help
+FUN-092 Regularization strength
+FUN-097 Gradient accumulation
+FUN-101 Accelerating pandas code
+FUN-108 Identifying a generative classifier
+FUN-111 Robust regression loss
+FUN-113 Adam bias correction
+FUN-116 Numerically stable softmax
+FUN-118 Label smoothing calculation
+FUN-119 Focal loss
+FUN-120 BatchNorm vs LayerNorm
+FUN-121 Inverted dropout scaling
+FUN-129 Shrinkage in gradient boosting
+FUN-132 Interpreting t-SNE/UMAP plots
+FUN-134 Macro vs micro averaging
+FUN-137 Nested cross-validation
+FUN-140 Large-batch generalization
+FUN-141 GAN training instability
+FUN-142 VAE reparameterization trick
+FUN-144 Classifier-free guidance
+FUN-145 Normalizing flows
+FUN-146 Teacher forcing and exposure bias
+FUN-149 Universal approximation theorem

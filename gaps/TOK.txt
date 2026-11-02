@@ -1,0 +1,42 @@
+TOK-003 Character-level drawback
+TOK-020 Where temperature applies
+TOK-023 Truncated outputs
+TOK-028 What drives TTFT
+TOK-038 Repetition penalty
+TOK-039 Logprobs
+TOK-046 Leading spaces
+TOK-049 Context overflow
+TOK-051 Inference memory consumers
+TOK-060 W8A8 vs weight-only
+TOK-061 SmoothQuant
+TOK-066 Wasted KV memory
+TOK-068 Speculative decoding fidelity
+TOK-069 When speculation disappoints
+TOK-073 Frequency vs presence penalty
+TOK-077 Sampling equivalent to greedy
+TOK-078 Prompt echoed in output
+TOK-081 Padding without a mask
+TOK-083 Wrong chat template symptoms
+TOK-084 Checking prompt length
+TOK-090 Offset mapping
+TOK-091 Trailing-space prompts
+TOK-092 Constrained decoding mechanism
+TOK-093 Guaranteeing valid JSON
+TOK-094 Sequence probability from logprobs
+TOK-098 Prefill FLOPs estimate
+TOK-104 RoPE position interpolation
+TOK-105 Exceeding trained context
+TOK-106 Managing chat history
+TOK-108 Settings for creative variety
+TOK-111 Empty responses
+TOK-112 Generation never stops
+TOK-117 Prompt lookup decoding
+TOK-128 YaRN
+TOK-129 Attention sinks
+TOK-130 Disaggregated serving
+TOK-131 KV memory exhaustion
+TOK-137 Repetition penalty sign handling
+TOK-139 Grammar vs token boundaries
+TOK-142 Digit splitting
+TOK-145 Glitch tokens
+TOK-146 Nondeterminism at temperature 0

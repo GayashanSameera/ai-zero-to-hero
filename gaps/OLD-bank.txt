@@ -1,0 +1,8 @@
+Bias assessment
+PII handling
+Human oversight
+Gradient accumulation
+GPU acceleration
+Data provenance
+Containerization
+Artificial intelligence

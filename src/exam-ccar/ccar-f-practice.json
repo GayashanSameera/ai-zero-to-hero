@@ -1,0 +1,863 @@
+{
+ "id": "ccar-f-practice",
+ "num": "CCAR",
+ "title": "Claude Certified Architect – Foundations: Practice Exams",
+ "prefix": "CCAR",
+ "related": [
+  "claude-agents-tools",
+  "claude-code-reliability"
+ ],
+ "levelNames": [
+  "Practice Exam 1",
+  "Practice Exam 2"
+ ],
+ "questions": [
+  {
+   "id": "CCAR-001",
+   "topic": "Support agent",
+   "level": "Practice Exam 1",
+   "q": "ඔබේ code එක, Claude ගේ response එකේ text එකක් තිබුණොත් loop එක නවත්වයි. Claude \"මම බලන්නම්\" කියා tool call එකක්ද එවන විට tool එක run නොවේ. නිවැරදි විසඳුම?",
+   "options": [
+    "max_tokens වැඩි කරන්න",
+    "stop_reason එක \"tool_use\" නම් loop එක දිගටම කරන්න, \"end_turn\" නම් නවත්වන්න",
+    "\"Text ලියන්න එපා\" කියා prompt එකට එකතු කරන්න",
+    "Iterations 3ක cap එකක් දාන්න"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Loop එක පාලනය කරන්නේ stop_reason එකයි; text තිබීම completion ලකුණක් නොවේ",
+   "tasks": [
+    "1.1"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-002",
+   "topic": "Research system",
+   "level": "Practice Exam 1",
+   "q": "Synthesis subagent එකේ report එකේ search subagent ගේ findings නැත. Coordinator එක සිතුවේ subagent එකට තමන්ගේ conversation එක පෙනෙන බවයි. විසඳුම?",
+   "options": [
+    "Search findings සම්පූර්ණයෙන්ම synthesis subagent ගේ Task prompt එකට ඇතුළත් කරන්න",
+    "විශාල context window model එකක්",
+    "Shared memory setting එකක් enable කරන්න",
+    "Synthesis agent තුළම search නැවත run කරන්න"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Subagents parent context එක inherit නොකරයි; prompt එකේ අපිම දිය යුතුය",
+   "tasks": [
+    "1.3"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-003",
+   "topic": "Research system",
+   "level": "Practice Exam 1",
+   "q": "Coordinator එක ස්වාධීන subagents 3ක් turns 3කින් එකින් එක ආරම්භ කරයි; latency ඉහළයි. හොඳම විසඳුම?",
+   "options": [
+    "Message Batches API",
+    "Subagents එකකට අඩු කරන්න",
+    "එකම coordinator response එකක Task tool calls 3ක් emit කරන්න",
+    "max_tokens වැඩි කරන්න"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "එක response එකක Task calls කිහිපයක් = parallel",
+   "tasks": [
+    "1.3"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-004",
+   "topic": "Support agent",
+   "level": "Practice Exam 1",
+   "q": "\"$500 ට වඩා refunds manager approval ඕනේ\" යන නීතිය system prompt එකේ තිබුණත් agent එක සමහර විට $700 refunds process කරයි. විසඳුම?",
+   "options": [
+    "Prompt එකේ \"NEVER\" කියා capitals වලින් ලියන්න",
+    "Few-shot උදාහරණ එකතු කරන්න",
+    "Temperature 0 කරන්න",
+    "$500 ට වඩා process_refund calls block කර escalate_to_human වෙත යවන tool-call interception hook එකක්"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "මුදල් නීති සඳහා deterministic hook; prompts probabilistic",
+   "tasks": [
+    "1.5"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-005",
+   "topic": "Developer productivity",
+   "level": "Practice Exam 1",
+   "q": "ඊයේ files 40ක් analyze කළ session එකක් ඇත. අද files 2ක් පමණක් refactor කළා. හොඳම ක්‍රමය?",
+   "options": [
+    "නව session එකක් ආරම්භ කර සියල්ල නැවත explore කරන්න",
+    "--resume කර, වෙනස් වූ files 2 ගැන පැහැදිලිව කියන්න",
+    "fork_session",
+    "/compact"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Context බොහෝදුරට valid → resume + වෙනස් වූ files ගැන දන්වන්න",
+   "tasks": [
+    "1.7"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-006",
+   "topic": "Developer productivity",
+   "level": "Practice Exam 1",
+   "q": "search_docs සහ search_knowledge tools දෙකේ descriptions පාහේ සමානයි; Claude වැරදි tool එක තෝරයි. පළමු පියවර?",
+   "options": [
+    "එක් එක් tool එකේ අරමුණ, inputs, උදාහරණ queries, \"අනෙක් tool එක වෙනුවට මෙය කවදාද\" ඇතුළත්ව descriptions නැවත ලියන්න (අවශ්‍ය නම් rename)",
+    "Routing classifier එකක් හදන්න",
+    "Tools දෙකක් එකක් කරන්න",
+    "System prompt එකට few- shot උදාහරණ 10ක්"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Tool selection root cause = descriptions; අඩු වෑයම්, වැඩි බලපෑම",
+   "tasks": [
+    "2.1"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-007",
+   "topic": "Support agent",
+   "level": "Practice Exam 1",
+   "q": "Database timeout එකක් වූ විට lookup_order MCP tool එක empty list එකක් යවයි; agent \"ඔබට orders නැත\" කියයි. විසඳුම?",
+   "options": [
+    "Agent එක සියලු empty results retry කරන්න කියන්න",
+    "\"Empty නම් නැවත බලන්න\" කියා prompt එකට එකතු කරන්න",
+    "Timeout එක isError + errorCategory: transient + isRetryable: true ලෙස යවන්න; සැබෑ empty result එකෙන් වෙන් කරන්න",
+    "Timeout වූ විට session එක නවත්වන්න"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "Access failure එක empty success එකක් ලෙස යැවීම error suppression එකකි",
+   "tasks": [
+    "2.2"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-008",
+   "topic": "Research system",
+   "level": "Practice Exam 1",
+   "q": "Synthesis agent ට tools 15ම දී ඇත; එය තමන්ම web searches කර duplicate ප්‍රතිඵල දෙයි. විසඳුම?",
+   "options": [
+    "\"Search කරන්න එපා\" කියා prompt එකට",
+    "Synthesis agent ගේ tools එහි role එකට අවශ්‍ය ඒවාට සීමා කරන්න",
+    "Few-shot උදාහරණ",
+    "විශාල model එකක්"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Least privilege: role එකට අවශ්‍ය tools පමණක්",
+   "tasks": [
+    "2.3"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-009",
+   "topic": "Claude Code",
+   "level": "Practice Exam 1",
+   "q": "Team එකටම Jira MCP server එකක් ඕනේ; token එක Git එකට commit නොවිය යුතුය. කොහේ configure කරනවද?",
+   "options": [
+    "සෑම developer කෙනෙකුගේම ~/.claude.json එකේ",
+    "Token එක සමඟ .mcp.json එකේ",
+    "CLAUDE.md එකේ",
+    ".mcp.json එකේ ${JIRA_TOKEN} environment variable expansion සමඟ"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "Project scope .mcp.json + env var expansion = shared, secrets නැත",
+   "tasks": [
+    "2.4"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-010",
+   "topic": "Developer productivity",
+   "level": "Practice Exam 1",
+   "q": "සියලු *.spec.ts files සොයා ගැනීමට හොඳම built-in tool එක?",
+   "options": [
+    "Grep",
+    "Glob",
+    "Read",
+    "Edit"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Glob = file නම් patterns; Grep = file අන්තර්ගතය",
+   "tasks": [
+    "2.5"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-011",
+   "topic": "Claude Code",
+   "level": "Practice Exam 1",
+   "q": "අලුත් developer කෙනෙකුගේ Claude Code එක team commit conventions පිළිපදින්නේ නැහැ. Conventions තියෙන්නේ team lead ගේ ~/.claude/CLAUDE.md එකේය. විසඳුම?",
+   "options": [
+    "ඒවා project-level CLAUDE.md එකට ගෙන යන්න",
+    "අලුත් developer file එක copy කරගන්න",
+    "Skill එකක් හදන්න",
+    "/memory run කරන්න"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "User-level CLAUDE.md share නොවේ; project-level Git හරහා share වේ",
+   "tasks": [
+    "3.1"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-012",
+   "topic": "Claude Code",
+   "level": "Practice Exam 1",
+   "q": "Codebase analysis skill එකක් දිගු output එකකින් ප්‍රධාන conversation එක පුරවයි. විසඳුම?",
+   "options": [
+    "allowed-tools",
+    "argument-hint",
+    "SKILL.md frontmatter එකට context: fork",
+    "Skill එක CLAUDE.md එකට ගෙන යන්න"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "context: fork skill එක isolated sub-agent context එකක run කරයි",
+   "tasks": [
+    "3.2"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-013",
+   "topic": "Claude Code",
+   "level": "Practice Exam 1",
+   "q": "එක function එකක off-by-one bug එකක්; failing test එකක් සහ stack trace එකක් ඇත. කුමන ක්‍රමයද?",
+   "options": [
+    "Plan mode",
+    "පළමුව Explore subagent",
+    "fork_session",
+    "Direct execution"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "පැහැදිලි scope ඇති single-file fix = direct execution",
+   "tasks": [
+    "3.4"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-014",
+   "topic": "CI/CD",
+   "level": "Practice Exam 1",
+   "q": "සෑම නව commit එකකටම Claude review එක එකම comments නැවත post කරයි. විසඳුම?",
+   "options": [
+    "PR එකකට එක වරක් පමණක් review කරන්න",
+    "පෙර findings context එකට දී, අලුත් හෝ තවමත් නොවිසඳුණු ගැටලු පමණක් report කරන්න කියන්න",
+    "Message Batches API",
+    "Temperature වැඩි කරන්න"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "පෙර findings දී අලුත් / නොවිසඳුණු පමණක්",
+   "tasks": [
+    "3.6"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-015",
+   "topic": "CI/CD",
+   "level": "Practice Exam 1",
+   "q": "Security review එක parameterized queries වලටද \"possible SQL injection\" කියයි. Prompt එකේ දැනට \"high-confidence issues පමණක්\" කියා ඇත. හොඳම විසඳුම?",
+   "options": [
+    "Injection සඳහා explicit criteria සහ ආරක්ෂිත parameterized query සහ සැබෑ injection වෙන් කර පෙන්වන few-shot උදාහරණ",
+    "\"තවත් conservative වන්න\" කියන්න",
+    "Self-reported confidence threshold එකක්",
+    "Security checks සියල්ල disable කරන්න"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Confidence filtering වෙනුවට explicit criteria + few-shot",
+   "tasks": [
+    "4.1"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-016",
+   "topic": "Extraction",
+   "level": "Practice Exam 1",
+   "q": "Invoice එකේ due date එකක් නැති විට model එක දිනයක් සාදා දෙයි. Schema එකේ due_date required ය. විසඳුම?",
+   "options": [
+    "Validation error එකක් සමඟ retry",
+    "Temperature 0",
+    "due_date nullable / optional කරන්න",
+    "Few-shot උදාහරණ පමණක්"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "Required fields නිසා fabrication; nullable කරන්න",
+   "tasks": [
+    "4.3"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-017",
+   "topic": "Extraction",
+   "level": "Practice Exam 1",
+   "q": "PO number එක නැති නිසා validation-retry loop එක 3 වතාවක් retry කරයි. PO number එක තියෙන්නේ යවා නැති වෙනම purchase order document එකකය. හොඳම ක්‍රමය?",
+   "options": [
+    "Retries 10 දක්වා වැඩි කරන්න",
+    "Prompt එක ශක්තිමත් කරන්න",
+    "විශාල model එකක්",
+    "Retry එකකින් මෙය විසඳෙන්නේ නැහැ — field එක null කර human review වෙත යවන්න, හෝ PO document එකද යවන්න"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "Source එකේ නැති තොරතුරු retry එකකින් ලැබෙන්නේ නැහැ",
+   "tasks": [
+    "4.4"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-018",
+   "topic": "CI/CD",
+   "level": "Practice Exam 1",
+   "q": "Documents 5,000ක weekly compliance audit එකක්, ප්‍රතිඵල අවශ්‍ය සඳුදා උදෑසනට. වියදම අඩු කරන්න ඕනේ. කුමක්ද?",
+   "options": [
+    "Audit එකට Message Batches API",
+    "Synchronous API",
+    "Pre-merge checks ද batch එකට",
+    "Streaming API"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Latency-tolerant වැඩ = batch (50% අඩු, පැය 24 දක්වා)",
+   "tasks": [
+    "4.5"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-019",
+   "topic": "Support agent",
+   "level": "Practice Exam 1",
+   "q": "දිගු chat එකක summarization පසු customer කිවු $89.40 refund amount එක agent අමතක කරයි. විසඳුම?",
+   "options": [
+    "දිගු summaries",
+    "Summarized history එකෙන් පිටත persistent \"case facts\" block එකක්",
+    "Conversation එක restart කරන්න",
+    "Customer ගෙන් නැවත අහන්න"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Transactional facts summarize නොකර වෙනම block එකක",
+   "tasks": [
+    "5.1"
+   ],
+   "domain": 5
+  },
+  {
+   "id": "CCAR-020",
+   "topic": "Support agent",
+   "level": "Practice Exam 1",
+   "q": "සරල address change එකක් ගැන customer \"මට දැන්ම මිනිසෙක් එක්ක කතා කරන්න ඕනේ\" කියයි. Agent කළ යුත්තේ?",
+   "options": [
+    "පළමුව විසඳා පසුව human offer කරන්න",
+    "Sentiment score එක බලන්න",
+    "ඉක්මනින් escalate කරන්න",
+    "Confidence score එකක් ඉල්ලන්න"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "Human ඉල්ලීමක් පැහැදිලි නම් ඉක්මනින්ම honor කරන්න",
+   "tasks": [
+    "5.2"
+   ],
+   "domain": 5
+  },
+  {
+   "id": "CCAR-021",
+   "topic": "Developer productivity",
+   "level": "Practice Exam 2",
+   "q": "\"Legacy codebase එකට comprehensive tests එකතු කරන්න.\" හොඳම decomposition එක?",
+   "options": [
+    "Files alphabetical අනුව fixed pipeline එකක්",
+    "Structure map කර, high-impact areas හඳුනාගෙන, dependencies සොයාගන්නා විට වෙනස් වන prioritized plan එකක්",
+    "සියලු code එක prompt එකකට",
+    "Message Batches API"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Open-ended වැඩ = dynamic, adaptive decomposition",
+   "tasks": [
+    "1.6"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-022",
+   "topic": "Claude Code",
+   "level": "Practice Exam 2",
+   "q": "එකම codebase analysis එකකින් refactoring approaches දෙකක් සසඳන්න ඕනේ.",
+   "options": [
+    "Original session එක දෙවතාවක් resume",
+    "නව sessions දෙකක්, නැවත analysis",
+    "fork_session",
+    "/compact"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "එකම baseline එකකින් branches දෙකක් = fork",
+   "tasks": [
+    "1.7"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-023",
+   "topic": "Claude Code",
+   "level": "Practice Exam 2",
+   "q": "ඊයේ analyze කළ files 40න් 30ක් අද refactor කළා. හොඳම ක්‍රමය?",
+   "options": [
+    "කිසිවක් නොකියා resume",
+    "Fork",
+    "Resume කර files 30ම ලැයිස්තුගත කරන්න",
+    "පෙර findings වල structured summary එකක් සමඟ නව session එකක්"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "පැරණි tool results බොහෝමයක් stale → summary සමඟ නව session",
+   "tasks": [
+    "1.7"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-024",
+   "topic": "Research",
+   "level": "Practice Exam 2",
+   "q": "2ක් තෝරන්න. Synthesis subagent එකට sources නිවැරදිව cite කිරීමට coordinator එක කළ යුත්තේ?",
+   "options": [
+    "Findings URL, document, date metadata සමඟ structured format එකකින් යවන්න",
+    "Shared memory මත යැපෙන්න",
+    "පෙර agents ගේ සම්පූර්ණ findings subagent prompt එකට ඇතුළත් කරන්න",
+    "Synthesis එකටම searches නැවත කරන්න දෙන්න",
+    "විශාල model එකක්"
+   ],
+   "answer": 0,
+   "answers": [
+    0,
+    2
+   ],
+   "why": "Context අපිම දිය යුතුය; metadata නිසා attribution ආරක්ෂා වේ",
+   "tasks": [
+    "1.3",
+    "5.6"
+   ],
+   "domain": 1
+  },
+  {
+   "id": "CCAR-025",
+   "topic": "Developer productivity",
+   "level": "Practice Exam 2",
+   "q": "Database එකේ tables මොනවාද සොයාගන්න agent එක exploratory tool calls ගොඩක් කරයි.",
+   "options": [
+    "Database schema එක MCP resource එකක් ලෙස ලබා දෙන්න",
+    "Tools තවත් එකතු කරන්න",
+    "විශාල context window",
+    "Max turns අඩු කරන්න"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Resources = content catalogs; exploratory calls අඩු වේ",
+   "tasks": [
+    "2.4"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-026",
+   "topic": "Developer productivity",
+   "level": "Practice Exam 2",
+   "q": "Edit tool එක අසාර්ථකයි; anchor text එක file එකේ 3 වතාවක් ඇත.",
+   "options": [
+    "Grep",
+    "Read කර Write එකෙන් සම්පූර්ණ file එක ලියන්න",
+    "Glob",
+    "එකම Edit එක නැවත retry"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Unique anchor නැති විට Read + Write fallback",
+   "tasks": [
+    "2.5"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-027",
+   "topic": "Developer productivity",
+   "level": "Practice Exam 2",
+   "q": "ඔබේ MCP code-search tool එක Grep ට වඩා හොඳයි, නමුත් agent එක Grep තෝරයි.",
+   "options": [
+    "Grep remove කරන්න",
+    "MCP tool එක rename",
+    "සෑම විටම forced tool_choice",
+    "MCP tool description එකේ එහි හැකියාවන් සහ outputs විස්තර කරන්න"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "Description විස්තර නිසා agent MCP tool එක තෝරයි",
+   "tasks": [
+    "2.4"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-028",
+   "topic": "Support",
+   "level": "Practice Exam 2",
+   "q": "2ක් තෝරන්න. Exam guide එකට අනුව structured MCP error එකක තිබිය යුතු fields:",
+   "options": [
+    "errorCategory",
+    "isRetryable",
+    "Full stack trace",
+    "HTTP status එක පමණක්",
+    "Retry count එක"
+   ],
+   "answer": 0,
+   "answers": [
+    0,
+    1
+   ],
+   "why": "Category + retryable + human-readable message",
+   "tasks": [
+    "2.2"
+   ],
+   "domain": 2
+  },
+  {
+   "id": "CCAR-029",
+   "topic": "Claude Code",
+   "level": "Practice Exam 2",
+   "q": "Testing, API, deployment සියල්ල ඇති lines 900ක CLAUDE.md එකක් maintain කරන්න අමාරුයි.",
+   "options": [
+    "User-level එකට ගෙන යන්න",
+    "කෙටි කර lines 100කට ගෙනේන්න",
+    ".claude/rules/ හි topic files (testing.md, api-conventions.md, deployment.md) ලෙස කඩන්න",
+    "Skills බවට පත් කරන්න"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "Monolithic CLAUDE.md → .claude/rules/ topic files",
+   "tasks": [
+    "3.1"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-030",
+   "topic": "Claude Code",
+   "level": "Practice Exam 2",
+   "q": "Terraform conventions Terraform files edit කරන විට පමණක් load විය යුතුය.",
+   "options": [
+    "paths: [\"terraform/**/*\"] සහිත .claude/rules/terraform.md",
+    "Root CLAUDE.md එකේ section එකක්",
+    "~/.claude/CLAUDE.md",
+    "Slash command එකක්"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Path glob rule = matching files වලින් පමණයි",
+   "tasks": [
+    "3.3"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-031",
+   "topic": "Claude Code",
+   "level": "Practice Exam 2",
+   "q": "Team skill එකක් ඔබට විතරක් වෙනස් කරගන්න ඕනේ; teammates ට බලපෑමක් නොවිය යුතුය.",
+   "options": [
+    "Project skill එකම edit කරන්න",
+    "~/.claude/skills/ හි වෙනත් නමකින් personal copy එකක්",
+    "CLAUDE.md එකට එකතු කරන්න",
+    "Branch එකක් හදන්න"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Personal variant, වෙනත් නමකින්",
+   "tasks": [
+    "3.2"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-032",
+   "topic": "Claude Code",
+   "level": "Practice Exam 2",
+   "q": "දිගු prose විස්තරයක් දුන්නත් date conversion එක අස්ථාවරයි.",
+   "options": [
+    "තවත් දිගු විස්තරයක්",
+    "Temperature 0",
+    "Plan mode",
+    "Concrete input → output උදාහරණ 2–3ක්"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "I/O උදාහරණ prose වලට වඩා පැහැදිලියි",
+   "tasks": [
+    "3.5"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-033",
+   "topic": "CI/CD",
+   "level": "Practice Exam 2",
+   "q": "Test generation එක දැනටමත් තිබෙන tests යෝජනා කරයි.",
+   "options": [
+    "Temperature අඩු කරන්න",
+    "Batch API",
+    "පවතින test files context එකට දෙන්න",
+    "Tests ගණන cap කරන්න"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "Existing tests context එකේ = duplicates නැත",
+   "tasks": [
+    "3.6"
+   ],
+   "domain": 3
+  },
+  {
+   "id": "CCAR-034",
+   "topic": "Extraction",
+   "level": "Practice Exam 2",
+   "q": "Documents සමහර විට category එක අපැහැදිලියි, සමහර විට අලුත් categories එයි. Schema එක?",
+   "options": [
+    "\"unclear\" සහ \"other\" + detail string සහිත enum",
+    "Free text field එකක්",
+    "Required enum (other නැතිව)",
+    "Category field එක ඉවත් කරන්න"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Extensible + අපැහැදිලි cases හසුරුවයි",
+   "tasks": [
+    "4.3"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-035",
+   "topic": "Extraction",
+   "level": "Practice Exam 2",
+   "q": "Extraction schemas කිහිපයක් ඇත; document type නොදනී; structured output අනිවාර්යයි.",
+   "options": [
+    "tool_choice: auto",
+    "tool_choice: any",
+    "Forced එක schema එකකට",
+    "Tools නැතිව JSON ඉල්ලන්න"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "any = tool එකක් අනිවාර්යයි, කුමක්ද Claude තෝරයි",
+   "tasks": [
+    "4.3"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-036",
+   "topic": "Extraction",
+   "level": "Practice Exam 2",
+   "q": "Results පැය 30ක් ඇතුළත ලැබිය යුතුය; Batches API පැය 24 දක්වා ගත වේ. Batches submit කළ යුත්තේ?",
+   "options": [
+    "දිනකට එක වරක්",
+    "පැය 12න් 12ට",
+    "පැය 4න් 4ට",
+    "සතියකට එක වරක්"
+   ],
+   "answer": 2,
+   "answers": [
+    2
+   ],
+   "why": "පැය 4 ඉරිසුම + පැය 24 processing ≤ පැය 30 (ආරක්ෂිත මාර්ගය)",
+   "tasks": [
+    "4.5"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-037",
+   "topic": "CI/CD",
+   "level": "Practice Exam 2",
+   "q": "Developers findings බොහෝමයක් dismiss කරයි; කුමන code patterns false positives ඇති කරනවාද සොයාගත යුතුය.",
+   "options": [
+    "Temperature වැඩි",
+    "Findings අඩු කරන්න",
+    "Model වෙනස් කරන්න",
+    "Findings වලට detected_pattern field එකක්"
+   ],
+   "answer": 3,
+   "answers": [
+    3
+   ],
+   "why": "Dismissal patterns විශ්ලේෂණයට",
+   "tasks": [
+    "4.4"
+   ],
+   "domain": 4
+  },
+  {
+   "id": "CCAR-038",
+   "topic": "Research",
+   "level": "Practice Exam 2",
+   "q": "Subagent reports 20ක් එකතු කළ input එකක මැද කොටසේ findings final report එකේ නැත.",
+   "options": [
+    "Key findings summary එක මුලට දාමින් විස්තර section headers සමඟ සංවිධානය කරන්න",
+    "Reports ක්‍රමය random කරන්න",
+    "විශාල context window",
+    "Reports අලුත්ම 20 විතරක්"
+   ],
+   "answer": 0,
+   "answers": [
+    0
+   ],
+   "why": "Lost-in-the-middle විසඳුම",
+   "tasks": [
+    "5.1"
+   ],
+   "domain": 5
+  },
+  {
+   "id": "CCAR-039",
+   "topic": "Support",
+   "level": "Practice Exam 2",
+   "q": "get_customer එක \"Nimal Perera\" නමින් customers 3ක් දෙයි.",
+   "options": [
+    "නවතම account එක තෝරන්න",
+    "Email / phone වැනි අමතර identifier එකක් ඉල්ලන්න",
+    "Orders වැඩිම account එක",
+    "ඉක්මනින් escalate"
+   ],
+   "answer": 1,
+   "answers": [
+    1
+   ],
+   "why": "Heuristic තෝරාගැනීම නොව, clarification",
+   "tasks": [
+    "5.2"
+   ],
+   "domain": 5
+  },
+  {
+   "id": "CCAR-040",
+   "topic": "Extraction",
+   "level": "Practice Exam 2",
+   "q": "2ක් තෝරන්න. Overall accuracy 97%; human review අඩු කිරීමට පෙර කළ යුත්තේ?",
+   "options": [
+    "Document type සහ field අනුව accuracy විශ්ලේෂණය",
+    "97% නිසා review දැන්ම නවත්වන්න",
+    "High-confidence extractions වල stratified random sampling",
+    "Calibrate නොකළ self-reported confidence පමණක්",
+    "Sentiment analysis"
+   ],
+   "answer": 0,
+   "answers": [
+    0,
+    2
+   ],
+   "why": "Aggregate අගය segments සඟවයි; sampling නිසා නව errors හමු වේ",
+   "tasks": [
+    "5.5"
+   ],
+   "domain": 5
+  }
+ ]
+}
