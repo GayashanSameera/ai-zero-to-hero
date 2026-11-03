@@ -16,18 +16,18 @@
    "id": "CCAR-001",
    "topic": "Support agent",
    "level": "Practice Exam 1",
-   "q": "ඔබේ code එක, Claude ගේ response එකේ text එකක් තිබුණොත් loop එක නවත්වයි. Claude \"මම බලන්නම්\" කියා tool call එකක්ද එවන විට tool එක run නොවේ. නිවැරදි විසඳුම?",
+   "q": "Your code stops the loop whenever Claude's response contains text. When Claude says \"Let me check\" and also sends a tool call, the tool is never run. What is the correct fix?",
    "options": [
-    "max_tokens වැඩි කරන්න",
-    "stop_reason එක \"tool_use\" නම් loop එක දිගටම කරන්න, \"end_turn\" නම් නවත්වන්න",
-    "\"Text ලියන්න එපා\" කියා prompt එකට එකතු කරන්න",
-    "Iterations 3ක cap එකක් දාන්න"
+    "Increase max_tokens",
+    "Continue the loop when stop_reason is \"tool_use\" and stop when it is \"end_turn\"",
+    "Add \"Do not write text\" to the prompt",
+    "Add a cap of 3 iterations"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "Loop එක පාලනය කරන්නේ stop_reason එකයි; text තිබීම completion ලකුණක් නොවේ",
+   "why": "The loop is controlled by stop_reason; the presence of text is not a completion signal",
    "tasks": [
     "1.1"
    ],
@@ -37,18 +37,18 @@
    "id": "CCAR-002",
    "topic": "Research system",
    "level": "Practice Exam 1",
-   "q": "Synthesis subagent එකේ report එකේ search subagent ගේ findings නැත. Coordinator එක සිතුවේ subagent එකට තමන්ගේ conversation එක පෙනෙන බවයි. විසඳුම?",
+   "q": "The synthesis subagent's report is missing the search subagent's findings. The coordinator assumed the subagent could see its conversation. What is the fix?",
    "options": [
-    "Search findings සම්පූර්ණයෙන්ම synthesis subagent ගේ Task prompt එකට ඇතුළත් කරන්න",
-    "විශාල context window model එකක්",
-    "Shared memory setting එකක් enable කරන්න",
-    "Synthesis agent තුළම search නැවත run කරන්න"
+    "Include the search findings in full in the synthesis subagent's Task prompt",
+    "A model with a larger context window",
+    "Enable a shared memory setting",
+    "Re-run the search inside the synthesis agent"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Subagents parent context එක inherit නොකරයි; prompt එකේ අපිම දිය යුතුය",
+   "why": "Subagents do not inherit the parent context; we must pass it in the prompt ourselves",
    "tasks": [
     "1.3"
    ],
@@ -58,18 +58,18 @@
    "id": "CCAR-003",
    "topic": "Research system",
    "level": "Practice Exam 1",
-   "q": "Coordinator එක ස්වාධීන subagents 3ක් turns 3කින් එකින් එක ආරම්භ කරයි; latency ඉහළයි. හොඳම විසඳුම?",
+   "q": "The coordinator starts 3 independent subagents one by one across 3 turns; latency is high. What is the best fix?",
    "options": [
     "Message Batches API",
-    "Subagents එකකට අඩු කරන්න",
-    "එකම coordinator response එකක Task tool calls 3ක් emit කරන්න",
-    "max_tokens වැඩි කරන්න"
+    "Reduce to a single subagent",
+    "Emit 3 Task tool calls in a single coordinator response",
+    "Increase max_tokens"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "එක response එකක Task calls කිහිපයක් = parallel",
+   "why": "Multiple Task calls in one response = parallel",
    "tasks": [
     "1.3"
    ],
@@ -79,18 +79,18 @@
    "id": "CCAR-004",
    "topic": "Support agent",
    "level": "Practice Exam 1",
-   "q": "\"$500 ට වඩා refunds manager approval ඕනේ\" යන නීතිය system prompt එකේ තිබුණත් agent එක සමහර විට $700 refunds process කරයි. විසඳුම?",
+   "q": "Even though the rule \"refunds over $500 need manager approval\" is in the system prompt, the agent sometimes processes $700 refunds. What is the fix?",
    "options": [
-    "Prompt එකේ \"NEVER\" කියා capitals වලින් ලියන්න",
-    "Few-shot උදාහරණ එකතු කරන්න",
-    "Temperature 0 කරන්න",
-    "$500 ට වඩා process_refund calls block කර escalate_to_human වෙත යවන tool-call interception hook එකක්"
+    "Write \"NEVER\" in capitals in the prompt",
+    "Add few-shot examples",
+    "Set temperature to 0",
+    "A tool-call interception hook that blocks process_refund calls over $500 and routes them to escalate_to_human"
    ],
    "answer": 3,
    "answers": [
     3
    ],
-   "why": "මුදල් නීති සඳහා deterministic hook; prompts probabilistic",
+   "why": "Deterministic hooks for financial rules; prompts are probabilistic",
    "tasks": [
     "1.5"
    ],
@@ -100,10 +100,10 @@
    "id": "CCAR-005",
    "topic": "Developer productivity",
    "level": "Practice Exam 1",
-   "q": "ඊයේ files 40ක් analyze කළ session එකක් ඇත. අද files 2ක් පමණක් refactor කළා. හොඳම ක්‍රමය?",
+   "q": "You have a session from yesterday that analyzed 40 files. Today you refactored only 2 files. What is the best approach?",
    "options": [
-    "නව session එකක් ආරම්භ කර සියල්ල නැවත explore කරන්න",
-    "--resume කර, වෙනස් වූ files 2 ගැන පැහැදිලිව කියන්න",
+    "Start a new session and re-explore everything",
+    "Use --resume and explicitly mention the 2 changed files",
     "fork_session",
     "/compact"
    ],
@@ -111,7 +111,7 @@
    "answers": [
     1
    ],
-   "why": "Context බොහෝදුරට valid → resume + වෙනස් වූ files ගැන දන්වන්න",
+   "why": "Context is mostly still valid → resume + tell it about the changed files",
    "tasks": [
     "1.7"
    ],
@@ -121,18 +121,18 @@
    "id": "CCAR-006",
    "topic": "Developer productivity",
    "level": "Practice Exam 1",
-   "q": "search_docs සහ search_knowledge tools දෙකේ descriptions පාහේ සමානයි; Claude වැරදි tool එක තෝරයි. පළමු පියවර?",
+   "q": "The search_docs and search_knowledge tools have nearly identical descriptions; Claude picks the wrong tool. What is the first step?",
    "options": [
-    "එක් එක් tool එකේ අරමුණ, inputs, උදාහරණ queries, \"අනෙක් tool එක වෙනුවට මෙය කවදාද\" ඇතුළත්ව descriptions නැවත ලියන්න (අවශ්‍ය නම් rename)",
-    "Routing classifier එකක් හදන්න",
-    "Tools දෙකක් එකක් කරන්න",
-    "System prompt එකට few- shot උදාහරණ 10ක්"
+    "Rewrite the descriptions to include each tool's purpose, inputs, example queries, and \"when to use this instead of the other tool\" (rename if needed)",
+    "Build a routing classifier",
+    "Merge the two tools into one",
+    "Add 10 few-shot examples to the system prompt"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Tool selection root cause = descriptions; අඩු වෑයම්, වැඩි බලපෑම",
+   "why": "Root cause of tool selection = descriptions; low effort, high impact",
    "tasks": [
     "2.1"
    ],
@@ -142,18 +142,18 @@
    "id": "CCAR-007",
    "topic": "Support agent",
    "level": "Practice Exam 1",
-   "q": "Database timeout එකක් වූ විට lookup_order MCP tool එක empty list එකක් යවයි; agent \"ඔබට orders නැත\" කියයි. විසඳුම?",
+   "q": "When a database timeout occurs, the lookup_order MCP tool returns an empty list; the agent says \"You have no orders\". What is the fix?",
    "options": [
-    "Agent එක සියලු empty results retry කරන්න කියන්න",
-    "\"Empty නම් නැවත බලන්න\" කියා prompt එකට එකතු කරන්න",
-    "Timeout එක isError + errorCategory: transient + isRetryable: true ලෙස යවන්න; සැබෑ empty result එකෙන් වෙන් කරන්න",
-    "Timeout වූ විට session එක නවත්වන්න"
+    "Tell the agent to retry all empty results",
+    "Add \"If empty, check again\" to the prompt",
+    "Return the timeout as isError + errorCategory: transient + isRetryable: true; distinguish it from a genuine empty result",
+    "Stop the session when a timeout occurs"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "Access failure එක empty success එකක් ලෙස යැවීම error suppression එකකි",
+   "why": "Returning an access failure as an empty success is error suppression",
    "tasks": [
     "2.2"
    ],
@@ -163,18 +163,18 @@
    "id": "CCAR-008",
    "topic": "Research system",
    "level": "Practice Exam 1",
-   "q": "Synthesis agent ට tools 15ම දී ඇත; එය තමන්ම web searches කර duplicate ප්‍රතිඵල දෙයි. විසඳුම?",
+   "q": "The synthesis agent has been given all 15 tools; it runs web searches itself and produces duplicate results. What is the fix?",
    "options": [
-    "\"Search කරන්න එපා\" කියා prompt එකට",
-    "Synthesis agent ගේ tools එහි role එකට අවශ්‍ය ඒවාට සීමා කරන්න",
-    "Few-shot උදාහරණ",
-    "විශාල model එකක්"
+    "Add \"Do not search\" to the prompt",
+    "Restrict the synthesis agent's tools to those its role needs",
+    "Few-shot examples",
+    "A larger model"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "Least privilege: role එකට අවශ්‍ය tools පමණක්",
+   "why": "Least privilege: only the tools the role needs",
    "tasks": [
     "2.3"
    ],
@@ -184,18 +184,18 @@
    "id": "CCAR-009",
    "topic": "Claude Code",
    "level": "Practice Exam 1",
-   "q": "Team එකටම Jira MCP server එකක් ඕනේ; token එක Git එකට commit නොවිය යුතුය. කොහේ configure කරනවද?",
+   "q": "The whole team needs a Jira MCP server; the token must not be committed to Git. Where do you configure it?",
    "options": [
-    "සෑම developer කෙනෙකුගේම ~/.claude.json එකේ",
-    "Token එක සමඟ .mcp.json එකේ",
-    "CLAUDE.md එකේ",
-    ".mcp.json එකේ ${JIRA_TOKEN} environment variable expansion සමඟ"
+    "In every developer's ~/.claude.json",
+    "In .mcp.json together with the token",
+    "In CLAUDE.md",
+    "In .mcp.json with ${JIRA_TOKEN} environment variable expansion"
    ],
    "answer": 3,
    "answers": [
     3
    ],
-   "why": "Project scope .mcp.json + env var expansion = shared, secrets නැත",
+   "why": "Project-scope .mcp.json + env var expansion = shared, with no secrets",
    "tasks": [
     "2.4"
    ],
@@ -205,7 +205,7 @@
    "id": "CCAR-010",
    "topic": "Developer productivity",
    "level": "Practice Exam 1",
-   "q": "සියලු *.spec.ts files සොයා ගැනීමට හොඳම built-in tool එක?",
+   "q": "What is the best built-in tool for finding all *.spec.ts files?",
    "options": [
     "Grep",
     "Glob",
@@ -216,7 +216,7 @@
    "answers": [
     1
    ],
-   "why": "Glob = file නම් patterns; Grep = file අන්තර්ගතය",
+   "why": "Glob = file name patterns; Grep = file contents",
    "tasks": [
     "2.5"
    ],
@@ -226,18 +226,18 @@
    "id": "CCAR-011",
    "topic": "Claude Code",
    "level": "Practice Exam 1",
-   "q": "අලුත් developer කෙනෙකුගේ Claude Code එක team commit conventions පිළිපදින්නේ නැහැ. Conventions තියෙන්නේ team lead ගේ ~/.claude/CLAUDE.md එකේය. විසඳුම?",
+   "q": "A new developer's Claude Code does not follow the team's commit conventions. The conventions are in the team lead's ~/.claude/CLAUDE.md. What is the fix?",
    "options": [
-    "ඒවා project-level CLAUDE.md එකට ගෙන යන්න",
-    "අලුත් developer file එක copy කරගන්න",
-    "Skill එකක් හදන්න",
-    "/memory run කරන්න"
+    "Move them into the project-level CLAUDE.md",
+    "Have the new developer copy the file",
+    "Create a skill",
+    "Run /memory"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "User-level CLAUDE.md share නොවේ; project-level Git හරහා share වේ",
+   "why": "User-level CLAUDE.md is not shared; project-level is shared through Git",
    "tasks": [
     "3.1"
    ],
@@ -247,18 +247,18 @@
    "id": "CCAR-012",
    "topic": "Claude Code",
    "level": "Practice Exam 1",
-   "q": "Codebase analysis skill එකක් දිගු output එකකින් ප්‍රධාන conversation එක පුරවයි. විසඳුම?",
+   "q": "A codebase analysis skill fills up the main conversation with long output. What is the fix?",
    "options": [
     "allowed-tools",
     "argument-hint",
-    "SKILL.md frontmatter එකට context: fork",
-    "Skill එක CLAUDE.md එකට ගෙන යන්න"
+    "context: fork in the SKILL.md frontmatter",
+    "Move the skill into CLAUDE.md"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "context: fork skill එක isolated sub-agent context එකක run කරයි",
+   "why": "context: fork runs the skill in an isolated sub-agent context",
    "tasks": [
     "3.2"
    ],
@@ -268,10 +268,10 @@
    "id": "CCAR-013",
    "topic": "Claude Code",
    "level": "Practice Exam 1",
-   "q": "එක function එකක off-by-one bug එකක්; failing test එකක් සහ stack trace එකක් ඇත. කුමන ක්‍රමයද?",
+   "q": "There is an off-by-one bug in a single function; you have a failing test and a stack trace. Which approach?",
    "options": [
     "Plan mode",
-    "පළමුව Explore subagent",
+    "An Explore subagent first",
     "fork_session",
     "Direct execution"
    ],
@@ -279,7 +279,7 @@
    "answers": [
     3
    ],
-   "why": "පැහැදිලි scope ඇති single-file fix = direct execution",
+   "why": "A single-file fix with a clear scope = direct execution",
    "tasks": [
     "3.4"
    ],
@@ -289,18 +289,18 @@
    "id": "CCAR-014",
    "topic": "CI/CD",
    "level": "Practice Exam 1",
-   "q": "සෑම නව commit එකකටම Claude review එක එකම comments නැවත post කරයි. විසඳුම?",
+   "q": "On every new commit, the Claude review re-posts the same comments. What is the fix?",
    "options": [
-    "PR එකකට එක වරක් පමණක් review කරන්න",
-    "පෙර findings context එකට දී, අලුත් හෝ තවමත් නොවිසඳුණු ගැටලු පමණක් report කරන්න කියන්න",
+    "Review only once per PR",
+    "Give it the previous findings in context and tell it to report only new or still-unresolved issues",
     "Message Batches API",
-    "Temperature වැඩි කරන්න"
+    "Increase temperature"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "පෙර findings දී අලුත් / නොවිසඳුණු පමණක්",
+   "why": "Give previous findings, report only new / unresolved",
    "tasks": [
     "3.6"
    ],
@@ -310,18 +310,18 @@
    "id": "CCAR-015",
    "topic": "CI/CD",
    "level": "Practice Exam 1",
-   "q": "Security review එක parameterized queries වලටද \"possible SQL injection\" කියයි. Prompt එකේ දැනට \"high-confidence issues පමණක්\" කියා ඇත. හොඳම විසඳුම?",
+   "q": "The security review flags \"possible SQL injection\" even for parameterized queries. The prompt currently says \"only high-confidence issues\". What is the best fix?",
    "options": [
-    "Injection සඳහා explicit criteria සහ ආරක්ෂිත parameterized query සහ සැබෑ injection වෙන් කර පෙන්වන few-shot උදාහරණ",
-    "\"තවත් conservative වන්න\" කියන්න",
-    "Self-reported confidence threshold එකක්",
-    "Security checks සියල්ල disable කරන්න"
+    "Explicit criteria for injection plus few-shot examples that distinguish a safe parameterized query from a real injection",
+    "Tell it to \"be more conservative\"",
+    "A self-reported confidence threshold",
+    "Disable all security checks"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Confidence filtering වෙනුවට explicit criteria + few-shot",
+   "why": "Explicit criteria + few-shot instead of confidence filtering",
    "tasks": [
     "4.1"
    ],
@@ -331,18 +331,18 @@
    "id": "CCAR-016",
    "topic": "Extraction",
    "level": "Practice Exam 1",
-   "q": "Invoice එකේ due date එකක් නැති විට model එක දිනයක් සාදා දෙයි. Schema එකේ due_date required ය. විසඳුම?",
+   "q": "When an invoice has no due date, the model makes up a date. due_date is required in the schema. What is the fix?",
    "options": [
-    "Validation error එකක් සමඟ retry",
+    "Retry with a validation error",
     "Temperature 0",
-    "due_date nullable / optional කරන්න",
-    "Few-shot උදාහරණ පමණක්"
+    "Make due_date nullable / optional",
+    "Few-shot examples only"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "Required fields නිසා fabrication; nullable කරන්න",
+   "why": "Required fields cause fabrication; make them nullable",
    "tasks": [
     "4.3"
    ],
@@ -352,18 +352,18 @@
    "id": "CCAR-017",
    "topic": "Extraction",
    "level": "Practice Exam 1",
-   "q": "PO number එක නැති නිසා validation-retry loop එක 3 වතාවක් retry කරයි. PO number එක තියෙන්නේ යවා නැති වෙනම purchase order document එකකය. හොඳම ක්‍රමය?",
+   "q": "Because the PO number is missing, the validation-retry loop retries 3 times. The PO number is in a separate purchase order document that was not sent. What is the best approach?",
    "options": [
-    "Retries 10 දක්වා වැඩි කරන්න",
-    "Prompt එක ශක්තිමත් කරන්න",
-    "විශාල model එකක්",
-    "Retry එකකින් මෙය විසඳෙන්නේ නැහැ — field එක null කර human review වෙත යවන්න, හෝ PO document එකද යවන්න"
+    "Increase retries to 10",
+    "Strengthen the prompt",
+    "A larger model",
+    "A retry will not solve this — set the field to null and send it to human review, or also send the PO document"
    ],
    "answer": 3,
    "answers": [
     3
    ],
-   "why": "Source එකේ නැති තොරතුරු retry එකකින් ලැබෙන්නේ නැහැ",
+   "why": "Information that is not in the source cannot be obtained by retrying",
    "tasks": [
     "4.4"
    ],
@@ -373,18 +373,18 @@
    "id": "CCAR-018",
    "topic": "CI/CD",
    "level": "Practice Exam 1",
-   "q": "Documents 5,000ක weekly compliance audit එකක්, ප්‍රතිඵල අවශ්‍ය සඳුදා උදෑසනට. වියදම අඩු කරන්න ඕනේ. කුමක්ද?",
+   "q": "A weekly compliance audit of 5,000 documents, with results needed by Monday morning. You need to reduce cost. What do you use?",
    "options": [
-    "Audit එකට Message Batches API",
+    "Message Batches API for the audit",
     "Synchronous API",
-    "Pre-merge checks ද batch එකට",
+    "Put pre-merge checks in the batch too",
     "Streaming API"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Latency-tolerant වැඩ = batch (50% අඩු, පැය 24 දක්වා)",
+   "why": "Latency-tolerant work = batch (50% cheaper, up to 24 hours)",
    "tasks": [
     "4.5"
    ],
@@ -394,18 +394,18 @@
    "id": "CCAR-019",
    "topic": "Support agent",
    "level": "Practice Exam 1",
-   "q": "දිගු chat එකක summarization පසු customer කිවු $89.40 refund amount එක agent අමතක කරයි. විසඳුම?",
+   "q": "After summarization in a long chat, the agent forgets the $89.40 refund amount the customer mentioned. What is the fix?",
    "options": [
-    "දිගු summaries",
-    "Summarized history එකෙන් පිටත persistent \"case facts\" block එකක්",
-    "Conversation එක restart කරන්න",
-    "Customer ගෙන් නැවත අහන්න"
+    "Longer summaries",
+    "A persistent \"case facts\" block kept outside the summarized history",
+    "Restart the conversation",
+    "Ask the customer again"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "Transactional facts summarize නොකර වෙනම block එකක",
+   "why": "Keep transactional facts in a separate block instead of summarizing them",
    "tasks": [
     "5.1"
    ],
@@ -415,18 +415,18 @@
    "id": "CCAR-020",
    "topic": "Support agent",
    "level": "Practice Exam 1",
-   "q": "සරල address change එකක් ගැන customer \"මට දැන්ම මිනිසෙක් එක්ක කතා කරන්න ඕනේ\" කියයි. Agent කළ යුත්තේ?",
+   "q": "About a simple address change, the customer says \"I want to talk to a human right now\". What should the agent do?",
    "options": [
-    "පළමුව විසඳා පසුව human offer කරන්න",
-    "Sentiment score එක බලන්න",
-    "ඉක්මනින් escalate කරන්න",
-    "Confidence score එකක් ඉල්ලන්න"
+    "Resolve it first and offer a human afterwards",
+    "Check the sentiment score",
+    "Escalate promptly",
+    "Ask for a confidence score"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "Human ඉල්ලීමක් පැහැදිලි නම් ඉක්මනින්ම honor කරන්න",
+   "why": "If the request for a human is explicit, honor it promptly",
    "tasks": [
     "5.2"
    ],
@@ -436,18 +436,18 @@
    "id": "CCAR-021",
    "topic": "Developer productivity",
    "level": "Practice Exam 2",
-   "q": "\"Legacy codebase එකට comprehensive tests එකතු කරන්න.\" හොඳම decomposition එක?",
+   "q": "\"Add comprehensive tests to the legacy codebase.\" What is the best decomposition?",
    "options": [
-    "Files alphabetical අනුව fixed pipeline එකක්",
-    "Structure map කර, high-impact areas හඳුනාගෙන, dependencies සොයාගන්නා විට වෙනස් වන prioritized plan එකක්",
-    "සියලු code එක prompt එකකට",
+    "A fixed pipeline over the files in alphabetical order",
+    "Map the structure, identify high-impact areas, and follow a prioritized plan that adapts as dependencies are discovered",
+    "Put all the code into one prompt",
     "Message Batches API"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "Open-ended වැඩ = dynamic, adaptive decomposition",
+   "why": "Open-ended work = dynamic, adaptive decomposition",
    "tasks": [
     "1.6"
    ],
@@ -457,10 +457,10 @@
    "id": "CCAR-022",
    "topic": "Claude Code",
    "level": "Practice Exam 2",
-   "q": "එකම codebase analysis එකකින් refactoring approaches දෙකක් සසඳන්න ඕනේ.",
+   "q": "You need to compare two refactoring approaches starting from the same codebase analysis.",
    "options": [
-    "Original session එක දෙවතාවක් resume",
-    "නව sessions දෙකක්, නැවත analysis",
+    "Resume the original session twice",
+    "Two new sessions, redoing the analysis",
     "fork_session",
     "/compact"
    ],
@@ -468,7 +468,7 @@
    "answers": [
     2
    ],
-   "why": "එකම baseline එකකින් branches දෙකක් = fork",
+   "why": "Two branches from the same baseline = fork",
    "tasks": [
     "1.7"
    ],
@@ -478,18 +478,18 @@
    "id": "CCAR-023",
    "topic": "Claude Code",
    "level": "Practice Exam 2",
-   "q": "ඊයේ analyze කළ files 40න් 30ක් අද refactor කළා. හොඳම ක්‍රමය?",
+   "q": "Of the 40 files analyzed yesterday, 30 were refactored today. What is the best approach?",
    "options": [
-    "කිසිවක් නොකියා resume",
+    "Resume without saying anything",
     "Fork",
-    "Resume කර files 30ම ලැයිස්තුගත කරන්න",
-    "පෙර findings වල structured summary එකක් සමඟ නව session එකක්"
+    "Resume and list all 30 files",
+    "A new session with a structured summary of the previous findings"
    ],
    "answer": 3,
    "answers": [
     3
    ],
-   "why": "පැරණි tool results බොහෝමයක් stale → summary සමඟ නව session",
+   "why": "Most of the old tool results are stale → new session with a summary",
    "tasks": [
     "1.7"
    ],
@@ -499,20 +499,20 @@
    "id": "CCAR-024",
    "topic": "Research",
    "level": "Practice Exam 2",
-   "q": "2ක් තෝරන්න. Synthesis subagent එකට sources නිවැරදිව cite කිරීමට coordinator එක කළ යුත්තේ?",
+   "q": "Choose 2. What should the coordinator do so that the synthesis subagent cites sources correctly?",
    "options": [
-    "Findings URL, document, date metadata සමඟ structured format එකකින් යවන්න",
-    "Shared memory මත යැපෙන්න",
-    "පෙර agents ගේ සම්පූර්ණ findings subagent prompt එකට ඇතුළත් කරන්න",
-    "Synthesis එකටම searches නැවත කරන්න දෙන්න",
-    "විශාල model එකක්"
+    "Pass the findings in a structured format with URL, document, and date metadata",
+    "Rely on shared memory",
+    "Include the previous agents' full findings in the subagent prompt",
+    "Let the synthesis agent re-run the searches itself",
+    "A larger model"
    ],
    "answer": 0,
    "answers": [
     0,
     2
    ],
-   "why": "Context අපිම දිය යුතුය; metadata නිසා attribution ආරක්ෂා වේ",
+   "why": "We must provide the context ourselves; metadata preserves attribution",
    "tasks": [
     "1.3",
     "5.6"
@@ -523,18 +523,18 @@
    "id": "CCAR-025",
    "topic": "Developer productivity",
    "level": "Practice Exam 2",
-   "q": "Database එකේ tables මොනවාද සොයාගන්න agent එක exploratory tool calls ගොඩක් කරයි.",
+   "q": "The agent makes many exploratory tool calls to find out which tables are in the database.",
    "options": [
-    "Database schema එක MCP resource එකක් ලෙස ලබා දෙන්න",
-    "Tools තවත් එකතු කරන්න",
-    "විශාල context window",
-    "Max turns අඩු කරන්න"
+    "Expose the database schema as an MCP resource",
+    "Add more tools",
+    "A larger context window",
+    "Reduce max turns"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Resources = content catalogs; exploratory calls අඩු වේ",
+   "why": "Resources = content catalogs; fewer exploratory calls",
    "tasks": [
     "2.4"
    ],
@@ -544,18 +544,18 @@
    "id": "CCAR-026",
    "topic": "Developer productivity",
    "level": "Practice Exam 2",
-   "q": "Edit tool එක අසාර්ථකයි; anchor text එක file එකේ 3 වතාවක් ඇත.",
+   "q": "The Edit tool fails; the anchor text appears 3 times in the file.",
    "options": [
     "Grep",
-    "Read කර Write එකෙන් සම්පූර්ණ file එක ලියන්න",
+    "Read it and write the whole file with Write",
     "Glob",
-    "එකම Edit එක නැවත retry"
+    "Retry the same Edit"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "Unique anchor නැති විට Read + Write fallback",
+   "why": "Read + Write fallback when there is no unique anchor",
    "tasks": [
     "2.5"
    ],
@@ -565,18 +565,18 @@
    "id": "CCAR-027",
    "topic": "Developer productivity",
    "level": "Practice Exam 2",
-   "q": "ඔබේ MCP code-search tool එක Grep ට වඩා හොඳයි, නමුත් agent එක Grep තෝරයි.",
+   "q": "Your MCP code-search tool is better than Grep, but the agent picks Grep.",
    "options": [
-    "Grep remove කරන්න",
-    "MCP tool එක rename",
-    "සෑම විටම forced tool_choice",
-    "MCP tool description එකේ එහි හැකියාවන් සහ outputs විස්තර කරන්න"
+    "Remove Grep",
+    "Rename the MCP tool",
+    "Always force tool_choice",
+    "Describe its capabilities and outputs in the MCP tool description"
    ],
    "answer": 3,
    "answers": [
     3
    ],
-   "why": "Description විස්තර නිසා agent MCP tool එක තෝරයි",
+   "why": "The detailed description leads the agent to pick the MCP tool",
    "tasks": [
     "2.4"
    ],
@@ -586,13 +586,13 @@
    "id": "CCAR-028",
    "topic": "Support",
    "level": "Practice Exam 2",
-   "q": "2ක් තෝරන්න. Exam guide එකට අනුව structured MCP error එකක තිබිය යුතු fields:",
+   "q": "Choose 2. According to the exam guide, which fields should a structured MCP error contain?",
    "options": [
     "errorCategory",
     "isRetryable",
     "Full stack trace",
-    "HTTP status එක පමණක්",
-    "Retry count එක"
+    "HTTP status only",
+    "Retry count"
    ],
    "answer": 0,
    "answers": [
@@ -609,18 +609,18 @@
    "id": "CCAR-029",
    "topic": "Claude Code",
    "level": "Practice Exam 2",
-   "q": "Testing, API, deployment සියල්ල ඇති lines 900ක CLAUDE.md එකක් maintain කරන්න අමාරුයි.",
+   "q": "A 900-line CLAUDE.md covering testing, API, and deployment is hard to maintain.",
    "options": [
-    "User-level එකට ගෙන යන්න",
-    "කෙටි කර lines 100කට ගෙනේන්න",
-    ".claude/rules/ හි topic files (testing.md, api-conventions.md, deployment.md) ලෙස කඩන්න",
-    "Skills බවට පත් කරන්න"
+    "Move it to user level",
+    "Shorten it to 100 lines",
+    "Split it into topic files in .claude/rules/ (testing.md, api-conventions.md, deployment.md)",
+    "Turn it into skills"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "Monolithic CLAUDE.md → .claude/rules/ topic files",
+   "why": "Monolithic CLAUDE.md → topic files in .claude/rules/",
    "tasks": [
     "3.1"
    ],
@@ -630,18 +630,18 @@
    "id": "CCAR-030",
    "topic": "Claude Code",
    "level": "Practice Exam 2",
-   "q": "Terraform conventions Terraform files edit කරන විට පමණක් load විය යුතුය.",
+   "q": "Terraform conventions should load only when editing Terraform files.",
    "options": [
-    "paths: [\"terraform/**/*\"] සහිත .claude/rules/terraform.md",
-    "Root CLAUDE.md එකේ section එකක්",
+    ".claude/rules/terraform.md with paths: [\"terraform/**/*\"]",
+    "A section in the root CLAUDE.md",
     "~/.claude/CLAUDE.md",
-    "Slash command එකක්"
+    "A slash command"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Path glob rule = matching files වලින් පමණයි",
+   "why": "Path glob rule = applies only to matching files",
    "tasks": [
     "3.3"
    ],
@@ -651,18 +651,18 @@
    "id": "CCAR-031",
    "topic": "Claude Code",
    "level": "Practice Exam 2",
-   "q": "Team skill එකක් ඔබට විතරක් වෙනස් කරගන්න ඕනේ; teammates ට බලපෑමක් නොවිය යුතුය.",
+   "q": "You want to customize a team skill just for yourself; it must not affect your teammates.",
    "options": [
-    "Project skill එකම edit කරන්න",
-    "~/.claude/skills/ හි වෙනත් නමකින් personal copy එකක්",
-    "CLAUDE.md එකට එකතු කරන්න",
-    "Branch එකක් හදන්න"
+    "Edit the project skill itself",
+    "A personal copy under a different name in ~/.claude/skills/",
+    "Add it to CLAUDE.md",
+    "Create a branch"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "Personal variant, වෙනත් නමකින්",
+   "why": "Personal variant, under a different name",
    "tasks": [
     "3.2"
    ],
@@ -672,18 +672,18 @@
    "id": "CCAR-032",
    "topic": "Claude Code",
    "level": "Practice Exam 2",
-   "q": "දිගු prose විස්තරයක් දුන්නත් date conversion එක අස්ථාවරයි.",
+   "q": "Date conversion is inconsistent even though a long prose description was given.",
    "options": [
-    "තවත් දිගු විස්තරයක්",
+    "An even longer description",
     "Temperature 0",
     "Plan mode",
-    "Concrete input → output උදාහරණ 2–3ක්"
+    "2–3 concrete input → output examples"
    ],
    "answer": 3,
    "answers": [
     3
    ],
-   "why": "I/O උදාහරණ prose වලට වඩා පැහැදිලියි",
+   "why": "I/O examples are clearer than prose",
    "tasks": [
     "3.5"
    ],
@@ -693,18 +693,18 @@
    "id": "CCAR-033",
    "topic": "CI/CD",
    "level": "Practice Exam 2",
-   "q": "Test generation එක දැනටමත් තිබෙන tests යෝජනා කරයි.",
+   "q": "Test generation suggests tests that already exist.",
    "options": [
-    "Temperature අඩු කරන්න",
+    "Lower the temperature",
     "Batch API",
-    "පවතින test files context එකට දෙන්න",
-    "Tests ගණන cap කරන්න"
+    "Provide the existing test files in context",
+    "Cap the number of tests"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "Existing tests context එකේ = duplicates නැත",
+   "why": "Existing tests in context = no duplicates",
    "tasks": [
     "3.6"
    ],
@@ -714,18 +714,18 @@
    "id": "CCAR-034",
    "topic": "Extraction",
    "level": "Practice Exam 2",
-   "q": "Documents සමහර විට category එක අපැහැදිලියි, සමහර විට අලුත් categories එයි. Schema එක?",
+   "q": "Sometimes a document's category is unclear, and sometimes new categories appear. Which schema?",
    "options": [
-    "\"unclear\" සහ \"other\" + detail string සහිත enum",
-    "Free text field එකක්",
-    "Required enum (other නැතිව)",
-    "Category field එක ඉවත් කරන්න"
+    "An enum with \"unclear\" and \"other\" + a detail string",
+    "A free-text field",
+    "A required enum (without other)",
+    "Remove the category field"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Extensible + අපැහැදිලි cases හසුරුවයි",
+   "why": "Extensible + handles unclear cases",
    "tasks": [
     "4.3"
    ],
@@ -735,18 +735,18 @@
    "id": "CCAR-035",
    "topic": "Extraction",
    "level": "Practice Exam 2",
-   "q": "Extraction schemas කිහිපයක් ඇත; document type නොදනී; structured output අනිවාර්යයි.",
+   "q": "There are several extraction schemas; the document type is unknown; structured output is mandatory.",
    "options": [
     "tool_choice: auto",
     "tool_choice: any",
-    "Forced එක schema එකකට",
-    "Tools නැතිව JSON ඉල්ලන්න"
+    "Forced to one schema",
+    "Ask for JSON without tools"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "any = tool එකක් අනිවාර්යයි, කුමක්ද Claude තෝරයි",
+   "why": "any = a tool call is mandatory, Claude chooses which one",
    "tasks": [
     "4.3"
    ],
@@ -756,18 +756,18 @@
    "id": "CCAR-036",
    "topic": "Extraction",
    "level": "Practice Exam 2",
-   "q": "Results පැය 30ක් ඇතුළත ලැබිය යුතුය; Batches API පැය 24 දක්වා ගත වේ. Batches submit කළ යුත්තේ?",
+   "q": "Results must arrive within 30 hours; the Batches API can take up to 24 hours. How often should batches be submitted?",
    "options": [
-    "දිනකට එක වරක්",
-    "පැය 12න් 12ට",
-    "පැය 4න් 4ට",
-    "සතියකට එක වරක්"
+    "Once a day",
+    "Every 12 hours",
+    "Every 4 hours",
+    "Once a week"
    ],
    "answer": 2,
    "answers": [
     2
    ],
-   "why": "පැය 4 ඉරිසුම + පැය 24 processing ≤ පැය 30 (ආරක්ෂිත මාර්ගය)",
+   "why": "4-hour window + 24 hours of processing ≤ 30 hours (safe route)",
    "tasks": [
     "4.5"
    ],
@@ -777,18 +777,18 @@
    "id": "CCAR-037",
    "topic": "CI/CD",
    "level": "Practice Exam 2",
-   "q": "Developers findings බොහෝමයක් dismiss කරයි; කුමන code patterns false positives ඇති කරනවාද සොයාගත යුතුය.",
+   "q": "Developers dismiss most findings; you need to find out which code patterns cause false positives.",
    "options": [
-    "Temperature වැඩි",
-    "Findings අඩු කරන්න",
-    "Model වෙනස් කරන්න",
-    "Findings වලට detected_pattern field එකක්"
+    "Higher temperature",
+    "Reduce the findings",
+    "Change the model",
+    "A detected_pattern field on findings"
    ],
    "answer": 3,
    "answers": [
     3
    ],
-   "why": "Dismissal patterns විශ්ලේෂණයට",
+   "why": "For analyzing dismissal patterns",
    "tasks": [
     "4.4"
    ],
@@ -798,18 +798,18 @@
    "id": "CCAR-038",
    "topic": "Research",
    "level": "Practice Exam 2",
-   "q": "Subagent reports 20ක් එකතු කළ input එකක මැද කොටසේ findings final report එකේ නැත.",
+   "q": "In an input that combines 20 subagent reports, findings from the middle section are missing from the final report.",
    "options": [
-    "Key findings summary එක මුලට දාමින් විස්තර section headers සමඟ සංවිධානය කරන්න",
-    "Reports ක්‍රමය random කරන්න",
-    "විශාල context window",
-    "Reports අලුත්ම 20 විතරක්"
+    "Put a key findings summary at the start and organize the details with section headers",
+    "Randomize the order of the reports",
+    "A larger context window",
+    "Only the 20 most recent reports"
    ],
    "answer": 0,
    "answers": [
     0
    ],
-   "why": "Lost-in-the-middle විසඳුම",
+   "why": "Lost-in-the-middle fix",
    "tasks": [
     "5.1"
    ],
@@ -819,18 +819,18 @@
    "id": "CCAR-039",
    "topic": "Support",
    "level": "Practice Exam 2",
-   "q": "get_customer එක \"Nimal Perera\" නමින් customers 3ක් දෙයි.",
+   "q": "get_customer returns 3 customers named \"Nimal Perera\".",
    "options": [
-    "නවතම account එක තෝරන්න",
-    "Email / phone වැනි අමතර identifier එකක් ඉල්ලන්න",
-    "Orders වැඩිම account එක",
-    "ඉක්මනින් escalate"
+    "Pick the newest account",
+    "Ask for an additional identifier such as email / phone",
+    "The account with the most orders",
+    "Escalate promptly"
    ],
    "answer": 1,
    "answers": [
     1
    ],
-   "why": "Heuristic තෝරාගැනීම නොව, clarification",
+   "why": "Clarification, not heuristic selection",
    "tasks": [
     "5.2"
    ],
@@ -840,12 +840,12 @@
    "id": "CCAR-040",
    "topic": "Extraction",
    "level": "Practice Exam 2",
-   "q": "2ක් තෝරන්න. Overall accuracy 97%; human review අඩු කිරීමට පෙර කළ යුත්තේ?",
+   "q": "Choose 2. Overall accuracy is 97%; what should be done before reducing human review?",
    "options": [
-    "Document type සහ field අනුව accuracy විශ්ලේෂණය",
-    "97% නිසා review දැන්ම නවත්වන්න",
-    "High-confidence extractions වල stratified random sampling",
-    "Calibrate නොකළ self-reported confidence පමණක්",
+    "Analyze accuracy by document type and field",
+    "Stop review now because it is 97%",
+    "Stratified random sampling of high-confidence extractions",
+    "Only uncalibrated self-reported confidence",
     "Sentiment analysis"
    ],
    "answer": 0,
@@ -853,7 +853,7 @@
     0,
     2
    ],
-   "why": "Aggregate අගය segments සඟවයි; sampling නිසා නව errors හමු වේ",
+   "why": "The aggregate value hides segments; sampling surfaces new errors",
    "tasks": [
     "5.5"
    ],

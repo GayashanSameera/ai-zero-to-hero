@@ -271,6 +271,17 @@ Batches touch disjoint files. Agents must not edit shared files (App.jsx, the lo
 - [ ] **Step 2:** When all are done, run `node scripts/check-content.mjs` (all rules), `npm test` and `npm run build`. Expected: all PASS, no Sinhala leaks.
 - [ ] **Step 3:** Spot-check 3 random lessons and 2 cert phases in `npm run dev`.
 
+### Task 6b: More exam practice questions (owner request, added mid-run)
+
+Owner: "find these exam questions by researching more; more questions will help to get a good result."
+
+- Research the official public exam guides/blueprints: NVIDIA NCA-GENL domains and weights, and the CCAR-F domains and task statements. Also look at the NVIDIA-recommended study topics and docs (NeMo, NIM, Triton, TensorRT-LLM, RAPIDS) and Anthropic docs (agent SDK, tool use, MCP, prompt caching, Batches, Claude Code).
+- Write **new original** questions mapped to those objectives, in the existing JSON format and with ids continuing each domain's prefix (e.g. `FUN-151`+, `CCAR-041`+). Each needs 4 options, one answer, a `why` explaining both the right answer and the most tempting wrong one, a `level`, and a `topic`.
+- Weight question counts by the official domain weights. Prioritise objectives the current bank covers thinly (compare with `gaps/*.txt`).
+- **Never copy real exam questions or "brain dump" content.** That breaks the exam NDA and can get a candidate's certification revoked. Use only original questions written from public objectives and official docs.
+- Existing questions stay unchanged. New ones are appended. `index.json` counts and levels are updated.
+- Verify: unique ids, 4 options, a valid answer index, no duplicate stems, and `npm run build` passes.
+
 ### Task 7: Finish
 
 - [ ] Delete `docs/sinhala-source/` (the content is absorbed; git history keeps it).

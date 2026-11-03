@@ -23,7 +23,7 @@ export default function NormalDistLab() {
   const [samples, setSamples] = useState([])
   const [shown, setShown] = useState(0)
   const [seed, setSeed] = useState(11)
-  const [status, setStatus] = useState({ cls: '', text: 'Mean එක හොල්ලුවොත් මුළු කන්දම වමට / දකුණට යනවා. SD එක හොල්ලුවොත් කන්ද පළල් / සිහින් වෙනවා.' })
+  const [status, setStatus] = useState({ cls: '', text: 'Move the mean and the whole hill slides left / right. Move the SD and the hill gets wider / narrower.' })
   const raf = useRef(null)
 
   const stop = () => { if (raf.current) cancelAnimationFrame(raf.current); raf.current = null }
@@ -36,7 +36,7 @@ export default function NormalDistLab() {
     visible.forEach(v => { bins[Math.min(bins.length - 1, Math.floor(v / BIN))]++ })
     const dens = bins.map(c => c / (N * BIN))
     const y1 = Math.max(peak, ...dens) * 1.15
-    const f = frame(ctx, W, H, { x0: 0, x1: 100, y0: 0, y1, xt: [0, 20, 40, 60, 80, 100], yt: [] }, 'A/L ලකුණු', 'ළමයි කී දෙනෙක්ද', { l: 28 })
+    const f = frame(ctx, W, H, { x0: 0, x1: 100, y0: 0, y1, xt: [0, 20, 40, 60, 80, 100], yt: [] }, 'A/L marks', 'How many students', { l: 28 })
     f.clip()
     // histogram of samples
     ctx.fillStyle = css('--series-2'); ctx.globalAlpha = 0.45
@@ -72,13 +72,13 @@ export default function NormalDistLab() {
     const finish = () => {
       setShown(N)
       const in1 = s.filter(v => Math.abs(v - mean) <= sd).length, in2 = s.filter(v => Math.abs(v - mean) <= 2 * sd).length
-      setStatus({ cls: 'good', text: `ළමයි ${N} දෙනෙක්ගේ ලකුණු random විදිහට ගත්තා. ඒ අයගෙන් ${Math.round(in1 / N * 100)}%ක් ±1 SD ඇතුළේ (curve එක කියන්නේ 68%). ${Math.round(in2 / N * 100)}%ක් ±2 SD ඇතුළේ (curve එක කියන්නේ 95%). තැඹිලි තීරු curve එකේ හැඩයටම එනවා නේද? ආයේ ඔබලා බලන්න, හැම පාරම පොඩ්ඩක් වෙනස්, ඒත් හැඩය එකයි.` })
+      setStatus({ cls: 'good', text: `Picked marks for ${N} random students. ${Math.round(in1 / N * 100)}% of them are within ±1 SD (the curve says 68%). ${Math.round(in2 / N * 100)}% are within ±2 SD (the curve says 95%). See how the orange bars follow the shape of the curve? Press it again: it's a little different every time, but the shape stays the same.` })
     }
     if (reduceMotion()) return finish()
     let n = 0
     const tick = () => {
       n = Math.min(N, n + 5); setShown(n)
-      setStatus({ cls: '', text: `ළමයි ${n} දෙනෙක් ගත්තා... තීරු කොහොමද හැදෙන්නේ කියලා බලන්න.` })
+      setStatus({ cls: '', text: `Picked ${n} students... watch how the bars build up.` })
       if (n < N) raf.current = requestAnimationFrame(tick)
       else { raf.current = null; finish() }
     }
@@ -90,39 +90,39 @@ export default function NormalDistLab() {
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: Bell curve එක (Normal Distribution)</h3><span className="eyebrow">Normal Distribution</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>හිතන්න ලංකාවේ A/L ලියපු ළමයින්ගේ ලකුණු. ගොඩක් දෙනෙක් මැද හරියේ. ගොඩක් අඩු හෝ ගොඩක් වැඩි අය ටිකයි. ඒ නිසා හැඩය සීනුවක් (bell) වගේ. <strong>Mean</strong> = මැද. <strong>SD (standard deviation)</strong> = ලකුණු මැද ඉඳන් කොච්චර විසිරිලාද.</p>
-      <canvas ref={plotRef} role="img" aria-label="A/L ලකුණු වල bell curve එක, shaded SD පරාසයන් සහ random samples histogram" />
+      <div className="lab-head"><h3>Lab: The bell curve (Normal Distribution)</h3><span className="eyebrow">Normal Distribution</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>Think of the marks of students who sat the A/L exam in Sri Lanka. Most are somewhere in the middle. Only a few get very low or very high marks. So the shape looks like a bell. <strong>Mean</strong> = the middle. <strong>SD (standard deviation)</strong> = how spread out the marks are from the middle.</p>
+      <canvas ref={plotRef} role="img" aria-label="Bell curve of A/L marks, with shaded SD ranges and a histogram of random samples" />
       <div className="legend">
         <span><i style={{ background: 'var(--accent)' }} />Bell curve (theory)</span>
-        <span><i style={{ background: 'var(--series-2)' }} />Random ළමයි {N}ගේ histogram</span>
+        <span><i style={{ background: 'var(--series-2)' }} />Histogram of {N} random students</span>
       </div>
       <div className="controls">
         <div className="ctrl">
-          <label htmlFor="nd-mean">මැද ලකුණ (mean) <output>{mean}</output></label>
+          <label htmlFor="nd-mean">Middle mark (mean) <output>{mean}</output></label>
           <input type="range" id="nd-mean" min="30" max="75" step="1" value={mean} onChange={e => { clear(); setMean(+e.target.value) }} />
-          <span className="hint">කන්ද වමට / දකුණට</span>
+          <span className="hint">Slides the hill left / right</span>
         </div>
         <div className="ctrl">
-          <label htmlFor="nd-sd">විසිරීම (SD) <output>{sd}</output></label>
+          <label htmlFor="nd-sd">Spread (SD) <output>{sd}</output></label>
           <input type="range" id="nd-sd" min="4" max="20" step="1" value={sd} onChange={e => { clear(); setSd(+e.target.value) }} />
-          <span className="hint">කුඩා SD = හැමෝම මැදට ළඟයි</span>
+          <span className="hint">Small SD = everyone is close to the middle</span>
         </div>
       </div>
-      <div className="row" role="group" aria-label="Shade කරන පරාසය">
-        <button type="button" aria-pressed={band === 0} onClick={() => setBand(0)}>Shade නැහැ</button>
+      <div className="row" role="group" aria-label="Range to shade">
+        <button type="button" aria-pressed={band === 0} onClick={() => setBand(0)}>No shading</button>
         <button type="button" aria-pressed={band === 1} onClick={() => setBand(1)}>±1 SD (≈68%)</button>
         <button type="button" aria-pressed={band === 2} onClick={() => setBand(2)}>±2 SD (≈95%)</button>
       </div>
       <div className="readouts">
-        <div className="readout"><small>±1 SD පරාසය</small><b style={{ fontSize: '1.2rem' }}>{lo1} – {hi1}</b></div>
-        <div className="readout"><small>±2 SD පරාසය</small><b style={{ fontSize: '1.2rem' }}>{Math.round(mean - 2 * sd)} – {Math.round(mean + 2 * sd)}</b></div>
+        <div className="readout"><small>±1 SD range</small><b style={{ fontSize: '1.2rem' }}>{lo1} – {hi1}</b></div>
+        <div className="readout"><small>±2 SD range</small><b style={{ fontSize: '1.2rem' }}>{Math.round(mean - 2 * sd)} – {Math.round(mean + 2 * sd)}</b></div>
         <div className="readout"><small>Samples</small><b style={{ fontSize: '1.2rem' }}>{shown}</b></div>
       </div>
-      <p className="muted" style={{ fontSize: '0.9rem', margin: 0 }}>ඒ කියන්නේ ළමයින්ගෙන් 100න් 68ක් විතර {lo1}ත් {hi1}ත් අතර ලකුණු ගන්නවා.</p>
+      <p className="muted" style={{ fontSize: '0.9rem', margin: 0 }}>So about 68 out of every 100 students get between {lo1} and {hi1} marks.</p>
       <div className="row">
-        <button type="button" className="primary" onClick={draw}>Random ළමයි {N}ක් ගන්න</button>
-        <button type="button" onClick={clear}>Histogram අයින් කරන්න</button>
+        <button type="button" className="primary" onClick={draw}>Pick {N} random students</button>
+        <button type="button" onClick={clear}>Clear histogram</button>
       </div>
       <div className={'status ' + status.cls}>{status.text}</div>
     </div>

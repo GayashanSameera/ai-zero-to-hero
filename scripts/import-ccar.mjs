@@ -1,6 +1,7 @@
 // Imports the CCAR-F practice exams (section 15 and section 20) from the study PDF into JSON for Exam Practice.
 // Usage: node scripts/import-ccar.mjs ../Claude-Certified-Architect-Foundations-Zero-to-Hero.pdf
 // Needs the `pdftotext` command (poppler-utils).
+// NOTE: src/exam-ccar/ccar-f-practice.json is now a hand-translated English version. Re-running this import re-creates the Sinhala text from the PDF.
 import { execFileSync } from 'child_process'
 import fs from 'fs'
 import path from 'path'

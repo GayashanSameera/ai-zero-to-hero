@@ -5,9 +5,9 @@ const BASE = ['The', 'animal', "didn't", 'cross', 'the', 'street', 'because', 'i
 const ROW = 26
 
 const HEADS = [
-  { name: 'Head 1: අර්ථය (coreference)', q: 'මම කියන්නේ කා ගැනද? මට අදාළ නාම පදය (noun) කොයිද?' },
-  { name: 'Head 2: කලින් වචනය', q: 'මට කලින් තියෙන වචනය මොකක්ද?' },
-  { name: 'Head 3: ක්‍රියාව සහ කර්තෘ/කර්මය', q: 'මගේ ක්‍රියාව (verb) හෝ ඒකට අදාළ දේ මොකක්ද?' },
+  { name: 'Head 1: meaning (who is "it"?)', q: 'Who or what am I talking about? Which noun do I belong to?' },
+  { name: 'Head 2: previous word', q: 'What is the word just before me?' },
+  { name: 'Head 3: action and who does it', q: 'What is my action (verb), or what does it act on?' },
 ]
 
 // Hand-designed scores so the patterns are easy to see. Real models learn these numbers during training.
@@ -70,15 +70,15 @@ export default function AttentionLab() {
   const me = words[sel]
   let status
   if (head === 0 && sel === 7) status = { cls: 'good', text: wide
-    ? `"it" දැන් වැඩිපුරම බලන්නේ "street" දිහා (${(w[5] * 100).toFixed(0)}%). ඇයි? "too wide" (ගොඩක් පළලයි) කියන්න පුළුවන් පාරකට මිසක් සතෙකුට නෙවෙයි. අන්තිම වචනය විතරක් මාරු කළාම "it" අර්ථය වෙනස් වුණා!`
-    : `"it" වැඩිපුරම බලන්නේ "animal" දිහා (${(w[1] * 100).toFixed(0)}%). "too tired" (ගොඩක් මහන්සියි) වෙන්නේ සතෙක් මිසක් පාරක් නෙවෙයි. දැන් "wide" එකට මාරු කරලා බලන්න.` }
-  else if (head === 1) status = { cls: '', text: 'මේ head එක හැම වචනයකින්ම කලින් වචනය දිහා බලනවා. සරලයි, හැබැයි වචන පිළිවෙළ (word order) තේරුම් ගන්න මේ වගේ heads ඇත්ත models වලත් තියෙනවා.' }
-  else status = { cls: '', text: `"${me}" වැඩිපුරම බලන්නේ "${ranked[0].j === sel ? ranked[1].t : ranked[0].t}" දිහා. වෙන වචනයක් click කරලා, වෙන head එකක් තෝරලා බලන්න. "it" + Head 1 තමයි සුපිරිම උදාහරණය.` }
+    ? `Now "it" looks mostly at "street" (${(w[5] * 100).toFixed(0)}%). Why? A street can be "too wide", but an animal can't. Changing only the last word changed what "it" means!`
+    : `"it" looks mostly at "animal" (${(w[1] * 100).toFixed(0)}%). An animal can be "too tired", but a street can't. Now switch to "wide" and watch.` }
+  else if (head === 1) status = { cls: '', text: 'This head makes every word look at the word just before it. Simple, but real models have heads like this to understand word order.' }
+  else status = { cls: '', text: `"${me}" looks mostly at "${ranked[0].j === sel ? ranked[1].t : ranked[0].t}". Try clicking another word or picking another head. "it" + Head 1 is the best example.` }
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: වචනයක් කාව බලනවද?</h3><span className="eyebrow">Self-Attention</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>Attention කියන්නේ වාක්‍යයේ හැම වචනයක්ම අනිත් වචන දිහා බලලා "මට වැදගත් කවුද?" කියලා තීරණය කරන එක. පහළ වචනයක් click කරන්න. පාට තද වෙන තරමට, ඉරි මහත වෙන තරමට attention weight එක වැඩියි.</p>
+      <div className="lab-head"><h3>Lab: Which words does a word look at?</h3><span className="eyebrow">Self-Attention</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>Attention means every word in a sentence looks at the other words and decides "who matters to me?". Click a word below. The darker the colour and the thicker the line, the bigger the attention weight.</p>
       <div className="row">
         <button type="button" aria-pressed={!wide} onClick={() => setWide(false)}>...too tired</button>
         <button type="button" aria-pressed={wide} onClick={() => setWide(true)}>...too wide</button>
@@ -92,15 +92,15 @@ export default function AttentionLab() {
       <div className="row">
         {HEADS.map((h, i) => <button type="button" key={i} aria-pressed={head === i} onClick={() => setHead(i)}>{h.name}</button>)}
       </div>
-      <canvas ref={ref} onClick={pick} role="img" aria-label={`"${me}" වචනයේ සිට අනිත් වචන වලට attention weights`} />
-      <div className="legend"><span>වම: බලන වචනය (click කරන්නත් පුළුවන්)</span><span>දකුණ: බලන්න ලැබෙන වචන</span></div>
+      <canvas ref={ref} onClick={pick} role="img" aria-label={`Attention weights from "${me}" to the other words`} />
+      <div className="legend"><span>Left: the word that is looking (you can click it)</span><span>Right: the words it looks at</span></div>
       <div className="table-wrap" style={{ border: '1px solid var(--line)', borderRadius: 8, padding: '10px 12px', fontSize: '0.92rem' }}>
-        <p><strong>Query (Q)</strong>, "{me}" අහන ප්‍රශ්නය: <em>"{HEADS[head].q}"</em></p>
-        <p style={{ marginTop: 6 }}><strong>Key (K)</strong>, හැම වචනයක්ම තමන් ගැන ලේබලයක් පෙන්වනවා. Q එකයි K එකයි ගැළපෙන තරමට score එක වැඩියි. හොඳම ගැළපීම්: {ranked.slice(0, 3).map(r => `${r.t} ${(r.w * 100).toFixed(0)}%`).join(', ')}.</p>
-        <p style={{ marginTop: 6 }}><strong>Value (V)</strong>, හැම වචනයකම ඇත්ත තොරතුරු. "{me}" ට ලැබෙන අලුත් අර්ථය = {ranked.slice(0, 3).map(r => `${(r.w * 100).toFixed(0)}% × ${r.t}`).join(' + ')} + ඉතුරු ටිකක්.</p>
+        <p><strong>Query (Q)</strong>, the question "{me}" asks: <em>"{HEADS[head].q}"</em></p>
+        <p style={{ marginTop: 6 }}><strong>Key (K)</strong>, every word shows a label about itself. The better Q and K match, the higher the score. Best matches: {ranked.slice(0, 3).map(r => `${r.t} ${(r.w * 100).toFixed(0)}%`).join(', ')}.</p>
+        <p style={{ marginTop: 6 }}><strong>Value (V)</strong>, the actual information each word carries. The new meaning "{me}" gets = {ranked.slice(0, 3).map(r => `${(r.w * 100).toFixed(0)}% × ${r.t}`).join(' + ')} + a little of the rest.</p>
       </div>
       <div className={'status ' + status.cls}>{status.text}</div>
-      <p className="muted" style={{ fontSize: '0.85rem' }}>මෙතන weights අපි අතින් හැදුවා. ඇත්ත model එකක heads දුසිම් ගණනක් තියෙනවා, ඒවගේ weights training එකේදී තනියම ඉගෙන ගන්නවා. GPT වගේ models වල වචනයකට බලන්න පුළුවන් කලින් වචන විතරයි (masked attention).</p>
+      <p className="muted" style={{ fontSize: '0.85rem' }}>We set these weights by hand. A real model has dozens of heads, and it learns their weights by itself during training. In models like GPT, a word can only look at the words before it (masked attention).</p>
     </div>
   )
 }

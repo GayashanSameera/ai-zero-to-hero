@@ -76,30 +76,30 @@ export default function EmbeddingsLab() {
   }
 
   const c = cos(WORDS[sel[0]], WORDS[sel[1]])
-  const verdict = c > 0.9 ? { cls: 'good', t: 'ගොඩක් සමාන අර්ථයක්. ඊතල දෙකම වගේ එකම දිශාවට.' }
-    : c > 0.5 ? { cls: 'good', t: 'ටිකක් සම්බන්ධයි. දිශා දෙක ළඟයි.' }
-    : c > -0.2 ? { cls: 'warn', t: 'වැඩි සම්බන්ධයක් නෑ. ඊතල දෙක ආසන්න වශයෙන් හරස් අතට (90°).' }
-    : { cls: 'bad', t: 'අර්ථයෙන් ගොඩක් වෙනස්. ඊතල දෙක ප්‍රතිවිරුද්ධ පැතිවලට.' }
+  const verdict = c > 0.9 ? { cls: 'good', t: 'Very similar meaning. Both arrows point almost the same way.' }
+    : c > 0.5 ? { cls: 'good', t: 'Somewhat related. The two directions are close.' }
+    : c > -0.2 ? { cls: 'warn', t: 'Not very related. The two arrows are roughly at right angles (90°).' }
+    : { cls: 'bad', t: 'Very different meaning. The arrows point in opposite directions.' }
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: වචන වලට ලිපිනයක් (Embeddings)</h3><span className="eyebrow">Word Embeddings</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>Computer එකට වචන තේරෙන්නේ නෑ, අංක විතරයි. ඉතින් හැම වචනයකටම සිතියමක තැනක් (<strong>vector</strong> එකක්) දෙනවා. අර්ථය සමාන වචන එකම දිශාවට. ඇත්ත models වල dimensions සිය ගණනක් තියෙනවා. මෙතන තේරුම් ගන්න ලේසි වෙන්න 2D විතරයි.</p>
-      <canvas ref={plotRef} onClick={onClick} style={{ cursor: 'pointer' }} role="img" aria-label="වචන 16ක 2D embedding සිතියම, තෝරපු වචන වලට origin එකේ ඉඳන් ඊතල" />
+      <div className="lab-head"><h3>Lab: Giving words an address (Embeddings)</h3><span className="eyebrow">Word Embeddings</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>A computer doesn't understand words, only numbers. So we give every word a spot on a map (a <strong>vector</strong>). Words with similar meanings point the same way. Real models use hundreds of dimensions. Here we use just 2D so it's easy to see.</p>
+      <canvas ref={plotRef} onClick={onClick} style={{ cursor: 'pointer' }} role="img" aria-label="2D embedding map of 16 words, with arrows from the origin to the selected words" />
       <div className="legend">
-        <span><i style={{ background: 'var(--series-1)' }} />මිනිස්සු / රජ පවුල</span>
-        <span><i style={{ background: 'var(--series-2)' }} />සතුන්</span>
-        <span><i style={{ background: 'var(--series-3)' }} />කෑම</span>
-        <span><i style={{ background: 'var(--series-4)' }} />රටවල් / නගර</span>
+        <span><i style={{ background: 'var(--series-1)' }} />People / royalty</span>
+        <span><i style={{ background: 'var(--series-2)' }} />Animals</span>
+        <span><i style={{ background: 'var(--series-3)' }} />Food</span>
+        <span><i style={{ background: 'var(--series-4)' }} />Countries / cities</span>
       </div>
-      <p className="muted" style={{ fontSize: '0.88rem', margin: 0 }}>Canvas එකේ වචනයක් click කරන්න, නැත්නම් පහළ බොත්තමක් ඔබන්න. අන්තිමට තෝරපු වචන දෙක සසඳනවා.</p>
-      <div className="row" role="group" aria-label="වචන තෝරන්න">
+      <p className="muted" style={{ fontSize: '0.88rem', margin: 0 }}>Click a word on the map, or press a button below. The last two words you pick get compared.</p>
+      <div className="row" role="group" aria-label="Pick words">
         {Object.keys(WORDS).map(w => (
           <button type="button" key={w} id={`embeddings-word-${w.replace(/\s/g, '-').toLowerCase()}`} aria-pressed={!math && sel.includes(w)} onClick={() => pick(w)} style={{ padding: '4px 10px', fontSize: '0.85rem' }}>{w}</button>
         ))}
       </div>
       <div className="readouts">
-        <div className="readout"><small>වචන දෙක</small><b style={{ fontSize: '1.1rem' }}>{sel[0]} ↔ {sel[1]}</b></div>
+        <div className="readout"><small>The two words</small><b style={{ fontSize: '1.1rem' }}>{sel[0]} ↔ {sel[1]}</b></div>
         <div className="readout"><small>Cosine similarity</small><b className={verdict.cls}>{c.toFixed(2)}</b></div>
       </div>
       <div className="row">
@@ -107,8 +107,8 @@ export default function EmbeddingsLab() {
       </div>
       <div className={'status ' + (math ? 'good' : verdict.cls)}>
         {math
-          ? <>king එකේ ඊතලයෙන් පටන් ගත්තා. "man" ඊතලය අඩු කළා (රතු), "woman" ඊතලය එකතු කළා (කොළ). තැඹිලි කවය වැටුණේ ({result[0]}, {result[1]}) තැනට. ළඟම වචනය: <strong>{nearest}</strong>! ඒ කියන්නේ "පිරිමි → ගැහැණු" කියන අර්ථය සිතියමේ එක දිශාවක් විදිහට තියෙනවා.</>
-          : <>Cosine similarity = ඊතල දෙක කොච්චර එකම දිශාවට ද කියන එක. 1 = හරියටම එකම දිශාව. 0 = හරස් අතට. -1 = ප්‍රතිවිරුද්ධ දිශා. මෙතන {c.toFixed(2)}: {verdict.t}</>}
+          ? <>We started at the "king" arrow, took away the "man" arrow (red), and added the "woman" arrow (green). The orange circle landed at ({result[0]}, {result[1]}). The closest word: <strong>{nearest}</strong>! So the idea "male → female" is stored as one direction on the map.</>
+          : <>Cosine similarity = how much the two arrows point the same way. 1 = exactly the same direction. 0 = at right angles. -1 = opposite directions. Here it is {c.toFixed(2)}: {verdict.t}</>}
       </div>
     </div>
   )

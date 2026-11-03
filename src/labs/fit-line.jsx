@@ -13,14 +13,14 @@ export default function FitLineLab() {
   const [b, setB] = useState(150)
   const [showMiss, setShowMiss] = useState(true)
   const [history, setHistory] = useState([])
-  const [status, setStatus] = useState({ cls: '', text: 'Sliders දෙක හොල්ලලා "සාමාන්‍ය වැරැද්ද" පුළුවන් තරම් අඩු කරන්න. ඊට පස්සේ computer එකට ඉගෙන ගන්න දෙන්න.' })
+  const [status, setStatus] = useState({ cls: '', text: 'Move the two sliders to make the "average error" as small as you can. Then let the computer learn.' })
   const raf = useRef(null)
 
   const stop = () => { if (raf.current) cancelAnimationFrame(raf.current); raf.current = null }
   useEffect(() => stop, [])
 
   const plotRef = useCanvas((ctx, W, H) => {
-    const f = frame(ctx, W, H, DOM, 'ගෙදර ප්‍රමාණය (m²)', 'මිල (Rs. ලක්ෂ)')
+    const f = frame(ctx, W, H, DOM, 'House size (m²)', 'Price (Rs. lakhs)')
     f.clip()
     if (showMiss) {
       ctx.strokeStyle = css('--warn'); ctx.lineWidth = 2
@@ -39,7 +39,7 @@ export default function FitLineLab() {
   const histRef = useCanvas((ctx, W, H) => {
     const maxY = Math.max(40, ...history) * 1.1
     const n = Math.max(history.length - 1, 20)
-    const f = frame(ctx, W, H, { x0: 0, x1: n, y0: 0, y1: maxY, xt: [0, Math.round(n / 2), n], yt: [0, Math.round(maxY / 2)], yf: y => y + 'L' }, 'Training step', 'වැරැද්ද')
+    const f = frame(ctx, W, H, { x0: 0, x1: n, y0: 0, y1: maxY, xt: [0, Math.round(n / 2), n], yt: [0, Math.round(maxY / 2)], yf: y => y + 'L' }, 'Training step', 'Error')
     if (!history.length) return
     f.clip()
     ctx.beginPath()
@@ -66,7 +66,7 @@ export default function FitLineLab() {
     }
     const finish = () => {
       setW(a); setB(c * 100); setHistory([...hist])
-      setStatus({ cls: 'good', text: `පියවර ${step}කින් ඉවරයි. වැරැද්ද ලක්ෂ ${hist[0].toFixed(1)} ඉඳන් ලක්ෂ ${hist[hist.length - 1].toFixed(1)} දක්වා අඩු වුණා. m² එකකට Rs. ${Math.round(a * 100000).toLocaleString()}ක් සහ ආරම්භක මිල ලක්ෂ ${Math.round(c * 100)}ක් කියලා computer එක තනියම හොයාගත්තා. කවුරුවත් මේ අංක කිව්වේ නෑ. උදාහරණ 12න් ඉගෙන ගත්තා.` })
+      setStatus({ cls: 'good', text: `Done in ${step} steps. The error dropped from ${hist[0].toFixed(1)} lakhs to ${hist[hist.length - 1].toFixed(1)} lakhs. The computer worked out by itself: Rs. ${Math.round(a * 100000).toLocaleString()} per m², plus a starting price of ${Math.round(c * 100)} lakhs. Nobody told it these numbers. It learned them from 12 examples.` })
     }
     if (reduceMotion()) { while (step < 400 && oneStep() > 1e-4); return finish() }
     const tick = () => {
@@ -74,7 +74,7 @@ export default function FitLineLab() {
       const per = step < 30 ? 1 : 3
       for (let k = 0; k < per; k++) g = oneStep()
       setW(a); setB(c * 100); setHistory([...hist])
-      setStatus({ cls: '', text: `පියවර ${step}: වැරැද්ද ලක්ෂ ${hist[hist.length - 1].toFixed(1)}. බෑවුම බලලා පහළට පියවරක් තියනවා...` })
+      setStatus({ cls: '', text: `Step ${step}: error ${hist[hist.length - 1].toFixed(1)} lakhs. Checking the slope and taking a step downhill...` })
       if (step < 400 && g > 1e-4) raf.current = requestAnimationFrame(tick)
       else { raf.current = null; finish() }
     }
@@ -84,42 +84,42 @@ export default function FitLineLab() {
   const scramble = () => {
     stop()
     setW(0.2 + Math.random() * 0.6); setB(100 + Math.random() * 90); setHistory([])
-    setStatus({ cls: '', text: 'නරක අනුමානයක් දැම්මා. දැන් "Computer එකට ඉගෙන ගන්න දෙන්න" ඔබන්න.' })
+    setStatus({ cls: '', text: 'Started from a bad guess. Now press "Let the computer learn".' })
   }
 
   const e = rmse(w, b)
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: රේඛාව ඔයාම fit කරන්න</h3><span className="eyebrow">Linear Regression</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>හැම තිතක්ම එක ගෙදරක්. ඒකේ ප්‍රමාණය (වමේ ඉඳන් දකුණට) සහ විකුණපු මිල (පහළ ඉඳන් උඩට). කළු රේඛාව තමයි අපේ <strong>model</strong> එක. ඒකට තියෙන්නේ knobs (parameters) දෙකයි.</p>
-      <canvas ref={plotRef} role="img" aria-label="ගෙවල් ප්‍රමාණය සහ මිල, සහ prediction රේඛාව" />
+      <div className="lab-head"><h3>Lab: Fit the line yourself</h3><span className="eyebrow">Linear Regression</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>Each dot is one house: its size (left to right) and the price it sold for (bottom to top). The black line is our <strong>model</strong>. It has just two knobs (parameters).</p>
+      <canvas ref={plotRef} role="img" aria-label="House size and price, with the prediction line" />
       <div className="legend">
-        <span><i style={{ background: 'var(--accent)' }} />අපි දන්න ගෙදරක්</span>
-        <span><i style={{ background: 'var(--warn)' }} />වැරැද්ද (miss)</span>
+        <span><i style={{ background: 'var(--accent)' }} />A house we know</span>
+        <span><i style={{ background: 'var(--warn)' }} />Error (miss)</span>
       </div>
       <div className="controls">
         <div className="ctrl">
-          <label htmlFor="fl-w">m² එකක මිල (slope) <output>Rs. {Math.round(w * 100000).toLocaleString()}</output></label>
+          <label htmlFor="fl-w">Price per m² (slope) <output>Rs. {Math.round(w * 100000).toLocaleString()}</output></label>
           <input type="range" id="fl-w" min="0" max="3" step="0.01" value={w} onChange={ev => { stop(); setW(+ev.target.value) }} />
-          <span className="hint">රේඛාව කොච්චර බෑවුම්ද</span>
+          <span className="hint">How steep the line is</span>
         </div>
         <div className="ctrl">
-          <label htmlFor="fl-b">ආරම්භක මිල (bias) <output>{Math.round(b)} ලක්ෂ</output></label>
+          <label htmlFor="fl-b">Starting price (bias) <output>{Math.round(b)} lakhs</output></label>
           <input type="range" id="fl-b" min="-100" max="200" step="1" value={b} onChange={ev => { stop(); setB(+ev.target.value) }} />
-          <span className="hint">මුළු රේඛාවම උඩට / පහළට</span>
+          <span className="hint">Moves the whole line up / down</span>
         </div>
       </div>
-      <label className="check"><input type="checkbox" checked={showMiss} onChange={ev => setShowMiss(ev.target.checked)} /> වැරදි (තැඹිලි ඉරි) පෙන්වන්න</label>
+      <label className="check"><input type="checkbox" checked={showMiss} onChange={ev => setShowMiss(ev.target.checked)} /> Show the errors (orange lines)</label>
       <div className="readouts">
-        <div className="readout"><small>සාමාන්‍ය වැරැද්ද (RMSE)</small><b className={e < 12 ? 'good' : 'warn'}>{e.toFixed(1)} ලක්ෂ</b></div>
+        <div className="readout"><small>Average error (RMSE)</small><b className={e < 12 ? 'good' : 'warn'}>{e.toFixed(1)} lakhs</b></div>
         <div className="readout"><small>Loss (MSE)</small><b style={{ fontSize: '1.2rem' }}>{Math.round(mse(w, b)).toLocaleString()}</b></div>
-        <div className="readout"><small>140 m² ගෙදරකට අනුමානය</small><b style={{ fontSize: '1.2rem' }}>{Math.round(w * 140 + b)} ලක්ෂ</b></div>
+        <div className="readout"><small>Guess for a 140 m² house</small><b style={{ fontSize: '1.2rem' }}>{Math.round(w * 140 + b)} lakhs</b></div>
       </div>
-      <h3 style={{ marginTop: 8 }}>දැන් computer එකට කරන්න දෙන්න (Gradient Descent)</h3>
-      <canvas ref={histRef} role="img" aria-label="Training පියවරෙන් පියවර වැරැද්ද අඩු වෙන හැටි" />
+      <h3 style={{ marginTop: 8 }}>Now let the computer do it (Gradient Descent)</h3>
+      <canvas ref={histRef} role="img" aria-label="How the error drops with each training step" />
       <div className="row">
-        <button type="button" className="primary" onClick={learn}>Computer එකට ඉගෙන ගන්න දෙන්න</button>
-        <button type="button" onClick={scramble}>නරක අනුමානයකින් පටන් ගන්න</button>
+        <button type="button" className="primary" onClick={learn}>Let the computer learn</button>
+        <button type="button" onClick={scramble}>Start from a bad guess</button>
       </div>
       <div className={'status ' + status.cls}>{status.text}</div>
     </div>

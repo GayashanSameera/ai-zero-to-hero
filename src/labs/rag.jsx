@@ -2,21 +2,21 @@ import React, { useMemo, useState } from 'react'
 
 // A fictional company's policy documents (made up for teaching).
 const DOCS = [
-  { title: 'නිවාඩු', text: 'හැම සේවකයෙකුටම අවුරුද්දකට annual leave දින 14ක් තියෙනවා. Medical leave දින 7ක් වෙනම තියෙනවා, දින 2කට වඩා නම් වෛද්‍ය සහතිකයක් ඕනේ.' },
-  { title: 'පඩිය', text: 'පඩිය (salary) හැම මාසෙම 25 වෙනිදා bank account එකට දානවා. 25 වෙනිදා නිවාඩු දවසක් නම්, ඊට කලින් වැඩ කරන දවසේ salary එක ලැබෙනවා.' },
-  { title: 'Work from home', text: 'සතියකට දින 2ක් work from home (WFH) කරන්න පුළුවන්. WFH දවස් team lead එක්ක කලින් එකඟ වෙන්න ඕනේ.' },
-  { title: 'Office වේලාව', text: 'Office වේලාව උදේ 8.30 ඉඳන් හවස 5.00 දක්වා. Colombo office එකේ කෑම කාමරය දවල් 12 ඉඳන් 2 දක්වා open.' },
-  { title: 'Laptop', text: 'අලුත් සේවකයන්ට company laptop එකක් දෙනවා. Laptop එක නැති වුණොත් IT team එකට පැය 24ක් ඇතුළත කියන්න ඕනේ.' },
-  { title: 'Bonus', text: 'අවුරුදු අවසාන bonus එක දෙසැම්බර් salary එකත් එක්ක දෙනවා. Bonus එක company එකේ ලාභය සහ ඔයාගේ performance එක අනුව තීරණය වෙනවා.' },
+  { title: 'Leave', text: 'Every employee gets 14 days of annual leave per year. There are also 7 separate days of medical leave, and you need a doctor\'s certificate for more than 2 days in a row.' },
+  { title: 'Salary', text: 'Your salary is paid into your bank account on the 25th of every month. If the 25th is a holiday, you get your salary on the working day before it.' },
+  { title: 'Work from home', text: 'You can work from home (WFH) 2 days a week. Agree your WFH days with your team lead in advance.' },
+  { title: 'Office hours', text: 'Office hours are 8.30 in the morning to 5.00 in the evening. The lunch room in the Colombo office is open from 12 noon to 2.' },
+  { title: 'Laptop', text: 'New employees get a company laptop. If you lose your laptop, tell the IT team within 24 hours.' },
+  { title: 'Bonus', text: 'A bonus is paid at the end of December, together with that month\'s salary. The bonus depends on the company\'s profit and your performance.' },
 ]
 // Chunking: split every document into sentences.
 const CHUNKS = DOCS.flatMap((d, di) => d.text.split(/(?<=\.)\s+/).map((t, k) => ({ id: `D${di + 1}.${k + 1}`, doc: d.title, text: t })))
 
-// Fixed vocabulary: each dimension is one idea, matched by a few Sinhala / English word forms.
+// Fixed vocabulary: each dimension is one idea, matched by a few English word forms.
 const VOCAB = [
-  ['leave', ['leave', 'නිවාඩු']], ['medical', ['medical', 'වෛද්‍ය', 'අසනීප']], ['year', ['අවුරුද්', 'annual', 'year']],
-  ['salary', ['salary', 'පඩි']], ['when', ['වෙනිදා', 'කවද', 'දිනය']], ['wfh', ['wfh', 'work from home', 'ගෙදර ඉඳන්']],
-  ['office', ['office', 'කාර්යාල']], ['time', ['වේලාව', 'time', 'පැය']], ['food', ['කෑම', 'lunch']],
+  ['leave', ['leave', 'holiday']], ['medical', ['medical', 'doctor', 'sick']], ['year', ['year', 'annual']],
+  ['salary', ['salary', 'pay']], ['when', ['25th', 'when', 'date']], ['wfh', ['wfh', 'work from home']],
+  ['office', ['office']], ['time', ['hour', 'time']], ['food', ['lunch', 'food']],
   ['laptop', ['laptop', 'computer']], ['team', ['team']], ['bonus', ['bonus']],
 ]
 const embed = text => {
@@ -31,19 +31,19 @@ const cosine = (a, b) => {
 CHUNKS.forEach(c => { c.vec = embed(c.text) })
 
 const PRESETS = [
-  { q: 'මට අවුරුද්දකට නිවාඩු කීයක් තියෙනවද?', a: 'ඔයාට අවුරුද්දකට annual leave දින 14ක් තියෙනවා [D1.1]. (D2.2 chunk එකත් retrieve වුණා, හැබැයි ඒක පඩිය ගැන නිසා LLM එක ඒක පාවිච්චි කළේ නැහැ. Retrieval හැමදාම perfect නැහැ!)' },
-  { q: 'Salary එක දාන්නේ කවදද?', a: 'Salary එක හැම මාසෙම 25 වෙනිදා bank account එකට දානවා [D2.1]. 25 වෙනිදා නිවාඩු දවසක් නම්, ඊට කලින් වැඩ කරන දවසේ ලැබෙනවා [D2.2].' },
-  { q: 'ගෙදර ඉඳන් වැඩ කරන්න පුළුවන්ද?', a: 'ඔව්. සතියකට දින 2ක් WFH කරන්න පුළුවන් [D3.1]. හැබැයි ඒ දවස් team lead එක්ක කලින් එකඟ වෙන්න ඕනේ [D3.2].' },
+  { q: 'How many days of leave do I get per year?', a: 'You get 14 days of annual leave per year [D1.1]. (Chunk D2.2 was also retrieved because it says "holiday", but it is about salary, so the LLM did not use it. Retrieval is not always perfect!)' },
+  { q: 'When is the salary paid?', a: 'Your salary is paid into your bank account on the 25th of every month [D2.1]. If the 25th is a holiday, you get it on the working day before [D2.2].' },
+  { q: 'Can I work from home?', a: 'Yes. You can work from home 2 days a week [D3.1]. But you need to agree those days with your team lead in advance [D3.2].' },
 ]
 
 const STEPS = [
-  ['Knowledge base', 'මේ company එකේ ඇතුළත ලියකියවිලි. LLM එක මේවා කවදාවත් training එකේදී දැකලා නැහැ. ඒ නිසා කෙලින්ම ඇහුවොත් ඒක අනුමාන කරලා බොරු (hallucination) කියන්න පුළුවන්.'],
-  ['Chunking', 'දිග ලියකියවිලි පොඩි කෑලි (chunks) වලට කපනවා. මෙතන අපි වාක්‍යයෙන් වාක්‍යය කැපුවා. පොඩි කෑලි නිසා ප්‍රශ්නයට අදාළ කොටස විතරක් හොයාගන්න ලේසියි.'],
-  ['Embedding', 'හැම chunk එකක්ම අංක ලැයිස්තුවක් (vector) බවට හරවනවා. මෙතන සරලව: vocabulary එකේ හැම අදහසක්ම කී පාරක් තියෙනවද කියලා ගණන් කරනවා (bag-of-words). තද පාට කොටුව = වැඩි ගණනක්. ඇත්ත embedding models අර්ථය අල්ලගන්නවා, dimensions දහස් ගණනක් තියෙනවා.'],
-  ['ප්‍රශ්නය', 'User ගේ ප්‍රශ්නයත් හරියටම ඒ විදිහටම vector එකක් කරනවා. එතකොට ප්‍රශ්නයයි chunks ටිකයි එකම "භාෂාවෙන්" සසඳන්න පුළුවන්.'],
-  ['Retrieval', 'ප්‍රශ්න vector එකයි හැම chunk vector එකයි අතර cosine similarity එක ගණන් කරනවා (0 = කිසි සම්බන්ධයක් නැහැ, 1 = එකම දිශාව). වැඩිම score එක තියෙන chunks 2 (top-2) තෝරගන්නවා.'],
-  ['Prompt එක හදනවා', 'තෝරගත්ත chunks ටික, උපදෙස් (system prompt) එක්ක ප්‍රශ්නයට කලින් prompt එකට දානවා. LLM එකට "විභාගයට පොත ඇරගෙන ලියන්න" (open book) දෙනවා වගේ.'],
-  ['LLM උත්තරය', 'LLM එක context එක කියවලා උත්තරය ලියනවා, [D2.1] වගේ මූලාශ්‍රය (citation) එක්ක. ඒ නිසා ඔයාට උත්තරය ඇත්තද කියලා check කරන්න පුළුවන්.'],
+  ['Knowledge base', 'These are the company\'s internal documents. The LLM never saw them during training. So if you just ask it directly, it may guess and make things up (hallucination).'],
+  ['Chunking', 'Long documents are cut into small pieces (chunks). Here we cut them sentence by sentence. Small pieces make it easy to find just the part that answers the question.'],
+  ['Embedding', 'Every chunk is turned into a list of numbers (a vector). Here we keep it simple: we count how many times each idea in our vocabulary appears (bag-of-words). Darker box = higher count. Real embedding models capture meaning and have thousands of dimensions.'],
+  ['The question', 'The user\'s question is turned into a vector in exactly the same way. Now the question and the chunks can be compared in the same "language".'],
+  ['Retrieval', 'We work out the cosine similarity between the question vector and every chunk vector (0 = not related at all, 1 = same direction). We keep the 2 chunks with the highest scores (top-2).'],
+  ['Building the prompt', 'The chosen chunks go into the prompt, along with instructions (the system prompt), before the question. It is like letting the LLM sit an open-book exam.'],
+  ['The LLM answer', 'The LLM reads the context and writes the answer, with a source (citation) like [D2.1]. So you can check whether the answer is true.'],
 ]
 
 const Bars = ({ vec }) => {
@@ -69,16 +69,16 @@ export default function RagLab() {
   const topIds = top.map(c => c.id)
   const none = !qvec.some(Boolean)
 
-  const prompt = `SYSTEM: ඔයා company HR assistant කෙනෙක්. පහත CONTEXT එකේ තියෙන දේවල් විතරක් පාවිච්චි කරලා උත්තර දෙන්න. Chunk ID එක cite කරන්න. CONTEXT එකේ නැත්නම් "මම දන්නේ නැහැ" කියන්න.\n\nCONTEXT:\n${top.map(c => `[${c.id}] ${c.text}`).join('\n')}\n\nQUESTION: ${question}`
-  const answer = none ? 'සමාවෙන්න, මට දීපු context එකේ ඒ ගැන තොරතුරු නැහැ. HR team එකෙන් අහන්න.'
-    : qi >= 0 ? PRESETS[qi].a : `Context එකට අනුව: ${top[0].text} [${top[0].id}]`
+  const prompt = `SYSTEM: You are the company HR assistant. Answer using only what is in the CONTEXT below. Cite the chunk ID. If it is not in the CONTEXT, say "I don't know".\n\nCONTEXT:\n${top.map(c => `[${c.id}] ${c.text}`).join('\n')}\n\nQUESTION: ${question}`
+  const answer = none ? 'Sorry, the context I was given has no information about that. Please ask the HR team.'
+    : qi >= 0 ? PRESETS[qi].a : `According to the context: ${top[0].text} [${top[0].id}]`
 
   const chunkList = (render) => <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>{CHUNKS.map(render)}</div>
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: RAG pipeline එක පියවරෙන් පියවර</h3><span className="eyebrow">Retrieval-Augmented Generation</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>ලංකාවේ හිතලා හදපු software company එකක (<em>Kelani Soft</em>) HR chatbot එකක් හදමු. LLM එකට company නීති රීති දන්නේ නැහැ. RAG එකෙන් අපි අදාළ කොටස හොයලා prompt එකට දානවා.</p>
+      <div className="lab-head"><h3>Lab: The RAG pipeline, step by step</h3><span className="eyebrow">Retrieval-Augmented Generation</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>Let's build an HR chatbot for a made-up Sri Lankan software company (<em>Kelani Soft</em>). The LLM doesn't know the company's rules. With RAG, we find the right part of the documents and put it into the prompt.</p>
       <div className="row" style={{ gap: 6 }}>
         {STEPS.map(([name], i) => <button type="button" key={i} aria-pressed={step === i} onClick={() => setStep(i)} style={{ padding: '4px 10px' }} title={name}>{i + 1}</button>)}
       </div>
@@ -94,8 +94,8 @@ export default function RagLab() {
         <div className="row">
           {PRESETS.map((p, i) => <button type="button" key={i} aria-pressed={qi === i} onClick={() => setQi(i)}>{p.q}</button>)}
         </div>
-        <label htmlFor="rag-question" className="muted" style={{ fontSize: '0.9rem' }}>නැත්නම් ඔයාගේම ප්‍රශ්නයක් type කරන්න</label>
-        <input type="text" id="rag-question" value={custom} placeholder="උදා: Laptop එක නැති වුණොත් මොකද කරන්නේ?" onChange={e => { setCustom(e.target.value); setQi(e.target.value ? -1 : 1) }} />
+        <label htmlFor="rag-question" className="muted" style={{ fontSize: '0.9rem' }}>Or type your own question</label>
+        <input type="text" id="rag-question" value={custom} placeholder="e.g. What should I do if I lose my laptop?" onChange={e => { setCustom(e.target.value); setQi(e.target.value ? -1 : 1) }} />
         <div style={{ ...box, display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}><strong>Q</strong><Bars vec={qvec} /><span>{question}</span></div>
       </>}
       {step === 4 && chunkList(c => {
@@ -114,12 +114,12 @@ export default function RagLab() {
       </>}
 
       <div className={'status ' + (step === 4 && none ? 'warn' : step === 6 ? 'good' : '')}>
-        {step === 4 && none ? 'මේ ප්‍රශ්නයේ අපේ vocabulary එකේ වචන එකක්වත් නැහැ, ඒ නිසා හැම score එකම 0යි. ඇත්ත embeddings අර්ථය දන්න නිසා මේ ප්‍රශ්නය එන්නේ නැහැ. "leave", "salary", "laptop" වගේ වචනයක් දාලා බලන්න.' : STEPS[step][1]}
+        {step === 4 && none ? 'This question has none of the words in our vocabulary, so every score is 0. Real embeddings understand meaning, so they don\'t have this problem. Try a word like "leave", "salary" or "laptop".' : STEPS[step][1]}
       </div>
       <div className="row">
         <button type="button" onClick={() => setStep(s => s - 1)} disabled={step === 0}>← Back</button>
         <button type="button" className="primary" onClick={() => setStep(s => s + 1)} disabled={step === STEPS.length - 1}>Next →</button>
-        <span className="muted" style={{ fontSize: '0.85rem' }}>පියවර {step + 1} / {STEPS.length}</span>
+        <span className="muted" style={{ fontSize: '0.85rem' }}>Step {step + 1} / {STEPS.length}</span>
       </div>
     </div>
   )

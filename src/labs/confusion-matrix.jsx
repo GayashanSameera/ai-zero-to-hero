@@ -24,7 +24,7 @@ export default function ConfusionMatrixLab() {
   const f1 = 2 * prec * rec / (prec + rec)
 
   const stripRef = useCanvas((ctx, W, H) => {
-    const f = frame(ctx, W, H, { x0: 0, x1: 1, y0: 0, y1: 2, xt: [0, 0.25, 0.5, 0.75, 1], yt: [] }, 'Model එකේ spam score එක', '', { l: 16, r: 16, t: 8 })
+    const f = frame(ctx, W, H, { x0: 0, x1: 1, y0: 0, y1: 2, xt: [0, 0.25, 0.5, 0.75, 1], yt: [] }, 'Model\'s spam score', '', { l: 16, r: 16, t: 8 })
     f.clip()
     ctx.globalAlpha = 0.1; ctx.fillStyle = css('--bad')
     ctx.fillRect(f.sx(t), f.sy(2), f.sx(1) - f.sx(t), f.sy(0) - f.sy(2))
@@ -36,17 +36,17 @@ export default function ConfusionMatrixLab() {
     ctx.strokeStyle = css('--ink'); ctx.lineWidth = 2
     ctx.beginPath(); ctx.moveTo(f.sx(t), f.sy(0)); ctx.lineTo(f.sx(t), f.sy(2)); ctx.stroke()
     ctx.fillStyle = css('--muted'); ctx.font = '12px ' + css('--body'); ctx.textBaseline = 'top'; ctx.textAlign = 'left'
-    ctx.fillText('ඇත්ත spam', f.sx(0) + 4, f.sy(2) + 2)
-    ctx.fillText('ඇත්ත හොඳ email', f.sx(0) + 4, f.sy(1) + 2)
+    ctx.fillText('Really spam', f.sx(0) + 4, f.sy(2) + 2)
+    ctx.fillText('Really good email', f.sx(0) + 4, f.sy(1) + 2)
     ctx.textAlign = 'right'; ctx.fillStyle = css('--ink')
     ctx.fillText('Spam folder →', f.sx(1) - 4, f.sy(2) + 2)
     ctx.restore()
   }, [t], { ratio: 0.32, minH: 170, maxH: 220 })
 
   let status
-  if (t < 0.3) status = { cls: 'warn', text: `Threshold එක ගොඩක් අඩුයි (${t.toFixed(2)}). ටිකක් සැකයක් තිබ්බත් spam folder එකට යවනවා. Recall ${pct(rec)}: spam ගොඩක්ම අල්ලනවා. ඒත් precision ${pct(prec)}: හොඳ emails ${fp}ක් වැරදිලා spam වලට ගියා. Job offer email එකක් එහෙම නැති වුණොත් අවුල්!` }
-  else if (t > 0.75) status = { cls: 'warn', text: `Threshold එක ගොඩක් වැඩියි (${t.toFixed(2)}). ගොඩක් විශ්වාස නම් විතරයි spam කියන්නේ. Precision ${pct(prec)}: spam කිව්වොත් ඒක ඇත්තටම වගේ spam. ඒත් recall ${pct(rec)}: spam ${fn}ක් inbox එකට රිංගුවා.` }
-  else status = { cls: 'good', text: `Threshold ${t.toFixed(2)}. Precision ${pct(prec)} සහ recall ${pct(rec)} අතර සමබරයක්. Threshold එක වමට ගත්තොත් recall වැඩි වෙනවා, precision අඩු වෙනවා. දකුණට ගත්තොත් අනිත් පැත්ත. දෙකම එකපාර 100% කරන්න බෑ, මොකද scores එකිනෙකට පැටලිලා.` }
+  if (t < 0.3) status = { cls: 'warn', text: `The threshold is very low (${t.toFixed(2)}). Even a little doubt sends an email to the spam folder. Recall ${pct(rec)}: it catches almost all the spam. But precision ${pct(prec)}: ${fp} good emails went to spam by mistake. Imagine losing a job offer email that way!` }
+  else if (t > 0.75) status = { cls: 'warn', text: `The threshold is very high (${t.toFixed(2)}). It only says spam when it is very sure. Precision ${pct(prec)}: when it says spam, it almost always is. But recall ${pct(rec)}: ${fn} spam emails sneaked into the inbox.` }
+  else status = { cls: 'good', text: `Threshold ${t.toFixed(2)}. A balance between precision ${pct(prec)} and recall ${pct(rec)}. Move the threshold left and recall goes up while precision goes down. Move it right and the opposite happens. You can't get both to 100% at once, because the scores overlap.` }
 
   const cell = (n, label, note, good) => (
     <td style={{ background: good ? 'var(--good-soft)' : 'var(--warn-soft)', verticalAlign: 'top' }}>
@@ -57,31 +57,31 @@ export default function ConfusionMatrixLab() {
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: Spam filter එකක් හදමු</h3><span className="eyebrow">Confusion Matrix</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>Emails 40ක් තියෙනවා. Model එක හැම email එකකටම 0ත් 1ත් අතර <strong>score</strong> එකක් දෙනවා (1 = අනිවාර්යයෙන්ම spam). Score එක <strong>threshold</strong> එකට වඩා වැඩි නම් spam folder එකට යවනවා. ඒ ඉර ඔයා තීරණය කරන්න.</p>
-      <canvas ref={stripRef} role="img" aria-label="Emails score එක අනුව, threshold ඉර සමඟ" />
+      <div className="lab-head"><h3>Lab: Build a spam filter</h3><span className="eyebrow">Confusion Matrix</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>There are 40 emails. The model gives each one a <strong>score</strong> between 0 and 1 (1 = definitely spam). If the score is above the <strong>threshold</strong>, the email goes to the spam folder. You decide where that line goes.</p>
+      <canvas ref={stripRef} role="img" aria-label="Emails by score, with the threshold line" />
       <div className="legend">
-        <span><i style={{ background: 'var(--bad)' }} />ඇත්තටම spam</span>
-        <span><i style={{ background: 'var(--good)' }} />ඇත්තටම හොඳ email</span>
-        <span>කළු වටේ = model එක spam කිව්වා</span>
+        <span><i style={{ background: 'var(--bad)' }} />Really spam</span>
+        <span><i style={{ background: 'var(--good)' }} />Really good email</span>
+        <span>Black ring = the model said spam</span>
       </div>
       <div className="controls">
         <div className="ctrl">
           <label htmlFor="cm-threshold">Threshold <output>{t.toFixed(2)}</output></label>
           <input type="range" id="cm-threshold" min="0.02" max="0.98" step="0.01" value={t} onChange={e => setT(+e.target.value)} />
-          <span className="hint">මේකට වඩා score වැඩි නම් spam</span>
+          <span className="hint">A score above this means spam</span>
         </div>
       </div>
       <div className="table-wrap">
         <table style={{ minWidth: 340 }}>
-          <thead><tr><th></th><th>Model: Spam</th><th>Model: හොඳයි</th></tr></thead>
+          <thead><tr><th></th><th>Model: Spam</th><th>Model: Good</th></tr></thead>
           <tbody>
-            <tr><th>ඇත්තටම Spam</th>
-              {cell(tp, 'TP', 'Spam එකක් හරියටම අල්ලගත්තා.', true)}
-              {cell(fn, 'FN', 'Spam එකක් මඟ ඇරුණා. Inbox එකට ආවා.', false)}</tr>
-            <tr><th>ඇත්තටම හොඳයි</th>
-              {cell(fp, 'FP', 'හොඳ email එකක් වැරදිලා spam වලට ගියා.', false)}
-              {cell(tn, 'TN', 'හොඳ email එක හරියටම inbox එකට.', true)}</tr>
+            <tr><th>Really spam</th>
+              {cell(tp, 'TP', 'Caught a spam email correctly.', true)}
+              {cell(fn, 'FN', 'Missed a spam email. It landed in the inbox.', false)}</tr>
+            <tr><th>Really good</th>
+              {cell(fp, 'FP', 'A good email went to spam by mistake.', false)}
+              {cell(tn, 'TN', 'A good email correctly went to the inbox.', true)}</tr>
           </tbody>
         </table>
       </div>
@@ -91,7 +91,7 @@ export default function ConfusionMatrixLab() {
         <div className="readout"><small>Recall</small><b className={rec >= 0.8 ? 'good' : 'warn'}>{pct(rec)}</b></div>
         <div className="readout"><small>F1</small><b>{isNaN(f1) ? '–' : f1.toFixed(2)}</b></div>
       </div>
-      <p className="muted" style={{ fontSize: '0.88rem', margin: 0 }}><strong>Precision</strong> = model එක spam කිව්ව ඒවායින් ඇත්තටම spam කීයද. <strong>Recall</strong> = ඇත්ත spam ඔක්කොගෙන් අල්ලගත්තේ කීයද. <strong>F1</strong> = ඒ දෙකේම සමබර ලකුණක්.</p>
+      <p className="muted" style={{ fontSize: '0.88rem', margin: 0 }}><strong>Precision</strong> = of the emails the model called spam, how many really were spam. <strong>Recall</strong> = of all the real spam, how much it caught. <strong>F1</strong> = one score that balances the two.</p>
       <div className={'status ' + status.cls}>{status.text}</div>
     </div>
   )

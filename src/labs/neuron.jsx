@@ -3,15 +3,15 @@ import { useCanvas, frame, dot, css } from './draw.js'
 
 // One neuron deciding "should I go to the beach?"
 const INPUTS = [
-  { name: 'අව්ව තියෙනවද', short: 'අව්ව' },
-  { name: 'යාළුවෝ free ද', short: 'යාළුවෝ' },
-  { name: 'වැස්ස එන්න ඉඩ', short: 'වැස්ස' },
+  { name: 'Is it sunny?', short: 'Sunny' },
+  { name: 'Are friends free?', short: 'Friends' },
+  { name: 'Chance of rain', short: 'Rain' },
 ]
 const ACTS = {
-  Step: { f: z => (z >= 0 ? 1 : 0), cut: 0.5, si: '0ට වඩා වැඩි නම් 1, නැත්නම් 0. "ඔව්/නෑ" විතරයි.' },
-  Sigmoid: { f: z => 1 / (1 + Math.exp(-z)), cut: 0.5, si: 'ඕනෑම අංකයක් 0ත් 1ත් අතරට තද කරනවා. Probability එකක් වගේ.' },
-  ReLU: { f: z => Math.max(0, z), cut: 0, si: 'Negative නම් 0. Positive නම් ඒ අංකයම. Deep learning වල ගොඩක්ම පාවිච්චි වෙන්නේ මේක.' },
-  Tanh: { f: z => Math.tanh(z), cut: 0, si: 'Sigmoid වගේමයි, ඒත් -1ත් 1ත් අතරට තද කරනවා.' },
+  Step: { f: z => (z >= 0 ? 1 : 0), cut: 0.5, si: '1 if above 0, otherwise 0. Just "yes/no".' },
+  Sigmoid: { f: z => 1 / (1 + Math.exp(-z)), cut: 0.5, si: 'Squeezes any number into the range 0 to 1. Like a probability.' },
+  ReLU: { f: z => Math.max(0, z), cut: 0, si: '0 if negative. If positive, the same number. This is the most used one in deep learning.' },
+  Tanh: { f: z => Math.tanh(z), cut: 0, si: 'Just like Sigmoid, but squeezes into the range -1 to 1.' },
 }
 
 export default function NeuronLab() {
@@ -61,7 +61,7 @@ export default function NeuronLab() {
     ctx.fillStyle = css('--accent'); ctx.font = '12px ' + css('--mono'); ctx.fillText(act, actX, midY)
     dot(ctx, outX, midY, 22, css(go ? '--good' : '--muted'))
     ctx.fillStyle = css('--surface'); ctx.fillText(out.toFixed(2), outX, midY)
-    ctx.fillStyle = css('--ink'); ctx.font = '12px ' + css('--body'); ctx.fillText(go ? 'යමු!' : 'එපා', outX, midY + 36)
+    ctx.fillStyle = css('--ink'); ctx.font = '12px ' + css('--body'); ctx.fillText(go ? 'Go!' : 'No', outX, midY + 36)
   }, [x, w, b, act], { ratio: 0.5, minH: 220, maxH: 300 })
 
   const plotRef = useCanvas((ctx, W, H) => {
@@ -83,9 +83,9 @@ export default function NeuronLab() {
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: එක neuron එකක් ඇතුළේ</h3><span className="eyebrow">Perceptron / Neuron</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>මේ neuron එක තීරණය කරනවා අද <strong>මුහුදු වෙරළට යනවද</strong> කියලා. Inputs තුනක් (0 = නෑ, 1 = අනිවාර්යයෙන්ම). හැම input එකකටම <strong>weight</strong> එකක් තියෙනවා: ඒ input එක කොච්චර වැදගත්ද කියලා. කොළ ඉර = පක්ෂයි, රතු ඉර = විපක්ෂයි, මහත = වැදගත්කම.</p>
-      <canvas ref={diagRef} role="img" aria-label="Inputs, weights, weighted sum, activation සහ output පෙන්වන neuron diagram එක" />
+      <div className="lab-head"><h3>Lab: Inside a single neuron</h3><span className="eyebrow">Perceptron / Neuron</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>This neuron decides whether to <strong>go to the beach today</strong>. There are three inputs (0 = no, 1 = definitely). Each input has a <strong>weight</strong>: how important that input is. Green line = in favour, red line = against, thickness = importance.</p>
+      <canvas ref={diagRef} role="img" aria-label="Neuron diagram showing the inputs, weights, weighted sum, activation and output" />
       <div className="controls">
         {INPUTS.map((inp, i) => (
           <div className="ctrl" key={i}>
@@ -98,20 +98,20 @@ export default function NeuronLab() {
         <div className="ctrl">
           <label htmlFor="neuron-b">Bias <output>{b.toFixed(1)}</output></label>
           <input type="range" id="neuron-b" min="-2" max="2" step="0.1" value={b} onChange={e => setB(+e.target.value)} />
-          <span className="hint">කලින්ම තියෙන කැමැත්ත / අකමැත්ත</span>
+          <span className="hint">How keen you are before anything else</span>
         </div>
       </div>
       <div className="row" role="group" aria-label="Activation function">
         {Object.keys(ACTS).map(k => <button type="button" key={k} aria-pressed={act === k} onClick={() => setAct(k)}>{k}</button>)}
       </div>
-      <canvas ref={plotRef} role="img" aria-label={`${act} activation function එක, දැන් තියෙන weighted sum එකේ ලකුණ සමඟ`} />
+      <canvas ref={plotRef} role="img" aria-label={`The ${act} activation function, with a mark at the current weighted sum`} />
       <div className="readouts">
         <div className="readout"><small>Weighted sum (z)</small><b>{z.toFixed(2)}</b></div>
         <div className="readout"><small>Output</small><b className={go ? 'good' : 'warn'}>{out.toFixed(2)}</b></div>
-        <div className="readout"><small>තීරණය</small><b className={go ? 'good' : 'warn'}>{go ? 'වෙරළට යමු' : 'ගෙදර ඉමු'}</b></div>
+        <div className="readout"><small>Decision</small><b className={go ? 'good' : 'warn'}>{go ? 'Off to the beach' : 'Stay home'}</b></div>
       </div>
       <div className={'status ' + (go ? 'good' : 'warn')}>
-        z = {parts} + ({b.toFixed(1)}) = <strong>{z.toFixed(2)}</strong>. ඒ කියන්නේ inputs × weights එකතු කරලා bias එකත් දැම්මා. ඊට පස්සේ <strong>{act}</strong>: {A.si} Output එක {out.toFixed(2)}, ඒ නිසා {go ? 'neuron එක කියනවා "යමු!"' : 'neuron එක කියනවා "එපා".'} වැස්සේ weight එක negative නිසා වැස්ස වැඩි වෙද්දී z අඩු වෙනවා.
+        z = {parts} + ({b.toFixed(1)}) = <strong>{z.toFixed(2)}</strong>. That is, we added up inputs × weights and then added the bias. Then comes <strong>{act}</strong>: {A.si} The output is {out.toFixed(2)}, so {go ? 'the neuron says "Go!"' : 'the neuron says "No".'} Rain has a negative weight, so more rain makes z smaller.
       </div>
     </div>
   )

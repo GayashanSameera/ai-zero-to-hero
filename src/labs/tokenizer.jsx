@@ -40,7 +40,7 @@ function tokenize(text) {
 
 const PRESETS = [
   ['English', 'The cat sat on the mat. Tokenizers split text into small pieces called tokens!'],
-  ['සිංහල', 'මම අද කොළඹ යනවා'],
+  ['Emoji', 'I love kottu 🍛 and cricket 🏏 in Colombo!'],
   ['Code', 'def add(x, y):\n    return x + y\n\nprint(add(2, 3))'],
   ['Numbers', 'Price: Rs. 1,234,567.89 on 2024-11-01, phone 0771234567'],
 ]
@@ -57,23 +57,23 @@ export default function TokenizerLab() {
   const bytes = tokens.filter(t => t.byte).length
 
   let status
-  if (!text.trim()) status = { cls: '', text: 'මොනවා හරි type කරන්න. Tokens මොනවද කියලා පල්ලෙහායින් පෙනෙයි.' }
-  else if (bytes > 0) status = { cls: 'warn', text: `මේ tokenizer එකේ vocabulary එකේ සිංහල කෑලි නැහැ. ඒ නිසා හැම සිංහල අකුරක්ම UTF-8 bytes 3කට කඩනවා (<0xE0> වගේ). Bytes ${bytes}ක් ආවා! වචනයකට tokens ${perWord.toFixed(1)}ක්. Token එකකට ගෙවන API එකකදී සිංහල ඉංග්‍රීසියට වඩා ගොඩක් ගණන් යන්නේ, context window එක ඉක්මනට පිරෙන්නේ මේ නිසයි.` }
-  else if (perWord > 2) status = { cls: 'warn', text: `වචනයකට tokens ${perWord.toFixed(1)}ක්. Code සහ numbers වල spaces, brackets, ඉලක්කම් කෑලි වෙන වෙනම tokens වෙනවා. ඒ නිසා model එකට ගණන් හදන එක අමාරුයි: "1,234,567" එක අංකයක් විදිහට නෙවෙයි, කෑලි කීපයක් විදිහට දකින්නේ.` }
-  else status = { cls: 'good', text: `වචනයකට tokens ${perWord.toFixed(1)}ක් විතරයි. පොදු ඉංග්‍රීසි වචන (" the", " cat") මුළු වචනයම එක token එකක්. අමුතු වචන ("Tokenizers") කෑලි වලට කැඩෙනවා: Token + izer + s.` }
+  if (!text.trim()) status = { cls: '', text: 'Type something. You will see its tokens below.' }
+  else if (bytes > 0) status = { cls: 'warn', text: `This tokenizer's vocabulary has no pieces for some of these characters, so it breaks each one into raw UTF-8 bytes (like <0xF0>). An emoji becomes 4 bytes, and a Sinhala or Tamil letter becomes 3. That gave ${bytes} bytes! ${perWord.toFixed(1)} tokens per word. This is why emoji and languages like Sinhala cost much more than English on pay-per-token APIs, and fill the context window faster.` }
+  else if (perWord > 2) status = { cls: 'warn', text: `${perWord.toFixed(1)} tokens per word. In code and numbers, spaces, brackets and bits of digits each become separate tokens. That is why maths is hard for a model: it doesn't see "1,234,567" as one number, but as several pieces.` }
+  else status = { cls: 'good', text: `Only ${perWord.toFixed(1)} tokens per word. Common English words (" the", " cat") are one whole token each. Unusual words ("Tokenizers") get broken into pieces: Token + izer + s.` }
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: Text එක tokens වලට කඩමු</h3><span className="eyebrow">Tokenization</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>Model එකක් අකුරු කියවන්නේ නැහැ. ඒක කියවන්නේ <strong>tokens</strong>: වචන හෝ වචන කෑලි. හැම token එකකටම අංකයක් (ID) තියෙනවා. පහළ කොටුවේ ඕන දෙයක් type කරලා බලන්න.</p>
+      <div className="lab-head"><h3>Lab: Break text into tokens</h3><span className="eyebrow">Tokenization</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>A model doesn't read letters. It reads <strong>tokens</strong>: words or pieces of words. Every token has a number (an ID). Type anything in the box below and see.</p>
       <div className="row">
         {PRESETS.map(([name, val]) => (
           <button type="button" key={name} aria-pressed={text === val} onClick={() => setText(val)}>{name}</button>
         ))}
       </div>
-      <label htmlFor="tokenizer-text" className="muted" style={{ fontSize: '0.9rem' }}>ඔයාගේ text එක</label>
+      <label htmlFor="tokenizer-text" className="muted" style={{ fontSize: '0.9rem' }}>Your text</label>
       <textarea id="tokenizer-text" value={text} onChange={e => setText(e.target.value)} rows={3} />
-      <label className="check"><input type="checkbox" id="tokenizer-ids" checked={ids} onChange={e => setIds(e.target.checked)} /> Text වෙනුවට token IDs පෙන්වන්න</label>
+      <label className="check"><input type="checkbox" id="tokenizer-ids" checked={ids} onChange={e => setIds(e.target.checked)} /> Show token IDs instead of text</label>
       <div aria-label="Tokens" style={{ display: 'flex', flexWrap: 'wrap', gap: 4, fontFamily: 'var(--mono)', fontSize: '0.85rem', lineHeight: 1.4 }}>
         {tokens.map((t, i) => {
           const c = `var(--series-${(i % 4) + 1})`
@@ -87,7 +87,7 @@ export default function TokenizerLab() {
         })}
       </div>
       <div className="legend">
-        <span>· = space</span><span>↵ = new line</span><span>Dashed කොටුව = UTF-8 byte එකක්</span>
+        <span>· = space</span><span>↵ = new line</span><span>Dashed box = one UTF-8 byte</span>
       </div>
       <div className="readouts">
         <div className="readout"><small>Characters</small><b>{chars}</b></div>
@@ -96,7 +96,7 @@ export default function TokenizerLab() {
         <div className="readout"><small>Tokens / word</small><b className={perWord > 2 ? 'warn' : 'good'}>{perWord.toFixed(2)}</b></div>
       </div>
       <div className={'status ' + status.cls}>{status.text}</div>
-      <p className="muted" style={{ fontSize: '0.85rem' }}>සැලකිය යුතුයි: මේක ඉගෙන ගන්න හදපු <strong>සරල teaching tokenizer</strong> එකක්. Vocabulary එකේ කෑලි {VOCAB.length}ක් විතරයි. ඇත්ත tokenizers (GPT වල tiktoken, Llama/Gemma වල SentencePiece) data වලින් BPE ඉගෙන ගත්ත කෑලි දහස් ගණනක් පාවිච්චි කරනවා, ඒ නිසා ඒවගේ ගණන් මෙතනට වඩා වෙනස්. හැබැයි අදහස එකමයි.</p>
+      <p className="muted" style={{ fontSize: '0.85rem' }}>Note: this is a <strong>simple teaching tokenizer</strong> made for learning. Its vocabulary has only {VOCAB.length} pieces. Real tokenizers (tiktoken in GPT, SentencePiece in Llama/Gemma) use many thousands of pieces learned from data with BPE, so their counts will differ from these. But the idea is the same.</p>
     </div>
   )
 }

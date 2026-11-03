@@ -24,7 +24,7 @@ const wiggle = x => TRAIN.reduce((sum, [xi, yi], i) => {
 }, 0)
 
 const miss = (fn, data) => Math.sqrt(data.reduce((s, [x, y]) => s + (fn(x) - y) ** 2, 0) / data.length)
-const fmt = v => v.toFixed(1) + ' ලක්ෂ'
+const fmt = v => v.toFixed(1) + ' lakhs'
 
 export default function OverfittingLab() {
   const [mode, setMode] = useState('line')
@@ -32,7 +32,7 @@ export default function OverfittingLab() {
   const fn = mode === 'line' ? line : wiggle
 
   const ref = useCanvas((ctx, W, H) => {
-    const f = frame(ctx, W, H, DOM, 'ගෙදර ප්‍රමාණය (m²)', 'මිල (Rs. ලක්ෂ)')
+    const f = frame(ctx, W, H, DOM, 'House size (m²)', 'Price (Rs. lakhs)')
     f.clip()
     if (showTest) {
       ctx.strokeStyle = css('--good'); ctx.lineWidth = 2; ctx.globalAlpha = 0.7
@@ -54,34 +54,34 @@ export default function OverfittingLab() {
   let status
   if (!showTest) {
     status = mode === 'wiggle'
-      ? { cls: '', text: 'රැලි වක්‍රය හැම training ගෙදරක් හරහාම යනවා. වැරැද්ද බින්දුවයි! Perfect වගේ නේද? දැන් "අලුත් ගෙවල් පෙන්වන්න" tick කරන්න.' }
-      : { cls: '', text: 'සරල රේඛාව හැම training ගෙදරකටම පොඩ්ඩක් වරදිනවා. රැලි වක්‍රයත් එක්ක සසඳලා, ඊට පස්සේ "අලුත් ගෙවල් පෙන්වන්න" tick කරන්න.' }
+      ? { cls: '', text: 'The wiggly curve passes through every training house. Zero error! Looks perfect, right? Now tick "Show new houses".' }
+      : { cls: '', text: 'The straight line misses every training house by a little. Compare it with the wiggly curve, then tick "Show new houses".' }
   } else {
     status = mode === 'wiggle'
-      ? { cls: 'bad', text: `අලුත් ගෙවල් වලට රැලි වක්‍රය ${fmt(wt)}කින් වරදිනවා. ඒ සරල රේඛාවට වඩා ${(wt / lt).toFixed(1)} ගුණයක් නරකයි. ඒක pattern එක නෙවෙයි ඉගෙන ගත්තේ, noise එක කටපාඩම් කළා. මේකට කියන්නේ Overfitting.` }
-      : { cls: 'good', text: `අලුත් ගෙවල් වලට සරල රේඛාව ${fmt(lt)}කින් විතරයි වරදින්නේ. ඒක ඇත්ත pattern එක ඉගෙන ගත්තා. ඒ නිසා විභාගෙත් හොඳට කරනවා.` }
+      ? { cls: 'bad', text: `On new houses the wiggly curve is off by ${fmt(wt)}. That is ${(wt / lt).toFixed(1)} times worse than the straight line. It didn't learn the pattern, it memorised the noise. This is called overfitting.` }
+      : { cls: 'good', text: `On new houses the straight line is off by only ${fmt(lt)}. It learned the real pattern, so it does well in the exam too.` }
   }
 
   return (
     <div className="lab">
-      <div className="lab-head"><h3>Lab: සරල රේඛාව vs රැලි වක්‍රය</h3><span className="eyebrow">Overfitting</span></div>
-      <p className="muted" style={{ fontSize: '0.95rem' }}>ළමයි දෙන්නෙක් ගැන හිතන්න. එක්කෙනෙක් පරණ ප්‍රශ්න පත්‍රවල උත්තර <strong>කටපාඩම්</strong> කරනවා. අනිත් කෙනා පාඩම <strong>තේරුම් ගන්නවා</strong>. අලුත් විභාගයකදී කවුද දිනන්නේ?</p>
-      <canvas ref={ref} role="img" aria-label="Training ගෙවල් වලට සරල රේඛාවක් හෝ රැලි වක්‍රයක් fit කරලා, අලුත් test ගෙවල් එක්ක" />
+      <div className="lab-head"><h3>Lab: Straight line vs wiggly curve</h3><span className="eyebrow">Overfitting</span></div>
+      <p className="muted" style={{ fontSize: '0.95rem' }}>Think of two students. One <strong>memorises</strong> the answers to past papers. The other <strong>understands</strong> the lesson. Who does better in a new exam?</p>
+      <canvas ref={ref} role="img" aria-label="A straight line or a wiggly curve fitted to the training houses, with new test houses" />
       <div className="legend">
-        <span><i style={{ background: 'var(--accent)' }} />Training ගෙවල් (model එක පාඩම් කළේ මේවා)</span>
-        <span><i style={{ background: 'var(--good)' }} />අලුත් ගෙවල් (විභාගය)</span>
+        <span><i style={{ background: 'var(--accent)' }} />Training houses (what the model studied)</span>
+        <span><i style={{ background: 'var(--good)' }} />New houses (the exam)</span>
       </div>
       <div className="row">
-        <button type="button" aria-pressed={mode === 'line'} onClick={() => setMode('line')}>සරල රේඛාව (තේරුම් ගන්නවා)</button>
-        <button type="button" aria-pressed={mode === 'wiggle'} onClick={() => setMode('wiggle')}>රැලි වක්‍රය (කටපාඩම් කරනවා)</button>
+        <button type="button" aria-pressed={mode === 'line'} onClick={() => setMode('line')}>Straight line (understands)</button>
+        <button type="button" aria-pressed={mode === 'wiggle'} onClick={() => setMode('wiggle')}>Wiggly curve (memorises)</button>
       </div>
-      <label className="check"><input type="checkbox" id="of-show-test" checked={showTest} onChange={e => setShowTest(e.target.checked)} /> අලුත් ගෙවල් පෙන්වන්න (විභාගය)</label>
+      <label className="check"><input type="checkbox" id="of-show-test" checked={showTest} onChange={e => setShowTest(e.target.checked)} /> Show new houses (the exam)</label>
       <div className="table-wrap">
         <table>
-          <thead><tr><th>Model</th><th>Training වැරැද්ද</th><th>අලුත් ගෙවල් වැරැද්ද</th></tr></thead>
+          <thead><tr><th>Model</th><th>Training error</th><th>New houses error</th></tr></thead>
           <tbody>
-            <tr className={mode === 'line' ? 'active' : ''}><td>සරල රේඛාව</td><td className="num">{fmt(miss(line, TRAIN))}</td><td className="num">{showTest ? fmt(lt) : 'සඟවලා'}</td></tr>
-            <tr className={mode === 'wiggle' ? 'active' : ''}><td>රැලි වක්‍රය</td><td className="num">{fmt(miss(wiggle, TRAIN))} (perfect!)</td><td className="num">{showTest ? fmt(wt) : 'සඟවලා'}</td></tr>
+            <tr className={mode === 'line' ? 'active' : ''}><td>Straight line</td><td className="num">{fmt(miss(line, TRAIN))}</td><td className="num">{showTest ? fmt(lt) : 'hidden'}</td></tr>
+            <tr className={mode === 'wiggle' ? 'active' : ''}><td>Wiggly curve</td><td className="num">{fmt(miss(wiggle, TRAIN))} (perfect!)</td><td className="num">{showTest ? fmt(wt) : 'hidden'}</td></tr>
           </tbody>
         </table>
       </div>
