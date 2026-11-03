@@ -10,9 +10,10 @@ fs.mkdirSync(out, { recursive: true })
 
 // Related site phases for each exam domain, used for "learn this first" links.
 const RELATED = {
-  '01': ['ml-deep-dive', 'ml'], '02': ['architecture', 'deep-learning'], '03': ['inference', 'llm'],
-  '04': ['prompting-agents', 'genai'], '05': ['rag-deep-dive', 'genai'], '06': ['training', 'llm'],
-  '07': ['evaluation'], '08': ['nvidia', 'mlops'], '09': ['trustworthy'],
+  '01': ['ml-deep-dive', 'ml-fundamentals'], '02': ['architecture', 'neural-networks'], '03': ['inference', 'how-llms-work'],
+  '04': ['prompting-agents', 'prompt-engineering'], '05': ['rag-deep-dive', 'embeddings-vector-databases-rag'],
+  '06': ['training', 'training-finetuning-alignment'], '07': ['evaluation', 'evaluating-llms'],
+  '08': ['nvidia', 'inference-and-serving'], '09': ['trustworthy', 'responsible-ai'],
 }
 
 const index = []

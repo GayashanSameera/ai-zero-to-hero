@@ -1,10 +1,16 @@
-// Every src/content/phase*.js file is picked up automatically, ordered by phase number.
+// Phases = English course lessons (src/lessons/*.md) followed by the certification
+// exam-guide phases (every src/content/phase*.js file), ordered by number.
+import { lessons } from '../lessons/index.js'
+
 const modules = import.meta.glob('./phase*.js', { eager: true })
 
-export const phases = Object.keys(modules)
+const certPhases = Object.keys(modules)
   .map(path => modules[path].default)
   .filter(Boolean)
   .sort((a, b) => a.number - b.number)
+  .map((p, i) => ({ ...p, track: 'cert', label: `Exam guide ${i + 1}` }))
+
+export const phases = [...lessons, ...certPhases]
 
 export const findPhase = id => phases.find(p => p.id === id)
 

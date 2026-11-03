@@ -47,10 +47,10 @@ export function TopicExamQuestions({ refs }) {
   return (
     <section className="stack">
       <div className="eyebrow">{label}</div>
-      <h2>මේ topic එකේ exam ප්‍රශ්න ({refs.length})</h2>
+      <h2>Exam questions on this topic ({refs.length})</h2>
       {!open
-        ? <div><button type="button" className="primary" onClick={() => setOpen(true)}>ප්‍රශ්න {refs.length} පෙන්වන්න</button></div>
-        : !qs ? <p className="muted">Load වෙනවා...</p>
+        ? <div><button type="button" className="primary" onClick={() => setOpen(true)}>Show {refs.length} questions</button></div>
+        : !qs ? <p className="muted">Loading...</p>
           : qs.map(q => (
             <div className="lab" key={q.id}>
               <Question q={q} picked={answers[q.id]?.pick} showLesson={false}
@@ -62,8 +62,8 @@ export function TopicExamQuestions({ refs }) {
 }
 
 const LEVELS = ['Foundation', 'Intermediate', 'Advanced']
-const LEVEL_SI = { Foundation: 'මූලික', Intermediate: 'මධ්‍යම', Advanced: 'ගැඹුරු' }
-const levelLabel = l => (LEVEL_SI[l] ? `${l} (${LEVEL_SI[l]})` : l)
+const LEVEL_NAMES = { Foundation: 'Foundation', Intermediate: 'Intermediate', Advanced: 'Advanced' }
+const levelLabel = l => l
 
 // Tiny markdown: ``` code blocks, `inline code`, **bold**.
 function Inline({ text }) {
@@ -93,8 +93,8 @@ function shuffle(arr) {
 // Mock exam settings. `pick` builds the question list; `groupOf`/`groupLabel` give the per-domain score table.
 const NCA_MOCK = {
   key: 'nca', title: 'Mock exam', size: 60, minutes: 60, target: 70,
-  intro: 'Domains 9න්ම random ප්‍රශ්න 60ක්, විනාඩි 60යි. ඇත්ත විභාගය වගේම, ඉවර වෙනකම් හරි වැරැද්ද පෙන්නන්නේ නෑ.',
-  targetNote: '(Pass mark එක NVIDIA ප්‍රසිද්ධ කරලා නෑ. 70%+ ආරක්ෂිත ඉලක්කයක්.)',
+  intro: '60 random questions from all 9 domains, 60 minutes. Like the real exam, you only see right and wrong answers at the end.',
+  targetNote: '(NVIDIA does not publish the pass mark. 70%+ is a safe target.)',
   async pick() {
     const domains = await Promise.all(index.map(d => loadDomain(d.id)))
     // Spread questions evenly across domains, exam-level only (Foundation + Intermediate).
@@ -106,8 +106,8 @@ const NCA_MOCK = {
 }
 const CCAR_MOCK = {
   key: 'ccar', title: 'CCAR-F Mock exam', size: ccar.questions.length, minutes: ccar.questions.length * 2, target: 80,
-  intro: `PDF එකේ Practice Exam 1 සහ 2 ප්‍රශ්න ${ccar.questions.length}ම random පිළිවෙළට, විනාඩි ${ccar.questions.length * 2}යි (PDF එකේ නීතිය: ප්‍රශ්නයකට විනාඩි 2). "2ක් තෝරන්න" ප්‍රශ්නවල නිවැරදි උත්තර දෙකම තෝරාගත්තොත් පමණක් ලකුණු ලැබේ. ඉවර වෙනකම් හරි වැරැද්ද පෙන්නන්නේ නෑ.`,
-  targetNote: '(PDF එකට අනුව 80%+ = exam එක book කරන්න. ඇත්ත exam එක ප්‍රශ්න 60ක්, විනාඩි 120යි; අපිට තියෙන්නේ ප්‍රශ්න 40යි.)',
+  intro: `All ${ccar.questions.length} questions from Practice Exams 1 and 2 in the PDF, in random order, ${ccar.questions.length * 2} minutes (the PDF's rule: 2 minutes per question). "Choose 2" questions score only if both correct answers are picked. You only see right and wrong answers at the end.`,
+  targetNote: '(According to the PDF, 80%+ means you are ready to book the exam. The real exam is 60 questions in 120 minutes; we have 40 questions.)',
   async pick() { return shuffle(ccar.questions) },
   groupOf: q => 'D' + q.domain,
   groupLabel: g => `Domain ${g.slice(1)}: ${CCAR_DOMAINS[g.slice(1)]}`,
@@ -132,18 +132,18 @@ function ExamHome() {
   return (
     <div className="stack-lg">
       <section className="stack">
-        <div className="crumbs"><a href="#/">මුල් පිටුව</a><span>/</span><span>Exam practice</span></div>
+        <div className="crumbs"><a href="#/">Home</a><span>/</span><span>Exam practice</span></div>
         <div className="eyebrow">NVIDIA NCA-GENL · Unofficial practice</div>
         <h1>NCA-GENL Exam Practice</h1>
-        <p>ඔයාගේ Question Bank v2 එකේ ප්‍රශ්න {total.toLocaleString()}ම මෙතන තියෙනවා. හැම ප්‍රශ්නයක්ම වෙනස් concept එකක්. උත්තරය තෝරලා, ඊට පස්සේ explanation එක කියවන්න.</p>
-        <p className="muted">ඇත්ත විභාගය: ප්‍රශ්න 50-60ක්, විනාඩි 60යි. Exam එකට ලෑස්ති වෙන්න Foundation සහ Intermediate මුලින් කරන්න. Advanced කියන්නේ ගැඹුරට යන්න කැමති නම් විතරයි. Claude Certified Architect (CCAR-F) ප්‍රශ්න පහළින් තියෙනවා.</p>
+        <p>All {total.toLocaleString()} questions from your Question Bank v2 are here. Every question tests a different concept. Pick an answer, then read the explanation.</p>
+        <p className="muted">The real exam: 50-60 questions in 60 minutes. To get ready, do Foundation and Intermediate first. Advanced is only if you want to go deeper. Claude Certified Architect (CCAR-F) questions are further down.</p>
         <div className="stats">
-          <div className="stat"><b>{mineNca.length}</b><small>උත්තර දුන්නා</small></div>
-          <div className="stat"><b>{mineNca.length ? Math.round((correct / mineNca.length) * 100) : 0}%</b><small>හරි ප්‍රතිශතය</small></div>
-          <div className="stat"><b>{total - mineNca.length}</b><small>තව ඉතුරුයි</small></div>
+          <div className="stat"><b>{mineNca.length}</b><small>Answered</small></div>
+          <div className="stat"><b>{mineNca.length ? Math.round((correct / mineNca.length) * 100) : 0}%</b><small>Correct</small></div>
+          <div className="stat"><b>{total - mineNca.length}</b><small>Remaining</small></div>
         </div>
         <div className="progress-bar"><div style={{ width: (mineNca.length / total) * 100 + '%' }} /></div>
-        <div><a className="btn primary" href="#/exam/mock">⏱ Mock exam එකක් කරන්න ({NCA_MOCK.size} ප්‍රශ්න, විනාඩි {NCA_MOCK.minutes})</a></div>
+        <div><a className="btn primary" href="#/exam/mock">⏱ Take a mock exam ({NCA_MOCK.size} questions, {NCA_MOCK.minutes} minutes)</a></div>
       </section>
       <section className="stack">
         <h2>Exam domains</h2>
@@ -155,11 +155,11 @@ function ExamHome() {
             return (
               <a key={d.id} href={`#/exam/${d.id}`} className="phase-card">
                 <div className="top"><span className="eyebrow">Domain {d.num} · {prefix}</span>
-                  {mine.length > 0 && <span className="chip done">{Math.round((ok / mine.length) * 100)}% හරි</span>}</div>
+                  {mine.length > 0 && <span className="chip done">{Math.round((ok / mine.length) * 100)}% correct</span>}</div>
                 <h3>{d.title}</h3>
-                <div className="meta">{LEVELS.map((l, i) => <span key={l}>{LEVEL_SI[l]} {d.levels[i]}</span>)}</div>
+                <div className="meta">{LEVELS.map((l, i) => <span key={l}>{LEVEL_NAMES[l]} {d.levels[i]}</span>)}</div>
                 <div className="progress-bar"><div style={{ width: (mine.length / d.count) * 100 + '%' }} /></div>
-                <span className="muted num" style={{ fontSize: '0.8rem' }}>{mine.length}/{d.count} කළා</span>
+                <span className="muted num" style={{ fontSize: '0.8rem' }}>{mine.length}/{d.count} done</span>
               </a>
             )
           })}
@@ -168,18 +168,18 @@ function ExamHome() {
       <section className="stack">
         <div className="eyebrow">Claude Certified Architect – Foundations</div>
         <h2>CCAR-F Practice Exams</h2>
-        <p>Study PDF එකේ Practice Exam 1 සහ 2: ප්‍රශ්න {ccarMeta.count}ක්, explanations එක්ක. ප්‍රශ්න 3ක් "2ක් තෝරන්න" වර්ගයේයි (දෙකම හරි නම් විතරයි ලකුණු). හැම ප්‍රශ්නයක් පස්සේම අදාළ lesson එකට link එකක් තියෙනවා.</p>
+        <p>Practice Exams 1 and 2 from the study PDF: {ccarMeta.count} questions with explanations. 3 questions are "choose 2" (they score only if both are right). Every question links to the lesson that teaches it.</p>
         <div className="phase-grid">
           <a href={`#/exam/${ccarMeta.id}`} className="phase-card">
             <div className="top"><span className="eyebrow">CCAR-F · {ccarMeta.prefix}</span>
-              {ccarMine.length > 0 && <span className="chip done">{Math.round((ccarOk / ccarMine.length) * 100)}% හරි</span>}</div>
+              {ccarMine.length > 0 && <span className="chip done">{Math.round((ccarOk / ccarMine.length) * 100)}% correct</span>}</div>
             <h3>{ccarMeta.title}</h3>
             <div className="meta">{ccarMeta.levelNames.map((n, i) => <span key={n}>{n} · {ccarMeta.levels[i]}</span>)}</div>
             <div className="progress-bar"><div style={{ width: (ccarMine.length / ccarMeta.count) * 100 + '%' }} /></div>
-            <span className="muted num" style={{ fontSize: '0.8rem' }}>{ccarMine.length}/{ccarMeta.count} කළා</span>
+            <span className="muted num" style={{ fontSize: '0.8rem' }}>{ccarMine.length}/{ccarMeta.count} done</span>
           </a>
         </div>
-        <div><a className="btn primary" href="#/exam/ccar-mock">⏱ CCAR-F mock exam ({CCAR_MOCK.size} ප්‍රශ්න, විනාඩි {CCAR_MOCK.minutes})</a></div>
+        <div><a className="btn primary" href="#/exam/ccar-mock">⏱ CCAR-F mock exam ({CCAR_MOCK.size} questions, {CCAR_MOCK.minutes} minutes)</a></div>
       </section>
     </div>
   )
@@ -208,7 +208,7 @@ function Question({ q, picked, onPick, reveal = true, number, showLesson = true 
         <span className="chip" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>{levelLabel(q.level)}</span>
       </div>
       <Md text={q.q} />
-      {multi && <p className="muted" style={{ fontSize: '0.9rem' }}>නිවැරදි උත්තර {need}ක් තෝරන්න. දෙකම හරි නම් පමණක් ලකුණු ලැබේ.</p>}
+      {multi && <p className="muted" style={{ fontSize: '0.9rem' }}>Choose {need} correct answers. It scores only if all are right.</p>}
       <div className="opts">
         {q.options.map((o, i) => {
           let cls = ''
@@ -223,16 +223,16 @@ function Question({ q, picked, onPick, reveal = true, number, showLesson = true 
         })}
       </div>
       {multi && reveal && !show && (
-        <div><button type="button" className="primary" disabled={sel.length !== need} onClick={() => onPick(sel)}>උත්තර පරීක්ෂා කරන්න ({sel.length}/{need})</button></div>
+        <div><button type="button" className="primary" disabled={sel.length !== need} onClick={() => onPick(sel)}>Check answer ({sel.length}/{need})</button></div>
       )}
       {show && (
         <div className={'status ' + (ok ? 'good' : 'bad')}>
-          <strong>{ok ? '✓ හරි! ' : `✗ වැරදියි. හරි උත්තරය ${correctLetters(q)}. `}</strong>
+          <strong>{ok ? '✓ Correct! ' : `✗ Wrong. The right answer is ${correctLetters(q)}. `}</strong>
           <Md text={q.why} />
         </div>
       )}
       {show && lesson && (
-        <p style={{ fontSize: '0.92rem' }}>📖 මේ concept එක ඉගෙන ගන්න: <a href={`#/p/${lesson.phase.id}/${lesson.id}`}>{lesson.phase.title} → {lesson.title}</a></p>
+        <p style={{ fontSize: '0.92rem' }}>📖 Learn this concept: <a href={`#/p/${lesson.phase.id}/${lesson.id}`}>{lesson.phase.title} → {lesson.title}</a></p>
       )}
     </div>
   )
@@ -261,7 +261,7 @@ function DomainPractice({ domainId }) {
 
   useEffect(() => setPos(0), [level, filter, search])
 
-  if (!data) return <p className="muted">Load වෙනවා...</p>
+  if (!data) return <p className="muted">Loading...</p>
   const q = list[Math.min(pos, list.length - 1)]
   const pick = v => setAnswers(a => ({ ...a, [q.id]: record(q, v) }))
   const related = meta.related.map(findPhase).filter(Boolean)
@@ -270,11 +270,11 @@ function DomainPractice({ domainId }) {
   return (
     <div className="stack-lg">
       <section className="stack">
-        <div className="crumbs"><a href="#/">මුල් පිටුව</a><span>/</span><a href="#/exam">Exam practice</a><span>/</span><span>{meta.prefix}</span></div>
+        <div className="crumbs"><a href="#/">Home</a><span>/</span><a href="#/exam">Exam practice</a><span>/</span><span>{meta.prefix}</span></div>
         <div className="eyebrow">{isCcar ? 'Claude Certified Architect – Foundations' : `Domain ${meta.num}`}</div>
         <h1>{meta.title}</h1>
         {related.length > 0 && (
-          <p className="muted">මුලින්ම මේ lessons කියෙව්වොත් ලේසියි: {related.map((p, i) => (
+          <p className="muted">It's easier if you read these lessons first: {related.map((p, i) => (
             <React.Fragment key={p.id}>{i ? ', ' : ''}<a href={`#/p/${p.id}`}>{p.title}</a></React.Fragment>))}</p>
         )}
         <div className="controls">
@@ -286,36 +286,36 @@ function DomainPractice({ domainId }) {
             </select>
           </div>
           <div className="ctrl">
-            <label htmlFor="exam-filter">පෙන්වන්න</label>
+            <label htmlFor="exam-filter">Show</label>
             <select id="exam-filter" value={filter} onChange={e => setFilter(e.target.value)}>
-              <option value="all">ඔක්කොම</option>
-              <option value="new">තාම කරපු නැති ඒවා</option>
-              <option value="wrong">වැරදුණු ඒවා විතරක් (review)</option>
+              <option value="all">All</option>
+              <option value="new">Not done yet</option>
+              <option value="wrong">Only the ones I got wrong (review)</option>
             </select>
           </div>
           <div className="ctrl">
             <label htmlFor="exam-search">Topic search</label>
-            <input type="search" id="exam-search" placeholder={isCcar ? 'උදා: hooks, Batches, escalation' : 'උදා: KV cache, Triton'} value={search} onChange={e => setSearch(e.target.value)} />
+            <input type="search" id="exam-search" placeholder={isCcar ? 'e.g. hooks, Batches, escalation' : 'e.g. KV cache, Triton'} value={search} onChange={e => setSearch(e.target.value)} />
           </div>
         </div>
       </section>
 
       {!q ? (
-        <div className="status">මේ filter එකට ප්‍රශ්න නෑ. {filter === 'wrong' ? 'වැරදුණු ප්‍රශ්න එකක්වත් නෑ. නියමයි!' : ''}</div>
+        <div className="status">No questions match this filter. {filter === 'wrong' ? 'You have no wrong answers. Great!' : ''}</div>
       ) : (
         <section className="lab">
           <Question key={q.id + (answers[q.id] ? '-done' : '-new')} q={q} picked={answers[q.id]?.pick} onPick={pick} number={`${pos + 1}/${list.length}`} />
           <div className="row" style={{ justifyContent: 'space-between' }}>
-            <button type="button" onClick={() => setPos(p => Math.max(0, p - 1))} disabled={pos === 0}>← කලින්</button>
-            {answers[q.id] && <button type="button" className="ghost" onClick={() => setAnswers(a => { const n = { ...a }; delete n[q.id]; return n })}>ආයෙත් try කරන්න</button>}
-            <button type="button" className="primary" onClick={() => setPos(p => Math.min(list.length - 1, p + 1))} disabled={pos >= list.length - 1}>ඊළඟ →</button>
+            <button type="button" onClick={() => setPos(p => Math.max(0, p - 1))} disabled={pos === 0}>← Previous</button>
+            {answers[q.id] && <button type="button" className="ghost" onClick={() => setAnswers(a => { const n = { ...a }; delete n[q.id]; return n })}>Try again</button>}
+            <button type="button" className="primary" onClick={() => setPos(p => Math.min(list.length - 1, p + 1))} disabled={pos >= list.length - 1}>Next →</button>
           </div>
         </section>
       )}
 
       {list.length > 0 && (
         <section className="stack">
-          <h3>මේ list එකේ ප්‍රශ්න</h3>
+          <h3>Questions in this list</h3>
           <div className="row" style={{ gap: 6 }}>
             {list.map((x, i) => {
               const a = answers[x.id]
@@ -360,7 +360,7 @@ function Mock({ config }) {
         <div className="crumbs"><a href="#/exam">Exam practice</a><span>/</span><span>{config.title}</span></div>
         <h1>{config.title}</h1>
         <p>{config.intro}</p>
-        <div><button type="button" className="primary" onClick={begin}>පටන් ගන්න</button></div>
+        <div><button type="button" className="primary" onClick={begin}>Start</button></div>
       </div>
     )
   }
@@ -375,21 +375,21 @@ function Mock({ config }) {
     return (
       <div className="stack-lg">
         <section className="stack">
-          <h1>ප්‍රතිඵලය: {score} / {qs.length} ({pct}%)</h1>
+          <h1>Result: {score} / {qs.length} ({pct}%)</h1>
           <div className={'status ' + (pct >= config.target ? 'good' : 'warn')}>
-            {pct >= config.target ? 'නියමයි! මේ මට්ටම තියාගන්න.' : 'තව ටිකක් practice කරන්න ඕනේ. පහළ තියෙන වැරදුණු ප්‍රශ්න හොඳට කියවන්න.'} {config.targetNote}
+            {pct >= config.target ? 'Great! Keep this level.' : 'A bit more practice needed. Read the wrong answers below carefully.'} {config.targetNote}
           </div>
           <div className="table-wrap"><table>
-            <thead><tr><th>Domain</th><th>හරි</th></tr></thead>
+            <thead><tr><th>Domain</th><th>Correct</th></tr></thead>
             <tbody>{Object.entries(byGroup).sort(([a], [b]) => a.localeCompare(b)).map(([g, [c, t]]) => (
               <tr key={g}><td>{config.groupLabel(g)}</td><td className="num">{c}/{t}</td></tr>
             ))}</tbody>
           </table></div>
-          <div className="row"><button type="button" className="primary" onClick={begin}>අලුත් mock exam එකක්</button><a className="btn" href="#/exam">Exam practice වලට</a></div>
+          <div className="row"><button type="button" className="primary" onClick={begin}>New mock exam</button><a className="btn" href="#/exam">Back to exam practice</a></div>
         </section>
         {wrong.length > 0 && (
           <section className="stack">
-            <h2>වැරදුණු ප්‍රශ්න ({wrong.length})</h2>
+            <h2>Questions you got wrong ({wrong.length})</h2>
             {wrong.map(q => <div className="lab" key={q.id}><Question q={q} picked={picks[q.id] ?? -1} onPick={() => {}} /></div>)}
           </section>
         )}
@@ -402,17 +402,17 @@ function Mock({ config }) {
   return (
     <div className="stack">
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <span className="eyebrow">{config.title} · ප්‍රශ්නය {pos + 1}/{qs.length}</span>
+        <span className="eyebrow">{config.title} · Question {pos + 1}/{qs.length}</span>
         <span className="readout"><b className={left < 300 ? 'bad' : ''} style={{ fontSize: '1.4rem' }}>⏱ {mm}:{ss}</b></span>
       </div>
       <div className="progress-bar"><div style={{ width: (answered / qs.length) * 100 + '%', background: 'var(--accent)' }} /></div>
       <div className="lab">
         <Question key={q.id} q={q} picked={picks[q.id]} reveal={false} onPick={v => setPicks(p => ({ ...p, [q.id]: v }))} />
         <div className="row" style={{ justifyContent: 'space-between' }}>
-          <button type="button" onClick={() => setPos(p => Math.max(0, p - 1))} disabled={pos === 0}>← කලින්</button>
+          <button type="button" onClick={() => setPos(p => Math.max(0, p - 1))} disabled={pos === 0}>← Previous</button>
           {pos < qs.length - 1
-            ? <button type="button" className="primary" onClick={() => setPos(p => p + 1)}>ඊළඟ →</button>
-            : <button type="button" className="primary" onClick={() => setDone(true)}>Submit කරන්න</button>}
+            ? <button type="button" className="primary" onClick={() => setPos(p => p + 1)}>Next →</button>
+            : <button type="button" className="primary" onClick={() => setDone(true)}>Submit</button>}
         </div>
       </div>
       <div className="row" style={{ gap: 6 }}>
@@ -421,7 +421,7 @@ function Mock({ config }) {
             style={{ padding: '2px 8px', fontSize: '0.75rem', background: answeredValue(picks[x.id]) ? 'var(--accent-soft)' : 'var(--surface)', borderColor: i === pos ? 'var(--accent)' : undefined }}>{i + 1}</button>
         ))}
       </div>
-      <p className="muted" style={{ fontSize: '0.85rem' }}>උත්තර දුන්නා: {answered}/{qs.length}. <button type="button" className="ghost" onClick={() => setDone(true)}>දැන්ම submit කරන්න</button></p>
+      <p className="muted" style={{ fontSize: '0.85rem' }}>Answered: {answered}/{qs.length}. <button type="button" className="ghost" onClick={() => setDone(true)}>Submit now</button></p>
     </div>
   )
 }

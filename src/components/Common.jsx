@@ -57,7 +57,7 @@ export function Quiz({ items, onFinish }) {
                 })}
               </div>
               {p !== undefined && (
-                <p className="why">{p === item.answer ? '✓ හරි! ' : '✗ ටිකක් වැරදියි. '}{item.why}</p>
+                <p className="why">{p === item.answer ? '✓ Correct! ' : '✗ Not quite. '}{item.why}</p>
               )}
             </div>
           )
@@ -65,8 +65,8 @@ export function Quiz({ items, onFinish }) {
       </div>
       {done === items.length && (
         <div className="row">
-          <span className="score" aria-live="polite">ලකුණු: {correct} / {items.length}</span>
-          <button type="button" onClick={() => setPicked({})}>ආයෙත් කරන්න</button>
+          <span className="score" aria-live="polite">Score: {correct} / {items.length}</span>
+          <button type="button" onClick={() => setPicked({})}>Try again</button>
         </div>
       )}
     </div>
