@@ -77,12 +77,13 @@ print(model.predict([[1800, 3]]))     # Prediction: අලුත් ගෙයක
       title: 'Train / Validation / Test, Cross-Validation සහ Pipelines',
       body: [
         'Model එක හොඳද කියලා බලන්න, ඒක train කරපු data වලින්ම test කරන්න බෑ. ඒක exam එකට කලින් ප්‍රශ්න පත්‍රයම දීලා පස්සේ ලකුණු දෙනවා වගේ. ඒ නිසා data කොටස් තුනකට බෙදනවා. Training set (උදා: 70%) එකෙන් model එක ඉගෙන ගන්නවා. Validation set (15%) එකෙන් settings තෝරනවා, models සසඳනවා. Test set (15%) එක අන්තිමට එක පාරක් විතරක් පාවිච්චි කරලා අවසාන ලකුණ ගන්නවා.',
-        'Data ටිකයි නම් එක split එකක ප්‍රතිඵලය වාසනාව මත රඳා පවතින්න පුළුවන්. K-fold cross-validation වලදී data එක සමාන කොටස් k (උදා: 5) කට බෙදනවා. හැම පාරම එක කොටසක් validation වලට තියලා අනිත් 4න් train කරනවා. පාර 5ම කරලා සාමාන්‍ය ලකුණ ගන්නවා. Stratified k-fold එකේදී හැම fold එකකම class ප්‍රතිශත මුළු data එකේ වගේම තියෙන්න බලාගන්නවා. Classes අසමබර නම් මේක වැදගත්.',
+        'Data ටිකයි නම් එක split එකක ප්‍රතිඵලය වාසනාව මත රඳා පවතින්න පුළුවන්. K-fold cross-validation වලදී data එක සමාන කොටස් k (උදා: 5) කට බෙදනවා. හැම පාරම එක කොටසක් validation වලට තියලා අනිත් 4න් train කරනවා. පාර 5ම කරලා සාමාන්‍ය ලකුණ ගන්නවා. Stratified k-fold එකේදී හැම fold එකකම class ප්‍රතිශත මුළු data එකේ වගේම තියෙන්න බලාගන්නවා. Classes අසමබර නම් මේක වැදගත්. Stratification එක class අනුපාත සමාන කරනවා විතරයි; එකම user, රෝගියා, පවුල හෝ device එකේ සම්බන්ධිත rows වෙන වෙනම folds වලට යෑම වළක්වන්නේ නෑ.',
         'Data leakage කියන්නේ training වලදී model එකට, ඇත්ත ලෝකයේ prediction කරන වෙලාවට ලැබෙන්නේ නැති තොරතුරක් අහම්බෙන් ලැබෙන එක. උදා: මුළු data එකෙන්ම scaler එක fit කරලා පස්සේ split කරන එක, නැත්නම් "refund_issued" වගේ ප්‍රතිඵලයෙන් පස්සේ හැදෙන column එකක් feature එකක් විදිහට දාන එක. Leakage තිබුණොත් test ලකුණු ගොඩක් හොඳට පේනවා, ඒත් ඇත්ත ලෝකයේ model එක අසාර්ථකයි.',
-        'Pipeline එකක් කියන්නේ preprocessing (scaling, encoding) සහ model එක එක දාමයකට එකතු කරන එක. Cross-validation ඇතුළේ pipeline එකක් පාවිච්චි කළාම හැම fold එකකම preprocessing එක fit වෙන්නේ ඒ fold එකේ training කොටසින් විතරයි. ඒ නිසා leakage වළක්වනවා, code එකත් පිළිවෙළයි.',
+        'Pipeline එකක් කියන්නේ preprocessing (scaling, encoding) සහ model එක එක දාමයකට එකතු කරන එක. Cross-validation ඇතුළේ pipeline එකක් පාවිච්චි කළාම හැම fold එකකම preprocessing එක fit වෙන්නේ ඒ fold එකේ training කොටසින් විතරයි. ඒක preprocessing leakage එක වළක්වන්න උදව් කරනවා; නමුත් වැරදි split එකක් හෝ prediction වෙද්දී නොලැබෙන feature එකක් නිසා ඇතිවන leakage එය තනිවම විසඳන්නේ නෑ.',
+        'Rows ස්වාධීන සහ එකම කාල-රටාවකින් එන විට random/stratified split එක ගැළපෙන්න පුළුවන්. එකම customer/device/group එකට අදාළ rows එකිනෙක සමාන නම් Group split එකෙන් group එකක් train සහ test දෙකටම වැටීම වළක්වන්න. අනාගතය predict කරන වැඩක් නම් කාලය අනුව split කරන්න: අතීතයෙන් train කරලා, පසුව ඇති කාලයෙන් test කරන්න. Random split එකකින් අනාගත තොරතුරු අතීත prediction එකකට leak වෙන්න පුළුවන්.',
       ],
       analogy: 'A/L ශිෂ්‍යයෙක්. Textbook එක = training set. Model papers = validation set (පාඩම් කරන ක්‍රමය හදාගන්න). ඇත්ත A/L exam එක = test set (එක පාරයි). Data leakage කියන්නේ exam එකට කලින් ප්‍රශ්න පත්‍රය leak වෙන එක. ලකුණු හොඳයි, ඒත් ඇත්ත දැනුම නෑ.',
-      example: 'Rows 1,000ක්, ඒකෙන් fraud 50යි (5%). සාමාන්‍ය random split එකකින් test set එකේ fraud 4ක් හරි 14ක් හරි වැටෙන්න පුළුවන්. Stratified split එකකින් rows 200ක test set එකේ හරියටම වගේ fraud 10ක් (5%) තියෙනවා. 5-fold CV ලකුණු 0.81, 0.84, 0.79, 0.83, 0.83 නම් සාමාන්‍යය 0.82යි.',
+      example: 'Rows 1,000ක්, ඒකෙන් fraud 50යි (5%). Stratified test set එකේ rows 200ක් නම් fraud 10ක් වගේ ලැබෙයි. ඒත් එක් customer කෙනෙකුට rows කිහිපයක් තියෙනවා නම්, ඒ customer ගේ පරණ row train එකටත් අලුත් row test එකටත් වැටුණොත් model එක customer-විශේෂ රටාව හඳුනාගෙන score එක බොරුවට හොඳ කරගන්න පුළුවන්. එවැනි විට customer ID එක අනුව group split කරන්න. අනාගත fraud හඳුනාගන්න නම් දිනය අනුව train/test කාල වෙන් කරන්න. 5-fold CV ලකුණු 0.81, 0.84, 0.79, 0.83, 0.83 නම් සාමාන්‍යය 0.82යි.',
       code: {
         lang: 'python',
         src: `from sklearn.datasets import load_breast_cancer
@@ -92,11 +93,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 
 X, y = load_breast_cancer(return_X_y=True)
+# මේ random split එක ස්වාධීන rows සඳහා උදාහරණයක්; group/time data නම්
+# ගැළපෙන group හෝ time split එකක් තෝරන්න.
 # Test set එක වෙනම තියනවා (stratify = class ප්‍රතිශත එකම විදිහට)
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, stratify=y, random_state=42)
 
-# Pipeline: scaler + model. CV ඇතුළේ leakage නෑ
+# Pipeline එක scaler එක fold එකේ training data වලින් පමණක් fit කරනවා.
+# Pipeline එක වැරදි group/time split එකක් තනිවම නිවැරදි කරන්නේ නෑ.
 pipe = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
 cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 print(cross_val_score(pipe, X_train, y_train, cv=cv).mean())`,
@@ -104,8 +108,9 @@ print(cross_val_score(pipe, X_train, y_train, cv=cv).mean())`,
       keyPoints: [
         'Train = ඉගෙන ගන්න, Validation = තෝරන්න, Test = අවසාන ලකුණ.',
         'K-fold CV = කොටස් k ක් මාරුවෙන් මාරුවට validation කරනවා.',
-        'Stratified = class ප්‍රතිශත හැම fold එකකම එකයි.',
-        'Pipelines පාවිච්චි කරලා data leakage වළක්වන්න.',
+        'Stratified = class ප්‍රතිශත සමානයි; related rows එකිනෙකින් වෙන් කරන බවක් එයින් අදහස් වෙන්නේ නෑ.',
+        'Related users/groups සඳහා group split; අනාගතය predict කිරීමට time split භාවිතා කරන්න.',
+        'Pipeline එක preprocessing leakage අඩු කරනවා, නමුත් සියලු leakage වළක්වන්නේ නෑ.',
       ],
       terms: [
         { en: 'Train / Validation / Test Split', si: 'Data එක ඉගෙනීමට, settings තේරීමට, අවසාන පරීක්ෂාවට කොටස් තුනකට බෙදීම.' },
@@ -490,13 +495,13 @@ print(oc.predict(X))
       title: 'Evaluation Metrics',
       lab: 'confusion-matrix',
       body: [
-        'Regression metrics: MAE (Mean Absolute Error) = වැරදි වල absolute අගයන්ගේ සාමාන්‍යය. තේරුම් ගන්න ලේසි, "සාමාන්‍යයෙන් ලක්ෂ 3ක් වරදිනවා". MSE (Mean Squared Error) = වැරදි වල වර්ග වල සාමාන්‍යය. ලොකු වැරදි වලට ලොකු දඬුවමක්. RMSE = MSE එකේ වර්ගමූලය, ආයෙත් මුල් ඒකකයටම එනවා. R² = model එක target එකේ variance එකෙන් කොච්චර කොටසක් පැහැදිලි කරනවද කියන එක. 1 = සම්පූර්ණයි, 0 = හැමවෙලේම සාමාන්‍යය කියනවා වගේ. Adjusted R² = features ගණන අනුව R² එක සකස් කරනවා. සාමාන්‍ය R² එක feature එකක් එකතු කළාම කවදාවත් අඩු වෙන්නේ නෑ (training data වල). Adjusted R² වැඩක් නැති feature එකක් එකතු කළොත් අඩු වෙන්න පුළුවන්.',
+        'Regression metrics: MAE (Mean Absolute Error) = වැරදි වල absolute අගයන්ගේ සාමාන්‍යය. තේරුම් ගන්න ලේසි, "සාමාන්‍යයෙන් ලක්ෂ 3ක් වරදිනවා". MSE (Mean Squared Error) = වැරදි වල වර්ග වල සාමාන්‍යය. ලොකු වැරදි වලට ලොකු දඬුවමක්. RMSE = MSE එකේ වර්ගමූලය, ආයෙත් මුල් ඒකකයටම එනවා. R² කියන්නේ evaluation set එකේ model එකේ squared error එක, ඒ set එකේම target mean එක හැම row එකකටම කියන baseline එකේ error එකට සසඳන score එකක්. 1 = පරිපූර්ණ prediction. 0 = ඒ mean-baseline එකට සමාන error. Test R² 0ට අඩු වෙන්න පුළුවන්: එවිට baseline එකට වඩා model එක නරකයි. Training data මත intercept තියෙන ordinary least squares model එකට, feature එකතු කිරීමෙන් R² අඩු නොවෙයි; ඒක unseen test data වලටත් සත්‍යයි කියලා අදහස් වෙන්නේ නෑ. Adjusted R² features ගණනට දඬුවමක් දාලා සකස් කරනවා.',
         'Classification වලදී confusion matrix එක පදනමයි. True Positive (TP) = positive එකක් positive කියලා හරියට අල්ලගත්තා. False Positive (FP) = negative එකක් වැරදියට positive කිව්වා. False Negative (FN) = positive එකක් මඟ හැරුණා. True Negative (TN) = negative එකක් හරියට negative කිව්වා. Accuracy = හරි උත්තර ÷ මුළු ගණන. ඒත් classes අසමබර නම් accuracy එක රවට්ටනවා. Fraud 1% ක් තියෙද්දී "හැමදේම fraud නෑ" කියන model එකට 99% accuracy!',
         'Precision = positive කිව්ව ඒවායින් ඇත්තටම positive ප්‍රතිශතය: TP ÷ (TP + FP). "මම alarm ගැහුවාම කොච්චර වාරයක් හරිද?" Recall = ඇත්ත positives වලින් අල්ලගත්තු ප්‍රතිශතය: TP ÷ (TP + FN). "ඇත්ත ලෙඩ්ඩු ගෙන් කී දෙනෙක්ව හොයාගත්තද?" F1 = precision සහ recall වල harmonic mean එක, දෙකම සමබර කරනවා. Threshold එක වෙනස් කළාම precision සහ recall එකිනෙකට විරුද්ධව වෙනස් වෙනවා.',
         'ROC curve එක හැම threshold එකකම True Positive Rate (recall) සහ False Positive Rate අඳිනවා. ROC-AUC = ඒ curve එක යට ප්‍රදේශය. 0.5 = අහඹු අනුමාන, 1.0 = පරිපූර්ණයි. PR-AUC = precision-recall curve එක යට ප්‍රදේශය. Positives ගොඩක් දුර්ලභ නම් PR-AUC වඩා හොඳ කතාවක් කියනවා. Log loss = model එකේ probabilities කොච්චර හොඳද කියන එක. වැරදි උත්තරයකට ලොකු විශ්වාසයක් දුන්නොත් ලොකු දඬුවමක්. අඩු නම් හොඳයි.',
       ],
       analogy: 'Airport එකක security scanner එක. Precision = scanner එක alarm ගැහුව බෑග් වලින් ඇත්තටම භයානක දේ තිබුණු ප්‍රතිශතය. Recall = ඇත්තටම භයානක දේ තිබුණු බෑග් වලින් scanner එක අල්ලගත්තු ප්‍රතිශතය. Airport එකකට recall වැදගත්ම (එකක්වත් මඟ හැරෙන්න බෑ). Spam filter එකකට precision වැදගත් (වැදගත් email එකක් spam එකට යන්න බෑ).',
-      example: 'Emails 100ක්. Model එක 50ක් spam කිව්වා: ඇත්තටම spam 40 (TP), වැරදියට 10 (FP). Spam නෑ කිව්ව 50න් 5ක් ඇත්තටම spam (FN), 45ක් හරි (TN). Accuracy = (40+45)/100 = 85%. Precision = 40/50 = 80%. Recall = 40/45 = 88.9%. F1 = 2 × 0.8 × 0.889 ÷ (0.8 + 0.889) = 84.2%. Regression: වැරදි ලක්ෂ 2, -4, 3 නම් MAE = 3, MSE = (4+16+9)/3 = 9.67, RMSE = 3.11.',
+      example: 'Emails 100ක්. Model එක 50ක් spam කිව්වා: ඇත්තටම spam 40 (TP), වැරදියට 10 (FP). Spam නෑ කිව්ව 50න් 5ක් ඇත්තටම spam (FN), 45ක් හරි (TN). Accuracy = (40+45)/100 = 85%. Precision = 40/50 = 80%. Recall = 40/45 = 88.9%. F1 = 2 × 0.8 × 0.889 ÷ (0.8 + 0.889) = 84.2%. Regression R² සඳහා test targets [1, 2, 3] සහ predictions [4, 4, 4] ගනිමු. Test mean baseline එක [2, 2, 2] නිසා baseline squared error = 2; model squared error = 14. R² = 1 - 14/2 = -6. ඒ කියන්නේ මේ predictions test set එකේ හැමවිටම mean එක කියන baseline එකටත් වඩා නරකයි. R² ඍණ විය හැකි බව මෙයින් පේනවා.',
       code: {
         lang: 'python',
         src: `from sklearn.metrics import (mean_absolute_error, mean_squared_error, r2_score,
@@ -517,6 +522,7 @@ print(roc_auc_score(y, p), average_precision_score(y, p), log_loss(y, p))  # PR-
       },
       keyPoints: [
         'Regression: MAE, MSE, RMSE, R², adjusted R².',
+        'Evaluation set එකේ R² = 0 නම් ඒ set එකේ target mean baseline එකට සමාන squared error; R² < 0 නම් baseline එකට වඩා නරකයි.',
         'Confusion matrix: TP, FP, FN, TN.',
         'Accuracy අසමබර data වලදී රවට්ටනවා.',
         'Precision = alarm හරිද? Recall = කීයක් අල්ලගත්තද? F1 = දෙකේ සමබරතාව.',
@@ -526,7 +532,7 @@ print(roc_auc_score(y, p), average_precision_score(y, p), log_loss(y, p))  # PR-
         { en: 'MAE', si: 'Mean Absolute Error. වැරදි වල absolute අගයන්ගේ සාමාන්‍යය.' },
         { en: 'MSE', si: 'Mean Squared Error. වැරදි වල වර්ග වල සාමාන්‍යය.' },
         { en: 'RMSE', si: 'MSE එකේ වර්ගමූලය. Target එකේ ඒකකයෙන්ම වැරැද්ද.' },
-        { en: 'R²', si: 'Target එකේ variance එකෙන් model එක පැහැදිලි කරන කොටස.' },
+        { en: 'R²', si: 'Evaluation set එකේ mean-baseline එකට සාපේක්ෂ squared-error score එක. 1 හොඳමයි, 0 baseline එකට සමානයි, 0ට අඩු නම් baseline එකට වඩා නරකයි.' },
         { en: 'Adjusted R²', si: 'Features ගණනට දඬුවමක් දාලා සකස් කරපු R².' },
         { en: 'Confusion Matrix', si: 'TP, FP, FN, TN ගණන් පෙන්නන වගුව.' },
         { en: 'Accuracy', si: 'මුළු predictions වලින් හරි ඒවායේ ප්‍රතිශතය.' },

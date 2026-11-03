@@ -15,7 +15,7 @@ export default {
         'NVIDIA එකේ එකම එක "AI certification" එකක් නෑ. Role එකට (developer, infrastructure, data science) සහ level එකට අනුව වෙන වෙනම exams තියෙනවා. Code එකේ මුල බලලා level එක අඳුනගන්න පුළුවන්. NCA කියන්නේ NVIDIA-Certified Associate (entry level). NCP කියන්නේ NVIDIA-Certified Professional (අත්දැකීම් තියෙන අයට).',
         'Associate exams පහක් තියෙනවා. හැම එකම පැය 1යි, USD 125යි. NCA-GENL (Generative AI LLMs), NCA-GENM (Generative AI Multimodal), NCA-AIIO (AI Infrastructure and Operations), NCA-ADS (Accelerated Data Science), NCA-AMAD (AI Models and Application Development). NCA-AMAD ගැන අපේ study docs වල තියෙන්නේ නම, code එක, level එක, කාලය සහ මිල විතරයි. ඒකේ domains දැනගන්න ඕනේ නම් NVIDIA page එකම බලන්න.',
         'Professional exams අටක් තියෙනවා. හැම එකම පැය 2යි. NCP-GENL (Generative AI LLMs), NCP-AAI (Agentic AI), NCP-ADS (Accelerated Data Science), NCP-OUSD (OpenUSD Development) කියන ඒවා USD 200 බැගින්. NCP-AII (AI Infrastructure), NCP-AIN (AI Networking), NCP-ARI (AI Rack and Interconnect) USD 400 බැගින්. NCP-AIO (AI Operations) USD 500යි.',
-        'මේ මිල ගණන් සහ විස්තර NVIDIA certification pages වලින් 2026-10-20 දින check කරපු ඒවා. NVIDIA වෙලාවෙන් වෙලාවට මිල, ප්‍රශ්න ගණන සහ domains වෙනස් කරනවා. ඒ නිසා book කරන්න කලින් nvidia.com/en-us/learn/certification එකේ verify කරන්න. Exams ඔක්කොම English වලින්. ගෙදර ඉඳන් online කරන්නේ Certiverse platform එක හරහා. Remote proctor කෙනෙක් webcam එකෙන් ඔයාව බලාගෙන ඉන්නවා. Certificate එක අවුරුදු 2ක් valid. Recertify කරන්න ආයෙත් exam එක ලියන්න ඕනේ.',
+        'NVIDIA වෙලාවෙන් වෙලාවට මිල, ප්‍රශ්න ගණන සහ domains වෙනස් කරනවා. ඒ නිසා book කරන්න කලින් nvidia.com/en-us/learn/certification එකේ verify කරන්න. Exams ඔක්කොම English වලින්. ගෙදර ඉඳන් online කරන්නේ Certiverse platform එක හරහා. Remote proctor කෙනෙක් webcam එකෙන් ඔයාව බලාගෙන ඉන්නවා. Certificate එක අවුරුදු 2ක් valid. Recertify කරන්න ආයෙත් exam එක ලියන්න ඕනේ.',
       ],
       analogy:
         'Driving license එක හිතන්න. Motorcycle, light vehicle, heavy vehicle කියලා categories තියෙනවා. Light vehicle එක (Associate) ගන්න ලේසියි. Heavy vehicle එකට (Professional) අත්දැකීම් ඕනේ. License එකට expiry date එකක් තියෙනවා වගේම NVIDIA certificate එකත් අවුරුදු 2කින් renew කරන්න ඕනේ.',
@@ -25,7 +25,7 @@ export default {
         'NCA = Associate (පැය 1, USD 125). NCP = Professional (පැය 2, USD 200-500).',
         'Exams online, English, Certiverse හරහා remote proctoring.',
         'Validity අවුරුදු 2යි. Recertify = exam එක ආයෙත් ලියන එක.',
-        'මිල සහ විස්තර 2026-10-20 දින check කළේ. Book කරන්න කලින් verify කරන්න.',
+        'මිල සහ විස්තර වෙනස් විය හැකියි. Book කරන්න කලින් NVIDIA certification පිටුවෙන් verify කරන්න.',
       ],
       terms: [
         { en: 'Associate (NCA)', si: 'Entry level certification. මූලික සංකල්ප තේරුම් ගැනීම පරීක්ෂා කරනවා.' },
@@ -68,25 +68,95 @@ export default {
       id: 'nca-genl-exam-guide',
       title: 'NCA-GENL Exam Guide: Format, Five Domains, Weights & What Each Really Tests',
       body: [
-        'NCA-GENL format එක: multiple choice ප්‍රශ්න 50-60යි, මිනිත්තු 60යි. ඒ කියන්නේ ප්‍රශ්නයකට මිනිත්තුවක් විතර. මිල USD 125, online, Certiverse හරහා, English. Prerequisite එක generative AI සහ LLMs ගැන මූලික අවබෝධයක් විතරයි. Passing score එක publish කරලා නෑ. (2026-10-20 දින check කළේ, book කරන්න කලින් verify කරන්න.)',
+        'NCA-GENL format එක: මිනිත්තු 60යි. NVIDIA page එකේ exam details කොටස multiple-choice ප්‍රශ්න 50-60ක් කියනවා, නමුත් එහි overview එක 50 ප්‍රශ්න කියලා දක්වනවා; ඒ නිසා නිශ්චිත ගණන booking වෙලාවේ confirm කරන්න. මිල USD 125, online, Certiverse හරහා, English. Prerequisite එක generative AI සහ LLMs ගැන මූලික අවබෝධයක් විතරයි. Passing score එක publish කරලා නෑ. මේ විස්තර වෙනස් විය හැකි නිසා exam එක book කරන්න කලින් NVIDIA certification පිටුවෙන් verify කරන්න.',
         'Domains පහ: Core machine learning & AI knowledge 30% (ප්‍රශ්න 15-18 විතර), Software development 24% (12-14), Experimentation 22% (11-13), Data analysis 14% (7-8), Trustworthy AI 10% (5-6). ප්‍රශ්න ගණන් NVIDIA publish කරලා නෑ. ඒවා ප්‍රශ්න 50-60 මත හදපු ඇස්තමේන්තු විතරයි.',
         'Domain එකෙන් ඇත්තටම බලන්නේ මොනවද? Core ML (30%): supervised / unsupervised, overfitting, activations, optimizers, Transformer, attention, tokenization, embeddings, prompting, RAG, vector DBs, Python NLP tools. මේවා Phase 2, 3, 4, 5, 6, 13, 14, 16, 17 වල තියෙනවා. Software development (24%): NeMo, NIM, Triton, TensorRT-LLM, ONNX, NGC, quantization, batching, KV cache, LoRA, RLHF/DPO. Phase 9, 14, 15, 7 බලන්න. Experimentation (22%): data preparation, training settings, mixed precision, experiment tracking, perplexity / BLEU / ROUGE, benchmarks, LLM-as-a-judge. Phase 15 සහ 11.',
-        'Data analysis (14%): classification metrics, regression metrics (R² ඇතුළුව), loss curves, EDA, correlation vs causation, charts, RAPIDS. Phase 1, 2, 17, 0 සහ මේ phase එකේ data analysis topic එක. Trustworthy AI (10%): NVIDIA trustworthy AI principles, bias, hallucination, prompt injection, NeMo Guardrails, consent, model cards, NIST AI RMF. Phase 10 බලන්න. ප්‍රශ්න බොහොමයක් scenario එකක් දීලා "මේකට ගැළපෙන NVIDIA tool එක / technique එක මොකක්ද?" කියලා අහන ජාතියේ.',
+        'Data analysis (14%): classification metrics, regression metrics (R² ඇතුළුව), loss curves, EDA, correlation vs causation, charts, RAPIDS. Phase 1, 2, 17, 0 සහ මේ phase එකේ data analysis topic එක. Trustworthy AI (10%): ethical principles, privacy සහ consent, trustworthiness වැඩි කරන tools/techniques, bias අඩු කිරීම. Phase 10 බලන්න. NVIDIA detailed blueprint එක ප්‍රශ්න scenario-based කියලා හෝ ඒවායේ format එක නිශ්චිතව කියන්නේ නෑ. මේ site එකේ scenario questions යොදාගන්නේ concepts apply කරන්න practice එකක් විදිහට මිස exam format එක ගැන guarantee එකක් විදිහට නෙවෙයි.',
+        'NVIDIA companion overview එකේ "alignment" කියන මාතෘකාව සඳහන් වෙනවා. නමුත් detailed weighted domain list එකේ ඒක වෙනම objective එකක් හෝ වෙනම weight එකක් ලෙස නම් කරලා නැහැ. RLHF/DPO වගේ alignment concepts Experimentation සහ model customization පාඩම් එක්ක revision කරන්න; වෙනම exam domain එකක් කියලා හිතන්න එපා.',
       ],
       analogy:
         'A/L paper එකක marking scheme එක වගේ. Part A එකට ලකුණු 30%ක් නම්, ඔයා revision කාලයෙනුත් 30%ක් විතර ඒකට දෙනවා. Trustworthy AI 10% විතරයි කියලා අතඅරින්නත් එපා. ඒ ප්‍රශ්න 5-6 ලේසියෙන්ම ගන්න පුළුවන් ලකුණු.',
       example:
         'ඔයාට study පැය 40ක් තියෙනවා කියමු. Weight එකට අනුව බෙදුවොත්: Core ML 40 × 0.30 = පැය 12. Software development 40 × 0.24 ≈ පැය 9.6. Experimentation 40 × 0.22 ≈ පැය 8.8. Data analysis 40 × 0.14 ≈ පැය 5.6. Trustworthy AI 40 × 0.10 = පැය 4. Maths වලට බය නම් Core ML සහ Data analysis වලට පැය 2-3ක් extra දාන්න.',
       keyPoints: [
-        'ප්‍රශ්න 50-60, මිනිත්තු 60, multiple choice, passing score publish කරලා නෑ.',
+        'NVIDIA exam details 50-60 multiple-choice ප්‍රශ්න කියනවා; page overview එක 50 කියන නිසා නිශ්චිත ගණන booking වෙලාවේ verify කරන්න. කාලය මිනිත්තු 60යි; passing score publish කරලා නෑ.',
         'Core ML 30% > Software dev 24% > Experimentation 22% > Data analysis 14% > Trustworthy AI 10%.',
         'ප්‍රශ්න ගණන් (15-18, 12-14, 11-13, 7-8, 5-6) ඇස්තමේන්තු විතරයි.',
-        '"මේ scenario එකට කොයි NVIDIA tool එකද?" ජාතියේ ප්‍රශ්න ගොඩක් එනවා.',
+        'Scenario-style questions වලින් මෙතන concepts apply කරලා practice කරනවා; NVIDIA exam එකේ ප්‍රශ්න format එක ගැන guarantee එකක් නෑ.',
+        'Alignment companion overview එකේ සඳහන් වුණත් detailed blueprint එකේ වෙනම weight කළ domain එකක් නෙවෙයි.',
       ],
       terms: [
         { en: 'Exam Domain', si: 'Exam එකේ කොටසක්. Weight එකෙන් කියන්නේ ප්‍රශ්න වලින් කොච්චර ප්‍රතිශතයක් ඒකෙන්ද කියලා.' },
         { en: 'Weight', si: 'Domain එකකට exam එකේ තියෙන කොටස (%).' },
-        { en: 'Scenario Question', si: 'කතාවක් / තත්වයක් දීලා හොඳම tool එක හෝ ක්‍රමය තෝරන්න කියන ප්‍රශ්නය.' },
+        { en: 'Scenario Question', si: 'කතාවක් / තත්වයක් දීලා හොඳම tool එක හෝ ක්‍රමය තෝරන්න කියන පුහුණු ප්‍රශ්න ආකාරයක්. NVIDIA exam එකේ මේවායේ ප්‍රතිශතයක් හෝ format එකක් නිලව සඳහන් කරලා නෑ.' },
+      ],
+      resources: [
+        { title: 'NVIDIA NCA-GENL official exam page', url: 'https://www.nvidia.com/en-us/learn/certification/generative-ai-llm-associate/', description: 'විභාග domains, weight සහ යාවත්කාලීන exam තොරතුරු.' },
+      ],
+      domainChecklist: [
+        {
+          name: 'Core Machine Learning and AI Knowledge',
+          weight: '30%',
+          objectives: [
+            { text: 'Support deployment and evaluation of model scalability, performance, and reliability.', lessons: [{ phase: 'nvidia', topic: 'llm-serving-metrics', label: 'LLM serving metrics' }, { phase: 'mlops', topic: 'monitoring-drift', label: 'Production monitoring' }] },
+            { text: 'Understand how data mining and visualization help extract insights from large datasets.', lessons: [{ phase: 'ml', topic: 'anomaly-association', label: 'Data mining' }, { phase: 'data-science', topic: 'storytelling-dashboards', label: 'Visualization' }] },
+            { text: 'Build LLM use cases such as RAG, chatbots, and summarizers.', lessons: [{ phase: 'genai', topic: 'rag', label: 'RAG' }, { phase: 'nlp', topic: 'nlp-generation-tasks', label: 'Summarization and QA' }] },
+            { text: 'Curate and embed content datasets for RAG.', lessons: [{ phase: 'training', topic: 'data-curation', label: 'Data curation' }, { phase: 'genai', topic: 'embeddings-vectordb', label: 'Embeddings and vector databases' }] },
+            { text: 'Know ML fundamentals such as feature engineering, model comparison, and cross-validation.', lessons: [{ phase: 'ml', topic: 'data-splits', label: 'Splits and cross-validation' }, { phase: 'data-science', topic: 'encoding', label: 'Feature engineering' }, { phase: 'ml', topic: 'metrics', label: 'Model metrics' }] },
+            { text: 'Recognize Python NLP package capabilities, including spaCy, NumPy, and vector databases.', lessons: [{ phase: 'nlp', topic: 'nlp-libraries', label: 'NLP libraries' }, { phase: 'data-science', topic: 'numpy-pandas-polars', label: 'NumPy and data tools' }, { phase: 'genai', topic: 'embeddings-vectordb', label: 'Vector databases' }] },
+            { text: 'Read research papers to identify emerging LLM trends and technologies.', lessons: [{ phase: 'cert-practical', topic: 'following-llm-research', label: 'Research reading' }] },
+            { text: 'Select and use models to create text embeddings.', lessons: [{ phase: 'genai', topic: 'embeddings-vectordb', label: 'Text embeddings' }] },
+            { text: 'Apply prompt engineering to achieve desired model outputs.', lessons: [{ phase: 'genai', topic: 'prompt-basics', label: 'Prompt engineering' }] },
+            { text: 'Use Python packages such as spaCy, NumPy, and Keras for traditional ML analyses.', lessons: [{ phase: 'cert-practical', topic: 'python-tools-to-recognize', label: 'Python tool selection' }, { phase: 'ml', topic: 'metrics', label: 'Traditional ML evaluation' }] },
+          ],
+        },
+        {
+          name: 'Data Analysis',
+          weight: '14%',
+          objectives: [
+            { text: 'Understand data mining and visualization for extracting insights from large datasets.', lessons: [{ phase: 'ml', topic: 'anomaly-association', label: 'Data mining' }, { phase: 'data-science', topic: 'storytelling-dashboards', label: 'Charts and dashboards' }] },
+            { text: 'Compare models using statistical metrics such as loss functions and explained variance.', lessons: [{ phase: 'ml', topic: 'metrics', label: 'Evaluation metrics' }, { phase: 'cert-practical', topic: 'data-analysis-r2-trends', label: 'R² and trends' }] },
+            { text: 'Conduct data analysis with appropriate supervision and review.', lessons: [{ phase: 'cert-practical', topic: 'data-analysis-r2-trends', label: 'Analysis workflow' }] },
+            { text: 'Create graphs, charts, and visualizations to communicate analysis results.', lessons: [{ phase: 'data-science', topic: 'storytelling-dashboards', label: 'Data visualization' }] },
+            { text: 'Identify relationships, trends, and factors that could affect research results.', lessons: [{ phase: 'data-science', topic: 'time-series-basics', label: 'Trends' }, { phase: 'math', topic: 'hypothesis-testing', label: 'Confounding and causation' }] },
+          ],
+        },
+        {
+          name: 'Experimentation',
+          weight: '22%',
+          objectives: [
+            { text: 'Support model training and training optimization.', lessons: [{ phase: 'training', topic: 'lr-schedules-stability', label: 'Training optimization' }] },
+            { text: 'Prepare datasets for pretraining, fine-tuning, and RLHF, including scraping and tokenization.', lessons: [{ phase: 'cert-practical', topic: 'dataset-preparation', label: 'Dataset preparation' }, { phase: 'training', topic: 'data-curation', label: 'Curation and quality' }] },
+            { text: 'Help design and conduct hardware or software tests for LLM applications.', lessons: [{ phase: 'cert-practical', topic: 'hands-on-rag-eval', label: 'LLM application tests' }, { phase: 'cert-practical', topic: 'gpu-bottlenecks-tradeoffs', label: 'Hardware profiling' }] },
+            { text: 'Evaluate technologies for cost, portability, compatibility, and usability.', lessons: [{ phase: 'cert-practical', topic: 'choosing-comparing-stack', label: 'Technology trade-offs' }] },
+            { text: 'Understand human-subject data collection, including feedback used for RLHF.', lessons: [{ phase: 'cert-practical', topic: 'human-feedback-collection', label: 'Human feedback' }] },
+            { text: 'Evaluate and refine existing models and benchmarks.', lessons: [{ phase: 'evaluation', topic: 'standard-benchmarks', label: 'Benchmarks' }, { phase: 'evaluation', topic: 'experiments-and-tuning', label: 'Model refinement' }] },
+            { text: 'Run experiments to evaluate models and pipelines.', lessons: [{ phase: 'evaluation', topic: 'experiments-and-tuning', label: 'Experiment design' }, { phase: 'evaluation', topic: 'perplexity', label: 'Evaluation metrics' }] },
+          ],
+        },
+        {
+          name: 'Software Development',
+          weight: '24%',
+          objectives: [
+            { text: 'Support deployment and evaluation of model scalability, performance, and reliability.', lessons: [{ phase: 'nvidia', topic: 'llm-serving-metrics', label: 'Serving performance' }, { phase: 'mlops', topic: 'monitoring-drift', label: 'Reliability monitoring' }] },
+            { text: 'Build LLM use cases such as RAG, chatbots, and summarizers.', lessons: [{ phase: 'genai', topic: 'rag', label: 'RAG applications' }, { phase: 'nlp', topic: 'nlp-generation-tasks', label: 'Summarization' }] },
+            { text: 'Recognize Python NLP package capabilities, including spaCy, NumPy, and vector databases.', lessons: [{ phase: 'cert-practical', topic: 'python-tools-to-recognize', label: 'Python tools' }] },
+            { text: 'Identify data, hardware, and software components required by user needs.', lessons: [{ phase: 'cert-practical', topic: 'choosing-comparing-stack', label: 'Component selection' }] },
+            { text: 'Monitor data collection, experiments, and software processes.', lessons: [{ phase: 'cert-practical', topic: 'monitoring-processes', label: 'Process monitoring' }] },
+            { text: 'Use Python packages such as spaCy, NumPy, and Keras for traditional ML analyses.', lessons: [{ phase: 'cert-practical', topic: 'python-tools-to-recognize', label: 'Python tool selection' }, { phase: 'ml', topic: 'metrics', label: 'ML analyses' }] },
+            { text: 'Write software components or scripts under senior-team supervision.', lessons: [{ phase: 'cert-practical', topic: 'llm-app-components', label: 'LLM software components' }] },
+          ],
+        },
+        {
+          name: 'Trustworthy AI',
+          weight: '10%',
+          objectives: [
+            { text: 'Describe ethical principles of trustworthy AI.', lessons: [{ phase: 'trustworthy', topic: 'tai-principles', label: 'Trustworthy AI principles' }] },
+            { text: 'Explain the balance between data privacy and data consent.', lessons: [{ phase: 'cert-practical', topic: 'security-privacy-consent', label: 'Privacy and consent' }] },
+            { text: 'Describe how NVIDIA and other technologies can improve AI trustworthiness.', lessons: [{ phase: 'trustworthy', topic: 'nemo-guardrails-safety-models', label: 'Guardrails and safety tools' }] },
+            { text: 'Describe approaches to minimizing bias in AI systems.', lessons: [{ phase: 'trustworthy', topic: 'bias-sources', label: 'Bias and mitigation' }] },
+          ],
+        },
       ],
     },
     // 4
@@ -96,7 +166,7 @@ export default {
       body: [
         'Study guide එකේ සැලැස්ම experienced full-stack developer කෙනෙකුට සති 4යි. ඔයාට maths අමාරු නිසා, හැම සතියකටම "buffer" දවස් 2-3ක් තියාගන්න. අවශ්‍ය නම් සති 6කට දික් කරන්න. Week 1: ML / DL fundamentals, Transformers, tokenization, embeddings (Phase 17, 3, 5, 16, 14). Hands-on: Fundamentals of Deep Learning notebooks, Attention සහ BERT papers කියවන්න. Week 2: prompt engineering, RAG, vector DBs, spaCy (Phase 6, 12, 13, 4). Hands-on: Rapid Application Development with LLMs course එක, build.nvidia.com NIM endpoint එකක් සහ Milvus හෝ pgvector එක්ක RAG chatbot එකක්.',
         'Week 3: customization (LoRA, PEFT, RLHF), inference optimization, NVIDIA tools, experimentation, metrics (Phase 15, 9, 14, 11). Hands-on: පොඩි model එකක් LoRA වලින් fine-tune කරන්න, Triton හෝ NIM වලින් serve කරන්න, lm-evaluation-harness run කරන්න. Week 4: data analysis, trustworthy AI, NeMo Guardrails, revision (Phase 1, 17, 10, මේ phase එක). Hands-on: RAG bot එකට NeMo Guardrails දාන්න, practice tests කරලා දුර්වල domains ආයෙත් බලන්න.',
-        'Official courses: "Rapid Application Development With LLMs" (DLI, මේ exam එකට ප්‍රධාන course එක) සහ "Fundamentals of Deep Learning" (GitHub එකේ නොමිලේ, open-source materials). Key reading: Attention Is All You Need, LoRA paper, BERT paper, Prompt Engineering Guide (promptingguide.ai), NVIDIA blog: Prompt Engineering and P-Tuning, Mastering LLM Techniques: Inference Optimization සහ Customization, What Is RAG?, Hugging Face Illustrating RLHF, Hugging Face LLM Course (tokenizers, datasets, fine-tuning chapters), Triton Quick Start, TensorRT Get Started, NeMo Best Practices, NVIDIA GenerativeAIExamples repo, What Is Trustworthy AI?, NIST AI RMF.',
+        'NVIDIA මේ certification එකට courses කිහිපයක් recommend කරනවා. ඒවා exam requirements වලට අමතර ඉගෙනුම් සම්පත්: topic එකකට අනුව එකක් තෝරාගෙන, app එකේ අදාළ lessons සහ hands-on practice එක්ක යන්න. Course availability, format සහ price වෙනස් වෙන්න පුළුවන්; latest විස්තර official link එකෙන් බලන්න. තව කියවීම්: Attention Is All You Need, LoRA paper, BERT paper, Prompt Engineering Guide (promptingguide.ai), NVIDIA blog: Prompt Engineering and P-Tuning, Mastering LLM Techniques: Inference Optimization සහ Customization, What Is RAG?, Hugging Face Illustrating RLHF, Hugging Face LLM Course (tokenizers, datasets, fine-tuning chapters), Triton Quick Start, TensorRT Get Started, NeMo Best Practices, NVIDIA GenerativeAIExamples repo, What Is Trustworthy AI?, NIST AI RMF.',
         'Exam-day tips: ප්‍රශ්නයකට මිනිත්තුවක් විතරයි. අමාරු ප්‍රශ්න flag කරලා අන්තිමට එන්න. NeMo, NIM, Triton, TensorRT-LLM, NeMo Guardrails, RAPIDS එකිනෙක මොකටද කියලා පැහැදිලිව දැනගන්න. Code ලියන්න නෑ, ඒත් spaCy, NumPy, scikit-learn, Hugging Face මොකටද කියලා අඳුනගන්න ඕනේ. Remote proctored නිසා කලින් දවසේ webcam, internet, mic test කරන්න. මේසය හිස් කරන්න. Phone එක කාමරෙන් එළියට. Power cut එකකට UPS එකක් හෝ fully charged laptop එකක් තියාගන්න.',
       ],
       analogy:
@@ -114,6 +184,14 @@ export default {
         { en: 'Fundamentals of Deep Learning', si: 'NVIDIA DLI course එකක්. Materials GitHub එකේ නොමිලේ තියෙනවා.' },
         { en: 'build.nvidia.com', si: 'NIM models API එකෙන් try කරන්න පුළුවන් NVIDIA site එක.' },
         { en: 'Flag for Review', si: 'අමාරු ප්‍රශ්නයක් සලකුණු කරලා පස්සේ ආයෙත් එන්න තියන එක.' },
+      ],
+      resources: [
+        { title: 'Getting Started With Deep Learning', url: 'https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-FX-01+V1', description: 'Self-paced; deep learning fundamentals, architectures, augmentation, and transfer learning.' },
+        { title: 'Accelerating End-to-End Data Science Workflows', url: 'https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-DS-01+V2', description: 'Self-paced; RAPIDS and GPU-accelerated data science.' },
+        { title: 'Introduction to Transformer-Based NLP', url: 'https://courses.nvidia.com/courses/course-v1:DLI+S-FX-08+V1/', description: 'Self-paced; Transformers and NLP applications.' },
+        { title: 'Building LLM Applications with Prompt Engineering', url: 'https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-FX-12+V2', description: 'Self-paced; prompt engineering and application workflows.' },
+        { title: 'Rapid Application Development With LLMs', url: 'https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-FX-26+V1', description: 'Self-paced; embeddings, LLM application development, and agents.' },
+        { title: 'NVIDIA NCA-GENL recommended courses and exam topics', url: 'https://www.nvidia.com/en-us/learn/certification/generative-ai-llm-associate.md', description: 'Official certification blueprint and learning-path overview.' },
       ],
     },
     // 5
@@ -752,6 +830,76 @@ if torch.cuda.is_available():
         { en: 'Elastic Fabric Adapter (EFA)', si: 'Multi-node training වලට OS-bypass, low-latency AWS network interface එක.' },
         { en: 'Amazon Bedrock Guardrails', si: 'Content filters, denied topics, PII filters, grounding checks දෙන managed AWS safety service එක.' },
       ],
+    },
+  ],
+  englishQuizTitle: 'Original English Practice Questions Mapped to the Five Domains',
+  englishQuizNote: 'These questions are original study exercises, not official NVIDIA exam questions. They are mapped to the published domains and do not claim to reproduce the exam format or weighting.',
+  englishQuiz: [
+    {
+      q: 'A team is building a chatbot over frequently updated internal policy documents. Which approach best provides current document context without retraining the language model after every update?',
+      options: [
+        'Fine-tune the language model on every user question',
+        'Index document chunks with embeddings and retrieve relevant chunks at query time',
+        'Increase the model temperature',
+        'Store the documents only in the system prompt permanently',
+      ],
+      answer: 1,
+      why: 'RAG retrieves current indexed content at query time. Update the index when documents change; retrieval and citations still need evaluation.',
+    },
+    {
+      q: 'A regression model scores R² = -0.2 on a held-out test set. What is the correct interpretation?',
+      options: [
+        'The model is 20% accurate',
+        'The model has zero prediction error',
+        'On this test set, its squared error is worse than predicting the test-set mean for every row',
+        'The training and test sets must have identical means',
+      ],
+      answer: 2,
+      why: 'R² compares the model with the mean-prediction baseline on the evaluated set. A negative score means the model is worse than that baseline.',
+    },
+    {
+      q: 'You want to compare two LLM application versions. Which experiment design gives the fairest comparison?',
+      options: [
+        'Evaluate each version on different questions selected after seeing its answers',
+        'Use the same representative test cases, rubric, settings, and evaluation procedure for both versions',
+        'Compare only the most impressive answer from each version',
+        'Change the prompt and model at the same time, then attribute any change to the model',
+      ],
+      answer: 1,
+      why: 'Keep evaluation conditions consistent and choose the test set and rubric before reviewing results. This reduces confounding and selection bias.',
+    },
+    {
+      q: 'An LLM service has rising p95 latency and a growing request queue, while average latency looks stable. What should the team do first?',
+      options: [
+        'Ignore p95 because the average is stable',
+        'Inspect tail latency, queueing, throughput, and resource metrics to locate the bottleneck',
+        'Increase temperature to make responses faster',
+        'Delete the latency measurements and restart monitoring',
+      ],
+      answer: 1,
+      why: 'Tail latency and queue growth can reveal reliability and capacity problems hidden by averages. Correlate service, model, and hardware metrics.',
+    },
+    {
+      q: 'A dataset was collected from customers for support. The team wants to use the conversations for model training. What is the best first step?',
+      options: [
+        'Use the data because it is already stored securely',
+        'Check the permitted purpose and consent, then minimize and protect data according to policy',
+        'Remove names and assume all privacy obligations are satisfied',
+        'Publish the raw data so reviewers can check it',
+      ],
+      answer: 1,
+      why: 'Security/privacy controls do not by themselves establish consent or permitted purpose. Check those requirements before reuse and minimize sensitive data.',
+    },
+    {
+      q: 'A text dataset contains company names, locations, and dates that must be extracted before analysis. Which Python tool is the most suitable starting point?',
+      options: [
+        'spaCy named-entity recognition',
+        'NumPy matrix multiplication',
+        'Keras model.fit without labels or a task definition',
+        'A vector database used as a text parser',
+      ],
+      answer: 0,
+      why: 'spaCy provides NLP pipelines including named-entity recognition. NumPy handles numerical arrays; vector databases store and retrieve vectors.',
     },
   ],
   quiz: [

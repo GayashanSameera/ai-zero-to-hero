@@ -321,6 +321,18 @@ function PhasePage({ phase, learned, scores, setScores }) {
           <Quiz items={phase.quiz} onFinish={n => setScores(s => ({ ...s, [phase.id]: n }))} />
         </section>
       )}
+
+      {phase.englishQuiz?.length > 0 && (
+        <section className="stack">
+          <div className="eyebrow">English exam practice</div>
+          <h2>{phase.englishQuizTitle || 'English Practice Questions'}</h2>
+          {phase.englishQuizNote && <p className="muted">{phase.englishQuizNote}</p>}
+          {scores[`${phase.id}-english`] !== undefined && (
+            <p className="muted">Previous score: {scores[`${phase.id}-english`]} / {phase.englishQuiz.length}</p>
+          )}
+          <Quiz items={phase.englishQuiz} onFinish={n => setScores(s => ({ ...s, [`${phase.id}-english`]: n }))} />
+        </section>
+      )}
     </div>
   )
 }
@@ -381,6 +393,33 @@ function TopicPage({ phase, topic, learned, setLearned }) {
         </div>
       )}
 
+      {topic.domainChecklist?.length > 0 && (
+        <section className="stack">
+          <h2>Official exam objectives and lessons</h2>
+          <p className="muted">මෙම checklist එක NVIDIA විසින් පළ කළ domain objectives මත පදනම් වේ. එක් එක් objective එක ඉගෙනගන්න සබැඳි lesson තෝරන්න.</p>
+          {topic.domainChecklist.map(domain => (
+            <div className="box keys" key={domain.name}>
+              <h3>{domain.name} ({domain.weight})</h3>
+              <ul>
+                {domain.objectives.map((objective, i) => (
+                  <li key={i}>
+                    {objective.text}
+                    {objective.lessons?.length > 0 && (
+                      <> — {objective.lessons.map((lesson, j) => (
+                        <React.Fragment key={lesson.phase + lesson.topic}>
+                          {j > 0 && ', '}
+                          <a href={`#/p/${lesson.phase}/${lesson.topic}`}>{lesson.label}</a>
+                        </React.Fragment>
+                      ))}</>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      )}
+
       {topic.terms?.length > 0 && (
         <section className="stack">
           <h2>අදාළ වචන</h2>
@@ -389,6 +428,20 @@ function TopicPage({ phase, topic, learned, setLearned }) {
               <div key={t.en}><dt>{t.en}</dt><dd>{t.si}</dd></div>
             ))}
           </dl>
+        </section>
+      )}
+
+      {topic.resources?.length > 0 && (
+        <section className="stack">
+          <h2>Official resources and further study</h2>
+          <ul>
+            {topic.resources.map(resource => (
+              <li key={resource.url}>
+                <a href={resource.url} target="_blank" rel="noreferrer">{resource.title}</a>
+                {resource.description && <span className="muted"> — {resource.description}</span>}
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 

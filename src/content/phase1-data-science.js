@@ -227,16 +227,15 @@ plt.show()`,
       title: 'Feature Engineering 1: Categorical Encoding',
       body: [
         'Feature engineering කියන්නේ raw data වලින් model එකට තේරෙන, ප්‍රයෝජනවත් columns (features) හදන එක. ගොඩක් වෙලාවට හොඳ features හදන එක අලුත් algorithm එකකට වඩා ප්‍රතිඵලය වැඩි දියුණු කරනවා.',
-        'Models වලට තේරෙන්නේ අංක. "Colombo", "Kandy", "Galle" වගේ text categories අංක වලට හරවන්න ඕනේ. මේකට කියන්නේ encoding කියලා. Label encoding වලදී හැම category එකකටම අංකයක් දෙනවා: Colombo=0, Kandy=1, Galle=2. ඒත් ප්‍රශ්නයක් තියෙනවා. Model එක හිතන්න පුළුවන් Galle (2) කියන්නේ Colombo (0) ට වඩා "ලොකුයි" කියලා. ඒ නිසා label encoding හොඳම වෙන්නේ ස්වභාවික පිළිවෙළක් තියෙන ඒවට (small < medium < large) හරි tree models වලට.',
+        'Models වලට අංක input ඕනේ. "Colombo", "Kandy", "Galle" වගේ text categories අංක වලට හරවන එක encoding. Ordinal encoding එකේ small=0, medium=1, large=2 වගේ ස්වභාවික පිළිවෙළක් අංක වලින් නිරූපණය කරනවා. පිළිවෙළක් නැති city වගේ categories වලට 0, 1, 2 දුන්නොත් ඒ අංක අතර ප්‍රමාණයක හෝ අනුපිළිවෙළක සම්බන්ධයක් තියෙනවා කියන අර්ථයක් model එක වැරදියට ගන්න පුළුවන්. Tree model එකක් වුණත් අංක අනුව split කරන්නේ නිසා අහඹු අංකකරණය category group කිරීමට බාධා වෙන්න පුළුවන්; tree එකකට label encoding හැමවිටම ආරක්ෂිතයි කියලා නීතියක් නෑ. One-hot encoding හෝ model එකේ native categorical support එක සලකා බලන්න.',
         'One-hot encoding වලදී හැම category එකකටම වෙනම column එකක් හදලා 0 හරි 1 දානවා. is_Colombo, is_Kandy, is_Galle. පිළිවෙළක් නැති categories වලට මේක ආරක්ෂිතයි. ඒත් categories දහස් ගණනක් තියෙනවා නම් columns ගොඩක් හැදෙනවා.',
-        'Target encoding වලදී category එක වෙනුවට ඒ category එකේ target එකේ සාමාන්‍යය දානවා. උදාහරණයක් විදිහට Colombo ගෙවල් වල සාමාන්‍ය මිල. Categories ගොඩක් තියෙනකොට හොඳයි. ඒත් පරිස්සමෙන් කරන්න ඕනේ. Training data වලින්ම ගණනය කරලා, cross-validation ඇතුළේ කරන්නේ නැත්නම් data leakage වෙන්න පුළුවන්.',
+        'Target encoding වලදී category එක වෙනුවට ඒ category එකේ target එකේ සාමාන්‍යය වැනි අගයක් දානවා. උදාහරණයක් විදිහට Colombo ගෙවල් වල සාමාන්‍ය මිල. Categories ගොඩක් තියෙනකොට ප්‍රයෝජනවත් වුණත්, එක training row එක encode කරන්න එම row එකේ target එකත් ඇතුළත් සාමාන්‍යය භාවිතා කළොත් target එක ආපහු feature එකට කාන්දු වෙනවා. Training rows සඳහා out-of-fold encoding භාවිතා කරන්න: එක් එක් fold එකේ rows encode කරන්නේ අනෙක් folds වලින් පමණක් ගණනය කළ category statistics වලින්. Validation සහ test rows encode කරන්නේ training කොටසෙන් ගණනය කළ statistics වලින් පමණයි. නොදුටු category එකකට global training mean එක වැනි fallback එකක් යොදන්න.',
       ],
-      analogy: 'School එකේ houses හතරක් තියෙනවා කියමු: Vijaya, Gemunu, Tissa, Parakrama. Label encoding කියන්නේ ඒවට 1, 2, 3, 4 කියලා අංක දෙනවා වගේ. ඒත් Parakrama (4) Vijaya (1) ට වඩා හතර ගුණයක් හොඳයි කියලා අදහසක් නෑ. One-hot කියන්නේ හැම ළමයෙක්ටම badges හතරක් දීලා, එයාගේ house එකේ badge එක විතරක් දාගන්න කියනවා වගේ.',
-      example: 'Rows 3ක city column එක: Colombo, Kandy, Colombo. Categories දෙකක් තියෙන නිසා one-hot encoding කළාම columns දෙකක් හැදෙනවා (Colombo, Kandy). Row 1: [1, 0], Row 2: [0, 1], Row 3: [1, 0]. Target encoding වලින් Colombo ගෙවල් වල සාමාන්‍ය මිල ලක්ෂ 450 නම් සහ Kandy ලක්ෂ 280 නම්, city column එක [450, 280, 450] වෙනවා.',
+      analogy: 'School එකේ houses හතරක් තියෙනවා කියමු: Vijaya, Gemunu, Tissa, Parakrama. ඒවට අහඹුවෙන් 1, 2, 3, 4 කියලා අංක දුන්නා කියලා Parakrama (4) Vijaya (1) ට වඩා හතර ගුණයක් හොඳයි කියන අදහසක් නෑ. One-hot කියන්නේ හැම ළමයෙක්ටම badges හතරක් දීලා, එයාගේ house එකේ badge එක විතරක් දාගන්න කියනවා වගේ.',
+      example: 'City අගයන් Colombo, Kandy, Colombo නම් one-hot columns [is_Colombo, is_Kandy] යටතේ rows [1, 0], [0, 1], [1, 0] වෙනවා. Training fold එකක වෙනත් Colombo ගෙවල් දෙකක මිල ලක්ෂ 400 සහ 500 නම්, ඒ fold එකෙන් පිටත Colombo row එකක target encoding ලක්ෂ 450 වෙන්න පුළුවන්. නමුත් එම row එකේ මිල ලක්ෂ 900 නම්, එම row එකත් සාමාන්‍යයට ඇතුළත් කරලා encode කිරීම target leakage එකක්. ඒ නිසා එහි training encoding එක හදන්න එම row එක නොදැකපු වෙනත් folds වල statistics පාවිච්චි කරන්න.',
       code: {
         lang: 'python',
         src: `import pandas as pd
-from sklearn.preprocessing import LabelEncoder
 
 df = pd.DataFrame({"city": ["Colombo", "Kandy", "Galle", "Colombo"],
                    "size": ["small", "large", "medium", "small"],
@@ -245,24 +244,24 @@ df = pd.DataFrame({"city": ["Colombo", "Kandy", "Galle", "Colombo"],
 # One-hot: හැම city එකකටම 0/1 column එකක්
 onehot = pd.get_dummies(df["city"], prefix="city")
 
-# Ordinal / label: පිළිවෙළක් තියෙන size එකට අංක
+# Ordinal encoding: පිළිවෙළක් තියෙන size එකට අංක
 df["size_num"] = df["size"].map({"small": 0, "medium": 1, "large": 2})
-df["city_label"] = LabelEncoder().fit_transform(df["city"])
 
-# Target encoding: city එකේ සාමාන්‍ය price එක (train data වලින් විතරක්)
-df["city_te"] = df.groupby("city")["price"].transform("mean")`,
+# Target encoding එකක් භාවිතා කරනවා නම්, training rows සඳහා
+# out-of-fold values හදන encoder එකක් CV pipeline එක ඇතුළේ fit කරන්න.
+# Validation/test rows සඳහා training fold එකේ statistics පමණක් භාවිතා කරන්න.`,
       },
       keyPoints: [
         'Models වලට අංක ඕනේ, text categories encode කරන්න ඕනේ.',
-        'Label encoding = පිළිවෙළක් තියෙන categories වලට.',
+        'Ordinal encoding = ස්වභාවික පිළිවෙළක් තියෙන categories වලට. Nominal categories වලට අහඹු label numbers දැමීම tree models වලටත් අවදානම්.',
         'One-hot = පිළිවෙළක් නැති categories වලට ආරක්ෂිතයි.',
-        'Target encoding = categories ගොඩක් තියෙනකොට, ඒත් leakage ගැන පරිස්සම් වෙන්න.',
+        'Target encoding = category එකේ target statistics භාවිතා කරනවා; training values out-of-fold හදලා leakage වළක්වන්න.',
       ],
       terms: [
         { en: 'Feature Engineering', si: 'Raw data වලින් model එකට ප්‍රයෝජනවත් අලුත් features හදන එක.' },
         { en: 'One-Hot Encoding', si: 'හැම category එකකටම 0/1 වෙනම column එකක් හදන එක.' },
-        { en: 'Label Encoding', si: 'හැම category එකකටම අංකයක් දෙන එක (0, 1, 2...).' },
-        { en: 'Target Encoding', si: 'Category එක වෙනුවට ඒකේ target එකේ සාමාන්‍ය අගය දාන එක.' },
+        { en: 'Ordinal Encoding', si: 'ස්වභාවික පිළිවෙළක් ඇති categories ඒ පිළිවෙළ රැකෙන අංක වලට හැරවීම.' },
+        { en: 'Target Encoding', si: 'Category එකේ target statistics භාවිතා කරන encoding එක. Training row එකක් encode කරන්න එම row එකේ target එක නොදැකපු statistics අවශ්‍යයි.' },
       ],
     },
     {
