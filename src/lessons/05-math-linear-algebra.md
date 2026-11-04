@@ -33,13 +33,32 @@
 
 ## 1. Scalars
 
+**Why it exists:** every bigger container in this file (vectors, matrices, tensors) is built out of single numbers, so we need a name for the smallest building block. Knowing what counts as "one number" also stops a lot of shape mistakes later.
+
 **Idea:** A **scalar** is just a single number: 5, −2.3, 0.001.
 
 Examples: a temperature, a price, a learning rate. Written in normal lowercase italics: *x*, *a*, *λ*.
 
+### Worked example
+
+12 egg rotis at Rs. 40 each: 12 × 40 = **Rs. 480**. The count (12), the price (40) and the total (480) are all scalars. One number each, no list.
+
+### Where you'll meet it in real work
+
+- The **loss** of a model is a single scalar: "how wrong am I overall?" (for example 0.43). Training tries to push this one number down ([file 06](06-math-calculus.md#1-the-big-picture-walking-downhill-in-fog)).
+- Settings such as the **learning rate** (0.001) and the LLM **temperature** (0.7) are scalars too.
+
+### Common mistakes
+
+- Treating `5` and `[5]` as the same. In NumPy, `np.array(5).shape` is `()` (a scalar) but `np.array([5]).shape` is `(1,)` (a vector with one element). Many shape errors start here.
+
+> **සිංහලෙන්:** Scalar කියන්නේ තනි අංකයක් විතරයි. කඩේකින් රොටී එකක් Rs. 40ට ගත්තොත්, රොටී 12ක මිල 12 × 40 = Rs. 480 කියලා scalar දෙකක් ගුණ කරලා හොයනවා. AI වලදී model එකේ loss එක, learning rate එක වගේ දේවල් scalar වෙනවා. ඊළඟට එන vectors, matrices වල හැම අංකයක්ම මේ වගේ පොඩි scalar එකකින් හැදුණු එකක් කියලා මතක තියාගන්න.
+
 ---
 
 ## 2. Vectors
+
+**Why it exists:** a computer cannot work with "a house" or "a customer". A vector turns each thing into a fixed-length list of numbers, so every item can be compared and calculated on in the same way.
 
 **Idea:** A **vector** is an ordered list of numbers.
 
@@ -83,9 +102,40 @@ Each row is a vector: `[120, 3, 15]` and `[80, 2, 5]`. The **feature vector** of
 
 In LLMs, each word (actually each *token*, file 20) is represented by a vector of hundreds or thousands of numbers, e.g. "king" → [0.21, −0.45, 0.88, ..., 0.03] (768 numbers). Words with similar meanings get similar vectors. Covered in [file 18](18-nlp-fundamentals.md).
 
+### Worked example
+
+Describe a cricket player as `[batting average, strike rate, matches]`:
+
+```
+player A = [45.2, 88, 120]
+player B = [30.0, 95,  60]
+```
+
+Each is a 3-dimensional vector. Put 11 players in one table and you get 11 rows × 3 columns (a matrix, section 8).
+
+**Order is fixed.** Position 1 always means the average, position 2 always the strike rate. `[120, 3, 15]` and `[3, 120, 15]` are different vectors, even though they hold the same numbers.
+
+**Analogy:** one line of a Keells bill is a vector: `[price, quantity, discount]`. The whole bill is a matrix; a month of bills is a tensor (section 13).
+
+### Where you'll meet it in real work
+
+On Daraz, each product and each shopper can be turned into a vector. "Show products whose vectors are close to this shopper's vector" is the basic idea of a recommendation system.
+
+### Common mistakes
+
+- Putting features in a different order for different rows. The model reads by position, so mixing the order silently ruins the data.
+- Comparing vectors of different lengths (a 3-number vector with a 4-number vector). Operations need the same length.
+- Thinking "dimension 768" is impossible because you cannot draw it. You cannot draw it, but all the rules (add, length, distance) work exactly the same as for 2 numbers.
+
+**Exam angle:** an **embedding** is a vector. Texts or images with similar meaning get vectors that are close together, and that is what vector search relies on.
+
+> **සිංහලෙන්:** Vector එකක් කියන්නේ අංක ටිකක් පිළිවෙලට ලියපු list එකක්. ගෙයක් [බිම් ප්‍රමාණය 120, කාමර 3, අවුරුදු 15] කියලා ලිව්වම ඒක 3-dimension vector එකක්. Cricket player කෙනෙක්ව [average 45.2, strike rate 88, matches 120] කියලා ලිව්වත් ඒක vector එකක්. පිළිවෙල වෙනස් කරන්න බෑ, මොකද පළවෙනි තැන හැමවිටම එකම දේ කියන්න ඕනේ. AI එක ගෙවල්, customers, වචන, හැමදේම මෙහෙම vectors බවට හරවලා, ළඟ තියෙන vectors සමාන දේවල් කියලා සලකනවා.
+
 ---
 
 ## 3. Vector operations
+
+**Why it exists:** to move, mix and scale data points. You will use these operations constantly. Even the gradient descent update in [file 06](06-math-calculus.md#6-gradient-descent-in-one-dimension) is just a vector subtraction plus a scalar multiplication.
 
 ### Adding vectors: add element by element
 
@@ -132,9 +182,39 @@ a - b      # [-3, -3, -3]
 a * b      # [4, 10, 18]  (element-wise)
 ```
 
+### Worked example 1: the average of two customers
+
+Two customers described by `[age, monthly visits]`: `[30, 40]` and `[50, 60]`.
+
+```
+sum     = [30+50, 40+60] = [80, 100]
+average = 0.5 × [80, 100] = [40, 50]
+```
+
+Many systems build a sentence's vector by averaging the vectors of its words in exactly this way.
+
+### Worked example 2: a gradient descent step
+
+Weights `w = [2, 5]`, gradient `[1, −3]`, learning rate 0.1:
+
+```
+w_new = w − 0.1 × [1, −3]
+      = [2, 5] − [0.1, −0.3]
+      = [1.9, 5.3]      (5 − (−0.3) = 5.3)
+```
+
+### Common mistakes
+
+- Adding vectors of different lengths. `[1, 2] + [3, 4, 5]` is an error.
+- Thinking `a * b` in NumPy is a dot product. It is the element-wise product; the dot product comes in section 6.
+
+> **සිංහලෙන්:** Vectors එකතු කරනවා කියන්නේ එකම තැන් වල අංක එකතු කරන එක. [1, 2] + [3, 4] = [4, 6]. Vector එකක් 3න් ගුණ කරනවා කියන්නේ හැම අංකයක්ම 3න් ගුණ කරන එක. Customers දෙන්නෙක්ගේ [30, 40] සහ [50, 60] එකතු කරලා (80, 100) දෙකෙන් බෙදුවම සාමාන්‍යය [40, 50] ලැබෙනවා. Gradient descent එකේ w − 0.1 × grad කියන්නෙත් මේ අඩු කිරීමයි ගුණ කිරීමයි විතරයි. දිග වෙනස් vectors දෙකක් එකතු කරන්න බෑ කියන එක විතරක් මතක තියාගන්න.
+
 ---
 
 ## 4. Length of a vector (norm)
+
+**Why it exists:** we often need one number that says "how big is this vector?" (or, with a difference, "how far apart are these two?"). The norm gives that number.
 
 **Idea:** the **norm** measures how "big" a vector is, like the length of the arrow.
 
@@ -172,9 +252,38 @@ np.linalg.norm(v, ord=1)   # 7.0  (L1)
 v / np.linalg.norm(v)      # [0.6, 0.8]  unit vector
 ```
 
+### Worked example
+
+v = [1, 2, 2]
+
+```
+L2: √(1² + 2² + 2²) = √(1 + 4 + 4) = √9 = 3
+L1: |1| + |2| + |2| = 5
+unit vector: [1, 2, 2] ÷ 3 = [1/3, 2/3, 2/3]
+check its length: 1/9 + 4/9 + 4/9 = 9/9 = 1  ✓
+```
+
+**Picture (city blocks):** walking 3 blocks east and 4 blocks north is a Manhattan (L1) distance of 3 + 4 = 7 blocks. A bird flying straight covers the L2 distance √(9 + 16) = 5 blocks.
+
+### Where you'll meet it in real work
+
+**Weight decay (L2 regularisation)** adds a penalty to the loss. With weights w = [3, 4] and a penalty strength λ = 0.01, the penalty is λ × ‖w‖² = 0.01 × 25 = **0.25**. Bigger weights, bigger penalty, so the model is nudged to keep weights small.
+
+### Common mistakes
+
+- Forgetting the square root in L2. ‖[3, 4]‖ is 5, not 25.
+- Forgetting absolute values in L1. The L1 norm of [3, −4] is 7, not −1.
+- Mixing up ‖v‖ and ‖v‖². The squared version is just the sum of squares, with no square root.
+
+**Exam angle:** L1 regularisation tends to push some weights to exactly 0 (sparse model); L2 regularisation shrinks all weights smoothly but rarely to exactly 0.
+
+> **සිංහලෙන්:** Norm එක කියන්නේ vector එකක දිග. [3, 4] ගත්තොත් 3 දකුණට, 4 උඩට ගියාම කෙලින්ම ගිහින් ලැබෙන දුර √(9 + 16) = 5. ඒක L2 norm එක. L1 norm එක කියන්නේ පාරේ කොටු ගණන් කරලා ඇවිදගෙන යන විදිහ: 3 + 4 = 7. Model එකේ weights ලොකු වෙන්න නොදී තියාගන්න regularisation වලදී මේ norms පාවිච්චි කරනවා. Vector එක ඒකේ දිගෙන් බෙදුවම දිග 1ක් තියෙන unit vector එකක් ලැබෙනවා, [3, 4] ÷ 5 = [0.6, 0.8].
+
 ---
 
 ## 5. Distance between vectors
+
+**Why it exists:** "these two customers are similar" is just a feeling until you have a number for it. Distance turns "similar" into "close".
 
 **Idea:** how far apart two points are = the norm of their difference.
 
@@ -195,9 +304,44 @@ difference = [−3, −4] → √(9 + 16) = **5**
 
 ⚠️ **Scale matters!** If one feature is income (in thousands, e.g. 50,000) and another is age (e.g. 34), income completely dominates the distance. That's why we **scale** features (file 10) before using distances.
 
+### Worked example: the scale problem, with numbers
+
+Two customers `[age, monthly income in Rs.]`: A = [34, 50000], B = [60, 50500].
+
+**Raw distance:**
+
+```
+difference = [34−60, 50000−50500] = [−26, −500]
+distance   = √(26² + 500²) = √(676 + 250000) = √250676 ≈ 500.7
+```
+
+The 26-year age gap hardly counts, because income is measured in big numbers.
+
+**After scaling** (age ÷ 100, income ÷ 100000): A = [0.34, 0.5], B = [0.60, 0.505]
+
+```
+difference = [−0.26, −0.005]
+distance   = √(0.0676 + 0.000025) = √0.067625 ≈ 0.26
+```
+
+Now age matters a lot, which is much fairer.
+
+### Where you'll meet it in real work
+
+A telecom could group customers into segments with k-Means. Every step of k-Means is "which centre is this customer closest to?", a distance calculation. Without scaling, the biggest-number column would decide everything.
+
+### Common mistakes
+
+- Using distances on unscaled features (the example above).
+- Forgetting that a smaller distance means *more* similar, while a bigger cosine similarity means *more* similar. They run in opposite directions.
+
+> **සිංහලෙන්:** Distance කියන්නේ points දෙකක් කොච්චර ඈතද කියන එක. [1, 2] සහ [4, 6] අතර වෙනස [−3, −4], ඒ නිසා දුර √(9 + 16) = 5. හැබැයි features වල ප්‍රමාණ වෙනස් නම් පරිස්සම් වෙන්න ඕනේ. වයස 34 සහ 60 අතර අවුරුදු 26ක වෙනසක් තිබුණත්, වැටුප Rs. 50,000 සහ Rs. 50,500 වගේ රුපියල් 500ක වෙනසක් ආවොත් දුර ගණනය කරද්දී වැටුපම ජයගන්නවා, වයස ගණන් ගන්නේ නෑ. ඒ නිසා distance පාවිච්චි කරන්න කලින් features ඔක්කොම එකම පරිමාණයකට (scale) ගේනවා.
+
 ---
 
 ## 6. The dot product
+
+**Why it exists:** a model has to combine many inputs, each with its own importance, into one answer. The dot product does exactly that, and it also tells us how much two vectors "agree".
 
 **This is the single most important operation in AI.** Neural networks, attention in transformers and similarity search all use it.
 
@@ -247,9 +391,44 @@ same direction       perpendicular        opposite
 
 This is how search engines and LLM attention measure "how related are these two things?"
 
+### Worked example 1: a Cargills bill
+
+Quantities `[2 loaves, 3 milk packets]`, prices `[Rs. 150, Rs. 120]`:
+
+```
+[2, 3] · [150, 120] = 2×150 + 3×120 = 300 + 360 = Rs. 660
+```
+
+### Worked example 2: a weighted exam mark
+
+Weights `[0.3, 0.2, 0.5]` for assignments, quizzes and the final exam. Your marks are `[80, 60, 70]`:
+
+```
+0.3×80 + 0.2×60 + 0.5×70 = 24 + 12 + 35 = 71
+```
+
+A neuron in a neural network does exactly this, plus a bias.
+
+### Where you'll meet it in real work
+
+In a transformer's **attention**, every word's *query* vector takes a dot product with every other word's *key* vector. A big dot product means "pay a lot of attention to that word".
+
+### Common mistakes
+
+- Expecting a vector back. The dot product of two vectors is **one number**.
+- Mixing it up with the element-wise product `*`. `[1,2,3] * [4,5,6]` gives `[4,10,18]`; the dot product gives `32`.
+- Dot-product inputs must have the same length.
+- Reading a big dot product as "very similar" without checking the lengths. Long vectors give big values (that is why section 7 exists).
+
+**Exam angle:** attention in transformers is **softmax(QKᵀ / √d_k) V**. The QKᵀ part is a grid of dot products between queries and keys, and the √d_k scales them down so they do not get too large.
+
+> **සිංහලෙන්:** Dot product එක කියන්නේ ගැළපෙන අංක ගුණ කරලා ඔක්කොම එකතු කරන එක. Cargills එකේදී පාන් 2ක් (එකක් Rs. 150) සහ කිරි පැකට් 3ක් (එකක් Rs. 120) ගත්තොත් bill එක [2, 3] · [150, 120] = 300 + 360 = Rs. 660. විභාගයේ ලකුණු වලට 30%, 20%, 50% බර දීලා අන්තිම ලකුණ හොයන්නෙත් dot product එකක්. එකම දිශාවට ඇති vectors වලට ලොකු ධන අගයක්, 90° කෝණයකින් ඇති ඒවාට 0ක්, විරුද්ධ දිශාවට ඇති ඒවාට සෘණ අගයක් ලැබෙනවා. Neural network එකේ neuron එකකුත්, transformer එකේ attention එකත් වැඩ කරන්නේ මේකෙන්.
+
 ---
 
 ## 7. Cosine similarity
+
+**Why it exists:** a short note and a long article about the same topic should count as "similar". The raw dot product would favour the longer one, so we divide the length away and compare only the direction.
 
 **Problem:** the dot product also grows with vector length. A long vector gives a big dot product even if it's not very similar.
 
@@ -280,9 +459,40 @@ def cosine_similarity(a, b):
 
 **Where used:** comparing text **embeddings** in semantic search and RAG (file 23): "find documents whose meaning is closest to the question". If vectors are already normalised to length 1, cosine similarity = dot product, which is faster.
 
+### Worked example: which document matches the query?
+
+Count two words, `[cricket, rice]`, in each text:
+
+```
+query     Q = [2, 0]   (the user typed "cricket cricket")
+document  A = [4, 1]   (mostly about cricket)
+document  B = [1, 5]   (mostly about rice)
+
+cos(Q, A) = (2×4 + 0×1) / (‖Q‖ × ‖A‖) = 8 / (2 × √17) = 8 / (2 × 4.123) = 8 / 8.246 ≈ 0.970
+cos(Q, B) = (2×1 + 0×5) / (‖Q‖ × ‖B‖) = 2 / (2 × √26) = 2 / (2 × 5.099) = 2 / 10.198 ≈ 0.196
+```
+
+Document A wins by a mile. Also check the "same direction, different length" case: `[3, 4]` and `[6, 8]` give dot = 18 + 32 = 50, and cos = 50 / (5 × 10) = **1**.
+
+### Where you'll meet it in real work
+
+A company help chatbot (RAG, file 23) turns the customer's question and every help article into embeddings. It then returns the articles with the highest cosine similarity to the question.
+
+### Common mistakes
+
+- Dividing by zero when a vector is all zeros (its length is 0).
+- Forgetting that cosine ignores length. `[1, 2]` and `[100, 200]` score exactly 1, which is sometimes not what you want.
+- Mixing up **cosine similarity** (bigger = closer) with **cosine distance** = 1 − cosine similarity (smaller = closer).
+
+**Exam angle:** vector databases and RAG retrieval rank documents by cosine similarity (or dot product). If the vectors are normalised to length 1, cosine similarity and dot product give the same ranking.
+
+> **සිංහලෙන්:** Dot product එක vectors වල දිග වැඩි වෙද්දී ලොකු වෙනවා, ඒ නිසා දිගත් එක්ක ඇහිලා වැරදි වෙන්න පුළුවන්. Cosine similarity එකෙන් දෙකේ දිගෙන්ම බෙදන නිසා දිශාව විතරක් ගණන් ගන්නවා. [3, 4] සහ [6, 8] දෙකේ දිශාව එකමයි, ඒ නිසා cosine = 50 ÷ (5 × 10) = 1. 1 කියන්නේ හරියටම සමානයි, 0 කියන්නේ සම්බන්ධයක් නෑ, −1 කියන්නේ විරුද්ධයි. පොඩි note එකකුයි දිග ලිපියකුයි දෙකම cricket ගැන නම් cosine similarity එක ඉහළයි. RAG එකේ ප්‍රශ්නයට ළඟම document එක හොයන්නේ මේකෙන්.
+
 ---
 
 ## 8. Matrices
+
+**Why it exists:** a dataset has thousands of vectors. A matrix packs them into one object, so one operation can work on all of them at once.
 
 **Idea:** A **matrix** is a rectangular grid of numbers: rows and columns. Like a table or spreadsheet with only numbers.
 
@@ -320,9 +530,38 @@ A[1]        # [4, 5, 6]  (second row)
 A[:, 0]     # [1, 4]     (first column)
 ```
 
+### Worked example: a marks table
+
+```
+              Maths  Science  English
+Nimal    ┌     72      65       80  ┐
+Kamala   │     90      88       76  │     ← a 3 × 3 matrix
+Sunil    └     55      60       70  ┘
+```
+
+- Shape: **3 × 3** (3 students, 3 subjects).
+- A row is one student's vector: `[90, 88, 76]` is Kamala.
+- A column is one subject for everyone: `[72, 90, 55]` is Maths.
+- Element A₂₃ (row 2, column 3) = 76, Kamala's English mark.
+- A 28 × 28 grayscale image has 28 × 28 = **784** numbers.
+
+### Where you'll meet it in real work
+
+In scikit-learn, the training data `X` is always a matrix with shape `(number of examples, number of features)`. If a bank has 20,000 loan applications with 12 features each, `X.shape` is `(20000, 12)`.
+
+### Common mistakes
+
+- Writing the shape as (columns × rows). It is always **rows first**.
+- Mixing up Python's counting from 0 with the maths convention of counting from 1: `A[0, 1]` is the first row, second column.
+- A plain NumPy vector of shape `(3,)` is neither a row vector `(1, 3)` nor a column vector `(3, 1)`. This causes surprises in matrix multiplication and broadcasting.
+
+> **සිංහලෙන්:** Matrix එකක් කියන්නේ rows සහ columns තියෙන අංක table එකක්, Excel sheet එකක් වගේ. ළමයි 3දෙනෙක්ගේ විෂය 3ක ලකුණු තිබුණොත් ඒක 3 × 3 matrix එකක්: පේළියක් එක ළමයෙක්, තීරුවක් එක විෂයක්. Shape එක ලියද්දී හැමවිටම rows මුලින්: 2 × 3 කියන්නේ rows 2යි, columns 3යි. Dataset එකක් එක matrix එකක්, 28 × 28 පින්තූරයක් matrix එකක් (අංක 784ක්). Python වල ගණන් කරන්නේ 0න් පටන් අරන් නිසා A[0, 1] කියන්නේ පළවෙනි පේළියේ දෙවෙනි අංකය.
+
 ---
 
 ## 9. Matrix operations
+
+**Why it exists:** often you want to change a whole table in one go, for example converting every mark from "out of 50" to "out of 100", or adding a bonus to every mark.
 
 ### Addition and scalar multiplication: element by element (same shape needed)
 
@@ -342,9 +581,38 @@ A[:, 0]     # [1, 4]     (first column)
 
 This is NOT the same as matrix multiplication (next section).
 
+### Worked example
+
+Marks out of 50 for two students in two subjects, then a bonus matrix:
+
+```
+┌ 30 40 ┐       ┌  60  80 ┐              ┌  60  80 ┐   ┌ 5 0 ┐   ┌ 65  80 ┐
+└ 45 25 ┘ × 2 = └  90  50 ┘   and then   └  90  50 ┘ + └ 0 5 ┘ = └ 90  55 ┘
+```
+
+**Same pair, two different answers.** Take A = [[1,2],[3,4]] and B = [[5,6],[7,8]]:
+
+```
+A ⊙ B (element-wise)    = [[5, 12], [21, 32]]
+A @ B (matrix multiply) = [[19, 22], [43, 50]]
+```
+
+### Where you'll meet it in real work
+
+An activation function such as ReLU is applied to every element of a layer's output matrix. During training, **dropout** switches off random neurons by multiplying the layer's output element by element with a random 0/1 mask.
+
+### Common mistakes
+
+- Using `*` when you meant `@`. Both run without error when the shapes match, so the bug can stay hidden.
+- Adding matrices of different shapes (apart from the broadcasting cases in section 14).
+
+> **සිංහලෙන්:** Matrix දෙකක් එකතු කරනවා කියන්නේ එකම තැන් වල අංක එකතු කරන එක, ඒ නිසා shape දෙකම සමාන වෙන්න ඕනේ. ලකුණු 50න් තියෙන matrix එකක් 2න් ගුණ කළොත් ඔක්කොම 100න් වෙනවා: [[30, 40], [45, 25]] × 2 = [[60, 80], [90, 50]]. Element-wise ගුණ කිරීම (⊙) සහ matrix multiplication දෙක වෙනස්. [[1,2],[3,4]] ⊙ [[5,6],[7,8]] = [[5,12],[21,32]], ඒත් matrix multiplication එකෙන් [[19,22],[43,50]] ලැබෙනවා. Activation functions සහ dropout වලදී පාවිච්චි වෙන්නේ element-wise වැඩ.
+
 ---
 
 ## 10. Matrix multiplication
+
+**Why it exists:** a neural network needs to compute thousands of weighted sums (dot products) at the same time. Matrix multiplication is the compact way to say "do all of these dot products at once".
 
 **Idea:** to multiply matrix **A** by matrix **B**, each element of the result is the **dot product** of a **row of A** with a **column of B**.
 
@@ -408,9 +676,56 @@ A matrix times a vector = a dot product of each row with the vector → a new ve
 
 **Counting the work:** multiplying (m × n) by (n × p) takes about m × n × p multiplications. For big neural networks, that's trillions, which is why we need GPUs (section 16).
 
+### Worked example 1: two families, one price list
+
+Quantities of `[bread, milk]` bought by two families, and the prices `[Rs. 150, Rs. 120]`:
+
+```
+┌ 2 3 ┐   ┌ 150 ┐   ┌ 2×150 + 3×120 ┐   ┌ 660 ┐
+└ 1 4 ┘ × └ 120 ┘ = └ 1×150 + 4×120 ┘ = └ 630 ┘
+```
+
+Family 1 pays Rs. 660 and family 2 pays Rs. 630, from a single multiplication.
+
+### Worked example 2: a (2×3) times (3×2)
+
+```
+A = ┌ 1 2 3 ┐    B = ┌ 1 0 ┐
+    └ 4 5 6 ┘        │ 0 1 │
+                     └ 1 1 ┘
+
+C₁₁ = [1,2,3]·[1,0,1] = 1 + 0 + 3 = 4
+C₁₂ = [1,2,3]·[0,1,1] = 0 + 2 + 3 = 5
+C₂₁ = [4,5,6]·[1,0,1] = 4 + 0 + 6 = 10
+C₂₂ = [4,5,6]·[0,1,1] = 0 + 5 + 6 = 11
+
+C = ┌  4  5 ┐   (shape 2×2: outer numbers of 2×3 and 3×2)
+    └ 10 11 ┘
+```
+
+### Order matters
+
+Using A = [[1,2],[3,4]] and B = [[5,6],[7,8]] from above: A × B = [[19, 22], [43, 50]], but B × A = [[5×1+6×3, 5×2+6×4], [7×1+8×3, 7×2+8×4]] = **[[23, 34], [31, 46]]**. Different!
+
+### Where you'll meet it in real work
+
+In a transformer, the attention scores for a sentence of n tokens are Q × Kᵀ. With Q of shape (n × d) and Kᵀ of shape (d × n), the result is an (n × n) grid with one score for every pair of tokens.
+
+### Common mistakes
+
+- Using `*` (element-wise) instead of `@` (matrix multiplication).
+- Only checking the outer dimensions. The **inner** ones must match; (32×100) @ (100×10) is fine and gives (32×10), costing about 32 × 100 × 10 = 32,000 multiplications.
+- Assuming A × B = B × A.
+
+**Exam angle:** exams like to ask "what is the output shape of (m×n) times (n×p)?". Answer (m×p). Remember that the linear layers and the attention in a transformer are matrix multiplications.
+
+> **සිංහලෙන්:** Matrix multiplication එකේදී පළවෙනි matrix එකේ row එකක් දෙවෙනි matrix එකේ column එකක් එක්ක dot product කරනවා. පවුල් දෙකක් පාන් සහ කිරි ගත්තා නම්, quantities [[2,3],[1,4]] ට prices [150,120] ගුණ කළාම bills දෙකම එකවර [660, 630] ලැබෙනවා. නීතිය: (m × n) × (n × p) = (m × p), මැද අංක දෙක සමාන වෙන්නම ඕනේ. (32 × 100) × (50 × 10) වගේ එකක් ගැහුවොත් 100 ≠ 50 නිසා error එකක් එනවා, deep learning code වල වැඩිපුරම එන bug එක මේකයි. අනික A × B සහ B × A සාමාන්‍යයෙන් එකම නෑ.
+
 ---
 
 ## 11. Transpose, identity, inverse
+
+**Why it exists:** the transpose fixes shapes that do not line up for multiplication. The identity and the inverse give matrices their versions of "1" and "undo".
 
 ### Transpose (Aᵀ): flip rows and columns
 
@@ -457,9 +772,49 @@ np.linalg.inv(A)
 - **Diagonal matrix:** non-zero values only on the diagonal.
 - **Symmetric matrix:** equal to its own transpose (Aᵢⱼ = Aⱼᵢ). Example: a correlation matrix (file 07) or a distance matrix.
 
+### Worked example 1: a transpose
+
+```
+A (3×2) = ┌ 1 2 ┐          Aᵀ (2×3) = ┌ 1 3 5 ┐
+          │ 3 4 │                      └ 2 4 6 ┘
+          └ 5 6 ┘
+```
+
+Useful rule: (A × B)ᵀ = Bᵀ × Aᵀ (the order flips).
+
+### Worked example 2: inverting a 2×2 matrix
+
+For a 2×2 matrix `[[a, b], [c, d]]`, the inverse is `1/(ad − bc) × [[d, −b], [−c, a]]`.
+
+```
+M = ┌ 4 7 ┐     determinant = 4×6 − 7×2 = 24 − 14 = 10
+    └ 2 6 ┘
+
+M⁻¹ = 1/10 × ┌  6 −7 ┐ = ┌  0.6 −0.7 ┐
+             └ −2  4 ┘   └ −0.2  0.4 ┘
+
+Check row 1 · column 1 of M × M⁻¹: 4×0.6 + 7×(−0.2) = 2.4 − 1.4 = 1 ✓
+Check row 1 · column 2:            4×(−0.7) + 7×0.4 = −2.8 + 2.8 = 0 ✓
+```
+
+If the determinant is 0 you would be dividing by zero. That matrix has no inverse.
+
+### Where you'll meet it in real work
+
+In attention, Q has shape (4 × 64) for a 4-token sentence. K also has shape (4 × 64), so Kᵀ is (64 × 4) and Q × Kᵀ is (4 × 4).
+
+### Common mistakes
+
+- Assuming every matrix has an inverse (only square matrices with a non-zero determinant do).
+- Thinking a transpose is the same as a reshape. A transpose swaps rows and columns; a reshape keeps the reading order and only changes the grid.
+
+> **සිංහලෙන්:** Transpose කියන්නේ rows සහ columns මාරු කරන එක: 2 × 3 matrix එකක් 3 × 2 වෙනවා. Matrix multiplication වලට shape ගැලපෙන්නේ නැති වෙලාවට Aᵀ පාවිච්චි කරනවා. Identity matrix එක (I) කියන්නේ matrices වල '1' එක, A × I = A. Inverse එක කියන්නේ 'undo' කරන matrix එක, 5න් ගුණ කරපු දෙයක් 1/5න් ආපහු හදනවා වගේ. හැබැයි හැම matrix එකකටම inverse එකක් නෑ, determinant එක 0 නම් inverse නෑ. [[4,7],[2,6]] ට determinant = 24 − 14 = 10 නිසා inverse එකක් තියෙනවා.
+
 ---
 
 ## 12. A neural network layer is a matrix multiplication
+
+**Why it exists:** this section answers the question "what actually happens inside a neural network layer?" The answer is surprisingly small: one matrix multiplication, one addition and one simple function.
 
 Let's connect everything. A layer in a neural network (file 15) does:
 
@@ -496,9 +851,50 @@ b = [0, 0, 1]
 
 **The mind-blowing fact:** GPT-style LLMs (files 19 and 20) are mostly enormous stacks of exactly this operation: matrix multiplications plus simple functions, repeated billions of times.
 
+### Another worked example: the activation clips a negative
+
+```
+x = [2, 1]
+W = ┌ 1  −1 ┐       b = [−3, 0]
+    └ 0.5  2 ┘
+
+1. W · x:  neuron 1: 1×2 + (−1)×1 = 1
+           neuron 2: 0.5×2 + 2×1  = 3          → [1, 3]
+2. + b:    [1−3, 3+0]                          → [−2, 3]
+3. ReLU:   max(0, −2) = 0, max(0, 3) = 3       → [0, 3]
+```
+
+### Counting parameters
+
+A layer with 784 inputs (a 28×28 image, flattened) and 128 neurons has:
+
+```
+weights: 128 × 784 = 100,352
+biases:  128
+total:   100,352 + 128 = 100,480 parameters
+```
+
+For the batch version, X (32 × 784) times Wᵀ (784 × 128) gives (32 × 128): 32 images, 128 outputs each.
+
+### Where you'll meet it in real work
+
+In PyTorch this layer is `nn.Linear(784, 128)`, and its weight matrix is stored with shape (128, 784), that is (out_features, in_features). When people say "a 7B-parameter model", they mean mostly the numbers inside many such matrices.
+
+### Common mistakes
+
+- Forgetting the bias vector.
+- Mixing up the layout of W: some books write (inputs × neurons) and others (neurons × inputs). Always check the shape.
+- Skipping the activation. Without it, two layers collapse into one: W₂(W₁x) = (W₂W₁)x. The stacked network could learn no more than a single layer.
+
+**Exam angle:** know that a layer computes activation(Wx + b), be able to count its parameters (weights + biases), and know why non-linear activations are needed.
+
+> **සිංහලෙන්:** Neural network එකේ layer එකක් කරන්නේ output = activation(W · x + b) කියන එක විතරයි. x කියන්නේ input අංක, W කියන්නේ weights වල matrix එක, b කියන්නේ bias. 784 inputs ඇති පින්තූරයකට neurons 128ක layer එකක් දුන්නොත් weights 128 × 784 = 100,352යි, biases 128යි, ඔක්කොම parameters 100,480යි. Activation (ReLU වගේ) නැත්නම් layers කීයක් තිබුණත් ඒක එක matrix එකක් වගේම තමයි. ChatGPT වගේ LLMs වල වැඩි කොටස මේකම මිලියන ගණන් වතාවක් කරන එකයි.
+
 ---
 
 ## 13. Tensors
+
+**Why it exists:** real data often has more than two axes. A colour photo has height, width and colour channels; a batch of photos adds one more axis. Tensors give one name and one set of rules for all of them.
 
 **Idea:** A **tensor** is the general name for a grid of numbers with **any number of dimensions** (also called **axes**).
 
@@ -541,9 +937,34 @@ flat = img.reshape(-1)       # shape (784,)   (-1 = "work it out")
 
 **Reading shapes is a superpower.** When debugging AI code, print `.shape` everywhere.
 
+### Worked example: how many numbers?
+
+```
+one colour image  (224, 224, 3):   224 × 224 × 3        = 150,528 numbers
+a batch of 32     (32, 3, 224, 224): 150,528 × 32       = 4,816,896 numbers
+as 32-bit floats (4 bytes each):   4,816,896 × 4        = 19,267,584 bytes ≈ 19.3 MB
+```
+
+**Cricket example:** 11 players × 3 stats × 5 seasons is a tensor of shape (5, 11, 3) holding 165 numbers.
+
+### Where you'll meet it in real work
+
+A hospital might feed a batch of chest X-rays to a model as a 4-D tensor `(batch, channels, height, width)`. A language model reads a 3-D tensor `(batch, tokens, hidden size)`. When something crashes, the error is almost always a shape mismatch, so printing `.shape` is the first debugging step.
+
+### Common mistakes
+
+- Mixing up channel order. PyTorch normally expects **channels first** (N, C, H, W), while TensorFlow/Keras images are normally **channels last** (N, H, W, C).
+- Confusing a tensor's "rank" (its number of axes) with a matrix's "rank" (number of independent rows, section 15). Same word, different meaning.
+
+**Exam angle:** transformer tensors are usually described as (batch size, sequence length, hidden/embedding size). Be ready to say what each axis means.
+
+> **සිංහලෙන්:** Tensor එකක් කියන්නේ axes ඕනෑම ගණනක් තියෙන අංක grid එකක්. Scalar එක 0-D, vector එක 1-D, matrix එක 2-D. Colour පින්තූරයක් 224 × 224 × 3, ඒ කියන්නේ අංක 150,528ක්. පින්තූර 32ක batch එකක් (32, 3, 224, 224) කියන 4-D tensor එකක්. Code එකේ අවුලක් ආවොත් හැම තැනම .shape print කරලා බලන්න, ඒක ලොකු උදව්වක්. PyTorch එකේ channels මුලින් (N, C, H, W) එන්නේ, TensorFlow එකේ සාමාන්‍යයෙන් channels අන්තිමට (N, H, W, C).
+
 ---
 
 ## 14. Broadcasting
+
+**Why it exists:** you often want to combine a big array with a small one (add one bias to every row). Writing a loop is slow, and making copies wastes memory. Broadcasting does it automatically.
 
 **Idea:** **Broadcasting** is NumPy/PyTorch automatically "stretching" a smaller array to match a bigger one for element-wise operations, without copying data.
 
@@ -565,9 +986,37 @@ X + b
 
 **Where used:** adding the bias **b** to a whole batch (section 12); subtracting the mean of each column when scaling data (file 10).
 
+### Worked example: subtract each column's mean
+
+```
+X = ┌  60  70 ┐        column means = [(60+80+100)/3, (70+90+50)/3] = [80, 70]
+    │  80  90 │
+    └ 100  50 ┘        shapes: X is (3, 2), means is (2,)  → compatible ✓
+
+X − means = ┌ 60−80   70−70 ┐   ┌ −20   0 ┐
+            │ 80−80   90−70 │ = │   0  20 │
+            └ 100−80  50−70 ┘   └  20 −20 ┘
+```
+
+**Shape comparison from the right:**
+
+```
+(3, 2)  vs  (2,)  →  2 = 2 ✓ ,  3 vs (nothing) ✓   → OK
+(2, 3)  vs  (2,)  →  3 vs 2 ✗                      → error
+```
+
+### Common mistakes
+
+- A silent wrong answer: `(3,1) + (3,)` does not fail. It broadcasts into a **(3, 3)** grid. If you expected 3 numbers, this bug is easy to miss.
+- Assuming it only works with a vector. Any shapes that satisfy the rule are fine.
+
+> **සිංහලෙන්:** Broadcasting කියන්නේ පොඩි array එකක් ලොකු එකකට ගැළපෙන්න NumPy තනියම දිග හරින එක. ළමයි 3දෙනෙක්ගේ ලකුණු matrix එකෙන් හැම තීරුවකම average [80, 70] අඩු කරද්දී, (3, 2) − (2,) නිසා මේ average එක පේළි 3ටම පාවිච්චි වෙනවා: [[−20,0],[0,20],[20,−20]]. නීතිය: shapes දකුණෙන් පටන් අරන් බලන්න, සමානයි නැත්නම් එකක් 1 වෙන්න ඕනේ. (2, 3) + (2,) වැඩ නෑ මොකද 3 සහ 2 නොගැළපෙන නිසා. Layer එකක bias එක batch එකටම එකතු කරන්නේ මේ විදිහටයි.
+
 ---
 
 ## 15. Advanced ideas (intuition only)
+
+**Why it exists:** these ideas explain how AI compresses and simplifies big matrices (PCA, recommender systems, LoRA). You only need the intuition.
 
 You don't need to compute these by hand, but you'll meet the names. Here is what each one *means*.
 
@@ -611,9 +1060,34 @@ Any matrix can be broken into three simpler matrices: **A = U Σ Vᵀ**. Think o
 
 Matrices of derivatives (file 06). You'll meet the names in optimisation, but you don't need them as an intern.
 
+### Worked example: rank and determinant together
+
+```
+M = ┌ 1 2 ┐
+    └ 2 4 ┘
+
+row 2 = 2 × row 1   → only one independent row → rank 1
+determinant = 1×4 − 2×2 = 0 → no inverse
+```
+
+**Eigen example:** the matrix `[[2, 0], [0, 3]]` stretches the x direction by 2 and the y direction by 3. Its determinant is 2 × 3 = 6 (areas grow 6 times). The direction [1, 0] only gets stretched (to [2, 0]), so it is an eigenvector with eigenvalue 2.
+
+**LoRA saving in numbers:** a 4096 × 4096 weight matrix has 16,777,216 numbers. A rank-8 update uses (4096 × 8) + (8 × 4096) = **65,536** numbers, about 0.39% of the full matrix.
+
+### Common mistakes
+
+- Thinking you must compute eigenvectors or SVD by hand. Libraries do it; you just need to know what each name means.
+- Thinking rank means "number of columns". It is the number of *independent* ones.
+
+**Exam angle:** **LoRA** (Low-Rank Adaptation) freezes the original model weights and trains small low-rank matrices instead, which cuts the memory and the number of trainable parameters hugely. PCA is the classic example of dimensionality reduction.
+
+> **සිංහලෙන්:** මේවා ගණන් කරන්න ඔයාට අතින් ඕනේ නෑ, නම් විතරක් අඳුරගන්න. Rank කියන්නේ matrix එකක ඇත්තටම ස්වාධීන rows කීයද කියන එක. [[1,2],[2,4]] එකේ දෙවෙනි row එක පළවෙනි එකේ දෙගුණයි, ඒ නිසා rank 1යි, determinant 1×4 − 2×2 = 0, inverse නෑ. LoRA කියන්නේ මේ low-rank අදහසයි: 4096 × 4096 matrix එකක අංක මිලියන 16.7ක් තිබුණාට rank 8 නම් අංක 65,536ක් විතරක් train කරලා memory ගොඩක් ඉතුරු කරනවා. Eigenvectors සහ SVD වලින් PCA වගේ compression වැඩ කරනවා.
+
 ---
 
 ## 16. Why GPUs?
+
+**Why it exists:** training a modern model needs billions of multiplications, again and again. On an ordinary CPU that takes far too long, so we use hardware that does many of them at the same time.
 
 - A **CPU** (Central Processing Unit) has a few (8 to 64) very powerful cores. Great at complicated tasks done one after another.
 - A **GPU** (Graphics Processing Unit) has **thousands** of simpler cores. Great at doing the **same simple operation on many numbers at once** (in **parallel**).
@@ -633,6 +1107,29 @@ A = np.random.rand(2000, 2000)
 B = np.random.rand(2000, 2000)
 t = time.time(); C = A @ B; print(time.time() - t, "seconds on CPU")
 # On a GPU with PyTorch (file 15), this is typically 10 to 100× faster.
+```
+
+### Worked example: how much work is one multiplication?
+
+Multiplying two 2000 × 2000 matrices needs about 2000 × 2000 × 2000 = **8 × 10⁹** multiplications and about as many additions, roughly 1.6 × 10¹⁰ operations. If a GPU could sustain 10 trillion (10¹³) operations per second (an illustrative round number; real chips differ), that takes about 1.6 × 10¹⁰ ÷ 10¹³ = **0.0016 s**, under two milliseconds.
+
+**Memory example:** a model with 7 billion parameters stored as 16-bit numbers (2 bytes each) needs 7 × 10⁹ × 2 = **14 GB** just for its weights, before any data or training state.
+
+### Where you'll meet it in real work
+
+The most common GPU error you will see is **"CUDA out of memory"**. It means the model, the batch and the intermediate results do not fit in VRAM. The usual fixes are a smaller batch size, a lower precision (FP16/BF16), or a smaller model.
+
+### Common mistakes
+
+- Thinking a GPU is faster for everything. It wins on big parallel maths. Small jobs, or work where each step depends on the previous one, may run just as well (or better) on a CPU.
+- Forgetting that data has to be copied between CPU memory and GPU memory, which also costs time.
+
+**Exam angle:** know that GPUs suit deep learning because it is dominated by parallel matrix operations, that CUDA is NVIDIA's platform for programming GPUs, that Tensor Cores speed up low-precision matrix multiplication, and that VRAM limits how large a model you can run.
+
+> **සිංහලෙන්:** GPU එකක් කියන්නේ සරල වැඩ එකපාර ගොඩක් කරන්න පුළුවන් cores ගොඩක් තියෙන processor එකක්. CPU එක මහාචාර්යවරු 8දෙනෙක් වගේ, GPU එක ළමයි 10,000ක් වගේ; බහුවරණ ප්‍රශ්න පත්තර 10,000ක් පරීක්ෂා කරන්න ළමයින්ට ඉක්මනින් පුළුවන්. Matrix multiplication කියන්නේ එකිනෙකට ස්වාධීන ගුණ කිරීම් මිලියන ගණනක් නිසා GPU වලට ඒක හරියටම ගැළපෙනවා. Parameters බිලියන 7ක model එකක් 16-bit වලින් තිබ්බොත් weights වලටම GB 14ක් VRAM ඕනේ. 'CUDA out of memory' error එක එන්නේ model එක GPU memory එකට ඇතුල් නොවෙන විටයි.
+
+```quiz
+[{"q": "What is [4, 3] · [2, 5]?", "options": ["[8, 15]", "7", "23", "14"], "answer": 2, "why": "Multiply matching elements and add: 4×2 + 3×5 = 8 + 15 = 23. [8, 15] is the element-wise product; the dot product adds those up into one number."}, {"q": "What is the L2 norm of [5, 12]?", "options": ["17", "7", "169", "13"], "answer": 3, "why": "√(25 + 144) = √169 = 13. 17 is the L1 norm (5 + 12), and 169 forgets the square root."}, {"q": "Two vectors have cosine similarity 0. What does that mean?", "options": ["They are perpendicular (unrelated)", "They are identical", "They point in opposite directions", "They have the same length"], "answer": 0, "why": "Cosine 1 means the same direction, 0 means perpendicular (dot product 0), −1 means opposite. Cosine says nothing about length, so 'same length' is wrong."}, {"q": "You multiply a (16 × 784) matrix by a (784 × 10) matrix. What is the result's shape?", "options": ["(784, 784)", "Error, the shapes do not match", "(10, 16)", "(16, 10)"], "answer": 3, "why": "The inner numbers (784 and 784) match, and the result takes the outer numbers: (16 × 10). (10, 16) swaps the order; the result keeps the first matrix's rows first."}, {"q": "Why is cosine similarity preferred over the raw dot product when comparing a short note with a long article on the same topic?", "options": ["Cosine ignores vector length, so only direction (topic) counts", "Cosine is always much faster", "The dot product cannot be calculated for long vectors", "Cosine measures distance in kilometres"], "answer": 0, "why": "The dot product grows with length, so a long vector looks 'more similar' just for being long. Dividing by both lengths leaves only the angle. The dot product can be computed for any equal-length vectors, so option 3 is wrong."}, {"q": "A layer maps 100 inputs to 20 neurons, with a bias for each neuron. How many parameters does it have?", "options": ["2,000", "2,020", "120", "2,120"], "answer": 1, "why": "Weights: 20 × 100 = 2,000, plus 20 biases = 2,020. 2,000 forgets the biases."}, {"q": "Which addition fails because of incompatible shapes?", "options": ["(4, 3) + (3,)", "(4, 3) + (4, 1)", "(4, 3) + (1, 3)", "(4, 3) + (4,)"], "answer": 3, "why": "Compare shapes from the right: 3 vs 4 are neither equal nor 1, so (4,3) + (4,) fails. (4,3) + (3,) works because the trailing 3 matches."}, {"q": "Why do GPUs speed up deep learning so much?", "options": ["One GPU core is much faster than a CPU core", "They store the dataset on a faster disk", "They remove the need for matrix multiplication", "They run thousands of simple multiply-add operations in parallel"], "answer": 3, "why": "Deep learning is mostly huge matrix multiplications made of independent multiply-adds, which suit thousands of GPU cores working at once. A single GPU core is actually slower than a CPU core, so the first option is the tempting wrong one."}]
 ```
 
 ---
@@ -670,6 +1167,15 @@ t = time.time(); C = A @ B; print(time.time() - t, "seconds on CPU")
 
 **Q9.** A 4096 × 4096 matrix is approximated with rank 16. How many numbers does the low-rank form need vs the full matrix?
 <details><summary>Answer</summary>Full: 4096 × 4096 = 16,777,216. Low-rank: (4096 × 16) + (16 × 4096) = 131,072. About **128× smaller**. This is the LoRA idea.</details>
+
+**Q10.** Compute [[1, 2], [0, 1]] × [3, 1].
+<details><summary>Answer</summary>Row 1: 1×3 + 2×1 = 5. Row 2: 0×3 + 1×1 = 1. Result: **[5, 1]**.</details>
+
+**Q11.** Why can't you build a "deeper" network just by stacking linear layers (W₂(W₁x)) with no activation function?
+<details><summary>Answer</summary>W₂(W₁x) = (W₂W₁)x, and W₂W₁ is just another single matrix. So without a non-linear activation, any number of stacked layers is no more powerful than one layer.</details>
+
+**Q12.** A bank has 20,000 loan applications, each with 12 features. What is the shape of the data matrix X, and what shape would X @ w need w to have to give one prediction per application?
+<details><summary>Answer</summary>X is **(20000, 12)** (examples first, then features). w must have 12 weights, shape **(12,)**, and then X @ w has shape (20000,): one prediction for each application.</details>
 
 ---
 
@@ -718,5 +1224,11 @@ t = time.time(); C = A @ B; print(time.time() - t, "seconds on CPU")
 | VRAM | GPU memory |
 | Tensor Cores | GPU units specialised for fast matrix multiplication |
 | Parallel | Many operations at the same time |
+| Weight decay | Penalty on the size (norm) of the weights, added to the loss |
+| Parameter | One learned number (a weight or a bias) |
+| Cosine distance | 1 − cosine similarity; smaller means more similar |
+| Channels | The colour layers of an image (red, green, blue) |
+| Low-rank update (LoRA) | Training small low-rank matrices instead of the full weight matrix |
+| CUDA out of memory | Error when the model and data do not fit in GPU memory (VRAM) |
 
 **Next:** [06-math-calculus.md](06-math-calculus.md)
