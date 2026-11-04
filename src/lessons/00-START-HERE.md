@@ -36,6 +36,46 @@ Every concept follows the same pattern:
 5. **Common mistakes / gotchas**
 6. **Check yourself**: questions with answers hidden underneath
 
+### How this website works
+
+This website is the same course as the files, but with extra tools to help you learn. You do not need to learn any of this before you start. Glance through it once and come back whenever you are unsure.
+
+> **සිංහලෙන්:** බය වෙන්න එපා, මේ website එක පාවිච්චි කරන්න ගොඩක් ලේසියි. Lesson එකක් කියවනවා, පොඩි lab එකක් ඔබලා බලනවා, quiz එකක් කරනවා, ඊට පස්සේ "learned" කියලා mark කරනවා. ඒ ටිකයි. මේ page එකේ තියෙන්නේ ඒ හැම දේම කෙටියෙන් පැහැදිලි කිරීමක්.
+
+### Lessons are split into topics
+
+Each lesson file is long, so the site cuts it into **topics**, one for each numbered `##` heading. A topic is a small chunk you can finish in 15 to 30 minutes. Pick a lesson from the menu on the left, then pick a topic inside it. You do not have to finish a whole lesson in one sitting. Stopping after one topic is fine.
+
+### The orange Sinhala boxes
+
+At the end of almost every topic you will see an **orange box** labelled "In Sinhala" (written in Sinhala script). It explains the same idea a second time in simple, spoken Sinhala, with an everyday Sri Lankan example. English is the main language of the course (and of the NCA-GENL exam), so the box is a helper, not a replacement. Read the English first. If something is still foggy, read the box. Technical words such as "model", "loss" or "token" stay in English inside the box, so you learn the exam word and the meaning together.
+
+> **සිංහලෙන්:** ඔයාට English කියවද්දී යම්කිසි තැනක් තේරුණේ නැත්නම් බය වෙන්න එපා. Topic එකේ අන්තිමට තියෙන තැඹිලි පාට box එකේ ඒ දේම සරල සිංහලෙන් ආයෙත් කියලා දෙනවා. "Loss", "model" වගේ වචන English වලින්ම තියෙන්නේ exam එකේදී ඒවා ඔයාට හොඳට හඳුනාගන්න පුළුවන් වෙන්නයි.
+
+### Interactive labs
+
+Some topics have a **lab**: a small widget where you move sliders and press buttons and watch the idea happen. For example, you can change the learning rate and see training go wrong, split a sentence into tokens, or change the temperature and see how the next-word probabilities change. Playing with a lab for two minutes often teaches more than re-reading a paragraph. You cannot break anything, so experiment freely.
+
+### Quizzes
+
+At the end of each lesson there is a **quiz** of multiple-choice questions. Pick an answer and the site tells you at once whether you were right, and **why**, including why the most tempting wrong answer is wrong. Getting an answer wrong is useful, because that is exactly when you learn. Your scores are saved, so you can see which lessons you should revisit.
+
+### Marking topics as learned
+
+When you finish a topic, press **I understand this. Mark it as learned**. A tick appears next to it in the menu and your progress bar for that part fills up. Your progress is saved on your own computer, and it can also be synced if you sign in. Be honest with yourself: tick a topic only when you could explain it to a friend.
+
+> **සිංහලෙන්:** Topic එකක් ඉවර වුණාම "learned" කියලා mark කරන්න. එතකොට menu එකේ tick එකක් වැටෙනවා, ඔයා කොච්චර දුර ඇවිත් ඉන්නවද කියලා progress bar එකෙන් පේනවා. ඒක ඔයාගේම පරිගණකයේ save වෙනවා. Tick කරන්නේ යාළුවෙකුට පැහැදිලි කරන්න පුළුවන් වුණාම විතරයි, එතකොට ඔයාම ඔයාට රැවටෙන්නේ නැහැ.
+
+### Exam Practice
+
+If you are preparing for the NVIDIA **NCA-GENL** exam, open **Exam Practice** in the menu. It holds **1,350 NCA-GENL practice questions** grouped by exam domain (AI fundamentals, neural networks and Transformers, tokenization and inference, prompting and agents, embeddings and RAG, training and adaptation, evaluation, NVIDIA stack and deployment, trustworthy AI), each with an explanation. There is also a 60-question timed mock exam. In addition there are **CCAR-F** questions (Claude Certified Architect) and a CCAR-F mock exam. A good rhythm is to finish a lesson, then practise the matching exam domain the same week.
+
+### The Exam guides section
+
+Below the lessons in the menu is a section called **Exam guides**. These are short study guides that map the exam topics to what you have learned, with the key facts to memorise and practice tasks. Use them in the last weeks before an exam as a revision checklist. They are not a replacement for the lessons, so if a guide mentions something you do not understand, go back to the lesson that teaches it.
+
+> **සිංහලෙන්:** Exam එකට ලෑස්ති වෙනවා නම් menu එකේ "Exam Practice" එක open කරන්න. එතන NCA-GENL ප්‍රශ්න 1,350ක් තියෙනවා, ඒවට පැහැදිලි කිරීමුත් එක්ක. ප්‍රශ්න 60ක කාලය සහිත mock exam එකකුත් තියෙනවා. "Exam guides" කොටසේ තියෙන්නේ exam එකට කලින් ඉක්මනින් revise කරන්න පුළුවන් සාරාංශ. හැබැයි පාඩම් කලින් ඉගෙනගන්න, ඊට පස්සේ practice කරන්න.
+
 ---
 
 ## The roadmap (follow in order)

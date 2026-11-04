@@ -16,6 +16,7 @@
 | Absolute / relative path | Full file location / location relative to current folder | [02](02-python-programming.md) |
 | Absolute value \|x\| | Distance from zero | [04](04-math-numbers-and-functions.md) |
 | A/B test, control, treatment | Randomised comparison of two versions | [07](07-math-probability-statistics.md) |
+| Accumulator | A variable built up inside a loop (a running total or count) | [02](02-python-programming.md) |
 | Accuracy | Correct ÷ total | [13](13-evaluation-metrics-and-tuning.md) |
 | Activation | Simple function applied after W·x + b | [05](05-math-linear-algebra.md) |
 | Activation checkpointing | Recompute activations to save memory | [15](15-neural-networks.md) |
@@ -143,6 +144,7 @@
 | Causal DAG | Diagram of assumed causal relationships | [30](30-advanced-topics-and-career.md) |
 | Causal inference, treatment, outcome | Estimating cause and effect | [30](30-advanced-topics-and-career.md) |
 | Causal (look-ahead) mask | Blocks attention to future tokens | [19](19-transformers.md) |
+| CBOW | Word2Vec method that predicts a word from its surrounding words | [18](18-nlp-fundamentals.md) |
 | Central Limit Theorem | Sample means are normally distributed | [07](07-math-probability-statistics.md) |
 | Chain-of-thought (CoT) | Writing reasoning steps before answering | [20](20-how-llms-work.md) |
 | Chain-of-thought (zero-shot, few-shot) | Step-by-step reasoning before answering | [22](22-prompt-engineering.md) |
@@ -205,6 +207,7 @@
 | Continued / domain-adaptive pretraining | Further next-token training on domain text | [21](21-training-finetuning-alignment.md) |
 | Contrastive learning, InfoNCE, in-batch negatives, hard negatives | How embedding models are trained | [23](23-embeddings-vector-databases-rag.md) |
 | ControlNet | Spatial control (pose, edges, depth) | [25](25-generative-models-and-multimodal.md) |
+| Convergence | The loss stops improving; training has settled | [06](06-math-calculus.md) |
 | Conversion rate, lift | Success ÷ visitors / relative improvement | [07](07-math-probability-statistics.md) |
 | Convex / non-convex | Single bowl / many hills and valleys | [06](06-math-calculus.md) |
 | Convolution (cross-correlation), filter/kernel | Sliding dot product / small learnable weight grid | [16](16-cnns-and-computer-vision.md) |
@@ -266,6 +269,7 @@
 | Deepfake | Realistic fake media of real people | [25](25-generative-models-and-multimodal.md) |
 | Deep Learning (DL) | ML using many-layered neural networks | [01](01-big-picture-and-data.md) |
 | Deep network | Many hidden layers | [15](15-neural-networks.md) |
+| Defence in layers | Stacking several safety controls instead of trusting one | [24](24-ai-agents.md) |
 | Delimiters, XML tags | Markers separating parts of a prompt | [22](22-prompt-engineering.md) |
 | Demographic (statistical) parity | Equal positive rates across groups | [29](29-responsible-ai.md) |
 | Denial of wallet | Attack causing huge usage costs | [29](29-responsible-ai.md) |
@@ -341,6 +345,7 @@
 | Endpoint | One specific API URL + method | [03](03-developer-tools.md) |
 | Endpoint, `/health`, 422 error | API route / health check / validation error | [28](28-mlops-and-llmops.md) |
 | Ensemble learning, wisdom of crowds | Combining models | [12](12-supervised-learning-algorithms.md) |
+| Entity-level F1 | F1 computed on whole entities rather than single tokens | [18](18-nlp-fundamentals.md) |
 | Entropy | Average surprise / unpredictability | [07](07-math-probability-statistics.md) |
 | Enum (Literal) | Fixed set of allowed values | [22](22-prompt-engineering.md) |
 | Environment variable | Named value in your shell session that programs can read | [03](03-developer-tools.md) |
@@ -403,6 +408,8 @@
 | Figure, Axes, axis, ticks, legend | Parts of a chart | [09](09-data-visualization.md) |
 | `fillna`, `dropna`, `ffill`, `interpolate` | Handle missing values | [08](08-numpy-and-pandas.md) |
 | Filter bubble | Only recommending more of the same | [14](14-unsupervised-learning-and-more.md) |
+| Finite difference | Estimating a derivative with a tiny step: (f(x+h) − f(x)) / h | [06](06-math-calculus.md) |
+| First-order method | Optimiser that uses only the gradient (SGD, Adam) | [06](06-math-calculus.md) |
 | First/second moment, bias correction, ε | Adam's running averages and fixes | [15](15-neural-networks.md) |
 | `fit` / `transform` / `fit_transform` | Learn parameters / apply them / both | [10](10-data-science-workflow.md) |
 | FlashAttention, tiling | Exact attention computed in memory-efficient blocks | [19](19-transformers.md) |
@@ -490,6 +497,7 @@
 | HBM | High Bandwidth Memory on GPUs | [27](27-inference-and-serving.md) |
 | Headers / body | Request metadata / request data | [03](03-developer-tools.md) |
 | `head`, `info`, `describe`, `value_counts`, `isna` | First-look commands | [08](08-numpy-and-pandas.md) |
+| Headless server | Computer with no screen, used only through a terminal | [03](03-developer-tools.md) |
 | Heatmap | Grid of numbers shown as colours | [09](09-data-visualization.md) |
 | Hexbin | Density plot for many points | [09](09-data-visualization.md) |
 | Hidden state (hₜ) | Memory vector carried between steps | [17](17-sequence-models-and-attention.md) |
@@ -561,6 +569,7 @@
 | IoU | Overlap ÷ union of two boxes/masks | [16](16-cnns-and-computer-vision.md) |
 | IP-Adapter, DreamBooth, textual inversion | Subject/style customisation | [25](25-generative-models-and-multimodal.md) |
 | IPO, KTO, ORPO, SimPO, online DPO | Other preference methods | [21](21-training-finetuning-alignment.md) |
+| IQR fence | The Q1 − 1.5×IQR and Q3 + 1.5×IQR limits outside which a point is an outlier | [10](10-data-science-workflow.md) |
 | ISO/IEC 42001 | AI management system standard | [29](29-responsible-ai.md) |
 | Isolation Forest, LOF, One-Class SVM | Anomaly detection algorithms | [14](14-unsupervised-learning-and-more.md) |
 | IVF, nlist, nprobe | Cluster-based index / number of clusters / clusters searched | [23](23-embeddings-vector-databases-rag.md) |
@@ -572,6 +581,7 @@
 | Jacobian / Hessian | Matrices of derivatives (names only) | [05](05-math-linear-algebra.md) |
 | Jacobian, Hessian | Matrices of first / second derivatives | [06](06-math-calculus.md) |
 | Jailbreak | Bypassing a model's safety training | [22](22-prompt-engineering.md) |
+| Jitter | Small random delay added to retries so clients do not retry together | [03](03-developer-tools.md) |
 | JOIN (INNER, LEFT, RIGHT, FULL OUTER) | Combine tables on matching columns | [03](03-developer-tools.md) |
 | Judge panel | Several judges combined | [26](26-evaluating-llms.md) |
 | Jupyter notebook, Colab, script | Interactive code+output document; free online notebooks; plain `.py` file | [02](02-python-programming.md) |
@@ -584,6 +594,7 @@
 | k-anonymity, homogeneity attack | Indistinguishability in groups of k / its weakness | [29](29-responsible-ai.md) |
 | Kappa paradox | Low kappa despite high agreement with skewed labels | [26](26-evaluating-llms.md) |
 | KDE | Smooth density curve | [09](09-data-visualization.md) |
+| `keepdims` | Keep the collapsed axis with size 1 so broadcasting still works | [08](08-numpy-and-pandas.md) |
 | Kernel trick, linear/poly/RBF kernel, gamma | Implicit high-dimensional mapping / kernel types / RBF width | [12](12-supervised-learning-algorithms.md) |
 | Keyword argument / default value | `name=value` arguments; value used if none given | [02](02-python-programming.md) |
 | Kill switch | Emergency off for a feature | [28](28-mlops-and-llmops.md) |
@@ -640,6 +651,7 @@
 | LIME | Local linear approximation of a black box | [14](14-unsupervised-learning-and-more.md) |
 | Linear algebra | Maths of vectors and matrices | [05](05-math-linear-algebra.md) |
 | Linear independence | No vector is a combination of the others | [05](05-math-linear-algebra.md) |
+| Linearity of expectation | E[aX + b] = a·E[X] + b | [07](07-math-probability-statistics.md) |
 | Linearly separable, XOR problem | Separable by a straight line / classic non-separable case | [15](15-neural-networks.md) |
 | Linear regression, OLS | Fit a weighted sum; least-squares solution | [12](12-supervised-learning-algorithms.md) |
 | Line, bar, histogram, box, violin, scatter chart | Common chart types | [09](09-data-visualization.md) |
@@ -679,6 +691,7 @@
 | Loss scaling, GradScaler | Prevent FP16 gradient underflow | [15](15-neural-networks.md) |
 | Loss spike, WSD schedule, MFU | Training instability / LR schedule / hardware efficiency | [21](21-training-finetuning-alignment.md) |
 | Lost in the middle, effective context | Weaker use of mid-context info / usable context length | [20](20-how-llms-work.md) |
+| Low-rank update (LoRA) | Training small low-rank matrices instead of the full weight matrix | [05](05-math-linear-algebra.md) |
 | Low-resource language, cross-lingual transfer | Language with little data / learning from other languages | [18](18-nlp-fundamentals.md) |
 | LR finder | Test LRs to pick a good one | [15](15-neural-networks.md) |
 | LR schedule: step, exponential, cosine, plateau, one-cycle | Changing LR over training | [15](15-neural-networks.md) |
@@ -688,6 +701,7 @@
 
 | Term | Meaning | Taught in |
 |---|---|---|
+| M × N vs M + N | Integrations needed without vs with a standard like MCP | [24](24-ai-agents.md) |
 | Machine Learning (ML) | Computers learning patterns (rules) from example data | [01](01-big-picture-and-data.md) |
 | Machine translation | Translating between languages | [18](18-nlp-fundamentals.md) |
 | Machine unlearning | Removing data influence from a model | [29](29-responsible-ai.md) |
@@ -697,6 +711,7 @@
 | Many-to-one, one-to-many, many-to-many | Sequence task shapes | [17](17-sequence-models-and-attention.md) |
 | MAP | MLE plus a prior | [07](07-math-probability-statistics.md) |
 | mAP, mAP@0.5, mAP@0.5:0.95 | Detection metric | [16](16-cnns-and-computer-vision.md) |
+| Marginal contribution | How much a feature adds when it joins a set; averaged to get a Shapley value | [14](14-unsupervised-learning-and-more.md) |
 | Markdown, README.md | Simple text formatting language / a repo's front page | [03](03-developer-tools.md) |
 | Markov property | Future depends only on the current state | [30](30-advanced-topics-and-career.md) |
 | MASE, prediction interval | Error vs naive / range forecast | [14](14-unsupervised-learning-and-more.md) |
@@ -816,6 +831,7 @@
 | NULL | Missing value in SQL | [03](03-developer-tools.md) |
 | Number line | Line showing numbers in order | [04](04-math-numbers-and-functions.md) |
 | Numerical (continuous, discrete) | Numbers you can do maths on (any value / whole counts) | [01](01-big-picture-and-data.md) |
+| Numerical gradient check | Nudging a weight slightly to verify a hand-computed gradient | [15](15-neural-networks.md) |
 | NumPy, array (ndarray) | Library for fast numeric arrays / its grid-of-numbers type | [08](08-numpy-and-pandas.md) |
 | NVIDIA Container Toolkit, NGC | GPU containers / NVIDIA's container registry | [28](28-mlops-and-llmops.md) |
 | `nvidia-smi` | Shows NVIDIA GPU usage | [03](03-developer-tools.md) |
@@ -848,6 +864,8 @@
 | Out-of-bag (OOB) score | Validation on rows not in a tree's sample | [12](12-supervised-learning-algorithms.md) |
 | Out-of-vocabulary (OOV) | Word not in the vocabulary | [18](18-nlp-fundamentals.md) |
 | Output size formula | floor((n − k + 2p)/s) + 1 | [16](16-cnns-and-computer-vision.md) |
+| Overconfident model | One whose stated probabilities exceed how often it is right | [13](13-evaluation-metrics-and-tuning.md) |
+| Overfit-one-batch test | Debug drill: a tiny batch should reach near-zero loss | [15](15-neural-networks.md) |
 | Over-refusal | Blocking legitimate requests | [29](29-responsible-ai.md) |
 | Overreliance, automation bias | Over-trusting AI output | [29](29-responsible-ai.md) |
 | Oversampling, undersampling, SMOTE | Resampling methods / synthetic rare examples | [13](13-evaluation-metrics-and-tuning.md) |
@@ -882,6 +900,7 @@
 | Peeking, novelty effect, SRM, guardrail metric | A/B testing pitfalls and safeguards | [07](07-math-probability-statistics.md) |
 | PEFT, adapter | Training few parameters / small trainable add-on | [21](21-training-finetuning-alignment.md) |
 | Percentage change | (new − old)/old × 100 | [04](04-math-numbers-and-functions.md) |
+| Percentage points | Difference between two percentages (4% to 5% is +1 point) | [04](04-math-numbers-and-functions.md) |
 | Percentile, quartile (Q1, Q3), IQR | Value below which x% falls; 25th/75th percentile; Q3−Q1 | [07](07-math-probability-statistics.md) |
 | Perceptron, step function | Early neuron model / output 1 if z > 0 | [15](15-neural-networks.md) |
 | Permutation importance | Score drop when a feature is shuffled | [14](14-unsupervised-learning-and-more.md) |
@@ -890,6 +909,7 @@
 | Perplexity, bits per byte (BPB) | e^(cross-entropy) / tokeniser-independent version | [26](26-evaluating-llms.md) |
 | Persona / role prompting | Telling the model who to act as | [22](22-prompt-engineering.md) |
 | Per-token pricing, input vs output tokens | API billing model | [20](20-how-llms-work.md) |
+| p-hacking | Trying many tests or slices until one gives p < 0.05 | [07](07-math-probability-statistics.md) |
 | pickle, joblib, safetensors, ONNX | Model file formats | [28](28-mlops-and-llmops.md) |
 | PII, direct identifier, quasi-identifier, sensitive data | Kinds of personal data | [29](29-responsible-ai.md) |
 | PII removal | Masking personal information | [21](21-training-finetuning-alignment.md) |
@@ -900,6 +920,7 @@
 | pip, requirements.txt | Package installer / list of needed packages | [02](02-python-programming.md) |
 | `pivot_table`, `melt`, `crosstab` | Reshape wide/long, count table | [08](08-numpy-and-pandas.md) |
 | Pixel / RGB | One dot in an image / its Red, Green, Blue values (0 to 255) | [01](01-big-picture-and-data.md) |
+| Placeholder (`?`) | Safe way to put values into SQL, preventing injection | [03](03-developer-tools.md) |
 | Plan-and-execute, replanning | Plan first, then run steps; revise on failure | [24](24-ai-agents.md) |
 | Platt scaling, isotonic regression, temperature scaling | Calibration fixes | [13](13-evaluation-metrics-and-tuning.md) |
 | Pointwise vs pairwise | Score one output vs compare two | [26](26-evaluating-llms.md) |
@@ -919,6 +940,7 @@
 | Potential outcomes, counterfactual, ATE | What would have happened / average effect | [30](30-advanced-topics-and-career.md) |
 | Power rule, sum rule | xⁿ → nxⁿ⁻¹; derivative of a sum = sum of derivatives | [06](06-math-calculus.md) |
 | PR curve, PR-AUC, average precision | Precision vs recall curve / area under it | [13](13-evaluation-metrics-and-tuning.md) |
+| Pre-activation (z) vs activation (a) | Weighted sum before / output after the activation function | [15](15-neural-networks.md) |
 | Precision@k | Precision among the top k scored items | [13](13-evaluation-metrics-and-tuning.md) |
 | Precision@k, Recall@k, NDCG, MAP | Ranking metrics | [14](14-unsupervised-learning-and-more.md) |
 | Precision (PPV) | TP / (TP + FP): trustworthiness of positive predictions | [13](13-evaluation-metrics-and-tuning.md) |
@@ -955,6 +977,7 @@
 | Prompt tuning, prefix tuning, P-tuning, IA³, BitFit | Other PEFT methods | [21](21-training-finetuning-alignment.md) |
 | Propensity score, difference-in-differences, instrumental variables, regression discontinuity, synthetic control | Causal methods | [30](30-advanced-topics-and-career.md) |
 | Prophet | Meta's additive forecasting library | [14](14-unsupervised-learning-and-more.md) |
+| Prosecutor's fallacy | Confusing P(evidence \| innocent) with P(innocent \| evidence) | [07](07-math-probability-statistics.md) |
 | Protected attribute | Characteristic protected from discrimination (gender, race, religion...) | [29](29-responsible-ai.md) |
 | Proxy discrimination | Bias via features correlated with protected attributes | [29](29-responsible-ai.md) |
 | Pruning (pre/post), `max_depth`, `min_samples_leaf`, `ccp_alpha` | Limiting tree growth | [12](12-supervised-learning-algorithms.md) |
@@ -980,6 +1003,7 @@
 | Quadratic / parabola | x² / U-shaped curve | [04](04-math-numbers-and-functions.md) |
 | Quality filtering (heuristic, model-based, perplexity) | Removing low-quality text | [21](21-training-finetuning-alignment.md) |
 | Quantisation, absmax, scale, calibration | Lower-precision numbers | [21](21-training-finetuning-alignment.md) |
+| Quantization (quantisation) | Storing a model's numbers with fewer bits (e.g. FP16 → INT4) to save memory | [01](01-big-picture-and-data.md) |
 | `query` | Filter with a SQL-like string | [08](08-numpy-and-pandas.md) |
 | Query, Key, Value (preview) | Attention's generalised roles (file 19) | [17](17-sequence-models-and-attention.md) |
 | Query, Key, Value (Q, K, V), W_Q, W_K, W_V | Projections for looking, matching, and providing information | [19](19-transformers.md) |
@@ -1059,6 +1083,7 @@
 | Routing, model cascade | Sending requests to the right handler/model | [22](22-prompt-engineering.md) |
 | Row / sample / observation | One example in a table | [01](01-big-picture-and-data.md) |
 | Row vector / column vector | 1 × n / n × 1 matrix | [05](05-math-linear-algebra.md) |
+| Row-major order | NumPy fills new shapes row by row | [08](08-numpy-and-pandas.md) |
 | rsLoRA, DoRA | LoRA variants | [21](21-training-finetuning-alignment.md) |
 
 ## S
@@ -1100,6 +1125,7 @@
 | Semantic search | Search by meaning | [23](23-embeddings-vector-databases-rag.md) |
 | Sentence embedding, SBERT, embedding model | One vector per sentence | [18](18-nlp-fundamentals.md) |
 | Sentence segmentation | Splitting into sentences | [18](18-nlp-fundamentals.md) |
+| SentencePiece | Tokeniser library that works directly on raw text, used by Llama and T5 | [20](20-how-llms-work.md) |
 | Seq2seq, encoder-decoder | Input sequence → output sequence of a different length | [17](17-sequence-models-and-attention.md) |
 | Sequential data | Data where order matters | [17](17-sequence-models-and-attention.md) |
 | Serialisation | Saving an in-memory object to a file | [28](28-mlops-and-llmops.md) |
@@ -1116,11 +1142,13 @@
 | `shape`, `ndim`, `size`, `dtype` | Array dimensions, number of axes, element count, element type | [08](08-numpy-and-pandas.md) |
 | SHAP, Shapley values | Fair additive feature contributions from game theory | [14](14-unsupervised-learning-and-more.md) |
 | Short-term vs long-term memory | Context window vs external store | [24](24-ai-agents.md) |
+| Shrink factor | How much a step multiplies the distance to the minimum, 1 − 2·lr in the (w − a)² example | [06](06-math-calculus.md) |
 | Shuffle | Randomise order each epoch | [11](11-ml-fundamentals.md) |
 | Sigmoid | S-curve squashing any number into 0 to 1 | [04](04-math-numbers-and-functions.md) |
 | Sigmoid, tanh, ReLU, Leaky ReLU, GELU, SiLU/Swish, SwiGLU, softmax | Activation functions | [15](15-neural-networks.md) |
 | Significance level α, p-value | False-alarm threshold / P(data this extreme \| H₀) | [07](07-math-probability-statistics.md) |
 | Skewness (right/left) | Asymmetry; long tail to right/left | [07](07-math-probability-statistics.md) |
+| Skip-gram | Word2Vec method that predicts surrounding words from one word | [18](18-nlp-fundamentals.md) |
 | Slice-based evaluation | Metrics per subgroup | [26](26-evaluating-llms.md) |
 | Sliding window (perplexity) | Computing PPL over long texts in overlapping windows | [26](26-evaluating-llms.md) |
 | Sliding-window, sparse, linear attention | Cheaper attention variants | [19](19-transformers.md) |
@@ -1226,9 +1254,12 @@
 | Threshold | Probability cut-off for yes/no | [12](12-supervised-learning-algorithms.md) |
 | Threshold tuning, cost-based threshold | Choosing the probability cut-off | [13](13-evaluation-metrics-and-tuning.md) |
 | Throughput, goodput | Total tokens/s / tokens/s meeting SLOs | [27](27-inference-and-serving.md) |
+| tiktoken | OpenAI's fast BPE tokeniser library | [20](20-how-llms-work.md) |
 | Time series | Data recorded in time order | [01](01-big-picture-and-data.md) |
+| Time to first token (TTFT) | How long before the first streamed token appears | [22](22-prompt-engineering.md) |
 | timm, torchvision.models | Pretrained vision model libraries | [16](16-cnns-and-computer-vision.md) |
 | Token F1 | Token-overlap precision/recall/F1 | [26](26-evaluating-llms.md) |
+| Token tax | Extra tokens (and cost) a language needs because the tokeniser saw little of it | [18](18-nlp-fundamentals.md) |
 | Tokenisation, token, token ID | Splitting text / a unit / its integer index | [18](18-nlp-fundamentals.md) |
 | Tokeniser | Program converting text ↔ tokens | [20](20-how-llms-work.md) |
 | Token, vocabulary, token ID | Text chunk / set of chunks / its integer | [20](20-how-llms-work.md) |
@@ -1304,6 +1335,7 @@
 | Variance threshold, RFE | Drop near-constant features / recursive elimination | [10](10-data-science-workflow.md) |
 | Vector | Ordered list of numbers | [05](05-math-linear-algebra.md) |
 | Vector database | Stores vectors + text + metadata with search | [23](23-embeddings-vector-databases-rag.md) |
+| Vector quantisation | Replacing many values with a few cluster centres (e.g. image colours) | [14](14-unsupervised-learning-and-more.md) |
 | Vectorisation | Operating on whole arrays without Python loops | [08](08-numpy-and-pandas.md) |
 | Vendor lock-in | Dependence on one provider | [28](28-mlops-and-llmops.md) |
 | Video VAE, spacetime patches, temporal consistency | Video generation concepts | [25](25-generative-models-and-multimodal.md) |
@@ -1338,6 +1370,9 @@
 | Window function (OVER, PARTITION BY, ROW_NUMBER, LAG, running total, moving average) | Per-group calculations that keep all rows | [03](03-developer-tools.md) |
 | Win rate | Fraction of pairwise wins | [26](26-evaluating-llms.md) |
 | `with open(...)` | Safely read/write files | [02](02-python-programming.md) |
+| Word embedding | Dense vector representing a word | [18](18-nlp-fundamentals.md) |
+| Word2Vec | Method that learns word embeddings from text (CBOW and skip-gram) | [18](18-nlp-fundamentals.md) |
+| WordPiece | Subword tokeniser algorithm used by BERT | [20](20-how-llms-work.md) |
 | Workflow vs agent | Code decides steps vs LLM decides steps | [24](24-ai-agents.md) |
 
 ## X
