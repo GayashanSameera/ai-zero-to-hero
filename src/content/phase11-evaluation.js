@@ -2,14 +2,15 @@ export default {
   id: 'evaluation',
   number: 11,
   title: 'LLM Evaluation & Experimentation',
-  titleSi: 'LLM Evaluation සහ Experimentation: Model එක ඇත්තටම හොඳද කියලා ඔප්පු කරන හැටි',
-  summary: 'Model එකක් හැදුවාට මදි. ඒක ඇත්තටම හොඳද, කලින් එකට වඩා හොඳද, ඒ "හොඳ" කියන එක luck එකක්ද කියලා අංක වලින් ඔප්පු කරන්න ඕනේ. මේ phase එකේදී ඔයා perplexity, BLEU, ROUGE, pass@k වගේ metrics, MMLU වගේ benchmarks, LLM-as-a-judge, human evaluation, contamination, calibration, A/B testing statistics, reproducibility සහ experiments design කරන හැටි ගණන් පියවරෙන් පියවර හදමින් ඉගෙන ගන්නවා. NCA-GENL exam එකේ Evaluation කොටසට ඕනේ හැමදේම මෙතන තියෙනවා.',
-  duration: 'සති 4-6',
+  titleSi: 'Proving Whether a Model Is Good',
+  summary: 'Learn to measure whether a model works, whether a new version is better, and whether an observed improvement is more than random variation. This phase explains perplexity, BLEU, ROUGE, pass@k, benchmarks such as MMLU, LLM judges, human evaluation, contamination, calibration, A/B testing, reproducibility, and experiment design with worked calculations. It covers the evaluation topics needed for the NCA-GENL exam.',
+  duration: '4-6 weeks',
   topics: [
     // 1
     {
       id: 'perplexity',
       title: 'Perplexity: How Surprised Is the Model?',
+      si: 'ඔයා Colombo යන බස් එකක ඊළඟ නැවතුම අනුමාන කරනවා කියලා හිතන්න. Model එක ඊළඟ token එකට වැඩි probability දුන්නොත් ඒක අඩුවෙන් පුදුම වෙනවා. Perplexity කියන්නේ ඒ පුදුම වීමේ සාමාන්‍ය මට්ටම අංකයකින් පෙන්වන එකයි. එකම text සහ tokenizer එකේදී අඩු perplexity එකක් හොඳ fit එකක් පෙන්වනවා, ඒත් උත්තරය ප්‍රයෝජනවත්ද කියලා ඒකෙන්ම කියන්න බෑ.',
       examRefs: ['EVAL-001', 'EVAL-002', 'EVAL-003', 'EVAL-004', 'EVAL-005', 'EVAL-109'],
       body: [
         'Language model එකක් කරන්නේ ඊළඟ token එකට probability එකක් දෙන එක. Test text එකේ ඇත්තටම ආපු token එකට model එක දුන්න probability එක ලොකු නම් model එක හොඳයි. Perplexity කියන්නේ මේ "model එක කොච්චර පුදුම වුණාද (surprised)" කියන එක එක අංකයකින් කියන ක්‍රමය.',
@@ -37,6 +38,7 @@ export default {
     {
       id: 'perplexity-in-practice',
       title: 'Computing Perplexity Correctly: Bits per Byte, Sliding Windows, Padding, Aggregation',
+      si: 'වෙනස් tokenizers තියෙන models සසඳද්දී byte එකකට loss ගණන් කළොත් සාධාරණයි. Colombo ඉඳන් Kandy යන ගමනේ හැම කොටසටම පසුපස context එක මතක තියාගන්න sliding window එකක් වගේ. Padding token-ийг loss එකෙන් ඉවත් කරන්න labels дээр -100 දා, attention mask එකෙන් විතරක් ඒක болохේ නෑ. Batch бүрийн perplexity එක සාමාන්‍ය කරනවා වෙනුවට මුළු NLL එක මුළු tokens ගණනින් බෙදලා අන්තිමට exp කරන්න.',
       examRefs: ['EVAL-115', 'EVAL-116', 'EVAL-117', 'EVAL-118'],
       body: [
         'Bits per byte (BPB) කියන්නේ tokenizer එක මඟ හැරලා models සසඳන ක්‍රමය. පියවර: (1) මුළු loss එක ගන්නවා (tokens ගණන × token එකකට සාමාන්‍ය loss). (2) Loss එක nats වලින් නම් ln 2 (≈ 0.693) න් බෙදලා bits වලට හරවනවා. (3) Text එකේ bytes ගණනින් බෙදනවා. Bytes ගණන tokenizer එක මොකක් වුණත් වෙනස් වෙන්නේ නෑ, ඒ නිසා vocabularies වෙනස් models සාධාරණව සසඳන්න පුළුවන්.',
@@ -76,6 +78,7 @@ print(nats / math.log(2) / 4000)          # ~0.32`,
     {
       id: 'bleu-and-translation-metrics',
       title: 'BLEU, Brevity Penalty, SacreBLEU, METEOR, chrF and BERTScore',
+      si: 'Colombo ඉඳන් Galle යන එකම අදහස වචන වෙනස් කරලා කියන්න පුළුවන්. BLEU එක reference එකේ වචන කොටස් එක්ක කොච්චර ගැළපෙනවද බලන නිසා හොඳ වෙනත් පරිවර්තනයක් අඩු ලකුණු ගන්න පුළුවන්. හරිම කෙටි උත්තරයකට වැඩි ලකුණු නොඑන්න brevity penalty එක දානවා. SacreBLEU, METEOR, chrF සහ BERTScore වෙන වෙනම ආකාරයෙන් ගැළපීම මනිනවා.',
       examRefs: ['EVAL-006', 'EVAL-047', 'EVAL-048', 'EVAL-049', 'EVAL-055', 'EVAL-056', 'EVAL-057'],
       body: [
         'BLEU කියන්නේ machine translation වලට හදපු metric එකක්. ඒක precision-oriented: "model එක ලියපු n-grams (වචන 1, 2, 3, 4 කෑලි) වලින් කීයක් reference එකේ තියෙනවද" කියලා බලනවා. "Modified" හෝ "clipped" precision කියන්නේ, reference එකේ "the" දෙපාරක් විතරක් තියෙනවා නම්, candidate එකේ "the" හත් පාරක් ලිව්වත් match දෙකක් විතරයි ගණන් කරන්නේ. ඊට පස්සේ 1-gram සිට 4-gram දක්වා precisions හතරේ geometric mean එක (ගුණ කරලා හතරවෙනි මූලය) ගන්නවා. ඒක brevity penalty (BP) එකෙන් ගුණ කරනවා.',
@@ -105,6 +108,7 @@ print(nats / math.log(2) / 4000)          # ~0.32`,
     {
       id: 'qa-rouge-diversity',
       title: 'Exact Match, Token F1, ROUGE, Diversity and Reference-Free Metrics',
+      si: 'ඔයාගේ උත්තරය gold answer එකට සමාන වචන කොච්චර තියෙනවද කියලා Token F1 අර්ධ ලකුණු දෙනවා. ROUGE එක සාරාංශයේ තිබුණු වැදගත් වචන කොටස් candidate එකේ තියෙනවද බලනවා. එකම වචන නැවත නැවත කියන chatbot එකකට Distinct-n අඩු වෙනවා, Self-BLEU ද ඉහළ යනවා. විවෘත ප්‍රශ්නවලට overlap එක පමණක් නොව human හෝ LLM judge ඇගයීමත් ඕනේ.',
       examRefs: ['EVAL-007', 'EVAL-008', 'EVAL-009', 'EVAL-010', 'EVAL-011', 'EVAL-101', 'EVAL-110', 'EVAL-111'],
       body: [
         'Extractive QA (SQuAD වගේ) වල metrics දෙකක් තියෙනවා. Exact Match (EM): normalize කරපු prediction එක normalize කරපු gold answer එකට හරියටම සමාන නම් 1, නැත්නම් 0. SQuAD normalization එකෙන් අයින් කරන්නේ capital/simple අකුරු වෙනස, punctuation, සහ articles (a, an, the) විතරයි. වෙනත් අමතර වචනයක් තිබුණොත් EM = 0. Token F1 කියන්නේ අර්ධ ලකුණු දෙන ක්‍රමය: precision = පොදු tokens ÷ prediction tokens, recall = පොදු tokens ÷ gold tokens, F1 = 2PR ÷ (P + R).',
@@ -135,6 +139,7 @@ print(nats / math.log(2) / 4000)          # ~0.32`,
     {
       id: 'pass-at-k',
       title: 'Code Evaluation: HumanEval, pass@k and the Unbiased Estimator',
+      si: 'Cricket practice එකේ balls 10කින් 2ක් හොඳට bat කළා නම්, ඒවායින් balls 5ක් තෝරද්දී එකක්වත් හරි යන ඉඩ pass@5 වගේ. Code එකකටත් hidden unit tests ඔක්කොම pass වුණොත් විතරයි ඒ sample එක සාර්ථක වෙන්නේ. pass@k සඳහා unbiased formula එක 1 − C(n−c,k)/C(n,k) යි. එකම greedy output එක නැවත නැවත ගන්නවාට වඩා විවිධ samples ගත්තොත් ලොකු k එකකට හොඳ chance එකක් ලැබෙනවා.',
       examRefs: ['EVAL-012', 'EVAL-013', 'EVAL-017', 'EVAL-053', 'EVAL-054', 'EVAL-096', 'EVAL-113', 'EVAL-114'],
       body: [
         'Code එකක් හොඳද කියලා බලන්න හොඳම ක්‍රමය ඒක run කරලා බලන එක. HumanEval (OpenAI Codex paper එකෙන්) කියන්නේ අතින් ලියපු Python problems 164ක්. හැම එකකටම function signature එකක්, docstring එකක්, hidden unit tests තියෙනවා. මේකට කියන්නේ functional correctness evaluation කියලා. BLEU code tokens වලට ගණනය කරන්න පුළුවන්, ඒත් correctness එකත් එක්ක දුර්වලව correlate වෙනවා. වෙනස් විදිහට ලියපු programs දෙකක් එකම දේ කරන්න පුළුවන්. එකම වගේ පේන code එකක් වැරදි වෙන්නත් පුළුවන්. pass@k BLEU වලට වඩා ලාභ නෑ. ඇත්තටම වැඩි වියදම්, මොකද sandbox එකක code run කරන්න ඕනේ.',
@@ -177,6 +182,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'standard-benchmarks',
       title: 'Standard Benchmarks: MMLU, HellaSwag, ARC, GSM8K, TruthfulQA, IFEval, BIG-bench, Long Context',
+      si: 'A/L විෂයයන් වගේ benchmarks එකිනෙකට වෙනස් හැකියාවන් පරීක්ෂා කරනවා. MMLU විෂය 57ක ප්‍රශ්න අහන අතර options 4ක් නිසා අහඹු අනුමානය 25%යි. GSM8K එකේ ගණිත ප්‍රශ්නයකට answers 16ක් අරගෙන majority vote කළොත් compute එකත් 16 ගුණ වෙනවා. දිග document එකක එක වචනයක් හොයාගැනීමෙන් model එකට දිග context එක හොඳට reason කරන්න පුළුවන් කියලා තහවුරු වෙන්නේ නෑ.',
       examRefs: ['EVAL-014', 'EVAL-015', 'EVAL-016', 'EVAL-018', 'EVAL-023', 'EVAL-066', 'EVAL-067', 'EVAL-068', 'EVAL-095', 'EVAL-148'],
       body: [
         'Benchmark එකක් කියන්නේ හැමෝම එකම විදිහට පාවිච්චි කරන public exam paper එකක් වගේ. Exam එකට වැදගත් ඒවා: MMLU (Massive Multitask Language Understanding) = විෂයයන් 57ක (STEM, law, humanities…) options 4ක multiple-choice ප්‍රශ්න. පුළුල් දැනුම සහ reasoning මනිනවා. HellaSwag = scenario එකකට වඩාත්ම ගැළපෙන අවසානය (continuation) තෝරන commonsense benchmark එක. වැරදි endings machine එකෙන් හදලා adversarial filtering කරලා තියෙනවා, ඒ නිසා models රැවටෙනවා, ඒත් මිනිස්සුන්ට ලේසියි. ARC (AI2 Reasoning Challenge) = grade-school science multiple-choice ප්‍රශ්න. Easy සහ Challenge කියලා කොටස් දෙකයි. Challenge set එකේ තියෙන්නේ සරල retrieval සහ word co-occurrence baselines වැරදියට උත්තර දුන්න ප්‍රශ්න.',
@@ -206,6 +212,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'harness-scoring',
       title: 'How Harnesses Score: lm-evaluation-harness, Log-Likelihood, acc_norm, Prompt Sensitivity, NeMo Evaluator',
+      si: 'එකම ප්‍රශ්නයට ලකුණු දෙන ක්‍රමය වෙනස් නම් model එකේ score එකත් වෙනස් වෙන්න පුළුවන්. Multiple-choice එකකදී harness එක හැම option එකේම log-likelihood එක සසඳනවා. දිග උත්තරවලට අසාධාරණයක් නොවෙන්න acc_norm දිගෙන් normalize කරනවා. Colombo පාසල් දෙකක් සසඳනවා වගේ models හැම එකටම එකම prompt template සහ shots ගණන පාවිච්චි කරන්න.',
       examRefs: ['EVAL-052', 'EVAL-092', 'EVAL-093', 'EVAL-094', 'EVAL-097', 'EVAL-141', 'EVAL-142', 'EVAL-143'],
       body: [
         'EleutherAI lm-evaluation-harness කියන්නේ MMLU, HellaSwag, ARC වගේ benchmarks සිය ගණනක් එකම prompts සහ scoring එකෙන් Hugging Face models මත run කරන open-source tool එක. ගොඩක් public leaderboards පිටිපස්සේ තියෙන්නේ මේකයි. NVIDIA ලෝකයේදී, NeMo Evaluator කියන්නේ NIM endpoints විදිහට serve කරන models සහ pipelines මත academic benchmarks, custom datasets, LLM-as-a-judge evaluations run කරන managed microservice එක. NeMo Curator කියන්නේ training data සකස් කරන tool එක, evaluation කරන්නේ නෑ. TensorRT-LLM inference වේගවත් කරනවා. NeMo Guardrails safety rails දානවා.',
@@ -235,6 +242,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'arena-elo-pairwise',
       title: 'Pairwise Evaluation: Chatbot Arena, MT-Bench, Win Rate, Elo and Bradley–Terry',
+      si: 'පාසල් cricket තරගයක teams දෙකෙන් හොඳ එක තෝරන එක, එක එක team එකට ලකුණු 1-10 දෙනවට වඩා ලේසි වෙන්න පුළුවන්. Chatbot Arena එකේ users anonymous models දෙකක උත්තර සසඳලා vote කරනවා. Elo එකේ ලකුණු තරගයෙන් තරගයට update වෙන අතර Bradley–Terry එක සියලු තරග එකට බලනවා. A, B ට වඩා Elo points 400ක් ඉහළ නම් A දිනන බලාපොරොත්තු ඉඩ ආසන්නයෙන් 0.91යි.',
       examRefs: ['EVAL-019', 'EVAL-020', 'EVAL-040', 'EVAL-061', 'EVAL-069', 'EVAL-121'],
       body: [
         'Chatbot Arena (LMSYS / LMArena) එකේදී users ලා නම් නොපෙන්නන (anonymous) models දෙකක් එක්ක එකට chat කරලා හොඳ උත්තරයට vote කරනවා. මේ crowdsourced pairwise human votes, Elo / Bradley–Terry ratings වලට එකතු කරලා leaderboard එක හදනවා. MT-Bench වෙනස්: ඒකේ categories (writing, reasoning, math, coding…) වල two-turn ප්‍රශ්න 80ක් තියෙනවා. Multi-turn conversations, strong LLM judge කෙනෙක් (මුලින් GPT-4) score කරනවා. GPT-4 එක answer එකකට 1-10 ලකුණු දෙන එක MT-Bench එකේ "single-answer grading" mode එක. MT-Bench හිතාමතාම පොඩියි. ලොකු crowdsourced dataset එක Arena vote log එක.',
@@ -263,6 +271,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'llm-as-a-judge',
       title: 'LLM-as-a-Judge: Biases, Rubrics, G-Eval, Reference Guidance, Panels and Validation',
+      si: 'පාසල් නාට්‍ය තරගයක විනිසුරුවෙක් වගේ LLM judge එකත් output එකකට ලකුණු දෙනවා. ඒත් පළමුවෙන් පෙන්වූ එකට, දිග උත්තරයට, තමන්ගේම model family එකට කැමති වෙන්න පුළුවන්. උත්තර දෙකේ පිළිවෙළ මාරු කරලා දෙවරක් බලන්න, පැහැදිලි rubric එකක් දෙන්න, අවශ්‍ය නම් judges තුන්දෙනෙක්ගෙන් panel එකක් ගන්න. Release කරන්න කලින් judge එක human labels එක්ක කොච්චර එකඟද කියලා පරීක්ෂා කරන්න.',
       examRefs: ['EVAL-022', 'EVAL-024', 'EVAL-025', 'EVAL-060', 'EVAL-062', 'EVAL-063', 'EVAL-122', 'EVAL-123', 'EVAL-124', 'EVAL-126', 'EVAL-150'],
       body: [
         'LLM-as-a-judge කියන්නේ strong LLM එකකට prompt එකක් හෝ rubric එකක් දීලා, වෙනත් model එකක outputs score කරන්න (pointwise) හෝ සසඳන්න (pairwise) කියන එක. N-gram metrics අසාර්ථක වෙන open-ended outputs ලාභෙට, ලොකු ප්‍රමාණයකට evaluate කරන්න පුළුවන්. ඒත් judges ලට biases තියෙනවා. ඒ නිසා human judgments එක්ක validate කරන්නම ඕනේ. Release තීරණ ගන්න කලින් පළමු පියවර: representative sample එකක human labels එක්ක judge ගේ agreement එක (agreement rate හෝ kappa) මනින්න. Judge model එක ලොකු වුණා කියලා ඔයාගේ criteria එකට ගැළපෙනවා කියලා සහතිකයක් නෑ.',
@@ -293,6 +302,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'hallucination-faithfulness',
       title: 'Faithfulness and Hallucination Evaluation: NLI, SelfCheckGPT, FActScore',
+      si: 'ඔයාට බැංකුවේ FAQ document එකකින් උත්තර දෙන bot එකක් තියෙනවා කියලා හිතන්න. උත්තරය ඇත්ත වුණත් ඒ document එකෙන් සහාය නොලැබේ නම් faithfulness අඩුයි. NLI, SelfCheckGPT, FActScore වගේ ක්‍රම claims සහ evidence අතර සම්බන්ධය පරීක්ෂා කරනවා. නිවැරදි බව, source එකට faithful වීම, සහ ප්‍රශ්නයට පිළිතුරු දීම වෙන වෙනම මනින්න.',
       examRefs: ['EVAL-046', 'EVAL-091', 'EVAL-098', 'EVAL-099', 'EVAL-100'],
       body: [
         'Summary එකක source document එකේ නැති facts එකතු වෙනවා නම් ඒක hallucination එකක්. ඒක කෙලින්ම මනින dimension එක faithfulness (factual consistency with the source): output එකේ හැම claim එකක්ම input එකෙන් support වෙනවද කියන එක. Fluency කියන්නේ කියවන්න ලස්සනද කියන එක විතරයි. ROUGE-2 recall කියන්නේ reference content එක කොච්චර cover වුණාද කියන එක. බොරු facts එකතු කළත් ROUGE ඉහළින් තියෙන්න පුළුවන්. Source එකේ perplexity එකත් fluency විතරයි පෙන්නන්නේ.',
@@ -321,6 +331,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'human-eval-agreement',
       title: 'Human Evaluation and Agreement: Cohen’s Kappa, Krippendorff’s Alpha, Kappa Paradox, Metric Validation',
+      si: 'දෙන්නෙක් උත්තර 10කින් 8කට එකඟ නම් raw agreement 80%යි. ඒත් අහම්බෙන්ම එකඟ වෙන ප්‍රමාණයත් ඉවත් කරලා Cohen’s kappa ගණන් කරනවා. pₒ = 0.80 සහ pₑ = 0.50 නම් κ = (0.80−0.50)/(1−0.50) = 0.60. Labels බොහොමයක් “safe” වගේ එක පැත්තකට නම් 95% agreement තිබුණත් kappa අඩු වෙන්න පුළුවන්.',
       examRefs: ['EVAL-026', 'EVAL-027', 'EVAL-028', 'EVAL-038', 'EVAL-058', 'EVAL-059', 'EVAL-125'],
       body: [
         'Human evaluation වඩාත්ම වටින්නේ outputs open-ended වුණාම, helpfulness, tone, factual nuance වගේ subtle ගුණාංග වැදගත් වුණාම. Overlap metrics ඒවා අල්ලන්නේ නෑ. ඒ නිසා open-ended generation වලට human evaluation තාමත් reference standard එක. හැබැයි exact උත්තරයක් තියෙන task එකකට, හෝ CI එකේ පැයකට evaluations දහස් ගණනක් ඕනේ නම්, automatic metrics ලාභයි, ප්‍රමාණවත්.',
@@ -350,6 +361,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'contamination-goodhart',
       title: 'Benchmark Contamination, Canary Strings, Saturation and Goodhart’s Law',
+      si: 'පන්තියේ විභාග ප්‍රශ්න කලින්ම දැකලා පිළිතුරු මතක තියාගත්ත ළමයෙක්ගේ ලකුණ සැබෑ දැනුම පෙන්වන්නේ නෑ. Benchmark ප්‍රශ්න training data එකේ තිබුණොත් model එකටත් ඒ වගේ contamination එකක් වෙන්න පුළුවන්. Canary string එක unique GUID එකක් දාලා data leak එක හඳුනාගන්න උදව් කරනවා, encryption එකක් නෙවෙයි. හැමෝම එකම ලකුණට optimize කළාම measure එකේ වටිනාකම අඩුවෙන එක Goodhart’s Law එකයි.',
       examRefs: ['EVAL-021', 'EVAL-064', 'EVAL-065', 'EVAL-081', 'EVAL-108', 'EVAL-119', 'EVAL-120', 'EVAL-149'],
       body: [
         'Benchmark (data) contamination කියන්නේ test ප්‍රශ්න pretraining crawl එකට (training data එකට) ගිහින් තියෙන එක. එතකොට ලකුණ පෙන්නන්නේ generalization නෙවෙයි, memorization. Distribution shift කියන්නේ විරුද්ධ තත්ත්වය: test data, model එක දැකපු දේට වඩා වෙනස්. Contamination හොයන පොදු ක්‍රමය: benchmark items සහ training documents අතර දිග n-gram overlaps හොයන එක. GPT-3 paper එකේ 13-gram check එක උදාහරණයක්. Few-shot examples ගණන වෙනස් කරන එකෙන් leak වුණාද කියලා කිසිම දෙයක් කියන්නේ නෑ.',
@@ -379,6 +391,7 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'calibration',
       title: 'Calibration: ECE, Temperature Scaling and the Effect of Alignment',
+      si: 'කාලගුණ වාර්තාව 80% වැස්ස කියන දවස් 10කින් 8ක වැස්සොත් ඒක calibrated. Bin එකක confidence 0.9 සහ accuracy 0.7 නම් gap එක 0.2යි. ECE එකේ gaps samples ගණනෙන් weight කරනවා. Temperature T=2 දාලා logits [4,2,1] → [2,1,0.5] වුණත් ලොකුම logit එක පළවෙනි එකම නිසා prediction එක වෙනස් වෙන්නේ නෑ.',
       examRefs: ['EVAL-043', 'EVAL-044', 'EVAL-132', 'EVAL-133', 'EVAL-134'],
       body: [
         'Model එකක් well calibrated කියන්නේ, ඒක කියන confidence එක ඇත්ත accuracy එකට ගැළපෙනවා කියන එක. 80% confidence එකෙන් කියන predictions වලින් ආසන්න වශයෙන් 80%ක් හරි නම් ඒක calibrated. Calibration කියන්නේ probabilities වල විශ්වසනීයත්වය, accuracy එක නෙවෙයි. Model එකක් accurate වුණත් overconfident වෙන්න පුළුවන්. ඇත්තටම විශ්වාස නැති වෙලාවල probabilities 0 හෝ 1 ට තල්ලු කරන එක calibration එක නරක් කරනවා.',
@@ -418,6 +431,7 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'test-data-design',
       title: 'Test Data Design: Splits, Leakage, Golden Sets, Regression Suites and Slice-Based Evaluation',
+      si: 'විභාගයකදී පාඩම් කරපු ප්‍රශ්න train set එක, පුහුණුවට පාවිච්චි කරන ප්‍රශ්න validation set එක, අන්තිමට පමණක් බලන paper එක test set එක වගේ. එක customer කෙනෙකුගේ tickets train සහ test දෙකටම ගියොත් model එකට පිළිතුර මතක තියාගන්න පුළුවන්. Colombo සහ Kandy customers වෙන වෙනම slices කරලා බලද්දී overall score එක සඟවන දුර්වලතාවක් පේන්න පුළුවන්. Golden set එක version කරලා production failures වලින් අලුත් cases එකතු කරන්න.',
       examRefs: ['EVAL-029', 'EVAL-030', 'EVAL-041', 'EVAL-042', 'EVAL-045', 'EVAL-050', 'EVAL-051', 'EVAL-102', 'EVAL-103', 'EVAL-104', 'EVAL-112', 'EVAL-146', 'EVAL-147'],
       body: [
         'Splits වල roles: Training set = ඉගෙන ගන්න. Validation set = hyperparameters tune කරන්න, හොඳම checkpoint එක තෝරන්න. Test set = ඔක්කොම තීරණ ගත්තට පස්සේ අන්තිමට එක පාරක්, unbiased performance estimate එකක් ගන්න. Test set එකෙන් තීරණ ගත්තොත් තොරතුරු leak වෙලා අන්තිම අංකය optimistic වෙනවා. Leakage: Customer-support tickets random split කළාම near-duplicate tickets train සහ test දෙකේම තිබුණොත්, model එක දැකපු දේ මතක් කරලා සාර්ථක වෙනවා. Test scores inflate වෙනවා. Split කරන්න කලින් deduplicate කරන්න, නැත්නම් customer, කාලය, template අනුව split කරන්න. Group-based split: එක customer කෙනෙක්ගේ conversations ගොඩක් තියෙනවා නම්, එක customer කෙනෙක් එක split එකක විතරක් ඉන්න විදිහට group කරන්න. Temporal split: අලුත් products ආවම future tickets වෙනස් වෙනවා නම්, පරණ tickets වලින් train කරලා අලුත්ම කාල පරිච්ඡේදයෙන් test කරන්න. Deployment එකේදී model එක හැම වෙලේම අතීතයෙන් අනාගතය predict කරනවා, drift එකට මුහුණ දෙනවා.',
@@ -449,6 +463,7 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'statistics-for-evals',
       title: 'Statistics for Evals: p-values, Confidence Intervals, Paired Tests, Bootstrap, Multiple Comparisons, Sample Size',
+      si: 'Model දෙකක score වෙනසක් දුටු පමණින් එකක් හොඳයි කියලා තීරණය කරන්න බෑ; ඒ වෙනස random noise එකක්ද බලන්න ඕනේ. Confidence interval එක 100 වතාවක් වගේ නැවත sample කළාම ඇත්ත අගය කොහේ තියෙන්න පුළුවන්ද කියලා uncertainty පෙන්වනවා. එකම questions දෙකම models දෙකට දීලා paired test එකක් කළොත් ප්‍රශ්නවල අමාරුකම පාලනය වෙනවා. Comparisons ගොඩක් කරනවා නම් false positive අවදානමත් පාලනය කරන්න.',
       examRefs: ['EVAL-032', 'EVAL-070', 'EVAL-071', 'EVAL-073', 'EVAL-105', 'EVAL-106', 'EVAL-107', 'EVAL-129', 'EVAL-131'],
       body: [
         'p-value එක: "ඇත්තටම කිසිම වෙනසක් නැත්නම් (null hypothesis), අපි දැක්ක තරම් හෝ ඊට වඩා extreme data ලැබෙන්න ඉඩ කොච්චරද?" p = 0.03 කියන්නේ, වෙනසක් නැත්නම් මෙහෙම data 3%ක වාර ගණනක් එනවා කියන එක. ඒක "අලුත් variant එක හොඳ වෙන්න 3% ඉඩ" නෙවෙයි. Effect එක කොච්චර ලොකුද කියලත් ඒකෙන් කියන්නේ නෑ.',
@@ -480,6 +495,7 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'ab-testing',
       title: 'A/B Testing LLM Features: Peeking, Sequential Tests, SRM, Novelty, Randomization Unit, CUPED, Guardrails',
+      si: 'කඩේ අලුත් kottu recipe එකක් control recipe එකත් එක්ක random ලෙස බෙදා බලන එක A/B test එකක් වගේ. හැමදාම p-value බලලා 0.05ට අඩු වුණ ගමන් නතර කළොත් false positive වැඩි වෙනවා. 50/50 test එකක users 52,000 සහ 48,000 වුණොත් SRM එකක් සැක කරලා logging එක හොයන්න. Primary metric එක හොඳ වුණත් latency, cost, safety guardrails නරක වෙන්න ඉඩ දෙන්න එපා.',
       examRefs: ['EVAL-031', 'EVAL-072', 'EVAL-074', 'EVAL-075', 'EVAL-076', 'EVAL-077', 'EVAL-127', 'EVAL-128', 'EVAL-130'],
       body: [
         'A/B test එකක් කියන්නේ live traffic එක පරණ (control) සහ අලුත් (treatment) variants අතර random විදිහට බෙදලා outcome metrics (resolution rate, thumbs-up rate…) සසඳන එක. Randomization නිසා groups දෙක සමානයි, ඉතින් outcome වෙනස variant එකට ආරෝපණය කරන්න පුළුවන්. Primary metric එක (උදා: helpfulness) optimize කරනකොට guardrail metrics (p95 latency, request එකකට cost, safety-violation rate) පිරිහෙන්න බෑ. Training loss, gradient norm වගේ ඒවා development diagnostics, live outcomes නෙවෙයි.',
@@ -511,6 +527,7 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'reproducibility',
       title: 'Reproducibility: Seeds, GPU Nondeterminism, Temperature-0 Drift, Versioning and Tracking',
+      si: 'එකම recipe එකට බත් උයද්දීත් වතුර, ගින්දර, වෙලාව වෙනස් වුණොත් ප්‍රතිඵලය ටිකක් වෙනස්. ML experiment එකේ seed, data version, prompt, model checkpoint, library සහ hardware සටහන් කරන්න. Seed එකක් දාපු පමණින් GPU nondeterminism හෝ remote model update නවතින්නේ නෑ. Temperature 0 වුණත් backend වෙනස් වීමෙන් output වෙනස් වෙන්න පුළුවන්.',
       examRefs: ['EVAL-033', 'EVAL-034', 'EVAL-083', 'EVAL-084', 'EVAL-085', 'EVAL-086', 'EVAL-087', 'EVAL-144', 'EVAL-145'],
       body: [
         'Reproducibility කියන්නේ වෙන කෙනෙකුට experiment එක ආයෙත් run කරලා එකම (හෝ statistically ගැළපෙන) ප්‍රතිඵල ගන්න පුළුවන් වීම. ඒකට random seeds fix කරන්න, code, data, config, model versions record කරන්න ඕනේ. LLM apps වලදී prompt එකත් weights තරමටම behavior වෙනස් කරන first-class artifact එකක්. ඉතින් prompts code එකත් එක්ක version control එකේ තියලා, හැම eval run එකකටම prompt version එක log කරන්න. Data versioning: file path එක එකම වුණත් content වෙනස් වෙන්න පුළුවන්. Content-addressed versioning (dataset එකේ hash එක, DVC හෝ W&B / MLflow artifacts) පාවිච්චි කරලා hash එක හැම run එකකටම log කරන්න. Content එක වෙනස් වුණොත් hash එකත් වෙනස් වෙනවා. Path සහ modification date ප්‍රමාණවත් නෑ.',
@@ -540,6 +557,7 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'experiments-and-tuning',
       title: 'Experiments: Ablations, Hyperparameter Search (Grid, Random, Bayesian/TPE, ASHA, PBT, μP) and Training Curves',
+      si: 'කෑමක ලුණු අඩු කළාම රස වෙනස්ද බලන්න එක වරකට එක ingredient එකක් වෙනස් කරනවා වගේ ablation එකක්. Grid search එක හැම combination එකම බලනවා, random search එක අහඹු සැකසුම් බලනවා, Bayesian/TPE කලින් ලැබුණු ප්‍රතිඵල වලින් ඊළඟ අත්හදාබැලීම තෝරනවා. ASHA දුර්වල runs ඉක්මනින් නවත්වනවා, PBT හොඳ runs අතරින් settings හුවමාරු කරනවා. Training curves වලට loss සහ validation performance කාලයත් එක්ක බලන්න.',
       examRefs: ['EVAL-035', 'EVAL-036', 'EVAL-037', 'EVAL-039', 'EVAL-082', 'EVAL-088', 'EVAL-089', 'EVAL-090', 'EVAL-137', 'EVAL-138', 'EVAL-139', 'EVAL-140'],
       body: [
         'Ablation study: අනිත් හැමදේම එකම විදිහට තියලා, එක component එකක් අයින් කරලා / disable කරලා, ඒ නිසා metric එක කොච්චර වැටෙනවද කියලා මනින එක. වැටීම ලොකු වෙන තරමට ඒ component එකේ දායකත්වය වැඩියි. Component එක සංකීර්ණද කියන එක වැදගත් නෑ. Hyperparameter sweep එකක් නම් එකම design එකේ settings වෙනස් කරනවා, කොටස් අයින් කරන්නේ නෑ.',
@@ -571,6 +589,7 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'serving-performance-eval',
       title: 'Evaluating Serving Performance: Latency, Throughput, Tail Percentiles, Little’s Law, Cost per Token',
+      si: 'බස් එකක් පැයකට මගීන් 100ක් ගෙනියන එක throughput වගේ, එක මගියෙක්ට බස් එක එනකම් විනාඩි 20ක් ඉන්න එක latency වගේ. සාමාන්‍ය latency එක හොඳ වුණත් p95 හෝ p99 දිගු ප්‍රමාදය පෙන්වන්න පුළුවන්. Little’s Law අනුව concurrency = throughput × latency. Request එකකට හෝ token එකකට වැය වන Rs. ගණනත් quality එකත් එක්ක මනින්න.',
       examRefs: ['EVAL-078', 'EVAL-079', 'EVAL-080', 'EVAL-135', 'EVAL-136'],
       body: [
         'Quality එක විතරක් නෙවෙයි, වේගය සහ වියදමත් evaluate කරන්න ඕනේ. Throughput = තත්පරයකට මුළු tokens (හෝ requests) ගණන. Latency = එක request එකකට ගතවන කාලය. Triton එකේ batch size එක වැඩි කළාම GPU utilization සහ throughput එක වැඩි වෙනවා, මොකද weights load කරන වියදම requests ගොඩකට බෙදෙනවා. ඒත් හැම request එකක්ම queue එකේ බලාගෙන ඉන්න හෝ step එකක් හෙමින් decode වෙන්න පුළුවන්, ඉතින් per-request latency එක වැඩි වෙනවා. දෙකම report කරන්න, හොඳම විදිහ throughput-versus-latency curve එකක්.',
@@ -599,6 +618,7 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'build-rag-eval-pipeline',
       title: 'Beyond the Exam: Building an Eval Pipeline for Your Own RAG Chatbot',
+      si: 'Colombo බැංකුවක FAQ bot එකක් හදනවා කියලා හිතන්න. ප්‍රශ්න 150ක version කරපු golden set එකක් හදලා Sinhala, English, Singlish ප්‍රශ්න සහ document එකේ උත්තර නැති ප්‍රශ්නත් දාන්න. Retrieval එකේ හරි document එක top 5 ඇතුළේද, generation එකේ උත්තරය source එකට faithful ද කියලා වෙන වෙනම මනින්න. Production එකේ වැරදි හමු වුණාම ඒවා triage කරලා ඊළඟ golden set version එකට එකතු කරන්න.',
       examRefs: [],
       body: [
         'Exam එකෙන් එහාට ගිහින්, ඔයාගේම RAG chatbot එකකට (උදා: ලංකාවේ bank එකක FAQ bot එකක්) eval pipeline එකක් හදන හැටි පියවරෙන් පියවර. පියවර 1: "හොඳ" කියන්නේ මොකක්ද කියලා ලියන්න. උදා: (a) හරි documents retrieve වෙනවා, (b) උත්තරය documents වලින් support වෙනවා (faithfulness), (c) ප්‍රශ්නයට ඇත්තටම උත්තර දෙනවා, (d) නොදන්න දේට "මම දන්නේ නෑ" කියනවා, (e) p95 latency තත්පර 3ට අඩුයි. පියවර 2: Real users ලාගේ ප්‍රශ්න 100-200ක golden set එකක් හදන්න. සිංහල, English, Singlish mix එක, ලේසි සහ අමාරු ඒවා, docs වල උත්තර නැති ප්‍රශ්නත් එකතු කරන්න. හැම එකකටම expected answer එක සහ උත්තරය තියෙන document ID එක label කරන්න. Hash එකකින් version කරන්න.',
@@ -640,76 +660,76 @@ def evaluate(golden, retrieve, answer, judge, k=5):
   ],
   quiz: [
     {
-      q: 'Model එකක සාමාන්‍ය NLL එක token එකකට 2.0 nats. Perplexity එක ආසන්න වශයෙන් කීයද?',
+      q: 'A model has an average NLL of 2.0 nats per token. What is its approximate perplexity?',
       options: ['4.0', '7.4', '2.0', '100'],
       answer: 1,
-      why: 'Perplexity = e^(NLL) = e^2 ≈ 7.39. 4.0 හරි වෙන්නේ loss එක bits වලින් නම් විතරයි (2^2).',
+      why: 'Perplexity = e^(NLL) = e^2 ≈ 7.39. The answer would be 4.0 only if the loss were in bits (2^2).',
     },
     {
-      q: 'Reference summary එකේ unigrams 12යි. Candidate එකේ 10යි, ඒවායින් 9ක් reference එකේ තියෙනවා. ROUGE-1 recall කීයද?',
+      q: 'The reference summary has 12 unigrams. The candidate has 10, of which 9 appear in the reference. What is ROUGE-1 recall?',
       options: ['0.90', '0.82', '0.75', '0.83'],
       answer: 2,
-      why: 'Recall = overlap ÷ reference length = 9 ÷ 12 = 0.75. 0.90 කියන්නේ precision (9 ÷ 10), 0.82 F1.',
+      why: 'Recall = overlap ÷ reference length = 9 ÷ 12 = 0.75. 0.90 is precision (9 ÷ 10), and 0.82 is F1.',
     },
     {
-      q: 'n = 10 samples, c = 2 හරි. Unbiased pass@5 කීයද?',
-      options: ['0.20', '0.50', 'ආසන්න වශයෙන් 0.78', '1.00'],
+      q: 'There are n = 10 samples and c = 2 correct samples. What is unbiased pass@5?',
+      options: ['0.20', '0.50', 'Approximately 0.78', '1.00'],
       answer: 2,
-      why: '1 − C(8,5)/C(10,5) = 1 − 56/252 ≈ 0.78. 0.20 කියන්නේ pass@1 (c/n).',
+      why: '1 − C(8,5)/C(10,5) = 1 − 56/252 ≈ 0.78. 0.20 is pass@1 (c/n).',
     },
     {
-      q: 'Annotators දෙදෙනෙක් 80%ක එකඟයි. Chance agreement 50%යි. Cohen’s kappa කීයද?',
+      q: 'Two annotators agree on 80% of items, and chance agreement is 50%. What is Cohen’s kappa?',
       options: ['0.30', '0.60', '0.80', '0.40'],
       answer: 1,
-      why: 'κ = (0.80 − 0.50) ÷ (1 − 0.50) = 0.30 ÷ 0.50 = 0.60. 0.30 කියන්නේ (1 − p_e) න් බෙදන්න අමතක වුණාම.',
+      why: 'κ = (0.80 − 0.50) ÷ (1 − 0.50) = 0.30 ÷ 0.50 = 0.60. The value 0.30 results if you forget to divide by (1 − p_e).',
     },
     {
-      q: 'LLM judge කෙනෙක්ගේ position bias අඩු කරන standard ක්‍රමය මොකක්ද?',
+      q: 'What is a standard way to reduce position bias in an LLM judge?',
       options: [
-        'Baseline එක හැම වෙලේම පළමුවෙනියට දාන්න',
-        'හැම pair එකක්ම orders දෙකෙන්ම evaluate කරලා consistent verdicts විතරක් ගණන් කරන්න',
-        'Judge ගේ temperature එක වැඩි කරන්න',
-        'Judge prompt එක දිග කරන්න',
+        'Always put the baseline first',
+        'Evaluate every pair in both orders and count only consistent verdicts',
+        'Increase the judge’s temperature',
+        'Make the judge prompt longer',
       ],
       answer: 1,
-      why: 'Order swap කරලා එකඟ වුණොත් විතරක් ගණන් කිරීමෙන් slot preference එක cancel වෙනවා. Baseline එක fix කිරීමෙන් bias එක එකම පැත්තට ඇදෙනවා විතරයි.',
+      why: 'Counting a result only when the judge agrees after swapping the order helps cancel slot preference. Always fixing the baseline in one position only pushes the bias in one direction.',
     },
     {
-      q: 'Bins දෙකක්: samples 60 (confidence 0.9, accuracy 0.7) සහ samples 40 (confidence 0.6, accuracy 0.6). ECE කීයද?',
+      q: 'There are two bins: 60 samples (confidence 0.9, accuracy 0.7) and 40 samples (confidence 0.6, accuracy 0.6). What is ECE?',
       options: ['0.20', '0.12', '0.10', '0.08'],
       answer: 1,
-      why: 'ECE = 0.6 × |0.9 − 0.7| + 0.4 × 0 = 0.12. Weight නොකළොත් 0.10, ඒක වැරදියි.',
+      why: 'ECE = 0.6 × |0.9 − 0.7| + 0.4 × 0 = 0.12. The unweighted result, 0.10, is incorrect.',
     },
     {
-      q: 'Items 400ක golden set එකක accuracy 80%. ආසන්න 95% confidence interval එක මොකක්ද?',
+      q: 'A 400-item golden set has 80% accuracy. What is the approximate 95% confidence interval?',
       options: ['79.8% – 80.2%', '78% – 82%', '76% – 84%', '70% – 90%'],
       answer: 2,
-      why: 'SE = √(0.8 × 0.2 ÷ 400) = 0.02. 1.96 × 0.02 ≈ 0.039 → 76% – 84%. 78–82 කියන්නේ ±1 SE (68% විතර).',
+      why: 'SE = √(0.8 × 0.2 ÷ 400) = 0.02. Then 1.96 × 0.02 ≈ 0.039, giving 76%–84%. 78%–82% is only ±1 SE (about 68%).',
     },
     {
-      q: 'PM කෙනෙක් A/B test එකේ p-value එක හැමදාම බලලා 0.05 ට අඩු වුණ ගමන් නවත්තනවා. ප්‍රශ්නය මොකක්ද?',
+      q: 'A PM checks an A/B test p-value every day and stops as soon as it falls below 0.05. What is the problem?',
       options: [
-        'p-values සතියකට එක පාරයි ගණනය කරන්න පුළුවන්',
-        'Power එක 0 වෙනවා',
-        'නැවත නැවත peek කරලා early stop කිරීමෙන් false-positive rate එක 5% ට වඩා ගොඩක් වැඩි වෙනවා',
-        'Confidence interval එක ඕනෑවට වඩා පළල් වෙනවා',
+        'P-values can only be calculated once per week',
+        'Statistical power becomes zero',
+        'Repeated peeking and early stopping make the false-positive rate much higher than 5%',
+        'The confidence interval becomes too wide',
       ],
       answer: 2,
-      why: 'හැම බැලීමක්ම noise එකට threshold එක පනින්න තවත් අවස්ථාවක්. Fixed sample size එකක් හෝ sequential test එකක් පාවිච්චි කරන්න.',
+      why: 'Every look creates another chance for noise to cross the threshold. Use a fixed sample size or a sequential test.',
     },
     {
-      q: 'Model එකක් public math benchmark එකේ 92%, එකම ප්‍රශ්න අලුත් අංක සහ නම් එක්ක ලිව්වාම 71%. මේකෙන් වඩාත්ම පෙන්නන්නේ?',
+      q: 'A model scores 92% on a public math benchmark but 71% when the same questions are rewritten with new numbers and names. What does this most strongly suggest?',
       options: [
-        'අලුත් ප්‍රශ්න ස්වභාවිකවම අමාරුයි',
-        'Model එක underfit වෙලා',
-        'Original answer key එකේ වැරදි තියෙනවා',
-        'Contamination / memorization, robust reasoning නෙවෙයි',
+        'The new questions are naturally harder',
+        'The model is underfit',
+        'The original answer key contains errors',
+        'Contamination or memorization, rather than robust reasoning',
       ],
       answer: 3,
-      why: 'අමාරුකම සමාන නම්, equivalent variants වල ලොකු drop එක original items memorize කරලා කියන එකට සාක්ෂියක්.',
+      why: 'If difficulty is comparable, a large drop on equivalent variants is evidence that the model memorized the original items.',
     },
     {
-      q: 'Service එකකට requests 20/s එනවා, එකකට තත්පර 3ක් ගතවෙනවා. Steady state එකේ concurrent requests කීයද?',
+      q: 'A service receives 20 requests per second, and each request takes 3 seconds. How many requests are concurrent at steady state?',
       options: ['7', '23', '60', '120'],
       answer: 2,
       why: 'Little’s law: L = λ × W = 20 × 3 = 60.',

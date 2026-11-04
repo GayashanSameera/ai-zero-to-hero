@@ -2,25 +2,26 @@ export default {
   id: 'claude-agents-tools',
   number: 23,
   title: 'Claude Architect: Agents, Tools & MCP (Domains 1–2)',
-  titleSi: 'Claude Architect: Agents, Tools සහ MCP (Domain 1 සහ 2)',
+  titleSi: 'Claude Architect: Agents, Tools and MCP (Domains 1 and 2)',
   summary:
-    'CCAR-F exam එකේ බරම domain දෙක: Agentic Architecture (27%) සහ Tool Design & MCP (18%). stop_reason loop එක, coordinator–subagent, hooks, sessions, tool descriptions, structured errors, tool_choice, MCP scopes සහ built-in tools. හැම concept එකකටම exam එක අහන වැරදි පිළිතුරත් ඒක වැරදි ඇයිද කියලත් මෙතන තියෙනවා.',
-  duration: 'සති 2-3',
+    'The two largest CCAR-F domains are Agentic Architecture (27%) and Tool Design & MCP (18%). Learn the stop_reason loop, coordinator–subagent patterns, hooks, sessions, tool descriptions, structured errors, tool_choice, MCP scopes, and built-in tools. Each concept also explains a common exam distractor and why it is wrong.',
+  duration: '2–3 weeks',
   topics: [
     {
       id: 'agentic-loop-stop-reason',
       examRefs: ['CCAR-001'],
       title: 'Agentic Loop: stop_reason (Task 1.1)',
+      si: 'ඔයාගේ agent එක Claude එක්ක කතා කරන්නේ වටෙන් වටේ යන loop එකකින්. Colombo වල order එකක් බලන්න Claude tool එකක් ඉල්ලුවොත්, ඔයාගේ code එක ඒ tool එක run කරලා result එක ආපහු යවනවා. stop_reason එක end_turn වුණාම Claude ඉවරයි කියලා loop එක නවත්වන්න. Request දෙකකින් order එකේ තත්ත්වය දැනගන්න පුළුවන්.',
       body: [
-        'Agent එකක හදවත තියෙන්නේ පොඩි loop එකක. ඔයා Claude ට messages සහ tools යවනවා. Claude උත්තර දෙනවා. ඒ response එකේ stop_reason කියලා field එකක් තියෙනවා. ඒක තමයි loop එක පාලනය කරන්නේ.',
-        'stop_reason == "tool_use" නම්, Claude කියන්නේ "මට tool එකක් run කරන්න ඕනේ" කියලා. එතකොට ඔයාගේ code එක ඒ tool එක run කරනවා (Claude run කරන්නේ නෑ, ඔයාගේ code එකයි run කරන්නේ). ඊට පස්සේ ප්‍රතිඵලය tool_result එකක් විදිහට, ඒ tool_use එකේ id එකම (tool_use_id) දාලා, user message එකක් ලෙස history එකට එකතු කරලා ආයෙත් request එකක් යවනවා. stop_reason == "end_turn" නම් Claude වැඩේ ඉවරයි, loop එක නවත්තනවා.',
-        'ඊළඟට මොන tool එකද කියලා තීරණය කරන්නේ Claude (model-driven). ඔයා කලින්ම tool sequence එකක් hard-code කරන්නේ නෑ. Iteration cap එකක් (උදා: 20 වතාවක් උපරිම) තියාගන්න එක හොඳයි, ඒත් ඒක safety backup එකක් විතරයි, ප්‍රධාන නවත්වන ක්‍රමය නෙවෙයි.',
-        'Agent loop එකේ සාමාන්‍ය අදහස Phase 12 සහ Phase 19 වල තියෙනවා (Phase 12 බලන්න). මෙතන අවධානය Claude API එකේ නිශ්චිත mechanics වලට, මොකද exam එක අහන්නේ ඒවා.',
+        'An agent is driven by a small loop: your application sends Claude messages and available tools, then receives a response with a stop_reason field. Your code uses this structured field to decide what to do next.',
+        'When stop_reason is "tool_use", Claude is requesting a tool; Claude does not execute it. Your application runs the requested tool, then sends its result in a user message with the matching tool_use_id and requests another response. When stop_reason is "end_turn", Claude has finished and the loop can stop.',
+        'Claude chooses the next tool based on the conversation; do not hard-code a fixed tool sequence. An iteration cap such as 20 turns is a useful safety limit, but it is a backup rather than the normal completion signal.',
+        'Phase 12 and Phase 19 introduce the general agent loop. Here, focus on the specific Claude API mechanics because those details are tested.',
       ],
       analogy:
-        'Kottu කඩේ කෙනෙක් order එක ගන්නවා වගේ. වෙන්නේ "ඔයා tool එකක් ඉල්ලුවා, මම ගෙනත් දෙනවා" කියලා. වේටර් (ඔයාගේ code) කුස්සියෙන් දේවල් අරන් එනවා, chef (Claude) ඊළඟට මොනවද ඕනේ කියලා තීරණය කරනවා. "ඉවරයි, බිල දෙන්න" කියලා chef කිව්වම (end_turn) විතරයි වේටර් නවතින්නේ. "Chef ඔළුව වනපු නිසා ඉවරයි" කියලා අනුමාන කරන්නේ නෑ.',
+        'Think of a kottu shop: the chef (Claude) decides what ingredient or action is needed next, while the waiter (your code) takes the request to the kitchen and brings back the result. The waiter stops only when the chef says the order is complete (end_turn), not by guessing from a nod.',
       example:
-        'User: "මගේ order #A12345 කොහෙද?" Turn 1: Claude stop_reason = tool_use, lookup_order(order_id="A12345") ඉල්ලනවා. ඔයාගේ code run කරලා {status: "shipped"} ගන්නවා, tool_result (tool_use_id එක සමඟ) එකතු කරලා යවනවා. Turn 2: Claude stop_reason = end_turn, "ඔයාගේ order එක shipped" කියලා text දෙනවා. Loop එක ඉවරයි. Request 2යි, tool run 1යි.',
+        'User: "Where is my order #A12345?" On turn 1, Claude requests lookup_order(order_id="A12345") with stop_reason = tool_use. Your code runs it, gets {status: "shipped"}, and sends that result with the matching tool_use_id. On turn 2, Claude returns a text answer with stop_reason = end_turn. The loop used two requests and one tool call.',
       code: {
         lang: 'python',
         src: `messages = [{"role": "user", "content": user_question}]
@@ -40,59 +41,61 @@ while True:
         messages.append({"role": "user", "content": results})`,
       },
       keyPoints: [
-        'Loop එක පාලනය කරන්නේ stop_reason: tool_use = tool run කරලා දිගටම, end_turn = නවත්තන්න.',
-        'tool_result එක user message එකක් ලෙස, tool_use_id සමඟ history එකට එකතු කරනවා.',
-        'ඊළඟ tool එක තීරණය කරන්නේ Claude (model-driven), කලින් සැකසූ sequence එකක් නෙවෙයි.',
-        'Iteration cap = safety backup විතරයි.',
+        'Use stop_reason to control the loop: run tools and continue for tool_use; stop for end_turn.',
+        'Add tool results to the conversation as a user message with the matching tool_use_id.',
+        'Claude chooses tools dynamically; do not assume a fixed sequence.',
+        'An iteration cap is a safety backup, not the primary stop condition.',
       ],
       terms: [
-        { en: 'Wrong answer: text එකේ "done" සොයා නවත්වීම', si: 'Natural language parse කිරීම අනුමානයක්. Claude "done" කියන්නේ නැතුව වෙනත් වචනයකින් කියන්න පුළුවන්. stop_reason structured field එකයි.' },
-        { en: 'Wrong answer: assistant text එකක් ආවාද කියා බලා ඉවරයි කියීම', si: 'Claude tool call එකක් එක්කම පැහැදිලි text එකකුත් දෙන්න පුළුවන්. Text එකක් තිබීම ≠ වැඩේ ඉවර.' },
-        { en: 'Wrong answer: iteration cap එක ප්‍රධාන නවත්වන ක්‍රමය', si: 'Cap එක backup එකක් ලෙස හොඳයි. ඒත් ඉවර වුණාද කියලා තීරණය කරන්නේ end_turn.' },
-        { en: 'Wrong answer: fixed tool sequence', si: 'ඒකෙන් agent එකේ වටිනාකම (model-driven තේරීම) නැති වෙනවා. Fixed pipeline ඕනේ නම් ඒක prompt chaining (Task 1.6).' },
-        { en: 'tool_use_id', si: 'Claude ඉල්ලපු tool call එකයි ඔයා දෙන result එකයි ගැලපෙන්න යොදන id එක.' },
+        { en: 'Wrong answer: stop when the text says "done"', si: 'Parsing natural language is unreliable; stop_reason is the structured field.' },
+        { en: 'Wrong answer: stop whenever assistant text appears', si: 'Claude can return explanatory text alongside a tool request; text alone does not mean the task is done.' },
+        { en: 'Wrong answer: use the iteration cap as the main stop condition', si: 'The cap is a backup. end_turn signals normal completion.' },
+        { en: 'Wrong answer: use a fixed tool sequence', si: 'This removes model-driven tool selection. Use prompt chaining only when a fixed pipeline is intended.' },
+        { en: 'tool_use_id', si: 'The identifier that links Claude’s tool request to the result your application returns.' },
       ],
     },
     {
       id: 'coordinator-subagent-hub-spoke',
       title: 'Coordinator–Subagent: Hub-and-Spoke (Task 1.2)',
+      si: 'ලොකු research වැඩක් කොටස් කරලා subagents කිහිපයකට දෙන්න coordinator කෙනෙක් යොදාගන්නවා. ක්‍රිකට් කණ්ඩායමක නායකයා වගේ coordinator එක ප්‍රතිඵල එකතු කරලා සාරාංශ කරනවා. හැම subagent එකක්ම coordinator හරහාම කතා කරන නිසා වැඩේ බලන්න ලේසියි. Subagent කෙනෙක්ට අනිත් කෙනාගේ කතාබහ ඉබේම පේන්නේ නැහැ.',
       body: [
-        'වැඩේ ලොකු නම් එක agent එකක් වෙනුවට coordinator එකක් සහ subagents ගණනක් භාවිතා කරනවා. Coordinator එක වැඩේ කොටස් වලට කඩනවා, ඒ query එකට අවශ්‍ය subagents ම තෝරනවා, ප්‍රතිඵල එකතු කරනවා (aggregate), errors හසුරුවනවා.',
-        'හැම සන්නිවේදනයක්ම coordinator හරහා යනවා. ඒකට කියන්නේ hub-and-spoke කියලා. වාසිය: එක තැනකින් observability (මොකද වුණේ කියලා බලන්න), එකම විදිහේ error handling. Subagents එකිනෙකා එක්ක කෙලින්ම කතා කරන්නේ නෑ.',
-        'Subagent එකක් වෙනම context එකක (isolated) වැඩ කරනවා. Coordinator ගේ conversation එක ඒවාට ස්වයංක්‍රීයව නොලැබෙනවා (ඊළඟ topic එක බලන්න).',
-        'Coordinator එක සෑම විටම මුළු pipeline එකම run කරන්න ඕනේ නෑ. Query එක සරල නම් අවශ්‍ය subagent එක විතරක් call කරන්න. Subagents අතර scope එක බෙදන්න (වෙනම subtopics හෝ source types), එතකොට duplicate වැඩ අඩු වෙනවා. Synthesis එකේ gaps තිබුණොත් ඉලක්කගත queries දීලා ආයෙත් delegate කරන්න.',
+        'For a large task, use a coordinator and several subagents rather than one agent doing everything. The coordinator breaks the work into parts, selects only the subagents needed for the query, combines their results, and handles errors.',
+        'All communication passes through the coordinator; this is the hub-and-spoke pattern. It provides one place to observe what happened and apply consistent error handling. Subagents do not communicate directly with each other.',
+        'Each subagent works in an isolated context and does not automatically receive the coordinator’s conversation; see the next topic.',
+        'The coordinator does not need to run the full pipeline for every query. For a simple request, call only the required subagent. Give subagents distinct scopes (different subtopics or source types) to reduce duplicated work. If synthesis reveals gaps, delegate targeted follow-up queries.',
       ],
       analogy:
-        'Wedding එකක catering manager (coordinator) වගේ. එයා රයිස් කුක්, කරි කුක්, අච්චාරු කෙනා, අතුරුපස කෙනා කියලා වැඩ බෙදනවා. කුක්ලා එකිනෙකාට කෙලින්ම බනින්නේ නෑ, හැම දෙයක්ම manager හරහා. Manager "කරි ටික මදි" කියලා දැක්කම ඒ කෙනාට විතරක් ආයෙත් කියනවා.',
+        'A wedding catering manager (the coordinator) assigns separate jobs to the rice cook, curry cook, pickle maker, and dessert maker. The cooks communicate through the manager, who can ask only the curry cook for more when that dish is running short.',
       example:
-        'Query: "AI බලපෑම creative industries වලට". Coordinator subtopics 1ක් විතරක් (visual arts) subagents ට දුන්නා කියලා හිතන්න. Report එක visual arts ගැන විතරයි. Subagents හරියටම වැඩ කළා, ගැටලුව coordinator ගේ decomposition එකේ. හරි විසඳුම: coordinator ගේ decomposition එක පුළුල් කරන්න (visual arts, music, writing, film).',
+        'Query: "AI’s impact on creative industries." Suppose the coordinator assigns only one subtopic (visual arts). The report then covers only visual arts. The subagents did their assigned work, so the root cause is the coordinator’s decomposition. Expand it to include visual arts, music, writing, and film.',
       keyPoints: [
-        'Coordinator = කඩනවා, subagents තෝරනවා, aggregate කරනවා, errors handle කරනවා.',
-        'සියලු traffic coordinator හරහා (observability + consistent errors).',
-        'Query එකට අවශ්‍ය subagents පමණක් run කරන්න.',
-        'Report එකේ topics මඟ හැරුණොත් root cause එක බොහෝ විට coordinator ගේ decomposition එක.',
+        'The coordinator decomposes work, selects subagents, combines results, and handles errors.',
+        'Route all traffic through the coordinator for observability and consistent error handling.',
+        'Run only the subagents needed for the query.',
+        'If report topics are missing, the coordinator’s decomposition is often the root cause.',
       ],
       terms: [
-        { en: 'Wrong answer: subagents ට වරද පැටවීම', si: 'Subagent එක එයාට දුන්න scope එකට හොඳට වැඩ කළා නම් root cause එක coordinator එක. (Rule 1: root cause එකට විසඳුම)' },
-        { en: 'Wrong answer: හැම query එකටම full pipeline', si: 'ඒක අපතේ යෑමක්. අවශ්‍ය subagents පමණක් තෝරන එක coordinator ගේ වැඩේ.' },
-        { en: 'Iterative refinement', si: 'Synthesis එකේ gaps බලලා ඉලක්කගත queries සමඟ ආයෙත් delegate කරන එක.' },
+        { en: 'Wrong answer: blame the subagents', si: 'If a subagent did its assigned scope correctly, the coordinator is the root cause. Fix the root cause (Rule 1).' },
+        { en: 'Wrong answer: run the full pipeline for every query', si: 'That wastes work. The coordinator should select only the subagents that are needed.' },
+        { en: 'Iterative refinement', si: 'Delegate targeted follow-up queries after checking for gaps in the synthesis.' },
       ],
     },
     {
       id: 'subagent-spawning-context-passing',
       examRefs: ['CCAR-002', 'CCAR-003', 'CCAR-024'],
-      title: 'Subagents හදන ආකාරය, AgentDefinition සහ Context Passing (Task 1.3)',
+      title: 'Creating Subagents, AgentDefinition and Context Passing (Task 1.3)',
+      si: 'Agent එකකට වැඩ බෙදන්න Task හෝ Agent tool එකෙන් subagent හදන්න පුළුවන්. කොළඹ ගමනකට කෙනෙක්ට බස් මාර්ග බලන්නත් තව කෙනෙක්ට කාලසටහන් බලන්නත් වෙනම වැඩ දෙන්න. ඒ අයට අවශ්‍ය තොරතුරු prompt එකේම දෙන්න, මොකද parent කතාබහ එයාලට ඉබේ ලැබෙන්නේ නැහැ. එක response එකක calls කිහිපයක් දුන්නොත් ඒ වැඩ parallel යනවා.',
       body: [
-        'Subagent එකක් හදන්නේ Task tool එකෙන්. අලුත් docs වල ඒකේ නම Agent tool (exam guide එකේ Task කියලා තියෙනවා; exam එකේදී "Task" කියලා සිතන්න). Coordinator ට subagents හදන්න පුළුවන් වෙන්න ඒ tool එක ඔයාගේ tools ලැයිස්තුවට (exam wording: allowedTools) තියෙන්න ඕනේ.',
-        'AgentDefinition එකෙන් subagent වර්ගයක් විස්තර කරනවා: description (කවදා මේක භාවිතා කරන්නද කියලා coordinator ට කියන්න, required), prompt (subagent ගේ system prompt, required), සහ optional දේවල් (tools, model, maxTurns වගේ). Subagent එකට අවශ්‍ය tools මෙතන සීමා කරනවා. වැදගත්: SDK එකේ allowed_tools කරන්නේ tools auto-approve කිරීම. Tools සීමා කරන්න subagent එකේ tools field එක හෝ disallowed_tools භාවිතා කරන්න (verify in current docs).',
-        'ලොකුම උගුල: Subagent එකට coordinator ගේ conversation එක නොලැබෙනවා. Subagent එකට ලැබෙන්නේ එයාගේ prompt, coordinator එක Agent tool එකට දෙන prompt string එක, project CLAUDE.md සහ tool definitions. ඒ නිසා ඊට අවශ්‍ය හැම දෙයක්ම (පෙර agents ගේ findings පවා) prompt එක තුළම දෙන්න.',
-        'Findings යවද්දී content එක සහ metadata (URL, document නම, page) structured format එකකින් යවන්න, එතකොට attribution (මේක ආවේ කොහෙන්ද) නැති වෙන්නේ නෑ.',
-        'Parallel subagents: එකම coordinator response එකක Agent/Task tool calls කිහිපයක් emit කරන්න. Turns කිහිපයකට දාන්න එපා, එතකොට sequential වෙලා හෙමින් වෙනවා. තවත් දෙයක්: coordinator prompt එකේ පියවරෙන් පියවර නියෝග වෙනුවට goals සහ quality criteria දෙන්න.',
+        'Create subagents with the Task tool, called the Agent tool in newer documentation (the exam guide uses "Task"). The coordinator must have that tool available (the exam wording is allowedTools) to spawn subagents.',
+        'AgentDefinition describes a subagent type: description (required; tells the coordinator when to use it), prompt (required; the subagent’s system prompt), and optional settings such as tools, model, and maxTurns. Limit the subagent’s tools here. Note: in the SDK, allowed_tools auto-approves tools; use the subagent tools field or disallowed_tools to restrict them (verify current documentation).',
+        'A major trap is assuming that a subagent receives the coordinator’s conversation. It receives its own prompt, the prompt string passed to the Agent tool, project CLAUDE.md, and tool definitions. Include everything it needs—including earlier agents’ findings—in the prompt.',
+        'Return findings with content and metadata such as URL, document name, and page so their sources remain clear.',
+        'For parallel work, emit multiple Agent/Task calls in the same coordinator response. Calls in separate turns run sequentially and take longer. Give the coordinator goals and quality criteria rather than a rigid step-by-step script.',
       ],
       analogy:
-        'ඔයා කඩේ අලුත් කොල්ලෙක්ට "ඔය ඇණවුම් ඒක යවන්න" කියලා කිව්වොත් එයා දන්නේ නෑ මොන ඇණවුම්ද කියලා, මොකද ඔයාගේ කලින් කතාබහට එයා හිටියේ නෑ. හරි ක්‍රමය: කුරුටු කෑල්ලක ඇණවුම් අංකය, ලිපිනය, සහ ඔයාට ඕනේ දේ ලියලා දෙන එක.',
+        'If you ask a new shop assistant to "send that order," they will not know which order because they were not part of your earlier conversation. Write the order number, address, and instructions on a note and give it to them.',
       example:
-        'Coordinator "web-searcher" subagent තුනක් එකම response එකේ spawn කරනවා: visual arts, music, film. එකිනෙකාට දෙන prompt එකේ: "Subtopic: music. දැනට අපි දන්නා sources: [url1, url2]. Return JSON: claim, excerpt, url, published_date." Subagent තුනම එකවර දුවනවා.',
+        'The coordinator spawns three web-searcher subagents in one response for visual arts, music, and film. Each prompt specifies its subtopic and known sources, for example: "Subtopic: music. Known sources: [url1, url2]. Return JSON with claim, excerpt, URL, and publication date." All three run in parallel.',
       code: {
         lang: 'python',
         src: `AGENTS = {
@@ -108,153 +111,158 @@ options = ClaudeAgentOptions(
 )`,
       },
       keyPoints: [
-        'Subagents හදන්නේ Task tool (අලුත් නම Agent). Coordinator ට ඒක තිබිය යුතුයි.',
-        'AgentDefinition: description + prompt (required), tools/model/maxTurns (optional).',
-        'Subagent parent conversation එක inherit කරන්නේ නෑ. ඕනෑම දෙයක් prompt එකේ දෙන්න.',
-        'Parallel = එකම response එකක tool calls කිහිපයක්. Metadata සමඟ structured findings යවන්න.',
+        'Create subagents with the Task tool (renamed Agent in newer documentation); make it available to the coordinator.',
+        'AgentDefinition requires a description and prompt; tools, model, and maxTurns are optional.',
+        'A subagent does not inherit the parent conversation. Put needed context in its prompt.',
+        'Parallel work uses multiple tool calls in one response. Return structured findings with metadata.',
       ],
       terms: [
-        { en: 'Wrong answer: subagents coordinator ගේ context බලනවා කියලා හිතීම', si: 'නැහැ. Isolated context. ඒ නිසා "Subagent එකට info නැත" ගැටලුවට විසඳුම prompt එකට දීම.' },
-        { en: 'Wrong answer: parallel වැඩ turns කිහිපයකට දැමීම', si: 'එකම response එකේ Task calls කිහිපයක් තමයි parallel.' },
-        { en: 'Wrong answer: coordinator ට step-by-step ලොකු script එකක් දීම', si: 'Goals සහ quality criteria දෙන්න. Rigid steps adaptive වැඩේ බිඳිනවා.' },
-        { en: 'allowed_tools vs tools', si: 'allowed_tools = auto-approve. සීමා කිරීමට subagent tools field හෝ disallowed_tools. Exam guide එකේ පිළිතුර (Task allowedTools තුළ) අනුගමනය කරන්න.' },
+        { en: 'Wrong answer: assume subagents can see the coordinator context', si: 'They have isolated contexts. If a subagent lacks information, include it in the prompt.' },
+        { en: 'Wrong answer: spread parallel work across multiple turns', si: 'Parallel calls are multiple Task calls in the same response.' },
+        { en: 'Wrong answer: give the coordinator a rigid, detailed script', si: 'Specify goals and quality criteria; rigid steps can prevent adaptive work.' },
+        { en: 'allowed_tools vs tools', si: 'allowed_tools auto-approves tools. Restrict a subagent with its tools field or disallowed_tools; follow the exam guide’s Task/allowedTools wording.' },
       ],
     },
     {
       id: 'workflow-enforcement-handoff',
-      title: 'Workflow Enforcement සහ Human Handoff (Task 1.4)',
+      title: 'Workflow Enforcement and Human Handoff (Task 1.4)',
+      si: 'Customer කෙනෙක්ගේ identity එක තහවුරු නොකර refund දෙන්න එපා කියන නීතිය prompt එකට විතරක් බාර දෙන්න එපා. Rs. 50,000 refund එකකට manager අනුමැතිය ඕනේ නම් code එකෙන් gate එකක් දාන්න. Agent එකට විසඳන්න බැරි වුණොත් සිද්ධිය සහ හේතුව කෙටියෙන් human කෙනෙකුට යවන්න. ගැටලු දෙකක් ආවොත් ඒවා වෙන වෙනම බලලා එකට පිළිතුරු දෙන්න.',
       body: [
-        'Prompt එකක උපදෙසක් Claude හැමවිටම පිළිපදින්නේ නෑ. ඒකට සැමවිටම ශුන්‍ය නොවන failure rate එකක් තියෙනවා (උදා: 12% වරක්). ඒ නිසා මුදල්, identity, compliance වගේ අනිවාර්ය නීති prompt එකෙන් නෙවෙයි, code එකෙන් (hooks, prerequisite gates) බලාත්මක කරන්න.',
-        'Support agent උදාහරණය: get_customer එකෙන් verified customer ID එකක් ලැබෙනකම් lookup_order සහ process_refund tool calls code එකෙන් block කරනවා. එතකොට Claude ට මේ පියවර මඟ හරින්න බෑ.',
-        'Request එකේ ගැටලු කිහිපයක් තියෙනවා නම් (refund + address change) ඒවා වෙන් කරලා parallel විමර්ශනය කරලා එක පිළිතුරක් විදිහට එකතු කරන්න.',
-        'Human එකකට escalate කරද්දී structured handoff summary එකක් දෙන්න: customer ID, root cause, refund amount, recommended action. Human agent ට transcript එක පේන්නේ නෑ, ඒ නිසා summary එක තමයි එයාට තියෙන සියල්ල.',
+        'Claude may not always follow a prompt instruction; there is a non-zero failure rate (for example, 12%). Enforce mandatory rules about money, identity, or compliance in code using hooks or prerequisite gates, not only in a prompt.',
+        'For a support agent, use code to block lookup_order and process_refund until get_customer returns a verified customer ID. This prevents Claude from skipping that prerequisite.',
+        'If a request contains several issues, such as a refund and an address change, investigate them separately (in parallel when appropriate) and combine the results into one answer.',
+        'When escalating to a person, provide a structured handoff summary: customer ID, root cause, refund amount, and recommended action. The human agent may not have the transcript, so include the necessary context.',
       ],
       analogy:
-        'බැංකුවේ ලොකු ගනුදෙනුවකට manager ගේ අත්සන ඕනේ. "කරුණාකර අත්සන් ගන්න" කියලා notice එකක් ගහනවා නෙවෙයි, ඒක system එකේම අනිවාර්ය step එකක්. Prompt = notice, hook/gate = system එකේ lock එක.',
+        'A large bank transaction requires a manager’s signature as a built-in system step, not just a notice saying "please get approval." A prompt is like the notice; a hook or gate is like the system lock.',
       example:
-        'Production logs: agent 12%ක් වාරවල get_customer මඟ හැරලා order එක ඇහැට පේන නමින් lookup කරලා වැරදි refund කරනවා. හරි විසඳුම: process_refund සහ lookup_order, session එකේ verified customer ID එකක් තියෙනකම් deny කරන programmatic gate එකක්. වැරදි විසඳුම්: system prompt එක තවත් ශක්තිමත් කිරීම, few-shot examples, routing classifier.',
+        'Production logs show that in 12% of cases the agent skips get_customer, looks up an order using an ambiguous name, and issues the wrong refund. The right fix is a programmatic gate that denies lookup_order and process_refund until the session has a verified customer ID. Strengthening the prompt, adding few-shot examples, or building a routing classifier does not address this prerequisite.',
       keyPoints: [
-        'අනිවාර්ය නීතිය = code (hook / prerequisite gate). Prompt = probabilistic.',
-        'Gate: get_customer verified ID එකක් නැත්නම් lookup_order, process_refund block.',
-        'Multi-issue request: කඩලා parallel විමර්ශනය, එකතු කර පිළිතුරක්.',
-        'Handoff = structured summary (ID, root cause, amount, recommended action).',
+        'Enforce mandatory rules in code with a hook or prerequisite gate; prompts are probabilistic.',
+        'Block lookup_order and process_refund until get_customer verifies an ID.',
+        'For requests with multiple issues, investigate separately and combine the answers.',
+        'A handoff needs a structured summary with ID, root cause, amount, and recommended action.',
       ],
       terms: [
-        { en: 'Wrong answer: stronger system prompt / few-shot', si: 'මුදල් අවදානම ඇති තැන probabilistic විසඳුම් ප්‍රමාණවත් නෑ. (Rule 3)' },
-        { en: 'Wrong answer: routing classifier හදන්න', si: 'ගැටලුව tool order එක, intent routing නෙවෙයි. Classifier එක over-engineering. (Rule 2)' },
-        { en: 'Wrong answer: handoff එකේ transcript එකම යවන්න', si: 'Human ට transcript බලන්න බෑ/වෙලාවක් නෑ. Structured summary අවශ්‍යයි.' },
+        { en: 'Wrong answer: strengthen the system prompt or add few-shot examples', si: 'Probabilistic solutions are not enough for financial controls. Use code (Rule 3).' },
+        { en: 'Wrong answer: build a routing classifier', si: 'The issue is tool order, not intent routing; a classifier is over-engineering (Rule 2).' },
+        { en: 'Wrong answer: send only the full transcript in the handoff', si: 'The human may not have access to it or time to review it. Provide a structured summary.' },
       ],
     },
     {
       id: 'hooks-pretooluse-posttooluse',
       examRefs: ['CCAR-004'],
-      title: 'Agent SDK Hooks: PreToolUse සහ PostToolUse (Task 1.5)',
+      title: 'Agent SDK Hooks: PreToolUse and PostToolUse (Task 1.5)',
+      si: 'PreToolUse hook එක tool එක වැඩ කරන්න කලින් පරීක්ෂා කරන දොරටු ආරක්ෂකයෙක් වගේ. Rs. 500 ට වැඩි refund එකක් නම් ඒක නවත්තලා manager කෙනෙක්ට යවන්න කියන්න පුළුවන්. PostToolUse hook එක result එක ලැබුණාට පස්සේ දින සහ අංක එකම format එකකට හදනවා. අනිවාර්ය නීති code එකේ දාන්න, නම්‍යශීලී උපදෙස් prompt එකේ දෙන්න.',
       body: [
-        'Hook කියන්නේ agent loop එකේ නිශ්චිත ස්ථානයක ඔයාගේ code එක run වෙන callback එකක්. Hook එක ඔයාගේ code, ඒ නිසා deterministic. මේක තමයි "අනිවාර්ය නීතිය code එකේ" කියන ක්‍රමය.',
-        'PreToolUse (tool call interception): tool එක run වෙන්න කලින් call එක පරීක්ෂා කරනවා. allow, deny, ask, defer decisions දෙන්න පුළුවන්. Hooks කිහිපයක් එකිනෙකට විරුද්ධ නම් deny ජයග්‍රහණය කරනවා. උදා: $500 ට වැඩි refund එක deny කරලා escalate_to_human කියලා Claude ට reason එකක් දෙනවා.',
-        'PostToolUse: tool result එක Claude ට යන්න කලින් වෙනස් කරනවා. උදා: Unix timestamp, ISO 8601, numeric status codes එක format එකකට normalize කිරීම. updatedToolOutput දුන්නොත් Claude දකින්නේ cleaned output එක. additionalContext වලින් තොරතුරු එකතු කරන්නත් පුළුවන්.',
-        'MCP tool නම format එක mcp__<server>__<tool>. Hook එකේ matcher එකට ඒ නම භාවිතා කරන්න. නීතිය: guaranteed compliance ඕනේ නම් hook; නම්‍යශීලී මඟ පෙන්වීම් වලට prompt.',
+        'A hook is a callback that runs your code at a defined point in the agent loop. Because it is your code, it can enforce deterministic checks—the way to put mandatory rules in code.',
+        'PreToolUse intercepts a call before its tool runs. It can allow, deny, ask, or defer. If hooks conflict, deny takes precedence. For example, deny a refund over $500 and give Claude a reason to call escalate_to_human.',
+        'PostToolUse can change a tool result before it is sent to Claude. For example, normalize Unix timestamps, ISO 8601 dates, and numeric status codes to a consistent format. Claude sees the cleaned result when updatedToolOutput is provided; additionalContext can also add information.',
+        'An MCP tool name has the form mcp__<server>__<tool>; use that name in a hook matcher. Use hooks for guaranteed enforcement and prompts for flexible guidance.',
       ],
       analogy:
-        'PreToolUse = ගේට්ටුවේ security guard (ඇතුල් වෙන්න කලින් පරීක්ෂා කරනවා). PostToolUse = කඩෙන් ගත්ත බඩු ගෙදර දෙන්න කලින් ඒවා නියම බෑග් එකකට සකස් කරන කෙනා.',
+        'PreToolUse is like a security guard checking people before they enter. PostToolUse is like repacking items from a shop into a consistent bag before handing them over.',
       example:
-        'Refund $740 ඉල්ලලා. PreToolUse hook එක amount > 500 දැක deny කරලා "Human ඕනේ, escalate_to_human call කරන්න" කියනවා. Claude ඊළඟ turn එකේ escalate කරනවා. තවත් තැනක, 3 වෙනි system එක timestamp එක "1735689600" ලෙස යවනවා. PostToolUse hook එක ඒක "2025-01-01T00:00:00Z" කරනවා, Claude ට එකම format එකක් පේනවා.',
+        'A request arrives for a $740 refund. The PreToolUse hook sees amount > 500, denies it, and tells Claude that human review is needed and to call escalate_to_human. Claude escalates on its next turn. Separately, if another system returns timestamp "1735689600", a PostToolUse hook can convert it to "2025-01-01T00:00:00Z" so Claude sees a consistent format.',
       code: {
         lang: 'python',
         src: `async def block_large_refunds(input_data, tool_use_id, context):
     amount = input_data["tool_input"].get("amount", 0)
-    if amount > 500:                      # $500 ට වැඩි නම් block
+    if amount > 500:                      # Block amounts over $500
         return {"hookSpecificOutput": {
             "hookEventName": input_data["hook_event_name"],
             "permissionDecision": "deny",
             "permissionDecisionReason":
                 "Refunds over $500 need a human. Call escalate_to_human."}}
-    return {}                             # {} = allow
+    return {}                             # An empty decision allows the call
 
 options = ClaudeAgentOptions(hooks={"PreToolUse": [
     HookMatcher(matcher="mcp__support__process_refund",
                 hooks=[block_large_refunds])]})`,
       },
       keyPoints: [
-        'PreToolUse = run වෙන්න කලින් check/block (allow, deny, ask, defer). Deny ජයග්‍රහණය කරයි.',
-        'PostToolUse = result Claude ට යන්න කලින් වෙනස් කිරීම (normalize, updatedToolOutput).',
-        'Hook = deterministic code; Prompt = probabilistic.',
-        'MCP tool නම: mcp__<server>__<tool>.',
+        'PreToolUse checks or blocks a call before execution (allow, deny, ask, or defer); deny takes precedence.',
+        'PostToolUse changes a result before Claude receives it (for example, with updatedToolOutput).',
+        'A hook is deterministic code; a prompt is probabilistic.',
+        'MCP tool names use the form mcp__<server>__<tool>.',
       ],
       terms: [
-        { en: 'Wrong answer: refund limit එක prompt එකේ ලියන්න', si: 'Prompt failure rate ශුන්‍ය නෑ. මුදල් නීතියට hook. (Rule 3)' },
-        { en: 'Wrong answer: PostToolUse වලින් refund block කිරීම', si: 'PostToolUse run වෙන්නේ tool එක run වුණාට පස්සේ. Block කරන්න PreToolUse.' },
-        { en: 'Wrong answer: normalization කරන්න system prompt', si: 'Data format කෙලින්ම code එකෙන් PostToolUse hook එකේ නිවැරදිව කරන්න.' },
+        { en: 'Wrong answer: put the refund limit only in the prompt', si: 'Prompts can fail. Enforce financial rules with a hook (Rule 3).' },
+        { en: 'Wrong answer: block a refund with PostToolUse', si: 'PostToolUse runs after the tool; use PreToolUse to block it.' },
+        { en: 'Wrong answer: use a system prompt to normalize data', si: 'Normalize data formats directly in code with a PostToolUse hook.' },
       ],
     },
     {
       id: 'task-decomposition-chaining-dynamic',
       examRefs: ['CCAR-021'],
       title: 'Task Decomposition: Prompt Chaining vs Dynamic (Task 1.6)',
+      si: 'වැඩේ පියවර කලින්ම දන්නවා නම් ස්ථාවර prompt chain එකක් යොදාගන්න. PR එකේ files 14ක් බලනවා නම් file එකින් එක පරීක්ෂා කරලා අන්තිමේ එකට බලන්න. පරණ system එකක් ගැන මුලින්ම දන්නේ නැත්නම්, සොයාගන්නා දේ අනුව plan එක වෙනස් කරන dynamic ක්‍රමය තෝරන්න. එක prompt එකකට වැඩියෙන්ම පටවන්න එපා.',
       body: [
-        'වැඩක් කොටස් වලට කඩන විදි දෙකක් තියෙනවා. Prompt chaining: පියවර කලින් දන්නවා, ස්ථාවර pipeline එකක්. Dynamic decomposition: වැඩේ open-ended, ඊළඟ පියවර කලින් දන්නේ නෑ, agent එක සොයාගෙන ගිහින් plan එක adapt කරනවා.',
-        'Prompt chaining උදාහරණය: PR එකේ files 14ක් review. පියවර 1: file එකින් එක local review. පියවර 2: වෙනම cross-file integration pass. එක ලොකු prompt එකක files 14 ම දැම්මොත් අවධානය විසිරිලා findings අස්ථාවර වෙනවා.',
-        'Dynamic උදාහරණය: "Legacy codebase එකට tests එකතු කරන්න". පළමුව structure එක map කරනවා, high-impact areas හොයනවා, ඊට පස්සේ සොයාගත් දේ අනුව adaptive plan එකක් හදනවා.',
-        'තීරණය: පියවර පුරෝකථනය කළ හැකිද? ඔව් නම් chaining. නැත්නම් dynamic. Plan-and-execute ගැන Phase 12 බලන්න.',
+        'There are two ways to decompose work. Prompt chaining uses a fixed pipeline when the steps are known in advance. Dynamic decomposition is for open-ended work: the agent discovers what to do next and adapts its plan.',
+        'For a pull request with 14 files, a chain can review each file locally, then perform a separate cross-file integration pass. Putting all 14 files in one large prompt can dilute attention and make findings less consistent.',
+        'For "add tests to this legacy codebase," first map the structure, identify high-impact areas, and then make an adaptive plan based on what you discover.',
+        'Ask whether the steps are predictable. If yes, use chaining; otherwise use dynamic decomposition. See Phase 12 for plan-and-execute.',
       ],
       analogy:
-        'Chaining = බස් එකේ route 138 වගේ, නැවතුම් ස්ථාවරයි. Dynamic = ඔයා නොදන්න ගමක තරග ගමනක්, හැම හන්දියකදීම ඊළඟට කොහෙටද කියලා බලනවා.',
+        'Chaining is like Colombo bus route 138, with known stops. Dynamic decomposition is like finding your way in an unfamiliar town and choosing the next turn as you go.',
       example:
-        'PR එකේ files 14: chain එකක් (14 local passes + 1 integration pass). "මේ පරණ system එකට tests දාන්න": dynamic (map → high-impact → plan → ඒ plan එක update කරමින් execute).',
+        'For 14 pull-request files, use a chain: 14 local review passes plus one integration pass. For "add tests to this old system," use dynamic decomposition: map it, find high-impact areas, plan, and update the plan while executing.',
       keyPoints: [
-        'Prompt chaining = ස්ථාවර, පුරෝකථනය කළ හැකි පියවර (per-file + cross-file pass).',
-        'Dynamic decomposition = open-ended, discovery එක plan එක හදනවා.',
-        'එක ලොකු prompt එකක් multi-file review එකට නරකයි.',
+        'Prompt chaining uses fixed, predictable steps such as per-file review followed by a cross-file pass.',
+        'Dynamic decomposition is open-ended; discovery informs the plan.',
+        'One large prompt is a poor fit for a multi-file review.',
       ],
       terms: [
-        { en: 'Wrong answer: එක prompt එකකින් files 14 ම', si: 'Attention dilution. Per-file passes + integration pass.' },
-        { en: 'Wrong answer: විශාල context window එක මේක විසඳයි', si: 'Context ලොකු වුණාට attention ගැටලුව නැති වෙන්නේ නෑ.' },
-        { en: 'Wrong answer: open-ended වැඩට fixed chain', si: 'ඉක්මනින් නොගැලපෙනවා. Dynamic භාවිතා කරන්න.' },
+        { en: 'Wrong answer: put all 14 files in one prompt', si: 'This dilutes attention. Review files individually, then do an integration pass.' },
+        { en: 'Wrong answer: assume a large context window solves this', si: 'More context does not remove the attention problem.' },
+        { en: 'Wrong answer: use a fixed chain for open-ended work', si: 'A fixed chain may stop fitting the work as discoveries are made; use a dynamic plan.' },
       ],
     },
     {
       id: 'sessions-resume-fork-fresh',
       examRefs: ['CCAR-005', 'CCAR-022', 'CCAR-023'],
-      title: 'Sessions: Resume, Fork සහ Fresh Start (Task 1.7)',
+      title: 'Sessions: Resume, Fork and Fresh Start (Task 1.7)',
+      si: 'Session එකක් කියන්නේ agent එකේ කලින් කතාබහ සුරැකුණු සටහනක්. ඊයේ වැඩේ අද කරගෙන යන්න resume කරන්න, නැත්නම් එකම තැනින් වෙනස් විසඳුම් දෙකක් බලන්න fork කරන්න. කණ්ඩායම files 10ක් වෙනස් කරලා නම් පරණ results මත විශ්වාස නොකර ඒවා නැවත කියවන්න කියන්න. බොහෝ දේ වෙනස් නම් සාරාංශයක් එක්ක අලුත් session එකක් පටන්ගන්න.',
       body: [
-        'Session එකක් කියන්නේ conversation එකේ saved history එක. Resume: නම් කළ පෙර session එකක් දිගටම කරගෙන යනවා (--resume <session-name>). SDK එකේ resume=session_id.',
-        'fork_session: එකම analysis එකකින් branches දෙකක් හදනවා, මුල් session එක වෙනස් නොවී. උදා: testing strategy දෙකක් සසඳන්න. Fork වෙන්නේ conversation එක පමණයි, files නෙවෙයි. Fork එකේදී files වෙනස් කළොත් ඒවා සැබෑ වෙනස්කම්.',
-        'Code වෙනස් වුණාට පස්සේ resume කරනවා නම්, වෙනස් වුණු files ගැන agent ට කියන්න. පරණ tool results බොහොමයක් stale (එතකොට files වෙනස් වෙලා) නම් resume කරන්න එපා. ඒ වෙනුවට structured summary එකක් එක්ක අලුත් session එකක් පටන් ගන්න (fresh start with summary).',
+        'A session is saved conversation history. Resume a named earlier session with --resume <session-name>; in the SDK, use resume=session_id.',
+        'fork_session creates branches from the same analysis without changing the original, for example to compare two testing strategies. It forks the conversation, not the files. Changes made to files while working in a fork are real file changes.',
+        'If code changed before resuming, tell the agent which files changed and ask it to reread them. If many old tool results are stale, start a new session with a structured summary instead.',
       ],
       analogy:
-        'Resume = කතන්දරේ කියවපු පිටුවෙන් පටන් ගන්න එක. Fork = පොතේ පිටපතක් අරන් වෙනස් අවසානයක් ලියන එක. Fresh start with summary = පරණ පොත් ඔක්කොම නැති වෙලා, අධිකරණ සටහන් එක් පිටුවක් අරන් අලුත් පොතක් පටන් ගන්න එක.',
+        'Resume is like continuing a book from the page you reached. Fork is like copying the story to explore a different ending. A fresh start with a summary is like beginning a new book with a one-page set of notes.',
       example:
-        'Monday: "refund-investigation" session එකේ auth module විශ්ලේෂණය. Tuesday: කණ්ඩායම files 10ක් වෙනස් කළා. Resume කරද්දී "මේ files 10 වෙනස් වුණා, ආයෙත් කියවන්න" කියලා කියනවා. Files ගොඩක් වෙනස් වෙලා නම් summary එකක් එක්ක අලුත් session එකක්.',
+        'On Monday, analyze an auth module in the "refund-investigation" session. On Tuesday, the team changes 10 files. When resuming, tell the agent those 10 files changed and ask it to reread them. If many files changed, start a fresh session with a summary.',
       code: {
         lang: 'bash',
-        src: `claude -n "refund-investigation"            # session එකට නමක් දෙනවා
-claude --resume refund-investigation        # නම ඇතිව දිගටම කරනවා
-claude --resume refund-investigation --fork-session  # branch එකක් හදනවා`,
+        src: `claude -n "refund-investigation"            # Name the session
+claude --resume refund-investigation        # Continue the named session
+claude --resume refund-investigation --fork-session  # Create a branch`,
       },
       keyPoints: [
-        'Resume = දිගටම; වෙනස් වුණු files ගැන agent ට කියන්න.',
-        'fork_session = එකම මූලයෙන් branches (conversation පමණක්, files නෙවෙයි).',
-        'Tool results බොහොමයක් stale නම් = structured summary සමඟ fresh session.',
+        'Resume continues a session; tell the agent about changed files.',
+        'fork_session branches the conversation, not the files.',
+        'When many tool results are stale, start a fresh session with a structured summary.',
       ],
       terms: [
-        { en: 'Wrong answer: stale tool results ඇති session එක resume කිරීම', si: 'Agent පරණ දත්ත විශ්වාස කරලා වැරදි පිළිතුරු දෙයි. Fresh + summary.' },
-        { en: 'Wrong answer: fork එක files ද වෙනම copy කරනවා කියා හිතීම', si: 'Fork කරන්නේ conversation පමණයි.' },
+        { en: 'Wrong answer: resume a session with stale tool results', si: 'The agent may rely on outdated information and answer incorrectly. Start fresh with a summary.' },
+        { en: 'Wrong answer: assume a fork copies files too', si: 'A fork branches the conversation only.' },
       ],
     },
     {
       id: 'tool-descriptions-naming-splitting',
       examRefs: ['CCAR-006'],
-      title: 'Tool Descriptions, Naming සහ Splitting (Task 2.1)',
+      title: 'Tool Descriptions, Naming and Splitting (Task 2.1)',
+      si: 'Tool description එක රාක්කයේ ලේබලයක් වගේ; පැහැදිලි නැත්නම් agent වැ गलत tool එක තෝруулж болно. Order ID A12345 වගේ input, юу ලැබෙනවද, උදාහරණයක් සහ කවදා භාවිතා නොකළ යුතුද කියලා ලියන්න. මුලින් description එක හදන්න, ඉන්පස්සේ අවශ්‍ය නම් නම වෙනස් කරන්න. තවමත් වැඩ නොබෙදෙන්නේ නම් විශේෂිත tools කිහිපයකට කඩන්න.',
       body: [
-        'Claude tool එකක් තෝරන්නේ ඒකේ description එක කියවලා. Description එක "Retrieves customer information" වගේ අවම නම්, "check my order #12345" ට Claude වැරදි tool එක (get_customer) තෝරන්න පුළුවන්.',
-        'හොඳ description එකේ තියෙන්න ඕනේ: tool එක කරන්නේ මොකක්ද සහ මොන output එකද ලැබෙන්නේ; input format එක (උදා: "order ID එක, # සමඟ අංක 5ක්"); උදාහරණ queries; boundaries (සමාන tool එකෙන් වෙනස මොකක්ද, කවදා භාවිතා නොකළ යුතුද).',
-        'විසඳුම් අනුපිළිවෙල (පළමු පියවර සිට): (1) description එක වැඩිදියුණු කරන්න. (2) අතිපිහිත tools rename කරන්න (analyze_content → extract_web_results). (3) Generic tool එකක් අරමුණු ඇති tools කිහිපයකට කඩන්න (analyze_document → extract_data_points, summarize_content, verify_claim_against_source).',
-        'අවවාදය: system prompt එකේ keyword-sensitive නීති ("customer ගැන ඕනෑම දෙයකට get_customer භාවිතා කරන්න") හොඳ descriptions බිඳ දැමිය හැක.',
+        'Claude selects tools using their descriptions. If a description is as vague as "Retrieves customer information," Claude might choose get_customer for "check my order #12345."',
+        'A good description explains what the tool does and returns, the input format (for example, an order ID with five digits after #), example queries, and boundaries that distinguish it from similar tools.',
+        'Use this order of fixes: (1) improve the description; (2) rename overlapping tools (analyze_content → extract_web_results); (3) split a generic tool into focused tools (analyze_document → extract_data_points, summarize_content, verify_claim_against_source).',
+        'Be careful with keyword-sensitive system-prompt rules such as "use get_customer for anything about a customer"; they can undermine good descriptions.',
       ],
       analogy:
-        'Keells එකේ බඩු රාක්ක වල ලේබල් වගේ. "ආහාර" කියලා විතරක් ලියලා තිබුණොත් ඔයා වැරදි තැනට යනවා. "සහල් - කිලෝ 5 බෑග්, පිසින් කාලෙට" කියලා ලිව්වොත් පැහැදිලියි. එක ලේබලයකින් වැඩේ නොහැරෙනවා නම් තමයි රාක්කය වෙනස් කරන්නේ (rename/split).',
+        'Tool descriptions are like shelf labels at Keells. A label that says only "food" is vague; "rice—5 kg bags" is clearer. Improve the label first, then rename or split a tool if that still does not resolve the confusion.',
       example:
-        'Before: lookup_order — "Retrieves order details". After: "Get one order status, items and dates by order ID (format: A12345). Use for questions about a specific order. Do NOT use for customer profile questions; use get_customer for those." මේ වෙනස පමණයි, ඊළඟ turn එකෙන්ම tool selection නිවැරදි වෙනවා.',
+        'Before: lookup_order — "Retrieves order details." After: "Get one order’s status, items, and dates by order ID (format: A12345). Use for questions about a specific order. Do NOT use for customer profile questions; use get_customer." A clear description can help Claude choose the right tool on the next turn.',
       code: {
         lang: 'python',
         src: `TOOL = {
@@ -271,31 +279,32 @@ claude --resume refund-investigation --fork-session  # branch එකක් හ�
 }`,
       },
       keyPoints: [
-        'Description එක තමයි tool selection එකේ ප්‍රධානම signal එක.',
-        'Fix order: description → rename → split.',
-        'Boundaries වලින් සමාන tools දෙකක් වෙන් කරන්න (Do NOT use for ...).',
-        'System prompt keyword rules වලින් පරෙස්සම් වෙන්න.',
+        'The description is the primary signal for tool selection.',
+        'Fix in this order: improve the description, rename, then split.',
+        'Use boundaries to distinguish similar tools (for example, "Do NOT use for...").',
+        'Avoid keyword rules in the system prompt that conflict with tool descriptions.',
       ],
       terms: [
-        { en: 'Wrong answer: system prompt එකට keyword නීති', si: 'ඒවා හොඳ descriptions override කරන්න පුළුවන්. පළමුව description එක හදන්න. (Rule 2)' },
-        { en: 'Wrong answer: routing layer / classifier train කිරීම', si: 'Over-engineering. පළමු පියවර = descriptions. (Rule 2)' },
-        { en: 'Wrong answer: few-shot examples එකතු කිරීම', si: 'Tokens වැඩියි, root cause (අවම descriptions) විසඳෙන්නේ නෑ.' },
-        { en: 'Wrong answer: tools එකක් කරලා merge කිරීම', si: '"පළමු පියවර" එකට වඩා විශාල වෙනසක්. කඩන්නේ අන්තිමට.' },
+        { en: 'Wrong answer: add keyword rules to the system prompt', si: 'They may override good descriptions. Improve the description first (Rule 2).' },
+        { en: 'Wrong answer: train a routing classifier', si: 'This is over-engineering; descriptions are the first fix (Rule 2).' },
+        { en: 'Wrong answer: add few-shot examples', si: 'This uses more tokens without fixing the root cause: vague descriptions.' },
+        { en: 'Wrong answer: merge the tools', si: 'That is a larger change than the first step. Split or merge only after improving descriptions.' },
       ],
     },
     {
       id: 'structured-error-responses',
       examRefs: ['CCAR-028'],
-      title: 'Structured Error Responses: isError සහ isRetryable (Task 2.2)',
+      title: 'Structured Error Responses: isError and isRetryable (Task 2.2)',
+      si: 'ATM එක “Error” කියනවා වෙනුවට PIN එක වැරදිද, ජාලය නැද්ද කියලා පැහැදිලි කරනවා වගේ tool එකත් error එකේ හේතුව කියන්න ඕනේ. Timeout එකක් නම් ටිකක් ඉඳලා නැවත උත්සාහ කරන්න පුළුවන්. Rs. 500 ට වැඩි refund එකකට manager ඕනේ නම් ආයෙත් උත්සාහ කරලා වැඩක් නැහැ. isRetryable සහ පැහැදිලි message එකෙන් agent එකට ඊළඟ පියවර තෝරන්න උදව් වෙනවා.',
       body: [
-        'Tool එකක් අසාර්ථක වුණාම "Operation failed" කියලා generic error එකක් දුන්නොත් agent ට කරන්න දෙයක් නෑ. ඒ නිසා errors ව්‍යුහගතව (structured) දෙන්න. MCP හි isError: true flag එකෙන් tool අසාර්ථක බව කියනවා. ඒක සමඟ errorCategory, isRetryable සහ පැහැදිලි message එකක් දෙනවා.',
-        'Error වර්ග 4: (1) Transient: timeout, service unavailable. Retry කරනවා ඔව්, backoff සමඟ. (2) Validation: වැරදි input format. Input හරිගස්සලා නැවත උත්සාහ කරනවා. (3) Business: policy උල්ලංඝනය (refund limit). Retry නැහැ. Customer ට පැහැදිලි කරනවා හෝ escalate. (4) Permission: අවසර නැත. Retry නැහැ. Escalate.',
-        'තීරණය සරලයි: isRetryable true නම් retry (transient/validation fix), false නම් retry කරන්න එපා (business/permission), explain හෝ escalate.',
+        'A generic "Operation failed" message gives an agent little guidance. Return structured errors: MCP’s isError: true indicates failure, with an errorCategory, isRetryable flag, and clear message.',
+        'There are four useful error categories: (1) Transient, such as a timeout or unavailable service: retry with backoff. (2) Validation, such as invalid input: correct the input and retry. (3) Business, such as a refund limit: do not retry; explain or escalate. (4) Permission: do not retry; escalate.',
+        'Use isRetryable to guide recovery. Retry transient errors, and correct validation errors before retrying. Do not retry business or permission errors; explain or escalate instead.',
       ],
       analogy:
-        'ATM එකේ "Error" කියලා විතරක් ලිව්වොත් ඔයා අන්දමන්දයි. "කාඩ් එක ඉවර වෙලා (permission)", "PIN වැරදියි (validation)", "දිනක සීමාව ඉක්මවා (business)", "ජාලය බිඳ වැටුණා, නැවත උත්සාහ කරන්න (transient)" කියලා කිව්වොත් ඔයා හරි දේ කරනවා.',
+        'An ATM that says only "Error" leaves you confused. It is more useful to know whether the card is blocked (permission), the PIN is wrong (validation), a daily limit was reached (business), or the network is down and you should retry (transient).',
       example:
-        'process_refund($800) → {errorCategory: "business", isRetryable: false, message: "Refunds over $500 need manager approval."}. Agent එක ආයෙත් ඉල්ලන්නේ නෑ, escalate_to_human call කරනවා. lookup_order timeout → {errorCategory: "transient", isRetryable: true} → agent කෙටි වෙලාවකට පසු retry කරනවා.',
+        'process_refund($800) returns {errorCategory: "business", isRetryable: false, message: "Refunds over $500 need manager approval."}. The agent does not retry and instead calls escalate_to_human. If lookup_order times out, it returns a transient, retryable error and the agent tries again after a short delay.',
       code: {
         lang: 'json',
         src: `{
@@ -307,114 +316,118 @@ claude --resume refund-investigation --fork-session  # branch එකක් හ�
 }`,
       },
       keyPoints: [
-        'Error වර්ග 4: transient, validation, business, permission.',
-        'isError: true + errorCategory + isRetryable + message.',
-        'Transient/validation = retry (fix); business/permission = retry නැහැ.',
-        'Generic "Operation failed" agent ව අන්ධ කරනවා.',
+        'Use four error categories: transient, validation, business, and permission.',
+        'Return isError: true together with errorCategory, isRetryable, and a clear message.',
+        'Retry transient failures; correct validation failures before retrying. Do not retry business or permission failures.',
+        'A generic "Operation failed" message gives the agent no useful recovery guidance.',
       ],
       terms: [
-        { en: 'Wrong answer: generic "Operation failed"', si: 'Agent ට නිවැරදි recovery තීරණයක් ගන්න බෑ. (Rule 5)' },
-        { en: 'Wrong answer: business error එක retry කරන්න', si: 'Policy එක වෙනස් වෙන්නේ නෑ, retry වලින් වැඩක් නැහැ.' },
-        { en: 'Wrong answer: permission error එකට backoff retry', si: 'අවසර retry වලින් එන්නේ නෑ. Escalate.' },
+        { en: 'Wrong answer: return only "Operation failed"', si: 'The agent cannot choose an informed recovery action (Rule 5).' },
+        { en: 'Wrong answer: retry a business error', si: 'A retry does not change the policy; it will not help.' },
+        { en: 'Wrong answer: retry a permission error with backoff', si: 'Retries do not grant permission. Escalate instead.' },
       ],
     },
     {
       id: 'access-failure-vs-empty-result',
       examRefs: ['CCAR-007'],
-      title: 'Access Failure ≠ Empty Result සහ Local Recovery (Task 2.2)',
+      title: 'Access Failure ≠ Empty Result and Local Recovery (Task 2.2)',
+      si: 'කඩේට ගිහින් අල ඉවරයි කියන එකයි කඩේ වහලා නිසා දැනගන්න බැරි එකයි වෙනස්. Database timeout එකක් හිස් list එකක් කරලා යැව්වොත් agent එක orders නැහැ කියලා වැරදියට කියයි. Timeout එක error එකක් ලෙසත්, හොයාගත්තේ නැති එක සාමාන්‍ය result එකක් ලෙසත් යවන්න. Subagent එකට retry කරන්න ඉඩ දෙන්න; බැරි නම් උත්සාහ කළ දේවල් එක්ක coordinator ට කියන්න.',
       body: [
-        'Database timeout එකක් සහ "ඒ නමින් order එකක් නැහැ" කියන එක සම්පූර්ණයෙන්ම වෙනස්. පළමුවැන්න access failure (දැනගන්න බැරි වුණා), දෙවැන්න valid empty result (ඇත්තටම නැහැ).',
-        'Timeout එකක් [] (හිස් list එකක්) ලෙස ආපසු දුන්නොත් agent එක "customer ගේ orders නැහැ" කියලා ඇත්තක් කියනවා. ඒක වැරදියි, ඒ වගේම භයානකයි. Timeout = isError: true + transient. Order නැති වීම = සාමාන්‍ය result එකක් ({"found": false}), isError නෑ.',
-        'Multi-agent පද්ධතියක subagent එක transient errors එතනම විසඳන්න (local recovery, retry). විසඳිය නොහැකි ඒවා පමණක් coordinator ට යවන්න, සමඟ partial results සහ කළ උත්සාහයන් (failure type, query, partial results, alternatives).',
-        'Coordinator ට මුළු workflow එකම එක error එකකට නවත්තන්න එපා. Final report එකේ coverage annotations දාන්න: හොඳින් support කළ findings සහ sources නැති වුණ නිසා gaps ඇති topics.',
+        'A database timeout and "no order exists with that ID" are different. The first is an access failure—you could not find out. The second is a valid empty result—the order truly does not exist.',
+        'If a timeout is returned as [] (an empty list), the agent may falsely tell the user that the customer has no orders. A timeout is an error (isError: true, transient); no matching order is a normal result such as {"found": false}.',
+        'In a multi-agent system, let a subagent handle transient errors locally by retrying. Send only unresolved errors to the coordinator, with partial results and context about the attempts: failure type, query, partial results, and alternatives.',
+        'Do not stop the entire workflow because of one error. Annotate coverage in the final report, distinguishing supported findings from topics with gaps because sources were unavailable.',
       ],
       analogy:
-        'කඩේ "අල තියෙනවාද?" කියලා ඇහුවම. "නෑ, ඉවරයි" (empty result) සහ කඩේ ගේට්ටුව වැහිලා ඇරලා නෑ (access failure). දෙක එකක් කරගත්තොත් ඔයා වෙන කඩයක් හොයනවා, ඇත්තටම කඩය ඇරෙනකම් ඉන්න ඕනේ වෙලාවක.',
+        'If you ask a shop for potatoes, "No, we are out" is an empty result, while a locked shop means you could not check (access failure). Confusing the two could send you to another shop when you only needed to wait for this one to open.',
       example:
-        'Search subagent timeout වෙනවා. වැරදි: [] යවලා "ප්‍රතිඵල නැහැ" කියලා report එක ලියනවා. හරි: subagent එක ඉක්මනින් එකම වතාවක් retry කරනවා. තවමත් අසාර්ථක නම් coordinator ට: {failureType: transient, query: "AI music 2025", partialResults: [...], alternatives: ["වෙනත් search source"]}.',
+        'A search subagent times out. Wrong: return [] and report "no results." Better: retry once after a short delay. If it still fails, tell the coordinator {failureType: transient, query: "AI music 2025", partialResults: [...], alternatives: ["another search source"]}.',
       keyPoints: [
-        'Timeout (access failure) = error. "Match නැහැ" = valid empty result. කවදාවත් මිශ්‍ර නොකරන්න.',
-        'Transient errors subagent එකම විසඳන්න (local recovery).',
-        'විසඳිය නොහැකි ඒවා structured context සමඟ coordinator ට: type, query, partial results, alternatives.',
-        'එක error එකකට මුළු workflow නවත්තන්න එපා; coverage annotations දාන්න.',
+        'A timeout (access failure) is an error; "no match" is a valid empty result. Never confuse them.',
+        'Let the subagent handle transient errors locally.',
+        'Send unresolved errors to the coordinator with structured context: type, query, partial results, and alternatives.',
+        'Do not stop the whole workflow for one error; annotate coverage.',
       ],
       terms: [
-        { en: 'Wrong answer: timeout එක empty success ලෙස යැවීම', si: 'Error එක සඟවනවා (suppression). Agent වැරදි නිගමනයකට යයි. (Rule 5)' },
-        { en: 'Wrong answer: generic status ("search unavailable") යැවීම', si: 'Coordinator ට recover කරන්න context නැහැ.' },
-        { en: 'Wrong answer: එක subagent අසාර්ථක වුණාම workflow එකම නවත්වීම', si: 'අනවශ්‍යයි. Partial results සමඟ ඉදිරියට යන්න.' },
+        { en: 'Wrong answer: report a timeout as an empty success', si: 'This hides the error and can lead the agent to a false conclusion (Rule 5).' },
+        { en: 'Wrong answer: return only a generic status such as "search unavailable"', si: 'The coordinator lacks the context needed to recover.' },
+        { en: 'Wrong answer: stop the entire workflow when one subagent fails', si: 'That is unnecessary; continue with partial results.' },
       ],
     },
     {
       id: 'tool-distribution-least-privilege',
       examRefs: ['CCAR-008'],
-      title: 'Tool Distribution සහ Least Privilege (Task 2.3)',
+      title: 'Tool Distribution and Least Privilege (Task 2.3)',
+      si: 'Agent එකකට අවශ්‍ය tools විතරක් දෙන්න; synthesis agent ට සම්පූර්ණ web search එක අවශ්‍ය නැහැ. Tuk-tuk රියදුරාට ගාස්තු පෙට්ටියේ යතුර දෙනවා මිස බැංකුවේ සේප්පුවේ යතුර දෙන්නේ නැහැ වගේ. සරල fact-check සඳහා සීමිත verify_fact tool එකක් දෙන්න. සංකීර්ණ ප්‍රශ්න coordinator හරහා යවන්න.',
       body: [
-        'Agent එකකට tools 18ක් දුන්නොත් Claude ගේ tool selection වැරදීම වැඩි වෙනවා. Agent එකකට tools 4–5ක් පමණ දෙන්න, ඒ role එකට අදාළ ඒවා විතරක්. Role එකෙන් පිටත tools තිබුණොත් agent එක ඒවා අවභාවිතා කරනවා (උදා: synthesis agent web search කරන්න පටන් ගන්නවා).',
-        'Scoped cross-role tool: Synthesis agent එක සරල fact-checks (≈85%) වලට coordinator ට ගිහින් එන එක අනවශ්‍ය round trips වැඩි කරනවා. විසඳුම: ඒ agent ට සීමිත verify_fact tool එකක් දෙන්න. සංකීර්ණ (≈15%) ඒවා තවමත් coordinator හරහා. මුළු web search tools දෙන්නේ නෑ.',
-        'Constrained tools: Generic fetch_url වෙනුවට URL validate කරන load_document වගේ constrained tool එකක් දෙන්න. Tool එක කරන්න පුළුවන් දේ ප්‍රමාණවත් තරම් පටුයි නම් අවභාවිතයට ඉඩ අඩුයි.',
-        'මේක Rule 6 (least privilege). Phase 19 හි agent safety ගැනත් බලන්න.',
+        'Giving an agent 18 tools can make Claude’s tool selection less reliable. Provide about 4–5 tools that fit its role. Tools outside the role can be misused—for example, a synthesis agent may start doing web searches.',
+        'A synthesis agent that must ask the coordinator for every simple fact check (about 85%) creates unnecessary round trips. Give it a scoped verify_fact tool for those checks; send the more complex 15% through the coordinator. Do not give it every web-search tool.',
+        'Prefer constrained tools such as load_document, which validates a URL, over a generic fetch_url tool. A tool with a narrow purpose has less room for misuse.',
+        'This is Rule 6 (least privilege). See Phase 19 for more about agent safety.',
       ],
       analogy:
-        'Tuk-tuk ඩ්‍රයිවර් කෙනාට ගමන් ගාස්තුව ගන්න සල්ලි පෙට්ටියේ යතුර දෙනවා, බැංකුවේ vault යතුරු නෙවෙයි. Synthesis agent ට "සරල fact check" එකට පුංචි යතුරක් (verify_fact), ඒත් මුළු ගමන් බලපත්‍රය (සියලු search tools) නෙවෙයි.',
+        'A tuk-tuk driver needs the key to the fare box, not the bank vault. Give a synthesis agent a small key (a scoped verify_fact tool) for simple checks, not access to every search tool.',
       example:
-        'Research system: web-searcher: WebSearch, WebFetch. document-analyzer: Read, extract_data_points. synthesizer: Read, verify_fact (scoped). හැම agent ටම tools 2–3යි. Synthesis round trips අඩු වුණා, සංකීර්ණ verification තවමත් coordinator හරහා.',
+        'In a research system, the web-searcher gets WebSearch and WebFetch; the document-analyzer gets Read and extract_data_points; and the synthesizer gets Read and scoped verify_fact. Each has only 2–3 tools, reducing simple synthesis round trips while leaving complex checks with the coordinator.',
       keyPoints: [
-        'Agent එකකට tools 4–5ක් පමණ; 18ක් selection වැරදි වැඩි කරයි.',
-        'Role එකෙන් පිටත tools = අවභාවිතය.',
-        'Scoped cross-role tool (verify_fact) සරල 85% සඳහා; සංකීර්ණ 15% coordinator හරහා.',
-        'Constrained tool (load_document) > raw fetch_url.',
+        'Give each agent about 4–5 tools; 18 can increase selection errors.',
+        'Tools outside an agent’s role create opportunities for misuse.',
+        'Use scoped verify_fact for the simple 85%; route the complex 15% through the coordinator.',
+        'Prefer a constrained load_document tool to an unrestricted fetch_url.',
       ],
       terms: [
-        { en: 'Wrong answer: සියලු agents ට සියලු tools දීම', si: 'Least privilege උල්ලංඝනය. Selection වැරදි වැඩි වෙනවා. (Rule 6)' },
-        { en: 'Wrong answer: requests batch කිරීම', si: 'Dependencies block වෙනවා. Round trips ගැටලුව ඒකෙන් විසඳෙන්නේ නෑ.' },
-        { en: 'Wrong answer: caching / speculative caching', si: 'ගැටලුව tool access design එක. Caching අනුමානයක්.' },
+        { en: 'Wrong answer: give every agent every tool', si: 'This violates least privilege and can increase selection errors (Rule 6).' },
+        { en: 'Wrong answer: batch the requests', si: 'Dependencies may prevent batching, and it does not fix the round-trip design.' },
+        { en: 'Wrong answer: use caching or speculative caching', si: 'The issue is tool-access design; caching does not address it.' },
       ],
     },
     {
       id: 'tool-choice-auto-any-forced',
       title: 'tool_choice: auto, any, forced (Task 2.3)',
+      si: 'ඔයාට tool එකක් අනිවාර්ය කරන්නේද කියලා tool_choice තීරණය කරනවා. auto නම් Claude text එකක් දෙන්නත් tool එකක් අමතන්නත් තෝරනවා. any නම් යම් tool එකක් අනිවාර්යයි, නමුත් කුමන එකද කියලා Claude තෝරනවා. නිශ්චිත tool එකක් බලෙන් තෝරන එක නොදන්නා document වර්ගයකට වැරදි schema එකක් යොදන්න පුළුවන්.',
       body: [
-        'tool_choice කියන්නේ API request එකේ parameter එකක්, Claude tool එකක් call කළ යුතුද කියලා පාලනය කරන්න. තෝරාගැනීම් 3 (සහ none):',
-        '{"type": "auto"}: Claude තීරණය කරනවා, tool එකක් call කරනවාද text එකකින් පිළිතුරු දෙනවාද. සාමාන්‍ය chat + tools.',
-        '{"type": "any"}: Claude යම් tool එකක් අනිවාර්යයෙන් call කළ යුතුයි (text පිළිතුරක් නැහැ). Structured output අනිවාර්ය වෙද්දී, හෝ document type එක නොදන්න වෙද්දී (schemas කිහිපයක් අතරින් Claude තෝරයි).',
-        '{"type": "tool", "name": "extract_metadata"}: ඒ නිශ්චිත tool එකම call කළ යුතුයි. නිශ්චිත පියවරක් (උදා: metadata extraction) පළමුව run කරන්න. {"type": "none"} = මේ turn එකට tools නැහැ.',
+        'tool_choice is a request parameter that controls whether Claude must call a tool. There are three choices, plus none:',
+        '{"type": "auto"}: Claude decides whether to call a tool or answer with text. Use for ordinary chat with tools.',
+        '{"type": "any"}: Claude must call some tool rather than answer with text. Use when structured output is required or the document type is unknown and Claude must choose among several schemas.',
+        '{"type": "tool", "name": "extract_metadata"}: Claude must call that specific tool, for example to run metadata extraction first. {"type": "none"} means no tools are available for this turn.',
       ],
       analogy:
-        'auto = "කැමති නම් මොනවා හරි ගෙන්නගන්න" (menu එක හෝ සුළු කතාවක්). any = "ඕනෑම එකක් ඇණවුම් කරන්නම ඕනේ" (මෙනුවෙන් එකක් විතරයි). forced = "අද විශේෂය කොත්තු එකම ඇණවුම් කරන්න". none = "අද මෙනුව නෑ, කතා කරමු".',
+        'In a kottu shop, auto is "order something if you like"; any is "you must order one item from the menu"; forced is "order today’s special kottu"; and none is "there is no menu this turn, so just talk."',
       example:
-        'Invoice, receipt, contract කියලා extraction schemas 3ක් තියෙනවා, ලැබෙන document එකේ type එක නොදනී. tool_choice "any" දෙනවා: Claude text එකකින් පිළිතුරු දෙන්නේ නැතුව ගැළපෙන schema tool එක call කරනවා. Metadata එකම පළමුව ගන්න ඕනේ නම් forced extract_metadata.',
+        'Suppose there are extraction schemas for invoices, receipts, and contracts, but you do not know the incoming document type. Set tool_choice to "any" so Claude must call a tool and can choose the matching schema. If metadata must always be extracted first, force extract_metadata.',
       code: {
         lang: 'python',
-        src: `tool_choice={"type": "auto"}   # Claude තීරණය කරයි, text වුණත් හරි
-tool_choice={"type": "any"}    # යම් tool එකක් call කළම ඕනේ
-tool_choice={"type": "tool",   # මේ tool එකම call කළ යුතුයි
+        src: `tool_choice={"type": "auto"}   # Claude chooses; text is allowed
+tool_choice={"type": "any"}    # A tool call is required
+tool_choice={"type": "tool",   # This specific tool is required
              "name": "extract_metadata"}
-tool_choice={"type": "none"}   # මේ turn එකට tools නැහැ`,
+tool_choice={"type": "none"}   # No tools for this turn`,
       },
       keyPoints: [
-        'auto = Claude තීරණය කරයි (text වෙන්න පුළුවන්).',
-        'any = අනිවාර්යයෙන් යම් tool එකක් (document type නොදන්නා, structured output).',
-        'forced tool = ඒ tool එක පළමුව.',
-        'Exam "any" = වත්මන් docs හි {"type": "any"} (එකම අර්ථය).',
+        'auto lets Claude decide; it may return text.',
+        'any requires a tool call, useful when the document type is unknown or structured output is required.',
+        'A forced tool requires that specific tool to run.',
+        'For the exam’s "any," current documentation uses {"type": "any"} with the same meaning.',
       ],
       terms: [
-        { en: 'Wrong answer: auto භාවිතා කර schema output ඒකාන්ත ලෙස බලාපොරොත්තු වීම', si: 'auto සමඟ Claude text එකකින් පිළිතුරු දෙන්නත් පුළුවන්.' },
-        { en: 'Wrong answer: forced tool එක document type නොදන්නා විටත් භාවිතා කිරීම', si: 'වැරදි schema එකක් බල කරයි. නොදන්නා නම් any.' },
+        { en: 'Wrong answer: expect schema output while using auto', si: 'With auto, Claude may answer with text instead of calling a tool.' },
+        { en: 'Wrong answer: force a tool when the document type is unknown', si: 'This could force the wrong schema. Use any when the correct tool is not known in advance.' },
       ],
     },
     {
       id: 'mcp-servers-scopes-env',
       examRefs: ['CCAR-009', 'CCAR-025', 'CCAR-027'],
-      title: 'MCP Servers: Scopes සහ Env Expansion (Task 2.4)',
+      title: 'MCP Servers: Scopes and Environment Expansion (Task 2.4)',
+      si: 'Project එකටම ඕනේ MCP server එක repo එකේ .mcp.json තුළ දාන්න, එතකොට කණ්ඩායමට එකම සැකසුම ලැබෙනවා. පුද්ගලික අත්හදාබැලීම් ~/.claude.json තුළ තියාගන්න. GitHub token එක ගොනුවට කෙලින්ම ලියන්න එපා; GITHUB_TOKEN වගේ environment variable එකකින් ගන්න. Colombo office එකේ කණ්ඩායමට එකම server එක share කරද්දී රහස් token එක තමන්ගේ machine එකේ තියාගන්න.',
       body: [
-        'MCP server එකක් Claude Code ට සම්බන්ධ කරන්නේ configuration file එකකින්. Scope දෙකක් තියෙනවා. Project scope: repo එකේ .mcp.json, Git හරහා සමස්ත team එකටම share වෙනවා (team ට අවශ්‍ය servers). User scope: ~/.claude.json, ඔයාට පමණක් (පුද්ගලික හෝ අත්හදා බලන servers).',
-        'Secrets (tokens) config file එකේ කෙලින්ම ලියන්න එපා, ඒක Git එකට commit වෙනවා. ඒ වෙනුවට environment variable expansion භාවිතා කරන්න: "GITHUB_TOKEN": "${GITHUB_TOKEN}". එකිනෙක developer ගේ machine එකේ env var එකෙන් අගය ගන්නවා.',
-        'Configure කළ සියලු servers වල tools connection වෙලාවේ discover වෙලා එකවර භාවිතා කරන්න පුළුවන්. Agent එක MCP tool එකකට වඩා Grep වගේ built-in tool එකකට කැමති නම්, MCP tool එකේ description එක වැඩිදියුණු කරන්න (Task 2.1 නැවත).',
+        'Connect an MCP server to Claude Code through a configuration file. There are two scopes: project scope uses .mcp.json in the repository and can be shared with the team through Git; user scope uses ~/.claude.json and is personal, for example for experimental servers.',
+        'Do not write secrets such as tokens directly in a config file that will be committed to Git. Use environment-variable expansion instead, such as "GITHUB_TOKEN": "${GITHUB_TOKEN}", so each developer’s machine provides the value.',
+        'Tools from configured servers are discovered when connecting and can be used together. If the agent prefers a built-in tool such as Grep over an MCP tool, improve the MCP tool’s description (see Task 2.1).',
       ],
       analogy:
-        'ගෙදර wifi password එක ශීතකරණයේ පෝස්ටර් එකක ඇලවුවොත් ගෙදරට එන හැමෝම දකිනවා. ඒක තමයි token එක Git එකට commit කරන එක. ${GITHUB_TOKEN} කියන්නේ "password එක ඔයාගේ ෆෝන් එකේ තියෙනවා, මෙතන ලියන්නේ නෑ" කියලා.',
+        'Posting your home Wi-Fi password on the refrigerator lets every visitor see it—like committing a token to Git. ${GITHUB_TOKEN} means the secret stays on your device instead of being written in the shared file.',
       example:
-        'Team එක GitHub MCP server එක පාවිච්චි කරනවා. .mcp.json එක repo එකේ commit කරනවා (token එක නැතුව ${GITHUB_TOKEN}). අලුත් developer එක repo එක clone කරලා තමන්ගේ GITHUB_TOKEN env var එක set කළම server එක වැඩ. ඔයා තනියම උත්සාහ කරන experimental server එක ~/.claude.json හි.',
+        'A team shares a GitHub MCP server by committing .mcp.json without the token, using ${GITHUB_TOKEN} as a reference. A new developer clones the repository, sets GITHUB_TOKEN in their environment, and can use the server. Keep an experimental server in your personal ~/.claude.json.',
       code: {
         lang: 'json',
         src: `{
@@ -428,20 +441,21 @@ tool_choice={"type": "none"}   # මේ turn එකට tools නැහැ`,
 }`,
       },
       keyPoints: [
-        'Project scope = .mcp.json (Git, team). User scope = ~/.claude.json (personal).',
-        'Secrets: ${ENV_VAR} expansion; token commit කරන්න එපා.',
-        'සියලු servers වල tools connection වෙලාවේ discover වී එකවර use කළ හැක.',
-        'Agent MCP tool නොසලකනවා නම් description එක හදන්න.',
+        'Project scope uses .mcp.json and can be shared with the team through Git; user scope uses personal ~/.claude.json.',
+        'Use ${ENV_VAR} expansion for secrets; never commit a token.',
+        'Tools from configured servers are discovered at connection time and can be used together.',
+        'If the agent ignores an MCP tool, improve its description.',
       ],
       terms: [
-        { en: 'Wrong answer: token එක .mcp.json එකේම ලියන්න', si: 'Git history එකේ secret එක ඉතිරි වෙනවා.' },
-        { en: 'Wrong answer: team server එක ~/.claude.json (user scope) හි තැබීම', si: 'Teammates ලට ලැබෙන්නේ නෑ. Team එකට = .mcp.json.' },
-        { en: 'Wrong answer: ".claude/config.json" වැනි ෆයිල් එකක server දැමීම', si: 'එවැනි config file එකක් exam එකේ distractor එකක්. .mcp.json සහ ~/.claude.json විතරයි.' },
+        { en: 'Wrong answer: write the token directly in .mcp.json', si: 'The secret would remain in the Git history.' },
+        { en: 'Wrong answer: put the shared team server in user-scoped ~/.claude.json', si: 'Teammates would not receive it. Use .mcp.json for team configuration.' },
+        { en: 'Wrong answer: put the server in a file such as .claude/config.json', si: 'That filename is an exam distractor here; use .mcp.json or ~/.claude.json.' },
       ],
     },
     {
       id: 'mcp-resources-community-custom',
       title: 'MCP Resources vs Tools, Community vs Custom Servers (Task 2.4)',
+      si: 'MCP Resource එකක් කියන්නේ කියවන්න පුළුවන් ලේඛනයක් වගේ, Tool එකක් කියන්නේ ක්‍රියාවක් කරන උපකරණයක් වගේ. උදාහරණයට policy එකක් කියවීම resource එකක්, refund එකක් ඉල්ලීම tool එකක්. Community server එකක් තෝරද්දී කවුද හදලා තියෙන්නේ සහ එය කරන දේ පරීක්ෂා කරන්න. අවශ්‍ය කාර්යය නොමැති නම් තමන්ට ගැළපෙන server එකක් හදන්න පුළුවන්.',
       body: [
         'MCP server එකකින් ප්‍රධාන දේවල් 2ක් ඉදිරිපත් කළ හැකියි. Tools = actions (lookup_order, process_refund; ක්‍රියාවන් කරනවා). Resources = කියවිය හැකි content catalogs (issue summaries, documentation hierarchy, database schema).',
         'Resources වලින් agent ට "මෙතන මොනවා තියෙනවාද" කියලා ඉක්මනින් දැනගන්න පුළුවන්, ඒ නිසා exploratory tool calls අඩු වෙනවා. උදා: refund policy documents වල index එක resource එකක් ලෙස, agent එක ඒක බලලා අදාළ document එක කෙලින්ම ගන්නවා.',
@@ -485,7 +499,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     {
       id: 'builtin-tools-exploration',
       examRefs: ['CCAR-010', 'CCAR-026'],
-      title: 'Built-in Tools සහ Codebase Exploration (Task 2.5)',
+      title: 'Built-in Tools and Codebase Exploration (Task 2.5)',
+      si: 'Project එකක test files හොයන්න Glob භාවිතා කරන්න, code ඇතුළේ function එකක් හොයන්න Grep භාවිතා කරන්න. Read එකෙන් ගොනුව බලන්න, Edit එකෙන් තෝරාගත් කොටස වෙනස් කරන්න. ලොකු repo එකක මුලින්ම සියලු ගොනු කියවන්න එපා; entry point එක හොයාගෙන අදාළ imports ටික බලන්න. Edit එක අසාර්ථක වුණොත් නැවත Read කරලා ඉලක්කගත Write එකක් කරන්න.',
       body: [
         'Claude Code එකේ built-in tools: Grep = file අන්තර්ගතය තුළ pattern සෙවීම (function එකක callers, error message එකක්). Glob = file නම්/path pattern එකකින් සෙවීම (**/*.test.tsx). Read = සම්පූර්ණ file එකක් කියවීම. Write = සම්පූර්ණ file එකක් ලිවීම. Edit = unique text එකක් සොයා ඉලක්කගත වෙනස් කිරීමක්. Bash = shell commands (tests run කිරීම).',
         'Grep vs Glob: Grep අන්තර්ගතය (content) තුළ සොයනවා. Glob නම/path එකෙන් සොයනවා. "*.spec.ts files හොයන්න" = Glob. "මේ function එක call කරන තැන්" = Grep.',
@@ -512,6 +527,7 @@ def lookup_order(order_id: str) -> CallToolResult:
     {
       id: 'scenario-customer-support-agent',
       title: 'Scenario: Customer Support Resolution Agent',
+      si: 'Support agent එකට get_customer, lookup_order, process_refund සහ escalate_to_human tools තියෙනවා කියලා හිතන්න. Customer ID එක තහවුරු නොකර refund දෙන්න බැරි gate එක code එකෙන් දාන්න. Order ගැන ප්‍රශ්නයකට වැරදි tool එක යනවා නම් descriptions පැහැදිලි කරන්න. Customer මනුස්සයෙක් ඉල්ලුවොත් හෝ match කිහිපයක් තිබුණොත් ඒ තොරතුරු ඉල්ලා human කෙනෙකුට යොමු කරන්න.',
       body: [
         'Setup: Agent SDK එකෙන් support agent එකක්. MCP tools: get_customer, lookup_order, process_refund, escalate_to_human. ඉලක්කය 80%+ first-contact resolution. Domains 1, 2, 5. Exam එකේ "80% FCR" වගේ ඉලක්කයට යටි ඉරක් ඇඳලා පිළිතුර ඒකට ගැළපෙනවාද බලන්න.',
         'රටා 1 (tool order ගැටලුව): "12% වරක get_customer මඟ හැරලා වැරදි refunds". පිළිතුර: verified customer ID එක ලැබෙනකම් lookup_order/process_refund block කරන programmatic prerequisite. Rule 3 (අනිවාර්ය නීතිය = code). Prompt/few-shot probabilistic; routing classifier ගැටලුවට අදාළ නෑ.',
@@ -537,6 +553,7 @@ def lookup_order(order_id: str) -> CallToolResult:
     {
       id: 'scenario-multi-agent-research',
       title: 'Scenario: Multi-Agent Research System',
+      si: 'Research report එකේ මාතෘකා හතරෙන් එකක් විතරක් තිබුණොත්, subagents හොඳට වැඩ කළත් coordinator ගේ සැලැස්ම පටු වෙන්න පුළුවන්. එක subagent එක timeout වුණා කියලා මුළු report එක නවත්වන්න එපා; ලැබුණු කරුණු සහ අඩුපාඩු සටහන් කරන්න. සරල කරුණු පරීක්ෂාවට synthesis agent ට සීමිත tool එකක් දෙන්න. Subagent එකට අවශ්‍ය background එක prompt එකේ දාන්න.',
       body: [
         'Setup: Coordinator එක search, document-analysis, synthesis subagents ට වැඩ බෙදයි; cited reports. Domains 1, 2, 5.',
         'රටා 1 (අසම්පූර්ණ report): "Creative industries" report එක visual arts විතරයි, subagents හොඳින් වැඩ කළා. පිළිතුර: coordinator ගේ decomposition පටුයි. Rule 1 (root cause). වැරදි: subagents වලට වරද පැටවීම.',
@@ -563,6 +580,7 @@ def lookup_order(order_id: str) -> CallToolResult:
     {
       id: 'scenario-developer-productivity',
       title: 'Scenario: Developer Productivity with Claude',
+      si: 'නොදන්නා codebase එකක test files හොයද්දී Glob යොදාගන්න; function එකක් භාවිතා කරන තැන් හොයද්දී Grep යොදාගන්න. Files 14ක් review කරනවා නම් එක විශාල prompt එකකට දාන්නේ නැතුව file එකින් එක බලලා අන්තිමේ එකට සසඳන්න. Tool එකක් හරියට වැඩ නොකළොත් එහි output සහ error එක පරීක්ෂා කරලා ඉදිරියට යන්න. ඔයාට අවශ්‍ය tool එකට විතරක් agent එකට අවසර දෙන්න.',
       body: [
         'Setup: නොදන්න codebases තේරුම් ගන්න agent එකක්. Built-in tools (Read, Write, Bash, Grep, Glob) සහ MCP. Domains 2, 3, 1.',
         'රටා 1 (ෆයිල් සෙවීම): "සියලු test files හොයන්න" → Glob. "මේ function call කරන තැන්" → Grep. Exam එක Grep/Glob මාරු කරලා පිළිතුරක් ඉදිරිපත් කරයි. Rule: නම/path = Glob, අන්තර්ගතය = Grep.',
@@ -587,7 +605,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'six-answer-rules-fake-features',
-      title: 'පිළිතුරු තෝරන නීති 6 සහ නැති Features වලට අවවාද',
+      title: 'Six Answer-Selection Rules and Warnings About Unsupported Features',
+      si: 'Exam ප්‍රශ්නයක මුලින්ම ඇහුවේ මොකක්ද කියලා හොඳට බලන්න. මුදල් හෝ identity නීතියක් නම් code එකෙන් enforce කරන්න; tool තේරීම වැරදි නම් description එක හදන්න. Subagent එකට context නැත්නම් prompt එකට දාන්න, timeout එකක් නම් error විස්තර කරන්න. Docs වල නැති feature එකක් හිතලා උත්තරයට දාන්න එපා.',
       body: [
         'CCAR-F ප්‍රශ්න scenario එකක් තුළ "වඩාත්ම effective", "පළමු පියවර", "root cause" අහනවා. නීති 6ක් නැවත නැවත එනවා:',
         '1. Root cause එකට විසඳුම. ගැටලුව වෙනත් agent/tool එකක නම්, ඉතිරි කොටස් වෙනස් කිරීම වැරදියි. 2. සරලම, proportionate පළමු පියවර. "Classifier train කරන්න", "routing layer හදන්න" සාමාන්‍යයෙන් වැරදියි. 3. අනිවාර්ය නීති = code (hooks, gates). 4. Explicit criteria + few-shot ("be careful" / "high confidence පමණක්" නොවේ). 5. තොරතුරු අහිමි නොකරන්න: errors, partial results, sources, dates, conflicting values structured ලෙස ඉදිරියට. 6. Least privilege.',
@@ -616,7 +635,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'aws-architect-mapping',
-      title: 'AWS Architect ගේ ඇස: මේ ideas AWS design එකකට map කරන ආකාරය',
+      title: 'An AWS Architect’s View: Mapping These Ideas to an AWS Design',
+      si: 'Agent loop එක ඔයාගේ application code එකේ ධාවනය වෙනවා; Lambda, ECS/Fargate හෝ EKS එකක host කරන්න පුළුවන්. Hook එක tool එකට කලින් හෝ පස්සේ පරීක්ෂා කරන code එකක්. MCP server එක tools ලබාදෙන service boundary එකක්. Secrets ගොනුවට දාන්නේ නැතුව environment හෝ secret store එකෙන් ලබාගන්න.',
       body: [
         'ඔයා AWS tech lead කෙනෙක් නිසා මේ ideas ඔයාගේ architecture එකට map කරලා බලමු. පහත සඳහන් ඒවා ඔයාට පරිකල්පනයට මඟ පෙන්වන mapping එකක්; exam එකේ AWS specifics නෑ (CCAR-F ට අදාළ නැහැ), ඒත් ඔයාගේ design වලට උදව්වෙනවා. නිශ්චිත service features සඳහා වත්මන් AWS docs verify කරන්න.',
         'Agent loop එක (stop_reason loop) ඔයාගේ code එකක්. ඒක Lambda, ECS/Fargate හෝ EKS service එකක run කරන්න පුළුවන්. Model call එක Claude API එකෙන් හෝ Bedrock හරහා Claude මොඩල් වලින් (Bedrock Converse API එකේත් tool use තියෙනවා, ඒත් නිශ්චිත field නම් verify in current docs). Loop එක ඔයාගේ service එකේ බව වැදගත්: stop_reason බලන්නේ ඔයාගේ code.',
@@ -643,104 +663,104 @@ def lookup_order(order_id: str) -> CallToolResult:
   ],
   quiz: [
     {
-      q: 'Agent loop එකක් නවත්වන්න නිවැරදිම ක්‍රමය?',
+      q: 'What is the correct way to stop an agent loop?',
       options: [
-        'Claude ගේ text එකේ "done" වචනය සොයා නවත්වීම',
-        'stop_reason == "end_turn" වූ විට නවත්වීම; "tool_use" වූ විට tool run කර tool_result යවා දිගටම',
-        'නියත iteration 5ක් run කර නවත්වීම',
+        'Stop when Claude’s text contains the word "done".',
+        'Stop when stop_reason is "end_turn"; for "tool_use", run the tool, send its result, and continue.',
+        'Stop after exactly five iterations.',
       ],
       answer: 1,
-      why: 'stop_reason structured field එකයි. Text parse කිරීම සහ iteration cap එක (backup විතරයි) වැරදි ප්‍රධාන ක්‍රම.',
+      why: 'stop_reason is the structured completion signal. Text parsing and an iteration cap (which is only a backup) are not the normal stop condition.',
     },
     {
-      q: 'Research report එක topic 4න් 1ක් (visual arts) විතරයි; subagents හරියටම වැඩ කළා. Root cause?',
+      q: 'A research report covers only one of four topics (visual arts), although the subagents worked correctly. What is the root cause?',
       options: [
-        'Subagents වල prompts දුර්වලයි',
-        'Coordinator ගේ decomposition එක ඉතා පටුයි',
-        'Synthesis agent ට web search නැහැ',
+        'The subagents have weak prompts.',
+        'The coordinator decomposed the task too narrowly.',
+        'The synthesis agent does not have web search.',
       ],
       answer: 1,
-      why: 'Rule 1: root cause එකට විසඳුම. Subagents ලැබුණු scope එකට හොඳට වැඩ කළා; coordinator topic එක පටුවට කැඩුවා.',
+      why: 'Rule 1: address the root cause. The subagents handled their assigned scope; the coordinator defined that scope too narrowly.',
     },
     {
-      q: 'Parallel subagents 3ක් run කරන නිවැරදි ක්‍රමය?',
+      q: 'How should you run three subagents in parallel?',
       options: [
-        'එකම coordinator response එකක Task/Agent tool calls 3ක් emit කිරීම',
-        'Turns 3කින් එකින් එක spawn කිරීම',
-        'Subagents ට coordinator ගේ conversation එක ස්වයංක්‍රීයව ලැබෙන නිසා ඒවා එකිනෙකා හමුවෙයි',
+        'Emit three Task/Agent tool calls in the same coordinator response.',
+        'Spawn them one at a time across three turns.',
+        'Let them communicate directly because they automatically receive the coordinator’s conversation.',
       ],
       answer: 0,
-      why: 'එකම response එකක tool calls කිහිපයක් = parallel. Subagents parent conversation එක inherit නොකරයි, ඒ නිසා context එක prompt එකේ දිය යුතුයි.',
+      why: 'Multiple tool calls in one response can run in parallel. Subagents do not inherit the parent conversation, so include needed context in each prompt.',
     },
     {
-      q: 'Agent 12%ක් වාරවල get_customer මඟ හැර වැරදි refunds කරයි. හොඳම පළමු පියවර?',
+      q: 'An agent skips get_customer and issues an incorrect refund in 12% of cases. What is the best first step?',
       options: [
-        'System prompt එක තවත් ශක්තිමත් කිරීම',
-        'Few-shot examples එකතු කිරීම',
-        'Verified customer ID එක ලැබෙනකම් lookup_order සහ process_refund block කරන programmatic prerequisite එකක්',
+        'Strengthen the system prompt.',
+        'Add few-shot examples.',
+        'Add a programmatic prerequisite that blocks lookup_order and process_refund until a customer ID is verified.',
       ],
       answer: 2,
-      why: 'Rule 3: මුදල්/identity නීතිය code එකෙන්. Prompt සහ few-shot probabilistic (ශුන්‍ය නොවන failure rate).',
+      why: 'Rule 3: enforce financial and identity requirements in code. Prompts and examples remain probabilistic and can fail.',
     },
     {
-      q: '$500 ට වැඩි refunds human escalation වෙත යවන්න නිවැරදි mechanism එක?',
+      q: 'Which mechanism should send refunds over $500 for human review?',
       options: [
-        'PostToolUse hook එකකින් refund එක block කිරීම',
-        'PreToolUse hook එකකින් amount > 500 deny කර escalate_to_human කියා reason එකක් දීම',
-        'System prompt එකේ "500 ට වැඩි refund කරන්න එපා" කියා ලිවීම',
+        'Block the refund with a PostToolUse hook.',
+        'Use a PreToolUse hook to deny amounts over 500 and give Claude a reason to call escalate_to_human.',
+        'Write "Do not refund over 500" in the system prompt.',
       ],
       answer: 1,
-      why: 'PreToolUse tool එක run වෙන්න කලින් block කරයි. PostToolUse run වුණාට පසුවයි. Prompt නීතියට failure rate එකක් තියෙනවා.',
+      why: 'PreToolUse can block a call before it runs. PostToolUse runs afterward, and a prompt-based rule can still be missed.',
     },
     {
-      q: 'Tool timeout එකක් සහ "order එකක් නැහැ" යන දෙක agent ට වෙන් කර දැනුම් දෙන්නේ කෙසේද?',
+      q: 'How should the agent distinguish a tool timeout from "no order found"?',
       options: [
-        'දෙකටම හිස් list එකක් ([]) දීම',
-        'Timeout = isError: true + transient + isRetryable: true; order නැහැ = සාමාන්‍ය result එකක් ({"found": false})',
-        'දෙකටම "Operation failed" යවීම',
+        'Return an empty list ([]) for both.',
+        'For a timeout, return isError: true with a transient, retryable error; for no order, return a normal result such as {"found": false}.',
+        'Return "Operation failed" for both.',
       ],
       answer: 1,
-      why: 'Access failure ≠ empty result. Timeout empty success ලෙස දුන්නොත් agent වැරදි නිගමනයකට යයි (Rule 5).',
+      why: 'An access failure is not an empty result. Reporting a timeout as an empty success can lead the agent to a false conclusion (Rule 5).',
     },
     {
-      q: 'Tool selection වැරදෙයි; tool descriptions අවමයි ("Retrieves order details"). හොඳම පළමු පියවර?',
+      q: 'Tool selection is incorrect and descriptions are minimal ("Retrieves order details"). What is the best first step?',
       options: [
-        'Intent routing classifier එකක් train කිරීම',
-        'Descriptions විස්තර කිරීම: inputs, උදාහරණ, boundaries',
-        'Tools එකතු කර එක tool එකක් කිරීම',
+        'Train an intent-routing classifier.',
+        'Improve descriptions with inputs, examples, and boundaries.',
+        'Combine the tools into one tool.',
       ],
       answer: 1,
-      why: 'Root cause = අවම descriptions. Fix order: description → rename → split. Classifier සහ merge over-engineering/විශාල වෙනස්.',
+      why: 'The root cause is insufficient descriptions. Improve the description first, then consider renaming or splitting; a classifier or merge is a larger change.',
     },
     {
-      q: 'Synthesis agent ට සරල fact-checks (≈85%) සඳහා coordinator ට round trips බොහෝයි. හොඳම විසඳුම?',
+      q: 'The synthesis agent makes many coordinator round trips for simple fact checks (about 85% of cases). What is the best solution?',
       options: [
-        'Synthesis agent ට සියලු web search tools දීම',
-        'සීමිත verify_fact tool එකක් දීම; සංකීර්ණ 15% coordinator හරහා',
-        'Requests batch කිරීම',
+        'Give the synthesis agent every web-search tool.',
+        'Give it a scoped verify_fact tool and route the more complex 15% through the coordinator.',
+        'Batch the requests.',
       ],
       answer: 1,
-      why: 'Scoped cross-role tool (Rule 6 least privilege). සියලු tools = out-of-role අවභාවිතය; batching dependencies block කරයි.',
+      why: 'A scoped cross-role tool follows least privilege (Rule 6). All tools allow out-of-role use, while batching does not remove dependencies.',
     },
     {
-      q: 'Document type එක නොදන්නා, schemas කිහිපයක් තියෙනවා; Claude text වෙනුවට යම් extraction tool එකක් අනිවාර්යයෙන් call කළ යුතුයි. tool_choice?',
+      q: 'The document type is unknown and several schemas are available. Claude must call an extraction tool rather than return text. Which tool_choice should you use?',
       options: [
         '{"type": "auto"}',
         '{"type": "any"}',
         '{"type": "tool", "name": "extract_metadata"}',
       ],
       answer: 1,
-      why: 'any = ඕනෑම tool එකක් අනිවාර්යයි. auto සමඟ text එන්න පුළුවන්. Forced tool එක නිශ්චිත tool එකක් පළමුව run කරන්න; නොදන්නා type එකකට වැරදි schema එකක් බල කරයි.',
+      why: 'any requires a tool call but lets Claude choose which tool. auto can return text. Forcing one named tool could impose the wrong schema when the type is unknown.',
     },
     {
-      q: 'Team එකටම GitHub MCP server එක ඕනේ; token එක commit නොවිය යුතුයි. නිවැරදි සැකසුම?',
+      q: 'The whole team needs a GitHub MCP server, but its token must not be committed. What is the correct setup?',
       options: [
-        '~/.claude.json හි server එක දමා token එක ඒකේම ලිවීම',
-        'Repo එකේ .mcp.json හි server එක දමා "GITHUB_TOKEN": "${GITHUB_TOKEN}" ලෙස env expansion භාවිතා කිරීම',
-        '.mcp.json හි token එක කෙලින්ම ලියා Git එකට commit කිරීම',
+        'Put the server and token directly in ~/.claude.json.',
+        'Put the server in the repository’s .mcp.json and use environment expansion such as "GITHUB_TOKEN": "${GITHUB_TOKEN}".',
+        'Write the token directly in .mcp.json and commit it.',
       ],
       answer: 1,
-      why: 'Project scope .mcp.json Git හරහා team එක share කරයි; ${ENV} expansion secrets commit නොවී වළක්වයි. ~/.claude.json = ඔයාට පමණක්.',
+      why: 'The team can share project-scoped .mcp.json through Git; ${ENV} expansion keeps the secret out of the file. ~/.claude.json is user-scoped.',
     },
   ],
 }

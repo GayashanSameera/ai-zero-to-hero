@@ -2,9 +2,9 @@ export default {
   id: 'claude-code-reliability',
   number: 24,
   title: 'Claude Architect: Claude Code, Prompts & Reliability (Domains 3–5)',
-  titleSi: 'Claude Architect: Claude Code, Prompts සහ Reliability (Domains 3–5)',
-  summary: 'CCAR-F exam එකේ බර 55%ක් (Domain 3 = 20%, Domain 4 = 20%, Domain 5 = 15%) තියෙන කොටස් තුන මෙතන තියෙනවා: Claude Code configure කරන හැටි (CLAUDE.md, rules, skills, plan mode, CI/CD), prompt සහ structured output විශ්වාසනීය කරන හැටි (explicit criteria, few-shot, tool_use schema, validation-retry, Batches API), සහ context එක නැති නොවී, error එක සඟවන්නේ නැතුව, හරි වෙලාවට human කෙනෙකුට යවන හැටි. හැම topic එකකම exam එක ඔයාට දාන වැරදි පිළිතුර (tempting wrong answer) සහ ඒක වැරදි ඇයි කියලත් තියෙනවා.',
-  duration: 'සති 4-5 (මුළු CCAR-F සූදානමට සති 12ක plan එක අන්තිම topic එකේ)',
+  titleSi: 'Claude Code, Prompts, and Reliability (Domains 3–5)',
+  summary: 'This phase covers the three CCAR-F domains that make up 55% of the exam: Domain 3 (20%), Domain 4 (20%), and Domain 5 (15%). Learn how to configure Claude Code with CLAUDE.md, rules, skills, plan mode, and CI/CD; make prompts and structured output more reliable with explicit criteria, few-shot examples, tool-use schemas, validation and retries, and the Message Batches API; and preserve context, report errors, and escalate to people at the right time. Topics also explain tempting exam distractors and why they are wrong.',
+  duration: '4–5 weeks (the final topic includes a 12-week plan for full CCAR-F preparation)',
   topics: [
     // 1
     {
@@ -12,37 +12,38 @@ export default {
       examRefs: ['CCAR-011', 'CCAR-029'],
       title: 'CLAUDE.md Hierarchy, @import, .claude/rules/ and /memory (Task 3.1)',
       body: [
-        'CLAUDE.md කියන්නේ Claude Code එකට හැමවෙලාවෙම කියවන්න දෙන "වැඩ කරන රීති" file එක. Coding standards, test commands, "secrets commit කරන්න එපා" වගේ දේවල් මෙතන තියෙනවා. ඒක තියෙන්න පුළුවන් තැන් තුනක: User level (~/.claude/CLAUDE.md, ඔයාට විතරයි, Git එකට යන්නේ නෑ), Project level (repo root එකේ CLAUDE.md හෝ .claude/CLAUDE.md, Git හරහා මුළු team එකටම), සහ Directory level (subfolder එකක CLAUDE.md, ඒ folder එකේ file එකක් කියවද්දී/edit කරද්දී විතරක් load වෙනවා).',
-        'Files එකිනෙක override කරන්නේ නෑ, එකතු වෙනවා. CLAUDE.md එක ලොකු වුණාම @import වලින් (උදා: @docs/api-standards.md) වෙන file වලට කඩන්න පුළුවන්. නැත්නම් .claude/rules/ folder එකේ testing.md, api-conventions.md, deployment.md වගේ topic files විදිහට කඩන්න පුළුවන්. මොනවා load වෙලාද කියලා හොයාගන්න /memory command එක පාවිච්චි කරනවා.',
-        'Exam එකේ සුපිරි classic ගැටලුව: අලුතින් join වුණු teammate ට Claude Code එක team conventions අනුගමනය කරන්නේ නෑ. හේතුව: ඒ instructions ඉන්නේ කාගේ හරි ~/.claude/CLAUDE.md (user level) එකේ. විසඳුම: project-level CLAUDE.md එකට ගෙනිහින් Git එකට commit කරන්න.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): "Team rules ඔක්කොම user-level file එකේ තියන්න" හෝ "පේළි 900ක එක CLAUDE.md එකක්" වැනි දේවල්. User level එක පුද්ගලික; Git එකට යන්නේ නෑ. 900 පේළි file එක maintain කරන්නත් බෑ. නිවැරදි එක: project level + .claude/rules/ topic files.',
+        'CLAUDE.md is a file of working instructions Claude Code reads, such as coding standards, test commands, and a rule not to commit secrets. Instructions can be at three levels: user (~/.claude/CLAUDE.md, private and not shared through Git), project (CLAUDE.md or .claude/CLAUDE.md in the repository, shareable through Git), and directory (a CLAUDE.md in a subfolder, relevant when working with that folder’s files).',
+        'These instruction files add to one another rather than overriding one another. Split a large CLAUDE.md with @import (for example, @docs/api-standards.md) or organize topic-specific files such as testing.md, api-conventions.md, and deployment.md in .claude/rules/. Use /memory to inspect what is loaded.',
+        'A common exam scenario is that a new teammate does not follow team conventions because the instructions exist only in someone’s ~/.claude/CLAUDE.md. Move shared instructions to the project-level CLAUDE.md and commit them to Git.',
+        'Tempting wrong answers include keeping every team rule in a user-level file or putting everything into one 900-line CLAUDE.md. User-level instructions are private and are not shared through Git; a 900-line file is difficult to maintain. Prefer project-level standards plus topic files in .claude/rules/.',
       ],
-      analogy: 'CLAUDE.md levels කියන්නේ ගෙදර, පාසලේ, පන්තියේ නීති වගේ. ගෙදර නීති (user level) ඔයාට විතරයි. පාසලේ නීති (project level) හැම ළමයාටම ඒ පාසලේ ඉන්න තාක් කල් වලංගුයි. විද්‍යාගාරයේ නීති (directory level) විද්‍යාගාරයට ඇතුල් වුණාම විතරයි. අලුත් ළමයෙක් ආවම පාසලේ නීති පොත දෙන්නේ, ඔයාගේ ගෙදර නීති නෙවෙයි.',
-      example: 'Nimali ගේ ~/.claude/CLAUDE.md එකේ "pytest පාවිච්චි කරන්න, type hints අනිවාර්‍යයි" කියලා තියෙනවා. Kasun සඳුදා join වෙනවා, ඒත් ඔහුගේ Claude Code unittest වලින් tests ලියනවා. Root cause: rules ඉන්නේ Nimali ගේ machine එකේ විතරයි. Fix: ඒ පේළි ටික repo එකේ CLAUDE.md එකට දාලා commit කරනවා. දැන් Kasun pull කරපු ගමන් Claude එක නීති දන්නවා. පේළි 900ක CLAUDE.md එකක් නම්: testing.md (300), api-conventions.md (300), deployment.md (300) කියලා .claude/rules/ වලට කඩනවා.',
+      analogy: 'Think of user-level rules as home rules, project-level rules as school rules, and directory rules as laboratory rules that apply only in the lab. A new student needs the school rulebook, not your personal home rules.',
+      example: 'Nimali’s ~/.claude/CLAUDE.md says to use pytest and type hints. Kasun joins on Monday, but his Claude Code writes unittest tests because those rules exist only on Nimali’s machine. Move the shared rules into the repository CLAUDE.md and commit them so Kasun receives them when he pulls. If that file grows to 900 lines, split it into testing.md, api-conventions.md, and deployment.md under .claude/rules/.',
       code: {
         lang: 'markdown',
-        src: `# Project standards  (repo root: CLAUDE.md, Git එකට commit කරනවා)
-- Python 3.12, type hints හැම තැනම, tests සඳහා pytest.
-- Secrets කවදාවත් commit කරන්න එපා; environment variables වලින් කියවන්න.
+        src: `# Project standards (repo root: CLAUDE.md, committed to Git)
+- Python 3.12, type hints everywhere, pytest for tests.
+- Never commit secrets; read them from environment variables.
 
-# ලොකු docs වෙනම files වලට (@import)
+# Split larger documents into separate files (@import)
 @docs/api-conventions.md
 @docs/testing-standards.md
 
-# ඔයාට විතරක් (Git වලට නෑ): ./CLAUDE.local.md  හෝ  ~/.claude/CLAUDE.md
-# මොනවා load වුණාද බලන්න: /memory`,
+# Personal only (not in Git): ./CLAUDE.local.md or ~/.claude/CLAUDE.md
+# Inspect loaded instructions: /memory`,
       },
       keyPoints: [
-        'Levels තුන: User (~/.claude/CLAUDE.md, පුද්ගලික), Project (repo root, Git හරහා team එකට), Directory (subfolder එකේ වැඩ කරද්දී).',
-        'Files override නොවී එකතු වෙනවා. @import සහ .claude/rules/ වලින් modular කරනවා.',
-        '/memory = මොනවා load වෙලාද බලන්න. "Teammate ට instructions ලැබෙන්නේ නෑ" = user level එකේ තියෙන නිසා.',
-        'Team standards = project scope. පුද්ගලික preferences = user scope.',
+        'Three levels: user (~/.claude/CLAUDE.md, private), project (repository root, shared with the team through Git), and directory (applies while working in a subfolder).',
+        'Files add instructions rather than overriding one another; use @import and .claude/rules/ to organize them.',
+        '/memory shows what is loaded. If a teammate lacks instructions, check whether they exist only at user level.',
+        'Put team standards at project scope and personal preferences at user scope.',
       ],
       terms: [
-        { en: '@import', si: 'CLAUDE.md එක ඇතුලෙන් වෙන file එකක් ඇතුළත් කරන syntax එක (@docs/api-standards.md).' },
-        { en: '/memory', si: 'දැන් load වෙලා තියෙන memory files (CLAUDE.md, rules) පෙන්වන command එක; instructions නොපෙනෙන ගැටලු හොයන්න.' },
-        { en: 'CLAUDE.local.md', si: 'මේ project එකට ඔයාට විතරක් අදාළ, Git එකට යන්නේ නැති (.gitignore) file එක.' },
+        { en: '@import', si: 'Syntax that includes another file from CLAUDE.md, for example @docs/api-standards.md.' },
+        { en: '/memory', si: 'Command that shows which memory files (CLAUDE.md and rules) are currently loaded; useful for diagnosing missing instructions.' },
+        { en: 'CLAUDE.local.md', si: 'A Git-ignored file for settings that apply only to you in this project.' },
       ],
+      si: 'ඔයාගේ ගෙදර නීති ඔයාට විතරයි, පාසලේ නීති හැමෝටමයි. Team එකම pytest භාවිතා කරන්න ඕනේ නම් ඒ නීතිය repo එකේ CLAUDE.md එකට දාන්න. දිග නීති පොත කොටස් තුනකට බෙදුවා වගේ .claude/rules/ වලට බෙදන්න පුළුවන්. /memory කියන්නේ Claude දැන් කියවපු නීති බලන ක්‍රමය.',
     },
     // 2
     {
@@ -50,34 +51,35 @@ export default {
       examRefs: ['CCAR-030'],
       title: 'Path-Specific Rules with paths Globs (Task 3.3)',
       body: [
-        '.claude/rules/ ඇතුළේ තියෙන rule file එකකට YAML frontmatter එකේ paths: කියලා glob patterns දාන්න පුළුවන්. ඒ pattern එකට ගැලපෙන file එකක් Claude edit කරද්දී විතරයි ඒ rule එක load වෙන්නේ. ඒ නිසා tokens ඉතිරි වෙනවා, අදාළ නැති rules context එක පුරවන්නේ නෑ.',
-        'මේක වටින්නේ conventions අදාළ වෙන files codebase එක පුරාම විසිරිලා තියෙද්දී. උදාහරණයක් විදිහට Button.test.tsx, Card.test.tsx වගේ test files හැම component folder එකකම තියෙනවා. හැම folder එකකටම CLAUDE.md එකක් දාන්න ගියොත් පිස්සුවක්. එක rule file එකක් paths: ["**/*.test.tsx"] එක්ක ඇති.',
-        'තව උදාහරණ: paths: ["terraform/**/*"] දැම්මොත් Terraform files edit කරද්දී විතරක් Terraform conventions load වෙනවා. Directory-level CLAUDE.md වැඩ කරන්නේ ඒ එක folder එකට bound වෙලා විතරයි.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): "Root CLAUDE.md එකේ section එකක් දාන්න, Claude අනුමාන කරයි (inference)", "skill එකක් හදන්න" (skills manual/අනිශ්චිතයි), "හැම subdirectory එකකටම CLAUDE.md". මේවා ඔක්කොම වැරදියි. නිවැරදි එක: .claude/rules/ + paths glob.',
+        'A rule file in .claude/rules/ can use paths: glob patterns in YAML frontmatter. The rule loads when Claude works with a matching file, keeping unrelated instructions out of context and saving tokens.',
+        'This is useful when the same convention applies to files scattered across a codebase, such as Button.test.tsx and Card.test.tsx in many component folders. Rather than copying CLAUDE.md into every folder, one rule file can use paths: ["**/*.test.tsx"].',
+        'For example, paths: ["terraform/**/*"] loads Terraform conventions when working with Terraform files. A directory-level CLAUDE.md, by contrast, is tied to that directory.',
+        'Tempting wrong answers include relying on inference from the root CLAUDE.md, creating a manually invoked skill, or adding a CLAUDE.md to every subdirectory. Use .claude/rules/ with a paths glob.',
       ],
-      analogy: 'Colombo Fort එකේ CCTV rules එක කඩේකට විතරක් අදාළ නම්, ඒක දාන්නේ ඒ කඩේ දොරේ. හැම කඩේකටම පොත් කිහිපයක් බෙදන්නේ නෑ. Glob rule එක කියන්නේ "මේ වර්ගයේ file එකක් ළඟට ආවොත් විතරක් මේ නීති කියවන්න" කියන එක.',
-      example: 'ඔයාගේ repo එකේ React component folders 60ක් තියෙනවා, හැම එකකම *.test.tsx files. Test conventions පේළි 40ක් තියෙනවා. Subdirectory CLAUDE.md 60ක් දාන්න ගියොත් 60 පාරක් copy-paste කරන්න වෙනවා. ඒ වෙනුවට .claude/rules/testing.md එකක් paths: ["**/*.test.tsx"] සහිතව. Claude component code edit කරද්දී ඒ පේළි 40 load වෙන්නේ නෑ. Test file එකක් edit කරද්දී විතරයි load වෙන්නේ.',
+      analogy: 'If CCTV rules apply only to one shop in Colombo Fort, post them at that shop rather than handing a separate rulebook to every shop. A glob rule says to load instructions only when a matching kind of file is in scope.',
+      example: 'Suppose a repository has 60 React component folders, each with *.test.tsx files, and 40 lines of shared test conventions. Instead of copying a CLAUDE.md into all 60 folders, create .claude/rules/testing.md with paths: ["**/*.test.tsx"]. Those rules stay out of context while editing component code and load for a test file.',
       code: {
         lang: 'markdown',
         src: `---
 # .claude/rules/testing.md
 paths:
-  - "**/*.test.tsx"      # මේ files edit කරද්දී විතරක් load වෙනවා
+  - "**/*.test.tsx"      # Load only when editing these files
   - "**/test_*.py"
 ---
-හැම test එකක්ම behavior එකක් විතරක් check කරන්න.
-tests/fixtures/ හි fixtures පාවිච්චි කරන්න. sleep දාන්න එපා.`,
+Check one behavior per test.
+Use fixtures in tests/fixtures/. Do not use sleep.`,
       },
       keyPoints: [
-        'paths: glob = ගැලපෙන file edit කරද්දී විතරක් rule එක load වෙනවා.',
-        'Codebase පුරා විසිරුණු files (test files, terraform/**) සඳහා glob rules හොඳම විසඳුම.',
-        'Subdirectory CLAUDE.md = ඒ එක folder එකට bound; skills = manual; root CLAUDE.md = හැමවෙලේම load.',
-        'Tokens ඉතිරි වෙනවා. Context එක පිරෙන්නේ නෑ.',
+        'A paths glob loads a rule only when editing a matching file.',
+        'Glob rules work well for files scattered across a codebase, such as test files or terraform/**.',
+        'A subdirectory CLAUDE.md is tied to that folder; skills are manual; the root CLAUDE.md is always loaded.',
+        'Scoped rules save tokens and keep unrelated instructions out of context.',
       ],
       terms: [
-        { en: 'Glob pattern', si: 'File names ගැලපෙන ආකාරය: ** = ඕනෑම folder ගණනක්, * = ඕනෑම අකුරු.' },
-        { en: 'YAML frontmatter', si: 'Markdown file එකේ ඉහළින් --- දෙකක් අතර තියෙන settings කොටස.' },
+        { en: 'Glob pattern', si: 'A file-name pattern: ** matches any number of folders, while * matches a sequence of characters.' },
+        { en: 'YAML frontmatter', si: 'The settings section between the opening --- lines at the top of a Markdown file.' },
       ],
+      si: 'ඔයාගේ Colombo office එකේ test files හැම folder එකකම තිබුණත් එකම testing නීති තියෙන්න පුළුවන්. "**/*.test.tsx" වගේ glob එකක් ඒ files විතරක් තෝරනවා. ඒ නිසා test file එක edit කරනකොට විතරක් testing rules load වෙනවා. හැම folder එකටම වෙනම copy එකක් හදන්න ඕනේ නෑ.',
     },
     // 3
     {
@@ -85,38 +87,39 @@ tests/fixtures/ හි fixtures පාවිච්චි කරන්න. sleep 
       examRefs: ['CCAR-012', 'CCAR-031'],
       title: 'Slash Commands & Skills: SKILL.md, context: fork, allowed-tools, argument-hint (Task 3.2)',
       body: [
-        'Slash command එකක් කියන්නේ /review වගේ ටයිප් කරලා run කරන ඔයාගේම shortcut prompt එකක්. Team එක share කරන ඒවා .claude/commands/ ඇතුළේ (Git එකට commit), පුද්ගලික ඒවා ~/.claude/commands/ ඇතුළේ. Skill එකක් ඊට වඩා ලොකුයි: .claude/skills/<නම>/SKILL.md (team) හෝ ~/.claude/skills/<නම>/SKILL.md (පුද්ගලික).',
-        'SKILL.md එකේ frontmatter එකේ වැදගත් fields තුනක් තියෙනවා. context: fork කියන්නේ skill එක වෙනම sub-agent context එකක run වෙනවා; ඒ නිසා දිගු output එක ඔයාගේ ප්‍රධාන conversation එක අපිරිසිදු කරන්නේ නෑ. allowed-tools කියන්නේ skill එකට පාවිච්චි කරන්න පුළුවන් tools සීමා කරනවා (destructive actions වළක්වනවා; least privilege). argument-hint කියන්නේ argument එකක් නැතුව invoke කළොත් අවශ්‍ය parameter එක ඉල්ලන hint එක.',
-        'Skill vs CLAUDE.md: CLAUDE.md = හැමවෙලේම load වෙන සාමාන්‍ය standards. Skill = අවශ්‍ය වුණාම විතරක් run වෙන task workflow එකක්. Team skill එකක් ඔයාට විතරක් වෙනස් කරගන්න ඕනේ නම්, ඒක edit කරන්න එපා. ~/.claude/skills/ ඇතුළේ වෙනත් නමකින් personal variant එකක් හදාගන්න.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): "Shared project skill එක කෙලින්ම edit කරන්න" (teammates ට බලපානවා), ~/.claude/commands/ එකේ දාන්න (team එකට නෑ), "workflow එක CLAUDE.md එකේ දාන්න" (හැමවෙලේම load වෙනවා), හෝ .claude/config.json commands array (මේක නැත්තටම නැති feature එකක්).',
+        'A slash command is a shortcut prompt that you run by typing something like /review. Shared commands live in .claude/commands/ and can be committed to Git; personal commands live in ~/.claude/commands/. A skill is more substantial: a team skill is in .claude/skills/<name>/SKILL.md and a personal skill in ~/.claude/skills/<name>/SKILL.md.',
+        'Three useful SKILL.md frontmatter fields are context: fork, allowed-tools, and argument-hint. context: fork runs the skill in a separate sub-agent context so long output does not clutter the main conversation. allowed-tools limits which tools the skill can use (least privilege), including avoiding destructive actions. argument-hint requests a needed parameter if none was supplied.',
+        'CLAUDE.md contains general standards that are always loaded; a skill is an on-demand task workflow. If you want to customize a team skill only for yourself, do not edit the shared copy. Create a personal variant with a different name under ~/.claude/skills/.',
+        'Tempting wrong answers include editing a shared project skill (which affects teammates), putting a team command in ~/.claude/commands/, putting an on-demand workflow in always-loaded CLAUDE.md, or using a nonexistent commands array in .claude/config.json.',
       ],
-      analogy: 'CLAUDE.md කියන්නේ කඩේ බිත්තියේ ගහපු "කඩේ නීති" පුවරුව; හැමෝම හැමවෙලේම දකිනවා. Skill එක කියන්නේ කුස්සියේ තියෙන "කොත්තු හදන විදිය" recipe card එක; කොත්තු ඕඩර් එකක් ආවොත් විතරයි ගන්නේ. context: fork කියන්නේ recipe එක අතුරු කුස්සියක කරලා අන්තිම ප්‍රතිඵලය විතරක් ගේන එක, ප්‍රධාන කුස්සිය අවුල් නොවී.',
-      example: '/map-codebase skill එක run කරද්දී Claude files 300ක් කියවනවා. context: fork නැතුව ඒ output ඔක්කොම ඔයාගේ main chat එකට එනවා, ඊටපස්සේ context එක පිරෙනවා. context: fork එක්ක sub-agent එක ඒක කරලා පේළි 20ක summary එකක් විතරක් ආපහු දෙනවා. allowed-tools: Read, Grep, Glob නිසා skill එකට file මකන්න හෝ Bash run කරන්න බෑ. Team skill එකේ output පේළි 20ක් වෙනුවට ඔයාට 50ක් ඕනේ නම්: ~/.claude/skills/map-codebase-long/ හදාගන්න, original එක නොඑල්ලා.',
+      analogy: 'CLAUDE.md is the shop’s rule sign that everyone sees all the time. A skill is like a kottu recipe card used only when a kottu order arrives. With context: fork, the recipe is prepared in a side kitchen and only the result returns, keeping the main kitchen uncluttered.',
+      example: 'When /map-codebase reads 300 files, context: fork lets a sub-agent do the work and return a 20-line summary instead of filling the main chat with all its output. allowed-tools: Read, Grep, Glob means the skill cannot delete files or run Bash. If you want a 50-line personal version of a team skill, create ~/.claude/skills/map-codebase-long/ rather than changing the shared one.',
       code: {
         lang: 'markdown',
         src: `---
 # .claude/skills/map-codebase/SKILL.md
 name: map-codebase
-description: නොදන්නා folder එකක් map කරලා modules සහ entry points summarize කරන්න.
-context: fork            # වෙනම sub-agent context එකක run වෙනවා
-allowed-tools: Read, Grep, Glob   # විනාශකාරී tools නෑ
-argument-hint: <folder>  # argument නැත්නම් මේක ඉල්ලනවා
+description: Map an unfamiliar folder and summarize its modules and entry points.
+context: fork            # Run in a separate sub-agent context
+allowed-tools: Read, Grep, Glob   # No destructive tools
+argument-hint: <folder>  # Request this if no argument is supplied
 ---
-$ARGUMENTS ගැන explore කරන්න. පේළි 20කට වඩා නැතුව:
-modules, entry points, key dependencies දෙන්න.`,
+Explore $ARGUMENTS. Return no more than 20 lines:
+list modules, entry points, and key dependencies.`,
       },
       keyPoints: [
-        'Team = .claude/commands/ සහ .claude/skills/<name>/SKILL.md (Git). පුද්ගලික = ~/.claude/... (Git වලට නෑ).',
-        'context: fork = දිගු output ප්‍රධාන conversation එකෙන් ඉවත්. allowed-tools = tools සීමා කිරීම. argument-hint = parameter ඉල්ලීම.',
-        'Skills = on-demand workflows; CLAUDE.md = always-loaded standards.',
-        'Team skill එක ඔයාට විතරක් වෙනස් කරන්න: වෙනත් නමකින් personal variant එකක්.',
+        'Team commands and skills live in .claude/commands/ and .claude/skills/<name>/SKILL.md (Git); personal ones live under ~/.claude/ (not Git).',
+        'context: fork separates long output; allowed-tools limits tools; argument-hint requests a parameter.',
+        'Skills are on-demand workflows; CLAUDE.md contains always-loaded standards.',
+        'To customize a team skill only for yourself, create a personal variant with a different name.',
       ],
       terms: [
-        { en: 'context: fork', si: 'Skill එක වෙනම sub-agent context එකක run කරනවා; ප්‍රධාන chat එකට summary විතරක් එනවා.' },
-        { en: 'allowed-tools', si: 'Skill එකට පාවිච්චි කළ හැකි tools ලැයිස්තුව (least privilege).' },
-        { en: 'argument-hint', si: 'Parameter එක නැතිව invoke කළොත් ඉල්ලන hint text එක.' },
-        { en: 'Personal variant', si: 'Team skill එකේ ඔයාගේම පිටපතක්, වෙනත් නමකින්, ~/.claude/skills/ ඇතුළේ.' },
+        { en: 'context: fork', si: 'Runs a skill in a separate sub-agent context and returns only a summary to the main chat.' },
+        { en: 'allowed-tools', si: 'The list of tools a skill may use (least privilege).' },
+        { en: 'argument-hint', si: 'A hint that requests a missing parameter when the skill is invoked.' },
+        { en: 'Personal variant', si: 'Your own copy of a team skill under a different name in ~/.claude/skills/.' },
       ],
+      si: 'කඩේ නීති පුවරුව හැම වෙලාවෙම පේනවා, කොත්තු recipe එක ඕඩරයක් ආවම විතරක් බලනවා. CLAUDE.md එකත් එහෙමයි: සාමාන්‍ය නීති නිතර load වෙනවා, skill එක අවශ්‍ය වැඩකට විතරයි. Files 300ක් සොයන skill එක වෙනම context එකක කරලා පේළි 20ක summary එකක් දෙන්න පුළුවන්. Team skill එක වෙනස් නොකර ඔයාට වෙනම personal variant එකක් තියාගන්න.',
     },
     // 4
     {
@@ -124,23 +127,24 @@ modules, entry points, key dependencies දෙන්න.`,
       examRefs: ['CCAR-013'],
       title: 'Plan Mode vs Direct Execution and the Explore Subagent (Task 3.4)',
       body: [
-        'Plan mode කියන්නේ Claude කෙලින්ම code වෙනස් නොකර, මුලින් investigate කරලා design එකක් (plan) හදන mode එක. Direct execution කියන්නේ කෙලින්ම වෙනස් කරන එක. තෝරන්නේ වැඩේ ප්‍රමාණය අනුව: files ගොඩක් වෙනස් වෙන, විකල්ප කිහිපයක් තියෙන architecture තීරණ (monolith එක microservices කරන එක, library migration එකක් files 45+ ක්) = plan mode. Stack trace එකක් තියෙන single-file bug, එක function එකකට validation එකක් = direct execution.',
-        'දෙකම එකතු කරන්නත් පුළුවන්: plan mode එකෙන් investigate කරලා design කරනවා, ඊටපස්සේ direct execution එකෙන් implement කරනවා.',
-        'Explore subagent එක කියන්නේ දිගු discovery වැඩ (files ගොඩක් කියවන එක) වෙනම context එකක කරලා, summary එකක් විතරක් main session එකට දෙන subagent එක. ඒකෙන් main context window එක ආරක්ෂා වෙනවා.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): "Direct execution වලින් පටන් ගන්න, අවශ්‍ය වුණොත් plan mode එකට මාරු වෙන්න". Complexity එක requirement එකේම පැහැදිලිව පේනවා නම් මේක වැරදියි, මොකද files දුසිම් ගණනක් වැරදි විදිහට වෙනස් කරලා rework කරන්න වෙනවා.',
+        'Plan mode lets Claude investigate and design before changing code; direct execution makes changes immediately. Choose based on scope: multi-file architecture decisions with several options (such as converting a monolith to microservices or a migration across 45+ files) call for plan mode. A single-file bug with a stack trace or validation in one function is suited to direct execution.',
+        'The two approaches can be combined: investigate and design in plan mode, then implement through direct execution.',
+        'An Explore subagent handles longer discovery work, such as reading many files, in a separate context and returns only a summary to the main session. This helps preserve the main context window.',
+        'A tempting wrong answer is to start with direct execution and switch to plan mode only if needed. If the requirement already shows high complexity, this can change dozens of files incorrectly and cause avoidable rework.',
       ],
-      analogy: 'ගෙදර ඇඳුමක බොත්තමක් පටවන්න නම් කෙලින්ම ඉඳිකටුව ගන්නවා (direct execution). ගෙදර එක කාමරයක් උඩ මහලට දාන්න නම් මුලින් ඉංජිනේරුවා plan එකක් අඳිනවා, ඊටපස්සේ විතරයි බිත්ති කඩන්නේ (plan mode). Explore subagent කියන්නේ ඉඩම මැනලා report එකක් විතරක් දෙන මනින්නා; ඔයා ඉඩම පුරාම ඇවිදින්නේ නෑ.',
-      example: 'Task A: "Monolith එක services 5කට කඩන්න", files 120ක් බලපානවා, boundaries කීපයක් තියෙන්න පුළුවන්. Plan mode: පළමුව dependencies map කරනවා, boundaries 2ක් propose කරනවා, ඔයා එකක් අනුමත කරනවා, ඊටපස්සේ implement. Task B: "payment.py:88 හි ZeroDivisionError, stack trace මෙන්න". එක file එකක්, එක තැනක් විතරයි. Direct execution. Plan හදන එක කාලය නාස්ති කිරීමක්.',
+      analogy: 'Sewing one button is like direct execution: take a needle and fix it. Adding an upper floor is like plan mode: an engineer designs the changes before walls are moved. An Explore subagent is like a surveyor who returns a report rather than asking you to walk the entire site.',
+      example: 'Task A: split a monolith into five services across 120 files, with several possible boundaries. Use plan mode to map dependencies, propose two boundaries, get approval, and then implement. Task B: fix a ZeroDivisionError at payment.py:88 with a stack trace. One file and one location make direct execution appropriate; a separate plan would add unnecessary work.',
       keyPoints: [
-        'Plan mode = විශාල, multi-file, architecture තීරණ (උදා: files 45+ migration). Direct = කුඩා, පැහැදිලි scope.',
-        'Plan කරලා investigate/design, ඊට පස්සේ direct execution: දෙක එකතු කරන්න පුළුවන්.',
-        'Explore subagent = discovery output වෙනම තබලා summary විතරක් ආපහු දෙනවා.',
-        'Complexity දැනටමත් පැහැදිලි නම් "direct වලින් පටන් ගෙන පස්සේ plan" වැරදියි.',
+        'Plan mode suits large, multi-file architecture decisions, such as migrations across 45+ files; direct execution suits small, clear scopes.',
+        'Combine them: investigate and design first, then implement directly.',
+        'An Explore subagent keeps discovery work separate and returns a summary.',
+        'When complexity is already clear, do not start with direct execution and plan later.',
       ],
       terms: [
-        { en: 'Plan mode', si: 'Code වෙනස් කරන්න කලින් investigate කරලා design එකක් හදන mode එක.' },
-        { en: 'Explore subagent', si: 'දිගු files-කියවීම වෙනම context එකක කරලා summary එකක් දෙන subagent.' },
+        { en: 'Plan mode', si: 'A mode for investigating and designing before changing code.' },
+        { en: 'Explore subagent', si: 'A subagent that reads many files in a separate context and returns a summary.' },
       ],
+      si: 'බොත්තමක් මහන්න නම් ඉක්මනින් ඉඳිකටුව ගන්න පුළුවන්; ගෙදර තට්ටුවක් එකතු කරන්න නම් මුලින් සැලසුමක් ඕනේ. Files 120ක් වෙනස් වෙන වැඩකට dependencies බලලා plan එකක් හදන්න. payment.py එකේ එක bug එකක් නම් කෙලින්ම fix කරන්න. Files ගොඩක් කියවීම Explore subagent එකකට දුන්නොත් ඔයාට summary එක විතරක් ලැබෙනවා.',
     },
     // 5
     {
@@ -148,23 +152,24 @@ modules, entry points, key dependencies දෙන්න.`,
       examRefs: ['CCAR-032'],
       title: 'Iterative Refinement: I/O Examples, Test-Driven, Interview Pattern (Task 3.5)',
       body: [
-        'Claude ට වැඩේ prose වලින් පැහැදිලි කරලත් ප්‍රතිඵල අස්ථාවරයි නම්, දිගු විස්තරයක් ලියන්නේ නෑ. Concrete input/output උදාහරණ 2-3ක් දෙනවා. "මෙන්න input, මෙන්න ඒකට ඕනේ output" කියන එක prose එකට වඩා අපැහැදිලි කමක් නැති එකක්.',
-        'Test-driven iteration: පළමුව tests ලියනවා (අපේක්ෂිත behavior), Claude code ලියනවා, tests fail වුණොත් ඒ failures Claude ට ආපහු දෙනවා. Interview pattern: ඔයා හොඳට නොදන්න domain එකක (cache invalidation, failure modes වගේ) Claude ට කියනවා "මට ප්‍රශ්න අහන්න, design එකට පෙර", ඒකෙන් ඔයා නොහිතපු කාරණා එළියට එනවා.',
-        'Feedback දෙන විදිහත් වැදගත්: එකිනෙකට බලපාන (interacting) ගැටලු එක message එකක සියල්ල කියන්න, ස්වාධීන (independent) ගැටලු එකින් එක විසඳන්න.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): "තව දිගු, තව සවිස්තරාත්මක prose විස්තරයක් ලියන්න", "temperature 0 කරන්න". දෙකම root cause එක (අපැහැදිලි spec එක) විසඳන්නේ නෑ.',
+        'If results remain inconsistent after a prose explanation, do not just write a longer description. Give two or three concrete input/output examples: “Here is the input and the output I expect.” Examples can be less ambiguous than prose.',
+        'In test-driven iteration, write tests for the expected behavior first, let Claude write code, and give it failing test results as feedback. In an interview pattern, ask Claude to question you before designing in a domain you do not know well, such as cache invalidation or failure modes.',
+        'Give related, interacting issues together in one message; address independent issues one at a time.',
+        'Tempting wrong answers include adding more lengthy prose or setting temperature to 0. Neither addresses the root cause when the specification is unclear.',
       ],
-      analogy: 'තාත්තා දරුවාට "පාන් ගන්න එනවා" කියන්නේ කීයටවත් එකම පාන් වර්ගයක් නෙවෙයි. ඒත් "පහුගිය සතියේ ගත්ත සුදු පාන් එකක්, ඒ වගේ" කියලා පාන් කෑල්ලක් පෙන්නුවොත් වැරදෙන්නේ නෑ. උදාහරණය කියන්නේ පෙන්නලා දෙන එක.',
-      example: 'Date format එක එකක් "03/04/2026" (dd/mm), "April 3, 2026" වගේ විවිධ විදිහට එනවා. පේළි 10ක විස්තරයකින් තත්ත්වය හොඳ වුණේ නෑ. උදාහරණ 3ක් දුන්නා: "03/04/2026 → 2026-04-03", "April 3, 2026 → 2026-04-03", "3rd of April 26 → 2026-04-03". ඊළඟ run එකේ output ස්ථාවරයි. Tests විදිහට නම්: මේ උදාහරණ 3ම test cases 3ක් කරලා, fail වෙන ඒවා Claude ට දෙනවා.',
+      analogy: 'If you ask a child to buy “bread,” they may choose many kinds. Showing the white loaf you bought last week makes the request clearer. Examples show the intended result instead of only describing it.',
+      example: 'Date inputs vary: “03/04/2026” (dd/mm), “April 3, 2026,” and “3rd of April 26.” Give three examples mapping each to “2026-04-03” rather than a ten-line prose description. Turn those examples into three tests and give Claude any failures; this can make output more consistent.',
       keyPoints: [
-        'ප්‍රතිඵල අස්ථාවර නම් I/O උදාහරණ 2-3ක් (prose වැඩි කිරීම නෙවෙයි).',
-        'Test-driven: tests පළමුව, failures feed back කරනවා.',
-        'Interview pattern: නොදන්න domain එකක Claude ට ඔයාගෙන් ප්‍රශ්න අහන්න සලස්වනවා.',
-        'බලපාන ගැටලු එකට, ස්වාධීන ගැටලු එකින් එක.',
+        'For inconsistent results, give two or three input/output examples instead of more prose.',
+        'Test-driven iteration: write tests first and feed failures back.',
+        'Interview pattern: ask Claude to question you in an unfamiliar domain.',
+        'Give interacting issues together and independent issues one at a time.',
       ],
       terms: [
-        { en: 'Interview pattern', si: 'Claude ට ප්‍රශ්න අහන්න කියලා, ඔයා නොදන්න design කාරණා එළියට ගන්න ක්‍රමය.' },
-        { en: 'Test-driven iteration', si: 'Tests මුලින් ලියලා, fail වන ඒවා Claude ට දීලා code හොඳ කරන ක්‍රමය.' },
+        { en: 'Interview pattern', si: 'Ask Claude to question you so that design concerns in an unfamiliar area become clear.' },
+        { en: 'Test-driven iteration', si: 'Write tests first, then give Claude failing tests to guide improvements to the code.' },
       ],
+      si: 'Date එක 03/04/2026 කියලා දුන්නම ඔයාට ඕන format එක පැහැදිලි වෙන්න උදාහරණ දාන්න. 03/04/2026 → 2026-04-03 කියන එක වාක්‍ය ගොඩකට වඩා පැහැදිලියි. මුලින් tests 3ක් ලියලා fail වෙන ඒවා Claudeට දෙන්නත් පුළුවන්. Design එක නොදන්නවා නම් Claudeට මුලින් ප්‍රශ්න අහන්න කියන්න.',
     },
     // 6
     {
@@ -172,13 +177,13 @@ modules, entry points, key dependencies දෙන්න.`,
       examRefs: ['CCAR-014', 'CCAR-033'],
       title: 'CI/CD Integration: claude -p, JSON Output, Independent Review (Task 3.6)',
       body: [
-        'CI/CD pipeline එකක් කියන්නේ කවුරුත් බලාගෙන නැති robot එකක්. ඒකේ Claude Code run කරද්දී -p (--print) flag එක අනිවාර්‍යයි. එයින් non-interactive mode එකට යනවා. නැතිනම් Claude input එකක් එනතුරු බලාගෙන ඉඳලා CI job එක hang වෙනවා. ඊට අමතරව --output-format json සහ --json-schema දුන්නොත් findings machine-parseable වෙනවා, ඒවා PR එකේ inline comments විදිහට දාන්න පුළුවන්.',
-        'CI එකේ Claude ට testing standards, fixtures, review criteria දෙන්නේ CLAUDE.md හරහා. Review එක code ලියපු session එකෙන්ම කරන්න එපා; එයා තමන්ගේ reasoning මතක තියාගෙන ඉන්න නිසා තමන්ගේ තීරණ ප්‍රශ්න කරන්නේ නෑ. වෙනම, ස්වාධීන claude -p run එකක් (independent instance) පාවිච්චි කරන්න.',
-        'PR එකට අලුත් commit එකක් ආවම නැවත review කරද්දී: පරණ findings (prior-findings.json) context එකට දීලා "අලුත් හෝ තවමත් විසඳලා නැති ඒවා විතරක් report කරන්න" කියන්න; නැත්නම් එකම comments නැවත නැවත post වෙනවා. Test generation වලදී දැනට තියෙන tests Claude ට දෙන්න; එවිට duplicate tests යෝජනා කරන්නේ නෑ.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): CLAUDE_HEADLESS=true වැනි environment variable, --batch flag, හෝ /dev/null වලට stdin redirect කිරීම (workaround). මේ features නැත්තටම නැහැ. නිවැරදි එක: claude -p.',
+        'A CI/CD pipeline runs without someone waiting to answer prompts. Run Claude Code with -p (--print) for non-interactive operation; otherwise Claude may wait for input and the job can hang. Add --output-format json and --json-schema to make findings machine-readable for inline PR comments.',
+        'Give Claude testing standards, fixtures, and review criteria through CLAUDE.md. Do not have the same session that wrote the code review it: it retains its reasoning and may not question its decisions. Use a separate, independent claude -p run.',
+        'When a PR receives a new commit, provide prior-findings.json and ask for only new or still-unaddressed findings to avoid duplicate comments. For test generation, provide the existing tests so Claude does not suggest duplicates.',
+        'Tempting wrong answers include a CLAUDE_HEADLESS=true environment variable, a --batch flag, or redirecting stdin to /dev/null. These are not the solution; use claude -p.',
       ],
-      analogy: 'CI job එක කියන්නේ රෑ 2ට තනියම වැඩ කරන මුරකාරයා. ඔහුට "ඔයාට ඕනේ නම් මගෙන් අහන්න" කිව්වොත් කවුරුත් නැති නිසා උදේ වෙනකම් බලාගෙන ඉන්නවා (hang). -p කියන්නේ "අහන්න එපා, කරලා report එකක් දෙන්න" කියන එක. Independent review කියන්නේ ඇකවුන්ට් ලියපු කෙනාම audit කරන්නේ නැතුව වෙන auditor කෙනෙක් බලන එක.',
-      example: 'PR #212: Claude findings 6ක් post කළා. Developer 4ක් fix කළා, 2ක් ඉතුරුයි. ඊළඟ commit එකට නැවත review run කරද්දී prior-findings.json (findings 6) දුන්නේ නැත්නම් comments 6ම නැවත එනවා (duplicates). දුන්නොත් නැවත එන්නේ ඉතුරු 2ක් සහ අලුත් ඒවා විතරයි. Test generation: tests/ folder එකේ දැනට tests 85ක් context එකට දෙනවා, එවිට අලුත් tests 12 ම ඇත්තටම අලුත්.',
+      analogy: 'A CI job is a guard working alone at 2 a.m. If told to ask questions when needed, nobody is there to answer and the job waits. -p means “do the work without asking and return a report.” Independent review is like using a different auditor instead of asking the person who wrote the accounts to audit them.',
+      example: 'PR #212 has six findings: a developer fixes four and leaves two unresolved. If the next review does not receive prior-findings.json, it may post all six comments again. With that file, it can report the two remaining findings and any new ones. For test generation, provide the 85 existing tests so 12 suggested tests are genuinely new.',
       code: {
         lang: 'yaml',
         src: `# .github/workflows/review.yml (step එක)
@@ -195,17 +200,18 @@ modules, entry points, key dependencies දෙන්න.`,
 # මේක code ලියපු session එකෙන් වෙනම run එකක් (independent review).`,
       },
       keyPoints: [
-        'CI එකේ claude -p (--print) = non-interactive; නැත්නම් job එක hang.',
-        '--output-format json + --json-schema = inline PR comments සඳහා machine-parseable findings.',
-        'Review = ස්වාධීන වෙනම session; code ලියපු session එකම නෙවෙයි.',
-        'නව commits: prior findings දී අලුත්/නොවිසඳුණු ඒවා විතරක්. Test gen: existing tests context එකට.',
-        'CLAUDE_HEADLESS, --batch, config.json commands = නැති features (distractors).',
+        'Use claude -p (--print) in CI for non-interactive operation; otherwise a job may hang.',
+        '--output-format json and --json-schema produce machine-readable findings for inline PR comments.',
+        'Review in a separate independent session, not the session that wrote the code.',
+        'For new commits, provide prior findings and request only new or unresolved issues; provide existing tests during test generation.',
+        'CLAUDE_HEADLESS, --batch, and config.json commands are distractors, not available features.',
       ],
       terms: [
         { en: '-p / --print', si: 'Non-interactive mode එක: prompt එක දීලා result එක print කරලා ඉවර වෙනවා.' },
         { en: '--json-schema', si: 'Output එකේ හැඩය schema file එකකින් බලෙන් ගන්න flag එක.' },
         { en: 'Independent review instance', si: 'Generator ගේ context නැති වෙනම Claude run එකක්.' },
       ],
+      si: 'CI එකේ වැඩ කරන robot එකට prompt එකක් එනකම් ඉන්න බැහැ, ඒ නිසා claude -p දාන්න. PR review එක code ලියපු Claude session එකෙන් වෙනම කරවන්න. කලින් findings 6ක් තිබුණා නම් ඒවායේ ගොනුව යවලා අලුත් හෝ ඉතුරු 2ක් විතරක් කියන්න. Test 85ක් දැනටමත් තියෙනවා නම් ඒවාත් දෙන්න, නැවත එකම tests හදන්නේ නැති වෙන්න.',
     },
     // 7
     {
@@ -213,24 +219,25 @@ modules, entry points, key dependencies දෙන්න.`,
       examRefs: ['CCAR-015'],
       title: 'Explicit Criteria, False Positives and Few-Shot Prompting (Tasks 4.1, 4.2)',
       body: [
-        'Review/classification prompt එකක අපැහැදිලි වචන ("be careful", "be conservative", "high-confidence findings විතරක්") model එකට වැඩක් නෑ, මොකද "careful" කියන්නේ මොකක්ද කියලා model එක දන්නේ නෑ. ඒ වෙනුවට හරියටම දෙන්න ඕනේ explicit criteria. "Comments accurate ද බලන්න" වෙනුවට "Comment එක කියන behavior එක code එකේ සැබෑ behavior එකට විරුද්ධ නම් විතරක් flag කරන්න". "Be conservative" වෙනුවට "Bugs සහ security issues report කරන්න. Minor style සහ local patterns skip කරන්න." Severity levels වලටත් concrete code උදාහරණ දෙන්න.',
-        'False positives ගැන: එක category එකක findings වැඩිපුර වැරදි නම් developers ඒ category එක විතරක් නෙවෙයි, ඔක්කොම findings වලට විශ්වාසය නැති කරගන්නවා. ඒ නිසා ඒ category එක තාවකාලිකව disable කරලා, prompt එක හොඳ කරලා, ආපහු on කරනවා.',
-        'උපදෙස් විස්තරාත්මකව තියෙද්දීත් output අස්ථාවරයි නම් ඊළඟ තේරීම few-shot examples: අපැහැදිලි cases සඳහා ඉලක්කගත උදාහරණ 2-4ක්, හැම එකකම ඒ action එක තෝරපු හේතුව සමඟ. Output format එක (location, issue, severity, suggested fix) පෙන්වන්න. පිළිගත හැකි code සහ සැබෑ ගැටලු එකට පෙන්වන්න (false positives අඩු වෙනවා). Extraction වලදී විවිධ document formats (inline citations vs bibliography) පෙන්වන්න. Model එක ඒ judgment එක අලුත් patterns වලටත් generalize කරනවා. මේ ගැන phase 12 හි ICL සහ clear-instructions topics වල පාඩම් මතක් කරගන්න.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): "prompt එකට \'be careful\' / \'only high-confidence findings\' කියලා දාන්න", "තව prose rules එකතු කරන්න", "classifier model එකක් train කරන්න" (over-engineering).',
+        'Vague phrases such as “be careful,” “be conservative,” or “only report high-confidence findings” do not define what the model should do. Give explicit criteria instead: flag a comment only when it contradicts the code’s actual behavior; report bugs and security issues while skipping minor style issues and local patterns. Give concrete code examples for severity levels.',
+        'If one category produces many false positives, developers may lose trust in all findings, not just that category. Temporarily disable the category, improve the prompt, and then enable it again.',
+        'If detailed instructions still produce inconsistent output, add two to four targeted few-shot examples for ambiguous cases, with a reason for each decision. Show the output format (location, issue, severity, suggested fix), both acceptable code and real problems, and varied document formats such as inline citations and bibliographies. This helps the model generalize judgments to new patterns. See the ICL and clear-instructions topics in phase 12.',
+        'Tempting wrong answers include adding “be careful” or “only high-confidence findings,” adding more prose rules, or training a classifier model when that would be over-engineering.',
       ],
-      analogy: 'A/L ලකුණු දැමීමේදී "හොඳ පිළිතුරකට ලකුණු දෙන්න" කිව්වොත් examiner දෙන්නා වෙනස් ලකුණු දානවා. "මේ 3 කරුණු තියෙනවා නම් 5ක් දෙන්න" (explicit criteria) සහ ලකුණු දාපු නිදර්ශන පිළිතුරු පත්‍ර 3ක් (few-shot) දුන්නාම ඔක්කොම එකම විදිහට ලකුණු දානවා.',
-      example: 'Code review bot එක week එකකට findings 100ක් දැම්මා. ඒවායින් "comment එක පරණයි" වර්ගයේ 40ක් developers dismiss කළා (40% false positives). Team එක ඔක්කොම findings ignore කරන්න පටන් ගත්තා. පියවර: (1) "comment accuracy" category එක disable කරනවා, (2) prompt එක "comment එක කියන behavior එක code එකට විරුද්ධ නම් විතරක්" කියලා explicit කරනවා, (3) පිළිගත හැකි comment 1ක් සහ සැබෑ mismatch 2ක් few-shot ලෙස දානවා, (4) ඊටපස්සේ ආපහු on කරනවා.',
+      analogy: 'If an A/L examiner is told only to “give marks for a good answer,” two examiners may score differently. Clear criteria and three marked sample answers help them apply the same standard.',
+      example: 'A code review bot reports 100 findings per week; developers dismiss 40 stale-comment findings (40% false positives) and begin ignoring all findings. Temporarily disable comment-accuracy checks, specify that a comment is flagged only when it contradicts code behavior, add one acceptable example and two real mismatches, then re-enable the category.',
       keyPoints: [
-        '"Be careful" / "high-confidence විතරක්" = අපැහැදිලි, වැරදි පිළිතුරු. Explicit categorical criteria දෙන්න.',
-        'එක category එකක false positives වැඩි නම් trust එක මුළුමනින්ම යනවා: ඒක තාවකාලිකව disable කරලා prompt එක හදන්න.',
-        'Few-shot: 2-4 උදාහරණ, හේතු සහිතව, අපැහැදිලි cases වලට, පිළිගත හැකි vs සැබෑ ගැටලු දෙකම.',
-        'උපදෙස් තිබියදී අස්ථාවර නම් few-shot තමයි වඩාත්ම effective.',
+        '“Be careful” and “high-confidence only” are vague; specify categorical criteria.',
+        'Too many false positives in one category can destroy trust. Disable it temporarily and improve the prompt.',
+        'Use two to four reasoned few-shot examples for ambiguous cases, showing acceptable and problematic cases.',
+        'When output stays inconsistent despite clear instructions, targeted few-shot examples can help.',
       ],
       terms: [
         { en: 'False positive', si: 'ගැටලුවක් නැති දේ ගැටලුවක් කියලා flag කරන එක.' },
         { en: 'Explicit criteria', si: 'හරියටම මොනවා report කරන්නද, මොනවා skip කරන්නද කියන පැහැදිලි නීති.' },
         { en: 'Severity levels', si: 'ගැටලුවේ බරපතලකම ශ්‍රේණි; හැම එකකටම code උදාහරණයක් දිය යුතුයි.' },
       ],
+      si: '"Be careful" කියන එකට වඩා මොන bug report කරන්නද කියලා නීති පැහැදිලිව දාන්න. A/L answer එකකට ලකුණු දෙන විදිහට, හොඳ සහ නරක උදාහරණ 2ක් හෝ 3ක් පෙන්වන්න. Findings 100න් 40ක් වැරදි නම් ඒ category එක ටිකකට නවත්තලා prompt එක හදාගන්න. එහෙම කළාම developers ට හරි warnings විශ්වාස කරන්න ලේසියි.',
     },
     // 8
     {
@@ -238,10 +245,10 @@ modules, entry points, key dependencies දෙන්න.`,
       examRefs: ['CCAR-016', 'CCAR-034', 'CCAR-035'],
       title: 'tool_use + JSON Schema: Nullable Fields, Enums, tool_choice (Task 4.3)',
       body: [
-        'Claude ගෙන් schema එකකට ගැලපෙන output එකක් අනිවාර්‍යයෙන් ගන්න වඩාත්ම විශ්වාසනීය ක්‍රමය: tool එකක් define කරලා (input_schema එක JSON Schema) Claude ට ඒ tool එක call කරවීම. එවිට JSON syntax errors වෙන්නේ නෑ. හැබැයි semantic errors (line items එකතුව total එකට නොගැලපීම, අගයක් වැරදි field එකක දැමීම) schema එකෙන් වළක්වන්නේ නෑ. ඒකට validation ඕනේ (ඊළඟ topic එක).',
-        'Document එකේ නැති වෙන්න පුළුවන් field එකක් required කළොත්, model එක අගයක් fabricate (සාදනවා). ඒ නිසා ඒවා nullable කරන්න: "type": ["string", "null"]. Enums වලදී අපැහැදිලි cases සඳහා "unclear" අගයක්, අලුත් categories එන්න පුළුවන් නම් "other" + detail string field එකක් තියන්න. Date/number formats වෙනස් නම් format normalization rules prompt එකේ දෙන්න.',
-        'tool_choice තුනක්: "auto" = Claude තීරණය කරනවා (tool එකක් call නොකරන්නත් පුළුවන්). "any" = අනිවාර්‍යයෙන් යම් tool එකක් call කළ යුතුයි; schemas කිහිපයක් ඇති, document type එක නොදන්න විට. {"type": "tool", "name": "extract_metadata"} = නිශ්චිත tool එක අනිවාර්‍යයි; නිශ්චිත extraction එකක් පළමුව run කරන්න.',
-        'Exam එකේ උගුල (වැරදි පිළිතුර): fields ඔක්කොම required කරන එක (fabrication ඇති කරයි), "schema එක valid නිසා values හරි" කියන එක, සහ unknown document type එකට tool_choice: auto දාන එක (text එකක් එන්නත් පුළුවන්).',
+        'The most reliable way to require output that matches a schema is to define a tool with a JSON Schema input_schema and have Claude call it. This prevents JSON syntax errors, but not semantic errors such as a total that does not match line items or a value placed in the wrong field. Validate those separately.',
+        'If a field that may be absent from a document is required, the model may fabricate a value. Make it nullable, such as "type": ["string", "null"]. For enums, include "unclear" for ambiguous cases and "other" plus a detail string when new categories may appear. Put date and number normalization rules in the prompt.',
+        'There are three tool_choice options: "auto" lets Claude decide whether to call a tool; "any" requires a tool call but lets Claude choose which one; {"type": "tool", "name": "extract_metadata"} forces a specific tool. Use "any" when several schemas are possible and the document type is unknown.',
+        'Tempting wrong answers include making every field required (which can cause fabrication), assuming valid schema means correct values, or using tool_choice: auto when structured output is mandatory.',
       ],
       analogy: 'Application form එකක "NIC අංකය" අනිවාර්‍ය (required) කරලා, NIC නැති කෙනෙකුට දුන්නොත් ඔහු අහවල් අංකයක් ලියනවා. "නැත්නම් හිස්ව තියන්න" කිව්වොත් (nullable) ඇත්ත විතරයි එන්නේ. Dropdown එකේ "Other (විස්තර කරන්න)" තිබුණොත් වෙනස් වර්ග එද්දී form එක කැඩෙන්නේ නෑ.',
       example: 'Invoice එකක due_date එක නැහැ. Required කරපු schema එකේ model එක "2026-12-31" කියලා හදනවා (fabricated). Nullable schema එකේ due_date: null. Category එක "goods"/"services" විතරක් තිබුණාම "ගුවන් ටිකට් ගාස්තුවක්" ට නිවැරදි අගයක් නෑ. "other" + category_detail: "airfare" දැමීමෙන් එය හසුරුවා ගන්න පුළුවන්. Invoice, receipt, contract කියලා schemas 3ක් තියෙන්න, document එක මොකක්ද කියලා නොදන්නවා නම් tool_choice: any.',
@@ -272,6 +279,7 @@ modules, entry points, key dependencies දෙන්න.`,
         { en: 'tool_choice: any', si: 'Tool එකක් අනිවාර්‍යයෙන් call කළ යුතුයි; කුමක්ද කියලා Claude තෝරයි.' },
         { en: 'Semantic error', si: 'Syntax හරි, නමුත් අර්ථය වැරදි (totals නොගැලපීම, වැරදි field එක).' },
       ],
+      si: 'Form එකේ due date එක නැත්නම් අහඹු දවසක් ලියනවා වෙනුවට null දෙන්න කියන්න. Schema එකේ enum එකට unclear සහ other දාන්න, අලුත් category එකක් ආවොත් විස්තරයත් ගන්න. Line items එකතුව Rs. 5,500 නම් stated total එකත් ඒකට ගැලපෙනවද වෙනම validate කරන්න. Schema එක හැඩය පාලනය කරනවා, අර්ථය හරිද කියලා පරීක්ෂා කරන්න ඕනේ.',
     },
     // 9
     {
@@ -315,6 +323,7 @@ modules, entry points, key dependencies දෙන්න.`,
         { en: 'conflict_detected', si: 'Extract කළ අගයන් එකිනෙකට පරස්පර නම් true වන boolean එක.' },
         { en: 'detected_pattern', si: 'Finding එක ඇති වුණේ කුමන code construct එකෙන්ද කියා සටහන් කරන field එක.' },
       ],
+      si: 'Invoice එකේ 1,200 + 3,450 + 850 = 5,500 කියලා ගණන් බලන්න. Model එක 5,900 කිව්වොත් ඒ වැරැද්ද සහ නිශ්චිත error එක නැවත යවලා හදන්න කියන්න. Invoice එකේ PO number එකම නැත්නම් retries තුනක් කරලා වැඩක් නෑ; null දීලා කෙනෙකුට බලන්න යවන්න. Retry ගණනටත් සීමාවක් තියාගන්න.',
     },
     // 10
     {
@@ -357,6 +366,7 @@ for item in client.messages.batches.results(batch.id):
         { en: 'custom_id', si: 'Batch එකේ හැම request එකකටම දෙන ID එක; results ගැලපීමට සහ failures resubmit කිරීමට.' },
         { en: 'Blocking check', si: 'Developer ඒක ඉවර වෙනකම් බලාගෙන ඉන්න check එකක් (pre-merge). Batch වලට නුසුදුසුයි.' },
       ],
+      si: 'Colombo ඉඳන් Kandy යන bus එක වගේ ඉක්මන් response එකක් ඕනේ නම් synchronous API භාවිතා කරන්න. රෑට invoices 10,000ක් බලන වැඩක් නම් Batch එකෙන් 50% අඩු වියදමකට කරන්න පුළුවන්, නමුත් පැය 24ක් යන්න පුළුවන්. පැය 30ක deadline එකට පැය 4න් 4ට submit කළොත් 4 + 24 = 28 පැය. custom_id එකෙන් response එක හරි request එකට ගලපන්න.',
     },
     // 11
     {
@@ -380,6 +390,7 @@ for item in client.messages.batches.results(batch.id):
         { en: 'Attention dilution', si: 'Files ගොඩක් එකවර බලද්දී අවධානය තුනී වී ගැඹුර අඩුවීම.' },
         { en: 'Integration pass', si: 'Files අතර සම්බන්ධතා (interfaces, data flow) පමණක් බලන වෙනම review එක.' },
       ],
+      si: 'ඔයා ලියපු essay එකේ වැරදි ඔයාටම නොපෙනෙන්න පුළුවන්; වෙන කෙනෙක් බලනකොට පේනවා. ඒ නිසා code ලියපු session එකෙන් වෙනම Claude instance එකක් review කරවන්න. Files 14ක් තිබුණොත් එකින් එක review කරලා, අන්තිමට ඒවා අතර function calls සහ data flow බලන්න. විශාල context එකක් තිබුණා කියලා අවධානය බෙදෙන ගැටලුව නැති වෙන්නේ නෑ.',
     },
     // 12
     {
@@ -416,6 +427,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'Lost in the middle', si: 'දිගු input එකක මැද කොටස model එක අඩුවෙන් සලකන ගැටලුව.' },
         { en: 'Stateless API', si: 'Server එක කලින් requests මතක තබා ගන්නේ නැති නිසා history යැවිය යුතුයි.' },
       ],
+      si: 'ඔයාගේ Keells බිලේ මුළු ගණන Rs. 4,350.75 නම්, chat එක කෙටි කරනකොට ඒ අංකය නැති කරන්න එපා. Amount, date, order ID සහ status වගේ වැදගත් facts වෙනම තියා හැම prompt එකකම මුලට දෙන්න. දිග විස්තරයක මැද තියෙන දේ අඩුවෙන් පෙනෙන්න පුළුවන්. Tool එක fields 40ක් දුන්නොත් අවශ්‍ය fields 5ක් විතරක් තෝරලා ඉදිරියට යවන්න.',
     },
     // 13
     {
@@ -440,6 +452,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'First-contact resolution (FCR)', si: 'පළමු සම්බන්ධතාවයේදීම ගැටලුව විසඳෙන අනුපාතය.' },
         { en: 'Policy gap', si: 'Policy එක කිසිවක් නොකියන තත්ත්වය; escalate කළ යුතුයි.' },
       ],
+      si: 'Customer කෙනෙක් "මට මනුස්සයෙක් එක්ක කතා කරන්න ඕනේ" කිව්වොත් වහාම human කෙනෙකුට යවන්න. Policy එක competitor price match ගැන නිහඬ නම් අනුමාන නොකර escalate කරන්න. නමුත් කැඩුණු blender එකට photo එකක් තියෙන සරල case එකක් නම් agentටම විසඳන්න පුළුවන්. එකම නමින් customers දෙන්නෙක් ඉන්නවා නම් email හෝ phone එක අහන්න.',
     },
     // 14
     {
@@ -463,6 +476,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'Coverage annotation', si: 'Report එකේ හොඳින් cover වුණු සහ sources නැති නිසා gaps ඇති කොටස් සටහන් කිරීම.' },
         { en: 'Transient failure', si: 'නැවත try කළොත් හරි යන තාවකාලික අසාර්ථකත්වය (timeout).' },
       ],
+      si: 'Courier කෙනෙකුට ගෙදර කවුරුත් නැති නිසා parcel එක දෙන්න බැරි වුණොත්, ආයෙත් එන වෙලාව සහ ගන්න පුළුවන් outlet එක කියන slip එකක් දෙනවා. Subagent එක timeout වුණොත් query එක, partial results සහ වෙනත් විකල්ප coordinatorට කියන්න. Timeout එක "results නෑ" කියලා සඟවන්න එපා. Report එකේ topic එකකට partial coverage තිබුණොත් ඒක පැහැදිලිව ලියන්න.',
     },
     // 15
     {
@@ -496,6 +510,7 @@ policy_check: damage photo received; within 30-day window
         { en: '/compact', si: 'දිගු session එකක context එක ඔබා කුඩා කරන command එක.' },
         { en: 'Manifest', si: 'Resume කරද්දී ඉවර/ඉතිරි වැඩ සහ state files පෙන්වන JSON file එක.' },
       ],
+      si: 'Codebase එක දිගට බලද්දී කලින් හොයාගත් class names අමතක වෙන්න පුළුවන්. වැදගත් findings scratchpad එකක ලියා, files සොයන වැඩ subagentලාට බෙදා දෙන්න. අදියරක් ඉවර වුණාම summary එකක් සහ state files තියාගන්න, coordinator එක නැවත පටන් ගන්න පුළුවන්. Manifest එකෙන් ඉවර වැඩ, ඉතිරි වැඩ සහ state file තැන් සටහන් කරන්න.',
     },
     // 16
     {
@@ -521,6 +536,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'Field-level confidence', si: 'Extract කළ හැම field එකටම වෙන වෙනම confidence අගයක්.' },
         { en: 'Labeled validation set', si: 'ඇත්ත පිළිතුරු දන්නා data set එක; thresholds calibrate කිරීමට.' },
       ],
+      si: 'සාමාන්‍ය accuracy 97% වුණත් handwritten receipts වල 85% විතරක් හරි වෙන්න පුළුවන්. Invoices, receipts වගේ වර්ග වෙන වෙනම බලලා හැම වර්ගයෙන්ම sample එකක් ගන්න. High-confidence කියපු දේවල්වලින්වත් ටිකක් අහඹුවෙන් පරීක්ෂා කරන්න. Date field එක 88% හරි නම් ඒක වෙනම සලකා low-confidence dates human කෙනෙකුට යවන්න.',
     },
     // 17
     {
@@ -555,6 +571,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'Provenance', si: 'තොරතුරක් ආවේ කොහෙන්ද කියන සම්බන්ධය (claim → source).' },
         { en: 'Claim–source mapping', si: 'Claim එකක් එහි URL, excerpt, date සමඟ බැඳ තබන structured record එක.' },
       ],
+      si: 'News දෙකක් එකම දේ ගැන වෙනස් අංක දුන්නොත් එකක් තෝරලා අනෙක මකන්න එපා. Claim එකට source, උපුටාගත් කොටස සහ දිනය ලියා තබන්න. 2023 දත්ත 18%ක් සහ 2025 දත්ත 35%ක් කියනවා නම් ඒක කාලය අනුව වෙනසක් වෙන්න පුළුවන්. එකම වසරට 35% සහ 28% කියනවා නම් දෙකම sources එක්ක contested ලෙස දක්වන්න.',
     },
     // 18
     {
@@ -577,6 +594,7 @@ policy_check: damage photo received; within 30-day window
       terms: [
         { en: 'Scope decision', si: 'Instruction එක user/project/directory/path කුමක අයිති කරන්නද කියන තීරණය.' },
       ],
+      si: 'අලුත් code generation task එකක මුලින් requirements සහ files බලලා scope එක තේරුම් ගන්න. Files ගොඩක් වෙනස් වෙනවා නම් plan එකක් හදලා අනුමත කරගන්න; එක function එකක පැහැදිලි bug එකක් නම් කෙලින්ම හදන්න. Tests මුලින් ලියා failures Claudeට දෙන්න. Team rules project CLAUDE.md එකේ තබාගන්න.',
     },
     // 19
     {
@@ -599,6 +617,7 @@ policy_check: damage photo received; within 30-day window
       terms: [
         { en: 'Pre-merge check', si: 'Merge කරන්න කලින් run වෙන, developers බලාගෙන ඉන්න check එක.' },
       ],
+      si: 'CI job එකට කවුරුත් input දෙන්න ඉන්නෙ නැති නිසා claude -p භාවිතා කරන්න. PR එකට JSON findings ඕනේ නම් output format සහ schema දෙන්න. Pre-merge check එක synchronous වෙන්න ඕනේ, රාත්‍රී report එක Batch වෙන්න පුළුවන්. Files 14ක් තිබුණොත් file-by-file review සහ cross-file review කරන්න. Duplicate commentsээс බේරෙන්න කලින් findings-ийгත් prompt එකට දෙන්න.',
     },
     // 20
     {
@@ -621,6 +640,7 @@ policy_check: damage photo received; within 30-day window
       terms: [
         { en: 'Fabrication', si: 'Document එකේ නැති අගයක් model එක හදා දීම (hallucination).' },
       ],
+      si: 'Invoice එකේ due date එක නැත්නම් null දෙන්න, හදලා දාන්න එපා. Category එක නොපැහැදිලි නම් unclear හෝ other භාවිතා කරලා detail එක ගන්න. Rs. 5,500 total එක line items එකතුවට ගැලපෙනවද validate කරන්න. ලේඛනයේ PO number එක නැත්නම් retries නෙවෙයි, null සහ human review යොදන්න. විවිධ ලේඛන වර්ග අනුව accuracy බලන්න.',
     },
     // 21
     {
@@ -649,6 +669,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'Pass score 720 / 1,000', si: 'Exam එක pass වෙන්න ඕනේ scaled score එක; domain % වලින් නෙවෙයි, මුළු score එකෙන් තීරණය වෙනවා.' },
         { en: 'Distractor', si: 'ඇත්තක් වගේ පෙනුනාට වැරදි පිළිතුර; බොහෝවිට නැති feature එකක් නම් කරයි.' },
       ],
+      si: 'පිළිතුර තෝරද්දී root cause එකට යන්න, සරල පළමු පියවර තෝරන්න, මුදල් වගේ hard rule එකක් code gate එකකින් enforce කරන්න, vague prompt වෙනුවට criteria සහ examples දෙන්න, error/source/date සඟවන්න එපා, සහ අවශ්‍ය tools විතරක් දෙන්න. Batch එක 50% අඩු වියදමක් නමුත් පැය 24ක් ගත විය හැකියි. Exam එකේ 60 ප්‍රශ්න, විනාඩි 120 සහ pass score 720/1,000 ලෙස මතක තබාගන්න.',
     },
     // 21b
     {
@@ -682,6 +703,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'Sample 11 · CI/CD', si: 'ගැටලුව: manager කියනවා pre-merge check එකයි overnight report එකයි දෙකම batch එකට දාන්න කියලා. නිවැරදි: overnight report එක විතරක් batch; pre-merge check එක synchronous. වැරදි ඇයි: batch එකට latency SLA නැහැ (පැය 24 දක්වා); custom_id නිසා ordering ගැටලුවක් නැහැ; fallback එකක් අනවශ්‍ය සංකීර්ණතාවයි.' },
         { en: 'Sample 12 · CI/CD', si: 'ගැටලුව: files 14ක review එකක් අස්ථාවරයි. නිවැරදි: per-file passes + cross-file integration pass. වැරදි ඇයි: PR එක split කිරීම developers ට බරයි; විශාල context window එකෙන් attention ගැටලුව විසඳෙන්නේ නැහැ; consensus = සැබෑ bugs සඟවනවා.' },
       ],
+      si: 'Sample questions 12ක් කියවද්දී root cause එක හඳුනාගෙන අවම වැඩෙන් විසඳන පිළිතුර තෝරන්න. Money, identity හෝ security නීති prompt එකකට පමණක් නොතබා code gate එකකින් enforce කරන්න. Logs වල හේතුව පේනවා නම් වෙනත් පද්ධතියක් අලුතින් හදන්න එපා. නැති flags සහ config files තියෙන පිළිතුරු තෝරන්න එපා.',
     },
     // 22
     {
@@ -705,6 +727,7 @@ policy_check: damage photo received; within 30-day window
         { en: 'Practice sets', si: 'PDF එකේ practice exam 1, official 12 samples, practice exam 2 (20 + 12 + 20).' },
         { en: 'Flag and move', si: 'මිනිත්තු 2කට වඩා ගියොත් flag කරලා ඉදිරියට යාම.' },
       ],
+      si: 'සති 12ක සැලැස්මට සෑම සතියකම පාඩමක් සහ පුහුණුවක් බෙදාගන්න. මුලින් exam domains සහ මුල් concepts ඉගෙනගෙන, පසුව Claude Code, prompting සහ reliability වැඩ කරන්න. සතියෙන් සතිය practice questions කරන්න, වැරදි පිළිතුරු සටහන් කර නැවත බලන්න. අවසාන සතියේ mock exam එකක් කරලා දුර්වල කොටස් නැවත අධ්‍යයනය කරන්න.',
     },
   ],
   quiz: [

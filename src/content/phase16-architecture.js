@@ -4,134 +4,139 @@ export default {
   id: 'architecture',
   number: 16,
   title: 'Neural Networks & Transformer Internals: Deep Dive',
-  titleSi: 'Neural Networks සහ Transformer ඇතුළත: neuron එකේ ඉඳන් MoE, Mamba, Diffusion දක්වා ගැඹුරින්',
-  summary: 'Phase 3 සහ 5 වලදී ඔයා neural networks සහ Transformers වල මූලික අදහස් ඉගෙන ගත්තා. මේ phase එකේදී අපි ඒ engine එකේ bonnet එක ඇරලා හැම කොටසක්ම ගලවලා බලනවා: parameters ගණන් කරන හැටි, attention tensors වල shapes, RMSNorm, SwiGLU, RoPE, GQA, FlashAttention, scaling laws, MoE, Mamba, ViT සහ diffusion. ගණන් හැම එකක්ම වචන වලින් පියවරෙන් පියවර කරනවා. අරමුණ: NCA-GENL exam එකේ architecture ප්‍රශ්න කටපාඩම් නැතුව, තේරුම් අරන් උත්තර දෙන්න පුළුවන් වෙන එක.',
-  duration: 'සති 4-6',
+  titleSi: 'A practical deep dive into modern neural-network and Transformer designs',
+  summary: 'Build on the neural-network and Transformer foundations from earlier phases. Inspect how model components fit together: parameter counts, attention tensor shapes, normalization, feed-forward layers, positional methods, efficient attention, scaling laws, expert models, state-space models, vision transformers, and diffusion. Work through calculations step by step so you can reason through NCA-GENL architecture questions rather than memorize answers.',
+  duration: '4-6 weeks',
   topics: [
     // 1
     {
       id: 'neuron-and-nonlinearity',
-      title: 'Artificial Neuron, Activations සහ Nonlinearity අවශ්‍ය ඇයි',
+      title: 'Artificial Neurons, Activations, and Why Nonlinearity Matters',
+      si: 'ඔයාගේ A/L ලකුණු වලට එක් එක් විෂයට වෙන වෙනම බරක් දීලා එකතු කරනවා කියලා හිතන්න. Neuron එකක් input අගයන් weight වලින් ගුණ කරලා bias එක එකතු කරලා, activation එකෙන් අවසාන ප්‍රතිඵලය හදනවා. Activation නැති layers ගොඩක් තිබුණත් ඒවා එක linear calculation එකකට සමානයි. Colombo cricket team එකේ ලකුණු කිහිපයක් එකතු කරලා තීරණයක් ගන්නවා වගේ, nonlinear activation එකට වෙනස් රටා අල්ලන්න පුළුවන්.',
       examRefs: ['NN-001', 'NN-002', 'NN-003', 'NN-004', 'NN-005', 'NN-006', 'NN-014', 'NN-139'],
       body: [
-        'Fully connected layer එකක එක artificial neuron එකක් කරන්නේ දේවල් දෙකයි. පළමුව, inputs හැම එකක්ම තමන්ගේ weight එකෙන් ගුණ කරලා එකතු කරනවා, ඊට bias එකක් එකතු කරනවා. ඒකට කියන්නේ z = w·x + b කියලා. w කියන්නේ weights, x කියන්නේ inputs, b කියන්නේ bias. දෙවනුව, ඒ z එක activation function එකක් හරහා යවනවා (උදා: ReLU). ඔච්චරයි. Max එක ගන්න එක (max-pooling), softmax, table එකකින් row එකක් ගන්න එක (embedding lookup) කියන්නේ neuron එක නෙවෙයි, වෙනම operations.',
-        'Activation එක නැත්නම් මොකද වෙන්නේ? Linear layer එකක් කියන්නේ "ගුණ කරලා එකතු කරන" වැඩක්. Linear වැඩ දෙකක් එක පිට එක කළාමත් ලැබෙන්නේ තවත් එකම linear වැඩක්. ඉතින් layers 10ක් activations නැතුව stack කළොත් ඒ ඔක්කොම එකම එක linear layer එකකට සමානයි. Depth එකෙන් කිසිම අමතර බලයක් නෑ. Output එක 0-1 අතරට සීමා වෙන්නේත් නෑ, gradients පුපුරන්නෙත් නෑ: ප්‍රශ්නය "වක්‍ර (curves) ඉගෙන ගන්න බෑ" කියන එකයි.',
-        'ප්‍රධාන activations: ReLU = max(0, x), ඒ කියන්නේ positive නම් එහෙම්මම, negative නම් 0. ලාභයි, positive පැත්තේ saturate වෙන්නේ නෑ. Sigmoid = 1/(1+e^(−x)), output එක හැමවිටම 0ත් 1ත් අතර, ඒ නිසා binary probability එකකට සහ LSTM gates වලට ගැළපෙනවා. tanh = output එක −1ත් 1ත් අතර, zero-centered (මැද 0). ඒ නිසා sigmoid ට වඩා hidden layers වල updates සමබරයි, ඒත් ලොකු |x| වලදී tanh ත් saturate වෙනවා, ReLU ට වඩා මිලත් වැඩියි. GELU = x · Φ(x), Φ කියන්නේ Gaussian CDF එක (සාමාන්‍ය bell curve එකේ "මෙතෙක් එකතුව"). GELU කියන්නේ smooth ReLU එකක් වගේ, BERT සහ GPT-2 FFN වල තියෙන්නේ මේක.',
-        'Dying ReLU: ReLU neuron එකක pre-activation (z) එක හැම training example එකකටම negative වුණොත්, output එකත් 0, gradient එකත් 0. එතකොට ඒ neuron එක ආයේ කවදාවත් ඉගෙන ගන්නේ නෑ, "මැරිලා". ලොකු learning rate එකක් හෝ නරක bias එකක් නිසා මේක වෙන්න පුළුවන්. Leaky ReLU (negative පැත්තට පොඩි slope එකක්) මේකට එක විසඳුමක්. Mode collapse කියන්නේ GAN ප්‍රශ්නයක්, neuron ප්‍රශ්නයක් නෙවෙයි.',
-        'Superposition (interpretability අදහසක්): LLM එකක එක neuron එකක් බොහෝ විට එකිනෙකට සම්බන්ධ නැති concepts කිහිපයකට react කරනවා (polysemantic). හේතුව: model එකට ඉගෙන ගන්න ඕනේ features ගණන, dimensions ගණනට වඩා ගොඩක් වැඩියි. Features ගොඩක් sparse (කලාතුරකින් active) නිසා, ඒවා එකිනෙක මත වැටෙන directions වල "හිර කරලා" ගබඩා කරනවා. ඒ නිසා concept එකක් = neuron එකක් නෙවෙයි. Sparse autoencoders පාවිච්චි කරලා මේ activations ආයේ තේරුම් ගන්න පුළුවන් (monosemantic) features වලට කඩනවා.',
+        'A fully connected layer neuron performs two operations. First, it multiplies each input by its weight, sums the results, and adds a bias: z = w·x + b, where w is the weights, x the inputs, and b the bias. It then applies an activation function such as ReLU to z. Max-pooling, softmax, and embedding lookup are separate operations, not neurons.',
+        'Without an activation, composing linear layers still gives one linear transformation. Therefore, ten stacked layers without activations are equivalent to a single linear layer; depth adds no expressive power. The issue is not that outputs must be in [0,1] or that gradients must explode; the issue is that the network cannot learn curved, nonlinear relationships.',
+        'Common activations: ReLU = max(0, x), passing positive values and replacing negative values with zero; it is inexpensive and does not saturate on the positive side. Sigmoid = 1/(1+e^(−x)), always in (0,1), useful for binary probabilities and LSTM gates. tanh maps to (−1,1) and is zero-centered, but saturates for large |x| and costs more than ReLU. GELU = x·Φ(x), where Φ is the Gaussian CDF; it is a smooth ReLU-like activation used in BERT and GPT-2 feed-forward networks.',
+        'A ReLU neuron is “dead” if its pre-activation z is negative for every training example: its output and gradient are then zero, so it cannot learn. A large learning rate or poor bias can cause this; Leaky ReLU, with a small negative-side slope, is one remedy. Mode collapse is a GAN problem, not a neuron problem.',
+        'Superposition is an interpretability idea: one LLM neuron can respond to several unrelated concepts (polysemanticity). A model may need to represent more features than it has dimensions; because many features are sparse, they can be stored in overlapping directions. Thus, one concept does not necessarily correspond to one neuron. Sparse autoencoders can help decompose activations into more interpretable (monosemantic) features.',
       ],
-      analogy: 'Neuron එකක් හරියට A/L results වලින් university entrance එකට Z-score එකක් හදනවා වගේ: විෂය හැම එකකටම බරක් (weight) දීලා එකතු කරනවා, cut-off එකකට (bias) සසඳනවා, අන්තිමට "ඇතුළට / නෑ" කියලා තීරණයක් (activation) ගන්නවා. Activation නැති layers ගොඩක් කියන්නේ කැල්කියුලේටරයේ "× 2" බොත්තම 10 පාරක් එබුවා වගේ: ඒක එක පාරක් "× 1024" එබුවාට සමානයි. අලුත් හැඩයක් එන්නේ නෑ.',
-      example: 'Inputs දෙකක්: x = (2, −1), weights w = (0.5, 1.5), bias b = 0.2. z = 2×0.5 + (−1)×1.5 + 0.2 = 1.0 − 1.5 + 0.2 = −0.3. ReLU(−0.3) = 0. Sigmoid(−0.3) ≈ 0.43. tanh(−0.3) ≈ −0.29. දැන් activations නැති layers දෙකක්: පළමු layer එක "× 3", දෙවෙනි එක "× 2 + 1" නම්, එකට ගත්තාම y = 2(3x) + 1 = 6x + 1. තවමත් කෙළින් ඉරක්. Layer දෙකක් දැම්මට ලැබුණේ එක layer එකකින් ලැබෙන දේම යි.',
+      analogy: 'A neuron resembles calculating an A/L Z-score for university entry: weight and add each subject score, compare against a bias-like cutoff, then apply an activation to decide. Ten activation-free “×2” layers equal one “×1024” operation; they do not create a new curve or pattern.',
+      example: 'Take x=(2,−1), w=(0.5,1.5), and b=0.2. Then z=2×0.5+(−1)×1.5+0.2=1.0−1.5+0.2=−0.3. ReLU(−0.3)=0, sigmoid(−0.3)≈0.43, and tanh(−0.3)≈−0.29. For two activation-free layers, let the first compute 3x and the second 2x+1: y=2(3x)+1=6x+1, still a straight line and equivalent to one layer.',
       keyPoints: [
-        'Neuron = weighted sum + bias, ඊට පස්සේ activation (z = w·x + b → f(z)).',
-        'Nonlinearity නැත්නම් layers කීයක් තිබ්බත් එකම linear layer එකකට සමානයි.',
+        'A neuron computes a weighted sum plus bias, then applies an activation: z=w·x+b → f(z).',
+        'Without nonlinearity, any stack of layers is equivalent to one linear layer.',
         'ReLU = max(0,x); Sigmoid = (0,1); tanh = (−1,1) zero-centered; GELU = x·Φ(x) (BERT, GPT-2).',
-        'Dying ReLU = z හැමවිටම negative නිසා output සහ gradient 0 වෙලා neuron එක ඉගෙන ගන්න එක නවතිනවා.',
-        'Superposition = dimensions වලට වඩා features ගොඩක් ගබඩා කරන නිසා neurons polysemantic වෙනවා.',
+        'Dying ReLU: z is always negative, so output and gradient are zero and the neuron stops learning.',
+        'Superposition: representing more features than dimensions can make neurons polysemantic.',
       ],
       terms: [
-        { en: 'Artificial Neuron', si: 'Inputs වල weighted sum එකට bias එකතු කරලා activation එකක් දාන පොඩි ගණන් ඒකකය.' },
-        { en: 'Affine / Linear Map', si: 'ගුණ කරලා එකතු කරන වැඩක් (Wx + b). දෙකක් එකට කළාමත් තවත් affine එකක්.' },
-        { en: 'GELU', si: 'x × Gaussian CDF. Smooth ReLU එකක් වගේ. BERT, GPT-2 FFN වල.' },
-        { en: 'Saturation', si: 'Input එක ලොකු වුණාම activation එක පැතලි වෙලා gradient එක 0 ට කිට්ටු වෙන එක (sigmoid, tanh).' },
-        { en: 'Polysemantic Neuron', si: 'එකිනෙකට සම්බන්ධ නැති concepts කිහිපයකට react කරන neuron එකක්.' },
-        { en: 'Sparse Autoencoder (SAE)', si: 'Activations තේරුම් ගන්න පුළුවන් features ගොඩකට කඩන්න පාවිච්චි කරන network එකක්.' },
+        { en: 'Artificial Neuron', si: 'A small computation unit that applies an activation to a weighted input sum plus a bias.' },
+        { en: 'Affine / Linear Map', si: 'A multiply-and-add transformation, Wx+b; composing two affine maps gives another affine map.' },
+        { en: 'GELU', si: 'x multiplied by the Gaussian CDF; a smooth ReLU-like activation used in BERT and GPT-2 FFNs.' },
+        { en: 'Saturation', si: 'An activation becomes nearly flat for large inputs, making its gradient approach zero, as with sigmoid and tanh.' },
+        { en: 'Polysemantic Neuron', si: 'A neuron that responds to several unrelated concepts.' },
+        { en: 'Sparse Autoencoder (SAE)', si: 'A network used to decompose activations into interpretable features.' },
       ],
     },
 
     // 2
     {
       id: 'gradient-flow-and-init',
-      title: 'Vanishing Gradients, Weight Initialization සහ Residual Scaling',
+      title: 'Vanishing Gradients, Weight Initialization, and Residual Scaling',
+      si: 'ඔයා පණිවිඩයක් මිතුරන් 10 දෙනෙක් හරහා යවනවා කියලා හිතන්න; හැමෝම පණිවිඩයේ හතරෙන් එකක් විතරක් ඉදිරියට දුන්නොත් අන්තිමට තොරතුරු ඉතා අඩුයි. Sigmoid layers වල gradients වලටත් ඒ වගේ දෙයක් වෙනවා. හොඳ random initialization එකක් neurons එකිනෙකාගෙන් වෙනස්ව ඉගෙන ගන්න උදව් කරනවා. Deep model එකක residual scaling එක කොළඹට යන පාරක traffic එක පාලනය කරනවා වගේ signal එකේ ප්‍රමාණය ස්ථාවරව තබනවා.',
       examRefs: ['NN-008', 'NN-050', 'NN-067', 'NN-068', 'NN-109'],
       body: [
-        'Backpropagation වලදී output එකේ ඉඳන් පළමු layer එකට එන gradient එක, layers හැම එකකම derivatives එකට ගුණ කරලා හැදෙන එකක් (chain rule). එක් එක් derivative එක 1 ට වඩා පොඩි නම්, ගුණ කරන තරමට අංකය හැකිලෙනවා. මේකට කියන්නේ vanishing gradients. ප්‍රතිඵලය: මුල් layers වල weights කිසිම වෙනසක් නැතුව "කැටි වෙලා" තියෙනවා. Exploding gradients කියන්නේ විරුද්ධ දේ: derivatives 1 ට වඩා ලොකු නම් අංකය පුපුරලා, updates අවුල් වෙනවා.',
-        'Sigmoid එකේ derivative එක = σ(x)(1 − σ(x)). σ(x) කියන්නේ sigmoid output එක. මේක උපරිම වෙන්නේ x = 0 දී, එතකොට σ = 0.5, ඉතින් derivative = 0.5 × 0.5 = 0.25. ඒ කියන්නේ හොඳම අවස්ථාවේදීත් sigmoid layer එකක් gradient එක හතරෙන් එකකට අඩු කරනවා. ReLU එකේ derivative එක positive inputs වලට හරියටම 1. ඒ නිසා ReLU deep networks වලට ගොඩක් හොඳයි.',
-        'Weight initialization: හැම weight එකක්ම 0 හෝ 1 වගේ එකම අංකයක් දැම්මොත් neurons ඔක්කොම එකම දේ ගණනය කරනවා, එකම gradient ලබනවා, කවදාවත් වෙනස් වෙන්නේ නෑ (symmetry breaking වෙන්නේ නෑ). ඒ නිසා random init ඕනේ, ඒත් හරි ප්‍රමාණයට. He (Kaiming) init: variance = 2 / fan_in (fan_in = neuron එකකට එන inputs ගණන). "2" එක එන්නේ ReLU එක inputs වලින් බාගයක් 0 කරන නිසා ඒක වන්දි ගෙවන්න. Xavier/Glorot init: tanh වගේ සමමිතික (symmetric) activations වලට.',
-        'Residual-scaled init (GPT-2): Transformer එකක හැම block එකක්ම තමන්ගේ output එක residual stream එකට එකතු කරනවා. Random අංක N ගණනක් එකතු කළාම variance එක N ගුණයක් වැඩි වෙනවා. ඉතින් depth එක වැඩි වෙද්දී stream එකේ scale එක ලොකු වෙනවා. GPT-2 මේකට residual branch එකේ output projections වල init එක 1/√N වලින් පොඩි කරනවා (N = residual layers ගණන). එතකොට init වෙලාවේ stream එකේ scale එක ස්ථාවරයි.',
+        'During backpropagation, the gradient from the output to the first layer is a product of derivatives across layers (the chain rule). If each derivative is below 1, repeated multiplication shrinks the gradient: vanishing gradients. Early-layer weights then change very little. Exploding gradients are the opposite: derivatives above 1 make the product grow and updates unstable.',
+        'The sigmoid derivative is σ(x)(1−σ(x)), where σ(x) is the sigmoid output. Its maximum occurs at x=0: σ=0.5, so the derivative is 0.5×0.5=0.25. Even at its best, one sigmoid layer can reduce the gradient to a quarter. ReLU has derivative exactly 1 for positive inputs, which helps in deep networks.',
+        'Weight initialization must break symmetry: if every weight starts at the same value, neurons compute the same thing, receive the same gradient, and remain identical. Random initialization is needed, with a suitable scale. He (Kaiming) initialization uses variance 2/fan_in, where fan_in is the number of inputs to a neuron; the factor 2 compensates for ReLU zeroing about half its inputs. Xavier/Glorot initialization is designed for symmetric activations such as tanh.',
+        'In GPT-2-style residual-scaled initialization, each Transformer block adds its output to the residual stream. Adding N random contributions can increase variance by a factor of N, making the stream grow with depth. GPT-2 scales residual-branch output-projection initialization by 1/√N, where N is the number of residual layers, to keep the initial stream scale stable.',
       ],
-      analogy: 'Chinese whispers (කනින් කනට කතාව) game එක හිතන්න. හැම කෙනෙක්ම අහපු දෙයින් හතරෙන් එකක් විතරක් ඊළඟ කෙනාට කියනවා නම් (sigmoid 0.25), දහ දෙනෙක් ගියාම මුල් පණිවිඩයෙන් ඉතුරු වෙන්නේ මිලියනයෙන් පංගුවක් විතරයි. ReLU කියන්නේ positive පණිවිඩය සම්පූර්ණයෙන්ම (× 1) ඉස්සරහට දෙන කෙනෙක්.',
-      example: 'Sigmoid layers 10ක්, හැම එකකම derivative එක උපරිම 0.25, weights ≈ 1 කියලා හිතමු. පළමු layer එකට එන gradient factor = 0.25 දස වතාවක් ගුණ කිරීම. 0.25² = 0.0625, 0.25⁴ ≈ 0.0039, 0.25⁸ ≈ 0.0000153, 0.25¹⁰ ≈ 0.00000095 ≈ 9.5 × 10⁻⁷. ඒ කියන්නේ ආසන්න වශයෙන් මිලියනයකින් එකක් (10⁻⁶). වැරදි උත්තරයක් වෙන 0.025 එන්නේ 0.25 × 0.1 කියලා වැරදියට ගුණ කළොත්. He init උදාහරණය: fan_in = 512 නම් variance = 2/512 ≈ 0.0039, standard deviation = √0.0039 ≈ 0.0625.',
+      analogy: 'Imagine a message passed through ten people, each repeating only a quarter of what they heard. The original message shrinks to about one-millionth (0.25¹⁰). A ReLU unit with positive input passes the signal on unchanged (factor 1).',
+      example: 'For ten sigmoid layers with maximum derivative 0.25 and weights near 1, the gradient factor is 0.25 multiplied ten times: 0.25²=0.0625, 0.25⁴≈0.0039, 0.25⁸≈0.0000153, and 0.25¹⁰≈0.00000095≈9.5×10⁻⁷, about one-millionth. The incorrect 0.025 comes from multiplying 0.25 by 0.1 instead of raising it to a power. For He initialization with fan_in=512, variance=2/512≈0.0039 and standard deviation=√0.0039≈0.0625.',
       keyPoints: [
-        'Vanishing gradients = පොඩි derivatives ගොඩක් ගුණ වෙලා මුල් layers වලට gradient එකක් එන්නේ නැති එක.',
-        'Sigmoid derivative උපරිමය 0.25. Layers 10 → 0.25¹⁰ ≈ 10⁻⁶.',
-        'He init = variance 2/fan_in, ReLU වලට. Xavier = tanh වගේ symmetric activations වලට.',
-        'සියල්ල 0 / එකම අගයට init කළොත් symmetry කැඩෙන්නේ නෑ.',
-        'GPT-2: residual output projections 1/√N වලින් scale කරලා stream variance වර්ධනය පාලනය කරනවා.',
+        'Vanishing gradients: repeated products of small derivatives leave little gradient for early layers.',
+        'The sigmoid derivative is at most 0.25; across ten layers, 0.25¹⁰≈10⁻⁶.',
+        'He initialization uses variance 2/fan_in for ReLU; Xavier suits symmetric activations such as tanh.',
+        'Initializing all weights to zero or one shared value fails to break neuron symmetry.',
+        'GPT-2 scales residual output projections by 1/√N to control growth in stream variance.',
       ],
       terms: [
-        { en: 'Chain Rule', si: 'Layers හරහා derivatives එකට ගුණ කරලා gradient එක හදන නීතිය.' },
-        { en: 'Exploding Gradients', si: 'Gradients ගුණ වෙලා ඉතා ලොකු වෙලා training අස්ථාවර වෙන එක.' },
-        { en: 'He (Kaiming) Initialization', si: 'Variance 2/fan_in. ReLU networks වල activation variance ස්ථාවරව තියනවා.' },
-        { en: 'Xavier / Glorot Initialization', si: 'tanh වගේ symmetric activations වලට හදපු init ක්‍රමය.' },
-        { en: 'Fan-in', si: 'එක neuron එකකට එන inputs ගණන.' },
-        { en: 'Symmetry Breaking', si: 'Neurons වෙන වෙනම දේවල් ඉගෙන ගන්න random init එකකින් වෙනස් කරන එක.' },
+        { en: 'Chain Rule', si: 'The rule that multiplies derivatives across layers to compute a gradient.' },
+        { en: 'Exploding Gradients', si: 'Gradients grow excessively through multiplication, making training unstable.' },
+        { en: 'He (Kaiming) Initialization', si: 'Initialization with variance 2/fan_in to keep activation variance suitable for ReLU networks.' },
+        { en: 'Xavier / Glorot Initialization', si: 'An initialization method designed for symmetric activations such as tanh.' },
+        { en: 'Fan-in', si: 'The number of inputs connected to one neuron.' },
+        { en: 'Symmetry Breaking', si: 'Using different random initial weights so neurons can learn different functions.' },
       ],
     },
 
     // 3
     {
       id: 'cnn-weight-sharing',
-      title: 'CNNs: Output Size, Weight Sharing සහ Receptive Field',
+      title: 'CNNs: Output Size, Weight Sharing, and Receptive Fields',
+      si: 'ඔයා 32×32 pixel cricket photo එකක් බලනවා කියලා හිතන්න; 3×3 filter එකක් වටේට ගෙනියලා හැම තැනම එකම කුඩා රටාව හොයනවා. ඒ weights එකම තැන තැන බෙදාගන්න නිසා CNN එකට dense layer එකකට වඩා අඩු parameters ඕනේ. Filter එකෙන් එක output එකක් දකින input ප්‍රදේශය receptive field එකයි. Layers එකතු කළාම model එකට වඩා විශාල ප්‍රදේශයක සම්බන්ධතා දකින්න පුළුවන්.',
       examRefs: ['NN-009', 'NN-019', 'NN-043', 'NN-112'],
       body: [
-        'Convolution layer එකක පොඩි kernel එකක් (උදා: 3×3 හෝ 5×5) image එක උඩින් ලිස්සලා යනවා. ඒ kernel එකේ weights ම image එකේ හැම තැනකටම පාවිච්චි කරනවා. මේකට weight sharing කියනවා. Dense (fully connected) layer එකක හැම output pixel එකක්ම හැම input pixel එකකටම වෙනම weight එකකින් සම්බන්ධයි. ඒ නිසා CNN එකකට parameters ගොඩක් අඩුයි. Pooling layers වලට learned weights නෑ, ඒවා weights "තියාගන්නේ" නෑ.',
-        'Weight sharing නිසා ලැබෙන තව වාසියක්: translation equivariance. බළලා image එකේ වම් පැත්තේ හිටියත් දකුණු පැත්තේ හිටියත් එකම kernel එක එකම විදිහට react කරනවා, response එක පමණක් ඒ තැනට මාරු වෙනවා. Local receptive field එකයි, weight sharing එකයි කියන්නේ CNN එකේ "inductive biases" (කලින්ම දාපු උපකල්පන). ViT ට මේවා නැති හැටි පස්සේ topic එකක බලමු.',
-        'Output size formula: Output = (N − K + 2P) / S + 1. N = input size, K = kernel size, P = padding (එක පැත්තකට), S = stride. "+1" අමතක කළොත් එක අඩුවෙන් වැරදි උත්තරයක් එනවා. Input size එකම තියාගන්න ඕනේ නම් ("same" padding), stride 1 වලදී P = (K − 1)/2.',
-        'Receptive field සහ long-range: 3-wide convolution layer එකක් එක පාරකට බලන්නේ අසල්වැසි tokens 3ක් විතරයි. Layers stack කරද්දී receptive field එක layer එකකට ටිකෙන් ටික වැඩි වෙනවා. Tokens 1,000ක් දුර සම්බන්ධයක් අල්ලන්න layers සිය ගණනක් (හෝ dilation) ඕනේ. Self-attention එකේ ඕනෑම tokens දෙකක් අතර path length එක 1යි: එක layer එකකින්ම කෙළින්ම සම්බන්ධ වෙනවා. CNNs වලට text process කරන්න බැරි නෑ (TextCNN, ByteNet), ප්‍රශ්නය දුර විතරයි.',
+        'A convolution layer slides a small kernel (for example, 3×3 or 5×5) across an image, reusing the same weights at every location; this is weight sharing. A dense layer connects every output pixel to every input pixel with separate weights, so a CNN typically uses far fewer parameters. Pooling layers have no learned weights.',
+        'Weight sharing also gives translation equivariance: the same kernel responds similarly to a cat on the left or right, and the response moves with the cat. Local receptive fields and shared weights are CNN inductive biases. A ViT does not have these assumptions built in.',
+        'Output size = (N−K+2P)/S+1, where N is input size, K kernel size, P padding on each side, and S stride. Do not omit the +1. To preserve input size with stride 1 (“same” padding), use P=(K−1)/2.',
+        'A width-3 convolution sees about three neighboring positions. Stacking layers gradually expands the receptive field; relating positions 1,000 tokens apart may require hundreds of layers or dilation. Self-attention connects any pair in one layer (path length 1). CNNs can process text (for example TextCNN or ByteNet); long-range communication is the limitation.',
       ],
-      analogy: 'Keells එකේ security officer කෙනෙක් torch එකක් (kernel) අරන් car park එක පුරා එකම විදිහට check කරනවා. හැම slot එකකටම වෙනම officer කෙනෙක් (dense layer) දාන්නේ නෑ. එක officer, එක check-list, ඕනෑම තැනක. ඒක weight sharing. ඒත් officer ට එක පාරකට පේන්නේ ළඟ slots 3ක් විතරයි. Car park එකේ අනිත් කෙළවර බලන්න ගොඩක් ඇවිදින්න ඕනේ (layers ගොඩක්). Attention කියන්නේ CCTV control room එක: ඕනෑම slot එකක් එකපාරටම පේනවා.',
-      example: 'Output size: 32×32 single-channel image එකක්, 5×5 kernel, stride 1, padding 0. (32 − 5 + 0)/1 + 1 = 27 + 1 = 28. ඉතින් output 28×28. 32×32 තියාගන්න නම් padding = (5−1)/2 = 2 ඕනේ: (32 − 5 + 4)/1 + 1 = 32. Parameter වෙනස: RGB 224×224 image එකකට 3×3 conv, output channels 64: weights = 3×3×3×64 = 1,728, bias 64, එකතුව 1,792. ඒ input එකම (224×224×3 = 150,528 අගයන්) neurons 64ක dense layer එකකට දැම්මොත් weights = 150,528 × 64 ≈ 9.6 මිලියනයක්.',
+      analogy: 'A Keells security officer checks every parking space with the same torch and checklist; one officer is reused instead of assigning a separate one to every space. That is weight sharing. The officer sees only nearby spaces at once and must walk to the far end, unlike an attention-based CCTV room that can connect distant locations directly.',
+      example: 'For a 32×32 single-channel image, 5×5 kernel, stride 1, and no padding: (32−5+0)/1+1=28, so output is 28×28. To preserve 32×32, use P=(5−1)/2=2: (32−5+4)/1+1=32. For RGB 224×224 with a 3×3 convolution and 64 output channels, weights=3×3×3×64=1,728; plus 64 biases gives 1,792. A dense layer from all 150,528 input values to 64 neurons needs 150,528×64≈9.6 million weights.',
       keyPoints: [
-        'Weight sharing = එකම පොඩි kernel එක හැම තැනකටම. Parameters ගොඩක් අඩුයි.',
-        'Weight sharing → translation equivariance. Locality + sharing = CNN inductive bias.',
+        'Weight sharing reuses one small kernel at every location, greatly reducing parameters.',
+        'Weight sharing gives translation equivariance; locality and sharing are CNN inductive biases.',
         'Output = (N − K + 2P)/S + 1. "+1" අමතක කරන්න එපා.',
-        'CNN receptive field එක layer එකකට ටිකක් වැඩි වෙනවා. Attention = ඕනෑම දුරකට path length 1.',
+        'A CNN receptive field grows layer by layer; attention connects any distance with path length 1.',
       ],
       terms: [
-        { en: 'Kernel / Filter', si: 'Image එක උඩින් ලිස්සන පොඩි weights matrix එක.' },
-        { en: 'Stride', si: 'Kernel එක එක පාරකට පනින pixels ගණන.' },
-        { en: 'Padding', si: 'Image එකේ දාරවලට 0 pixels එකතු කරන එක, size එක පාලනය කරන්න.' },
-        { en: 'Translation Equivariance', si: 'Input එකේ දෙයක් මාරු කළාම output එකත් ඒ විදිහටම මාරු වෙන ගුණය.' },
-        { en: 'Receptive Field', si: 'Output අගයක් "දකින" input කොටසේ ප්‍රමාණය.' },
-        { en: 'Inductive Bias', si: 'Architecture එකට කලින්ම දාලා තියෙන උපකල්පන (locality වගේ).' },
+        { en: 'Kernel / Filter', si: 'A small weight matrix that slides across an image.' },
+        { en: 'Stride', si: 'The number of pixels the kernel moves at each step.' },
+        { en: 'Padding', si: 'Adding border pixels, often zeros, to control output size.' },
+        { en: 'Translation Equivariance', si: 'When an input shift causes the output to shift correspondingly.' },
+        { en: 'Receptive Field', si: 'The input region that can affect one output value.' },
+        { en: 'Inductive Bias', si: 'Assumptions built into an architecture, such as locality.' },
       ],
     },
 
     // 4
     {
       id: 'rnn-to-transformer',
-      title: 'RNN, LSTM, GRU, Seq2seq සහ Transformers ඒවා අයින් කළේ ඇයි',
+      title: 'RNNs, LSTMs, GRUs, Seq2seq, and Why Transformers Took Over',
+      si: 'ඔයා Colombo සිට Kandy යන බස් ගමනේ හැම halt එකකම කලින් ගිය දේ මතක තියාගන්නවා වගේ RNN එක token එකෙන් token එකට hidden state එක යාවත්කාලීන කරනවා. LSTM එකේ gates මතකය තියාගන්නද අමතක කරන්නද තීරණය කරනවා; GRU එකේ ඒ වැඩට gates දෙකක් තියෙනවා. Transformer එක training වෙද්දී tokens ගොඩක් එකවර සසඳන්න පුළුවන් නිසා ඉක්මනින් parallel වැඩ කරනවා. Teacher forcing ඉගෙන ගන්න උදව් කළත්, test වෙලාවේ model එක තමන්ගේ වැරදි prediction මත යාම exposure bias එකක් ඇති කරනවා.',
       examRefs: ['NN-015', 'NN-016', 'NN-017', 'NN-018', 'NN-020', 'NN-034', 'NN-095', 'NN-096', 'NN-097'],
       body: [
-        'RNN එකක විශේෂත්වය: hidden state එකක් තියෙනවා. Sequence එකේ හැම step එකකදීම එකම weights පාවිච්චි කරලා, අලුත් input එකයි පරණ hidden state එකයි එකතු කරලා අලුත් hidden state එකක් හදනවා. ඒක තමයි RNN එකේ "මතකය". LSTM එකට gates තුනක් තියෙනවා: forget (පරණ දේ කොච්චර අමතක කරන්නද), input (අලුත් දේ කොච්චර ලියන්නද), output (මොනවද පිටට පෙන්නන්නේ). Update සහ reset gates කියන්නේ GRU එකේ. GRU එක cell state එකයි hidden state එකයි එකක් කරලා gates දෙකක් විතරක් පාවිච්චි කරන නිසා LSTM ට වඩා parameters අඩුයි, ඒත් long-range dependencies තවමත් හොඳට අල්ලනවා.',
-        'LSTM එක vanishing gradients වලට ඔරොත්තු දෙන්නේ ඇයි? Cell state එක update වෙන්නේ එකතු කිරීමෙන් (additive): c_t = f_t ⊙ c_(t−1) + i_t ⊙ c̃_t. මෙතන f_t = forget gate, i_t = input gate, c̃_t = අලුත් candidate අගය, ⊙ = element-wise ගුණ කිරීම. Forget gate එක 1 ට කිට්ටුව තිබ්බොත්, gradient එක squashing නැතුව කාලය හරහා පස්සට ගලනවා. LSTM gates වල තියෙන්නේ sigmoid, ReLU නෙවෙයි.',
-        'Seq2seq bottleneck: මුල් RNN encoder–decoder translation models වල මුළු source වාක්‍යයම එක fixed-length vector එකකට හිර කළා. Decoder එකට පෙනුණේ encoder එකේ අන්තිම hidden state එක විතරයි. දිග වාක්‍ය වලදී තොරතුරු නැති වුණා. Bahdanau attention මේක විසඳුවා: decoder එක හැම output step එකකදීම encoder hidden states ඔක්කොම score කරලා, softmax කරලා, weighted context vector එකක් හදනවා. Teacher forcing: training වලදී decoder එකට input විදිහට දෙන්නේ model එකේම prediction එක නෙවෙයි, ඇත්ත (ground-truth) කලින් token එක. වේගවත්, ස්ථාවරයි. අවාසිය exposure bias: inference වලදී model එකට තමන්ගේම (සමහර විට වැරදි) outputs කන්න වෙනවා.',
-        'Transformers RNNs අයින් කළේ ඇයි: RNN එකක step t ගණනය කරන්න step t−1 ඉවර වෙන්න ඕනේ. ඒ නිසා GPU එකේ parallel බලය නාස්ති වෙනවා. Self-attention training වලදී හැම position එකක්ම එකවර ගණනය කරනවා, දුර tokens එක step එකකින් සම්බන්ධ කරනවා. Teacher forcing + causal mask එක්ක transformer එකක හැම position එකක්ම එක forward pass එකකින් train වෙනවා. මේ අදහස ආවේ 2017 Vaswani et al. ගේ "Attention Is All You Need" paper එකෙන් (BERT 2018, seq2seq paper එක LSTM පාවිච්චි කළා). සැලකිය යුතුයි: transformers වලට positional information අනිවාර්යයෙන් ඕනේ, attention එක order දන්නේ නැති නිසා.',
+        'An RNN carries a hidden state: at each sequence step, shared weights combine the new input and previous state to create the next state, its “memory.” LSTM uses forget, input, and output gates. GRU uses update and reset gates and combines cell and hidden state; it has fewer parameters than an LSTM while still modeling long-range dependencies.',
+        'An LSTM helps gradients flow because its cell state has an additive update: c_t=f_t⊙c_(t−1)+i_t⊙c̃_t, where f_t is the forget gate, i_t the input gate, c̃_t the candidate value, and ⊙ element-wise multiplication. If f_t is near 1, gradients can pass backward through time without repeated squashing. LSTM gates use sigmoid, not ReLU.',
+        'Early RNN encoder–decoder translation models compressed the whole source sentence into one fixed-length vector, leaving the decoder only the encoder’s final hidden state; long sentences lost information. Bahdanau attention lets the decoder score all encoder states at each output step and form a softmax-weighted context. With teacher forcing, training feeds the true previous token rather than the model’s prediction: this is fast and stable, but creates exposure bias because inference uses the model’s own possibly incorrect outputs.',
+        'RNN step t must wait for step t−1, limiting GPU parallelism. Transformers compute positions in parallel during training and connect distant tokens in one attention layer. Teacher forcing plus a causal mask lets all positions train in one forward pass. This approach was introduced in Vaswani et al.’s 2017 “Attention Is All You Need” paper; BERT followed in 2018, while the earlier seq2seq paper used LSTMs. Transformers still need positional information because attention alone does not know token order.',
       ],
-      analogy: 'RNN එක හරියට කොළඹ ඉඳන් මහනුවරට bus එකක් එක halt එකක් ගානේ නවත්තලා යනවා වගේ: ඊළඟ halt එකට යන්න කලින් එක ඉවර වෙන්න ඕනේ. Transformer එක හරියට එකම වෙලාවේ තැන් ගොඩකට tuk-tuks ගොඩක් යවනවා වගේ. Teacher forcing කියන්නේ driving lesson එකක instructor වැරදි turn එකක් ගත්ත ගමන් steering එක හරි පැත්තට හරවලා දෙනවා වගේ. Test එකේදී (inference) instructor නෑ, ඔයාගේ වැරදි ඔයාටම බාර ගන්න වෙනවා (exposure bias).',
-      example: 'වචන 50ක වාක්‍යයක් translate කරනවා. RNN encoder එකට steps 50ක් එකින් එක යන්න ඕනේ. Transformer encoder එක 50 × 50 = 2,500 attention scores එක matrix multiplication එකකින් එකවර ගණනය කරනවා. Teacher forcing උදාහරණය: target එක "මම ගෙදර යනවා". Step 2 දී model එක "මම පාසල්" කියලා වැරදියට predict කළත්, step 3 එකට input විදිහට දෙන්නේ ඇත්ත token එක "ගෙදර". LSTM forget gate උදාහරණය: f = 0.99 නම් steps 100කට පස්සේ පරණ cell අගයෙන් 0.99¹⁰⁰ ≈ 0.37ක් ඉතුරුයි. Sigmoid chain එකක 0.25¹⁰⁰ කියන්නේ ප්‍රායෝගිකව බිංදුවයි.',
+      analogy: 'An RNN is like a Colombo-to-Kandy bus that must finish one stop before moving to the next. A Transformer is like sending many tuk-tuks at once. Teacher forcing resembles a driving instructor correcting a wrong turn during practice; at test time the instructor is gone, so the model must deal with its own mistakes (exposure bias).',
+      example: 'A 50-word RNN encoder processes 50 sequential steps. A Transformer computes 50×50=2,500 attention scores together. With teacher forcing, for target “I go home,” the true token “home” is fed at step 3 even if the model predicted “school” at step 2. If an LSTM forget gate f=0.99, after 100 steps 0.99¹⁰⁰≈0.37 of the previous cell value remains; a sigmoid chain with 0.25¹⁰⁰ is effectively zero.',
       keyPoints: [
-        'RNN = step-by-step update වෙන hidden state එකක්, හැම step එකකටම එකම weights.',
+        'An RNN updates a hidden state step by step, using the same weights at every step.',
         'LSTM gates: forget, input, output. GRU gates: update, reset (gates 2, parameters අඩුයි).',
-        'LSTM cell state එක additive update වෙන නිසා gradients දිගු කාලයක් ජීවත් වෙනවා.',
-        'Seq2seq bottleneck = මුළු වාක්‍යයම එක vector එකක. Bahdanau attention = හැම step එකකම encoder states වල weighted mix එකක්.',
-        'Transformers ජයගත්තේ training වලදී හැම position එකක්ම parallel ගණනය කරන නිසා. Teacher forcing → exposure bias.',
+        'The LSTM cell state uses additive updates that can preserve gradients over longer spans.',
+        'Seq2seq bottleneck: one vector for the source; Bahdanau attention makes a weighted mix of encoder states at each step.',
+        'Transformers parallelize positions during training; teacher forcing can lead to exposure bias.',
       ],
       terms: [
-        { en: 'Hidden State', si: 'RNN එක step එකෙන් step එකට ඉස්සරහට ගෙනියන මතක vector එක.' },
-        { en: 'Cell State', si: 'LSTM එකේ දිගුකාලීන මතකය ගෙනියන වෙනම "conveyor belt" එක.' },
-        { en: 'GRU', si: 'Update සහ reset gates දෙකක් පමණක් ඇති සරල LSTM වර්ගය.' },
-        { en: 'Bahdanau Attention', si: 'Decoder එක හැම step එකකදීම encoder states ඔක්කොම weighted විදිහට බලන මුල් attention ක්‍රමය.' },
-        { en: 'Teacher Forcing', si: 'Training වලදී decoder එකට ඇත්ත කලින් token එක input එක විදිහට දෙන එක.' },
-        { en: 'Exposure Bias', si: 'Training වලදී ඇත්ත tokens දැකලා, inference වලදී තමන්ගේ වැරදි outputs දකින විට එන ගැටලුව.' },
+        { en: 'Hidden State', si: 'The memory vector an RNN carries forward from one step to the next.' },
+        { en: 'Cell State', si: 'The separate long-term memory path in an LSTM.' },
+        { en: 'GRU', si: 'A recurrent unit with update and reset gates that combines cell and hidden state.' },
+        { en: 'Bahdanau Attention', si: 'An early attention method that weights all encoder states at each decoder step.' },
+        { en: 'Teacher Forcing', si: 'Feeding the decoder the true previous token during training.' },
+        { en: 'Exposure Bias', si: 'The mismatch between true tokens seen in training and the model’s own outputs at inference.' },
       ],
     },
 
     // 5
     {
       id: 'attention-mechanics',
-      title: 'Scaled Dot-Product Attention, Multi-Head, Cross-Attention සහ Induction Heads',
+      title: 'Scaled Dot-Product Attention, Multi-Head and Cross-Attention, and Induction Heads',
+      si: 'ඔයා cricket match එකක එක් එක් ක්‍රීඩකයාට අවධානය දෙනවා වගේ attention එක query එකක් සහ key එකක් සසඳලා වැදගත්කම score කරනවා. Scores softmax කරලා values එකතු කළාම අදාළ තොරතුරු ලැබෙනවා. Head කිහිපයක් තිබුණාම එකම වාක්‍යයේ වෙනස් සම්බන්ධතා එකවර හොයන්න පුළුවන්. Cross-attention එකේ query එක වෙනම input එකකින් එනවා, උදාහරණයක්ට Colombo weather ගැන අහද්දී වෙනම ලේඛනයකින් තොරතුරු බලනවා වගේ.',
       examRefs: ['NN-021', 'NN-022', 'NN-023', 'NN-025', 'NN-026', 'NN-027', 'NN-038', 'NN-085', 'NN-086', 'NN-138'],
       body: [
         'Formula එක: Attention = softmax(QKᵀ / √d_k) V. වචන වලින්: (1) හැම Query එකක්ම හැම Key එකක් එක්කම dot product කරලා score එකක් ගන්නවා. (2) Scores √d_k වලින් බෙදනවා (d_k = head එකක key vector එකේ දිග). (3) Key dimension එක දිගේ softmax දානවා, එතකොට එක query එකක scores row එක probability distribution එකක් වෙනවා: හැම row එකකම එකතුව 1යි. Weights soft (0 සහ 1 විතරක් නෙවෙයි). Q සහ K වෙනම projections නිසා matrix එක සමමිතික (symmetric) නෑ. (4) ඒ weights වලින් Values වල weighted sum එක ගන්නවා. Query = "මම හොයන දේ", Key = "මගේ label එක", Value = "ඇත්තටම mix වෙන content එක". Content එක එන්නේ Value වලින්, Query වලින් නෙවෙයි.',
@@ -162,7 +167,8 @@ export default {
     // 6
     {
       id: 'attention-shapes-pytorch',
-      title: 'Attention Tensor Shapes, Masks, Memory සහ PyTorch Gotchas',
+      title: 'Attention Tensor Shapes, Masks, Memory, and PyTorch Pitfalls',
+      si: 'ඔයාගේ class එකේ ළමයි 40 දෙනෙක් හැමෝම අනිත් හැමෝටම Avurudu card යවනවා නම් cards 1,600ක් වෙනවා. ළමයි 80 කළොත් 6,400ක්, ඒ කියන්නේ හතර ගුණයක්. Attention score matrix එකේත් sequence එක දෙගුණ කළාම අගයන් හතර ගුණයක් වෙනවා. Causal mask එක අනාගත token බලන එක නවත්වනවා, padding mask එක හිස් තැන් නොසලකා හරිනවා. PyTorch වල tensor shape පිළිවෙළ වැරදුණොත් error එකක් නොදී examples එකිනෙක මිශ්‍ර වෙන්නත් පුළුවන්.',
       examRefs: ['NN-024', 'NN-037', 'NN-054', 'NN-055', 'NN-060', 'NN-061', 'NN-091', 'NN-092', 'NN-106', 'NN-107', 'NN-108', 'NN-111'],
       body: [
         'Shapes පියවරෙන් පියවර (B = batch, H = heads, T = sequence length, d = head_dim): q, k, v හැම එකක්ම (B, H, T, d). Scores = q @ k.transpose(−2, −1). (…, T, d) × (…, d, T) = (…, T, T). ඉතින් scores (B, H, T, T): හැම head එකකටම query–key යුගල හැම එකකටම score එකක්. Softmax එකෙන් පස්සේ weights @ v = (B, H, T, T) × (B, H, T, d) = (B, H, T, d). ඊට පස්සේ transpose කරලා (B, T, H, d), flatten කරලා (B, T, H·d) = (B, T, d_model), අන්තිමට W_O. Heads concatenate කරනවා, average කරන්නේ නෑ.',
@@ -205,7 +211,8 @@ mha = torch.nn.MultiheadAttention(512, 8, batch_first=True)  # batch_first අ�
     // 7
     {
       id: 'normalization-and-residuals',
-      title: 'LayerNorm, BatchNorm, RMSNorm, Pre-norm vs Post-norm සහ Stability Tricks',
+      title: 'LayerNorm, BatchNorm, RMSNorm, Pre-norm vs. Post-norm, and Stability',
+      si: 'BatchNorm එක පන්තියේ ළමයි හැමෝගේම ලකුණු සසඳනවා වගේ; ළමයි එක්කෙනෙක් විතරක් ඉන්න batch එකක ඒක එතරම් ප්‍රයෝජනවත් නෑ. LayerNorm එක එක් token එකක features තමන් අතර සසඳන නිසා batch size එක මත රඳා පවතින්නේ නෑ. RMSNorm එකත් අගයන් scale කරනවා, නමුත් mean එක අඩු කරන්නේ නෑ. Pre-norm residual path එක Colombo main road එක වගේ කෙළින් තියාගෙන, blocks ගැඹුරු වුණත් gradients ගමන් කරන්න පහසු කරනවා.',
       examRefs: ['NN-010', 'NN-011', 'NN-012', 'NN-013', 'NN-051', 'NN-052', 'NN-069', 'NN-070', 'NN-071', 'NN-093', 'NN-094', 'NN-110', 'NN-128', 'NN-129'],
       body: [
         'Residual connection: y = x + F(x). Block එකේ input එක output එකට එකතු කරනවා (ගුණ කරන්නේ නෑ, concatenate කරන්නෙත් නෑ, concatenate කරන්නේ DenseNet). Inference වලදීත් block එක run වෙනවා. වාසිය: gradients වලට කෙළින්ම යන "identity path" එකක් ලැබෙනවා, ඒ නිසා ගොඩක් deep stacks train කරන්න පුළුවන්.',
@@ -248,7 +255,8 @@ print(ln, rms)
     // 8
     {
       id: 'ffn-swiglu',
-      title: 'Feed-Forward Network, SwiGLU සහ Parallel Blocks',
+      title: 'Feed-Forward Networks, SwiGLU, and Parallel Blocks',
+      si: 'ඔයා කඩේ කෙනෙක්ට රොටී හදන්න කියනවා කියලා හිතන්න: මුලින් අමුද්‍රව්‍ය වැඩි කරලා, gate එකකින් කොච්චර භාවිතා කරනවද තීරණය කරලා, පස්සේ අවශ්‍ය ප්‍රමාණයට අඩු කරනවා. SwiGLU එකේ gate, up, down matrices තුන ඒ වගේ වැඩ කරනවා. d=4,096 සහ hidden=11,008 නම් එක් matrix එකකට 4,096×11,008≈45.1 million parameters, තුනට ≈135.3 million. Parallel block එකේ attention සහ MLP එක එකම වෙලාවේ වැඩ කරනවා.',
       examRefs: ['NN-007', 'NN-033', 'NN-072', 'NN-073', 'NN-141'],
       body: [
         'Standard FFN: linear layers දෙකක්, මැද nonlinearity එකක්. d_model එකේ ඉඳන් hidden size එකකට (සාමාන්‍යයෙන් 4 × d_model) පුළුල් කරලා, activation දාලා, ආයේ d_model එකට project කරනවා. හැම token එකකටම එකම weights, වෙනම (position-wise). Tokens අතර තොරතුරු මිශ්‍ර කරන්නේ නෑ, ඒක attention එකේ වැඩේ. Parameters: d × 4d + 4d × d = 8d².',
@@ -290,7 +298,8 @@ print(sum(p.numel() for p in SwiGLU().parameters()))  # 135,266,304`,
     // 9
     {
       id: 'parameter-counting',
-      title: 'Parameters ගණන් කිරීම: Linear, Attention, 12d², Embeddings සහ Weight Tying',
+      title: 'Counting Parameters: Linear Layers, Attention, 12d², Embeddings, and Weight Tying',
+      si: 'ඔයාගේ shop එකේ items 100ක් තියෙනවා, එක් item එකකට price එකක් සහ වෙනම tax එකක් ගණන් කරනවා කියලා හිතන්න. Linear layer එකක weights වලට අමතරව output feature එකකට bias එකකුත් තියෙනවා. Transformer block එකේ attention ≈4d² සහ standard FFN ≈8d², ඒ නිසා එකතුව ≈12d². Vocabulary size 32,000 සහ d=4,096 නම් embedding table එකේ 32,000×4,096 weights තියෙනවා. Weight tying කළොත් input embedding එකත් output head එකත් ඒ matrix එකම භාවිතා කරනවා.',
       examRefs: ['NN-035', 'NN-036', 'NN-048', 'NN-053', 'NN-056', 'NN-057', 'NN-058', 'NN-059', 'NN-098'],
       body: [
         'Linear layer එකක parameters = (inputs × outputs) + outputs. Bias එක output feature එකකට එකක්. Exam එකේ සුලභ උගුල්: bias අමතක කරන එක, නැත්නම් bias එක input size එකට ගණන් කරන එක. Attention layer එකක projections හතරක් (Q, K, V, O), හැම එකක්ම d × d (+ bias d). Heads ගණන මේ එකතුව වෙනස් කරන්නේ නෑ, heads කරන්නේ එකම d_model එක බෙදන එක විතරයි.',
@@ -330,7 +339,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 10
     {
       id: 'positional-schemes',
-      title: 'Positional Schemes ගැඹුරින්: Sinusoidal, Learned, RoPE, ALiBi සහ Context Extension',
+      title: 'Positional Schemes: Sinusoids, Learned Positions, RoPE, ALiBi, and Context Extension',
+      si: 'ඔයා “බල්ලා මිනිහාව කෑවා” සහ “මිනිහා බල්ලාව කෑවා” කියන වචන එකම වුණත් අනුපිළිවෙළ වෙනස් කියලා දන්නවා. Attention එකට position signal එකක් නැත්නම් මේ පිළිවෙළ තනිවම දැනගන්න බෑ. RoPE එක token position අනුව Q සහ K vectors කරකවන නිසා ඒවා අතර දුර වැදගත් වෙනවා. Position 6,000 එක 4 න් බෙදුවොත් 1,500 ලැබෙනවා; මේ විදිහට 8K context එකක් model එක train වුණු 2K පරාසයට map කරන්න පුළුවන්.',
       examRefs: ['NN-028', 'NN-029', 'NN-064', 'NN-065', 'NN-066', 'NN-116', 'NN-117', 'NN-118', 'NN-119'],
       body: [
         'Position ඕනේ ඇයි: self-attention තනියම permutation-equivariant. ඒ කියන්නේ input tokens shuffle කළොත් outputs ත් ඒ විදිහටම shuffle වෙනවා විතරයි. "dog bites man" සහ "man bites dog" එකම වගේ පේනවා. Causal mask එක position encoding එකෙන් ස්වාධීනයි. Original 2017 paper එක: විවිධ frequencies (geometric විදිහට පරතරය වැඩිවෙන wavelengths) වල fixed sine/cosine අගයන් token embeddings වලට add කළා. Learned position embeddings ත් try කළා, results සමානයි, ඒත් report කළ design එක sinusoids.',
@@ -361,7 +371,9 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 11
     {
       id: 'architecture-families',
-      title: 'Encoder-only, Decoder-only, Encoder–Decoder, Prefix LM සහ [CLS] Token',
+      title: 'Encoder, Decoder, and Encoder–Decoder Architecture Families',
+      title: 'Encoder, Decoder, and Encoder–Decoder Architecture Families',
+      si: 'ඔයා O/L හිස්තැන් පුරවන ප්‍රශ්නයක් කරනවා වගේ BERT වාක්‍යයේ දෙපැත්තේ වචන බලලා හිස් තැන අනුමාන කරනවා. GPT එක කලින් වචන පමණක් බලලා ඊළඟ වචනය ලියනවා. T5 එක input text එක කියවලා output text එකක් හදන නිසා පරිවර්තනයට හෝ සාරාංශයට යොදාගන්න පුළුවන්. වාක්‍යයක් classify කරන්න දෙපැත්තම බලන encoder එක ප්‍රයෝජනවත්; කතාවක් generate කරන්න autoregressive decoder එක ගැළපෙනවා.',
       examRefs: ['NN-030', 'NN-031', 'NN-032', 'NN-039', 'NN-087', 'NN-088', 'NN-089', 'NN-090', 'NN-140'],
       body: [
         'පවුල් තුනයි. BERT = encoder-only, masked language modeling (MLM): අහඹු tokens mask කරලා දෙපැත්තේම context එකෙන් ඒවා අනුමාන කරනවා. GPT = decoder-only, causal (next-token) language modeling. T5 = encoder–decoder, හැම task එකක්ම "text-to-text": translation, classification, summarization ඔක්කොම "input text → output text", task prefix එකක් එක්ක. T5 pretraining objective එක span corruption.',
@@ -392,7 +404,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 12
     {
       id: 'mqa-gqa-mla',
-      title: 'MHA, MQA, GQA, MLA සහ KV Cache ඉතිරි කිරීම',
+      title: 'MHA, MQA, GQA, MLA, and KV-Cache Efficiency',
+      si: 'ඔයා Colombo bus එකක මිතුරන් 32 දෙනෙක්ට වෙන වෙනම conductor කෙනෙක් අවශ්‍යද කියලා හිතන්න. MHA එකේ query head 32කට KV head 32ක්, GQA එකේ 8 KV heads-ийг query heads කණ්ඩායම් share කරනවා, MQA එකේ හැමෝටම KV head එකයි. d=4,096 සහ head_dim=128 නම් 8 KV heads සඳහා K matrix එකේ output පැත්ත 8×128=1,024 වෙනවා. KV heads අඩු කළාම cache එක අඩු වෙනවා, නමුත් weights තවම memory එකේ තියෙනවා.',
       examRefs: ['NN-062', 'NN-063', 'NN-099', 'NN-137', 'NN-149'],
       body: [
         'Generate කරද්දී (inference) model එක කලින් tokens වල Keys සහ Values ආයේ ගණනය නොකර KV cache එකක තියාගන්නවා. Context එක දිගු වෙද්දී මේ cache එක ලොකු වෙනවා, ඒ වගේම හැම token එකකදීම ඒක GPU memory එකෙන් කියවන්න ඕනේ. Decoding එක memory-bandwidth-bound නිසා cache එක පොඩි කරන එක ලොකු වේගයක් දෙනවා.',
@@ -423,7 +436,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 13
     {
       id: 'flashattention-deep-dive',
-      title: 'FlashAttention: Tiling, Online Softmax, Memory, Backward සහ FlashAttention-2',
+      title: 'FlashAttention: Tiling, Online Softmax, Memory, Backward, and FlashAttention-2',
+      si: 'ඔයා Pettah වෙළඳසැලෙන් බඩු ගෙනැවිත් කුස්සියේම කෑම හදනවා කියලා හිතන්න; හැම පියවරකටම නැවත වෙළඳසැලට යන එක කාලය ගන්නවා. FlashAttention Q, K, V කුඩා blocks විදිහට fast SRAM තුළ ගණනය කරලා, විශාල n×n score matrix එක HBM වෙත ලියන්නේ නෑ. ඒක සාමාන්‍ය attention එකට සමාන නිවැරදි ප්‍රතිඵල දෙනවා; FLOPs තවම O(n²), නමුත් memory ගමන් අඩුයි. Online softmax එක blocks අතර running max සහ sum තියාගෙන අවසානයේ නිවැරදි softmax එක හදනවා.',
       examRefs: ['NN-074', 'NN-075', 'NN-113', 'NN-114', 'NN-115', 'NN-148'],
       body: [
         'GPU එකක memory වර්ග දෙකක්: HBM (ලොකුයි, ගිගාබයිට් ගණන්, ඒත් සාපේක්ෂව හෙමින්) සහ on-chip SRAM (ඉතා පොඩියි, ඒත් ඉතා වේගවත්). සාමාන්‍ය attention එක n × n score matrix එක HBM එකට ලියනවා, softmax කරන්න ආයේ කියවනවා, ආයේ ලියනවා, V එක්ක ගුණ කරන්න ආයේ කියවනවා. Attention එක compute-bound නෙවෙයි, memory-traffic-bound. FlashAttention එකේ ප්‍රධාන අදහස: IO-aware වෙන එක. Q, K, V blocks (tiles) වලට කඩලා SRAM එකට ගෙනල්ලා, matmul + softmax + matmul එක kernel එකක fuse කරනවා. සම්පූර්ණ n × n matrix එක කවදාවත් HBM එකට ලියන්නේ නෑ.',
@@ -454,7 +468,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 14
     {
       id: 'long-context-attention-tricks',
-      title: 'Sliding-Window, Sparse, Linear Attention, Attention Sinks සහ Logit Soft-Capping',
+      title: 'Sliding-Window and Sparse Attention, Attention Sinks, and Logit Soft-Capping',
+      si: 'ඔයා cricket field එකේ ළඟ players අතරින් පමණක් ball එක යවනවා නම් ඒක sliding window එකක් වගේ, නමුත් layers හරහා relay කරලා දුරටත් තොරතුරු යන්න පුළුවන්. Longformer එකේ විශේෂ global tokens හැම තැනක්ම බලනවා. StreamingLLM එක අලුත් tokens එක්ක මුල් sink tokens කිහිපයත් cache එකේ තියාගන්නවා. Gemma 2 වගේ soft-cap එක logit ඉතා ලොකු වුණාම smooth ලෙස සීමා කරනවා; hard clipping වගේ gradient එක හදිසියේ නවත්වන්නේ නෑ.',
       examRefs: ['NN-076', 'NN-077', 'NN-120', 'NN-130', 'NN-136', 'NN-150'],
       body: [
         'Sliding-window attention (Mistral 7B): හැම token එකක්ම බලන්නේ කලින් w tokens ගණනට විතරයි. Cost එක O(n · w), w fixed නිසා n ට රේඛීයයි. ඒත් තොරතුරු w ට වඩා දුර යන්න පුළුවන්: layer එකක window එක කලින් layer එකේ windows උඩ stack වෙනවා. Layer එකකට තව window එකක් පස්සට. ඉතින් theoretical receptive field ≈ layers × w (stacked convolutions වගේ). ප්‍රායෝගිකව hops ගොඩක් යද්දී තොරතුරු දුර්වල වෙන නිසා effective recall එක මේ සීමාවට වඩා අඩුයි.',
@@ -485,7 +500,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 15
     {
       id: 'scaling-laws',
-      title: 'Scaling Laws: Kaplan, Chinchilla, 6ND, 2N සහ Chinchilla වලින් එහාට',
+      title: 'Scaling Laws: Kaplan, Chinchilla, 6ND, 2N, and Beyond',
+      si: 'ඔයා විභාගයට ලොකු පොතක් ගන්නවා වගේ model parameters වැඩි කරන එක පමණක් ප්‍රමාණවත් නෑ; dataත් ප්‍රමාණවත් ඕනේ. Chinchilla rule of thumb එක parameter එකකට tokens 20ක් පමණ යෝජනා කරනවා, ඒ නිසා 70B model එකකට 70×20=1.4T tokens. Training compute එක ආසන්නයෙන් 6ND; 10 ගුණයක් compute ලැබුණොත් N සහ D දෙකම √10≈3.16 ගුණයක් වැඩි කරන්න පුළුවන්. Inference ගොඩක් කරනවා නම් වැඩි tokens වලින් train කළ කුඩා model එකක් භාවිතා කිරීම වටිනවා.',
       examRefs: ['NN-041', 'NN-042', 'NN-081', 'NN-082', 'NN-083', 'NN-084', 'NN-131', 'NN-132', 'NN-133', 'NN-134', 'NN-135'],
       body: [
         'Scaling laws (Kaplan et al., 2020): test loss එක model size (N), data (D) සහ compute (C) එක්ක power law එකක් විදිහට අඩු වෙනවා, අනිත් ඒවා bottleneck නොවෙන තාක් කල්. Power law කියන්නේ "දෙගුණ කරන හැම පාරකම loss එක එකම ප්‍රතිශතයකින් අඩු වෙනවා" වගේ smooth curve එකක්. Heads ගණන වගේ එක hyperparameter එකකට linear නෙවෙයි. Kaplan ගේ fits නිසා compute වැඩි වෙද්දී parameters data වලට වඩා ගොඩක් වේගයෙන් වැඩි කරන්න කිව්වා: GPT-3 (175B, tokens ~300B, parameter එකකට tokens ~1.7) වගේ ලොකු, අඩුවෙන් train කරපු models.',
@@ -516,7 +532,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 16
     {
       id: 'mixture-of-experts',
-      title: 'Mixture of Experts: Routing, Load Balancing, Expert Capacity, Switch සහ DeepSeekMoE',
+      title: 'Mixture of Experts: Routing, Load Balancing, Capacity, Switch, and DeepSeekMoE',
+      si: 'ඔයා ලොකු රෝහලක triage nurse කෙනෙක් වගේ router එක එක් token එකට සුදුසු experts තෝරනවා. Experts 8ක් තිබුණත් token එකකට top-2 පමණක් වැඩ කරන නිසා active compute අඩුයි, නමුත් සියලු experts වල weights memory එකේ තියෙන්න ඕනේ. Tokens 4,096ක් experts 8ට බෙදලා capacity factor 1.25 දුන්නොත් එක් expert එකට 4,096÷8×1.25=640 slots. එක් expert එකකට 700 tokens ආවොත් 60ක් එහි ගණනය මඟහැර residual path එකෙන් යන්න පුළුවන්.',
       examRefs: ['NN-040', 'NN-078', 'NN-079', 'NN-080', 'NN-125', 'NN-126', 'NN-127'],
       body: [
         'MoE layer එකක block එකේ එක FFN එකක් වෙනුවට expert FFNs ගොඩක් තියෙනවා. Router (gating network) එක හැම token එකකටම experts score කරලා top-k විතරක් active කරනවා. Total parameters ගොඩක් වැඩි වෙනවා, ඒත් token එකකට compute එක සාධාරණයි. Experts ඔක්කොගේම සාමාන්‍යය හැම token එකකටම ගත්තොත් ඒක dense model එකක්, compute ඉතිරියක් නෑ. Router එක GPU තෝරන්නේ නෑ, layers පිළිවෙළ තීරණය කරන්නෙත් නෑ.',
@@ -547,7 +564,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 17
     {
       id: 'state-space-models',
-      title: 'State-Space Models: Mamba, Selective SSM, Parallel Scan සහ Hybrids',
+      title: 'State-Space Models: Mamba, Selective SSMs, Parallel Scan, and Hybrids',
+      si: 'ඔයා පන්තියේ වැදගත් කරුණු එක පිටුවක සාරාංශ කරනවා වගේ SSM එකක් දිග ඉතිහාසය fixed-size state එකක තියාගන්නවා. Mamba input එක අනුව Δ, B, C වෙනස් කරලා මොන තොරතුරු මතකයේ තියාගන්නද තෝරනවා. එක මිලියනයක් tokens එකින් එක ගණනය කරනවාට වඩා associative parallel scan එකේ depth එක log₂(2²⁰)=20 පමණයි. Transformer එකක KV cache එක context දිගටම වැඩෙන අතර SSM state එක fixed size එකක්.',
       examRefs: ['NN-121', 'NN-122', 'NN-123', 'NN-124'],
       body: [
         'State-space model (SSM) එකක් RNN එකක් වගේ: මුළු ඉතිහාසයම constant-size state එකකට compress කරනවා. සරලව: h_t = A·h_(t−1) + B·x_t, y_t = C·h_t. h_t = state එක (මතකය), x_t = අලුත් input එක, A = පරණ මතකය කොච්චර තියාගන්නද, B = අලුත් input එක කොච්චර ලියනවද, C = state එකෙන් output එක කියවන විදිහ. ප්‍රධාන වාසිය: training cost එක sequence length එකට රේඛීයයි, generation වලදී වැඩෙන KV cache එකක් වෙනුවට fixed-size recurrent state එකක්. ඉතින් token එකකට generation cost සහ memory context එකත් එක්ක වැඩි වෙන්නේ නෑ. අවාසිය: කලින් ඕනෑම token එකක් හරියටම මතක් කරන (exact recall) හැකියාව full attention එකට වඩා දුර්වල වෙන්න පුළුවන්.',
@@ -576,7 +594,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 18
     {
       id: 'vision-and-multimodal',
-      title: 'Vision Transformer, CLIP, LLaVA සහ ViT ට Data ගොඩක් ඕනේ ඇයි',
+      title: 'Vision Transformers, CLIP, LLaVA, and Why ViT Needs More Data',
+      si: 'ඔයා 224×224 photo එකක් 16×16 කොටස් වලට කපනවා නම් එක් පැත්තක 224÷16=14 patches, මුළු patch tokens 14×14=196යි. ViT ඒ කොටස් වචන වගේ Transformer එකට දෙයි, ඒත් CNN වගේ අසල්වැසි pixels වැදගත් කියන bias එක කලින් දන්නේ නෑ. ඒ නිසා ViT එකට දත්ත ගොඩක් ඕනේ. CLIP photos සහ captions ගළපනවා; LLaVA vision features projector එකකින් LLM token space එකට ගෙනෙනවා.',
       examRefs: ['NN-046', 'NN-047', 'NN-100', 'NN-101', 'NN-145', 'NN-146', 'NN-147'],
       body: [
         'ViT image එක transformer input එකක් කරන්නේ මෙහෙමයි: image එක fixed-size patches වලට (උදා: 16×16) කපනවා, හැම patch එකක්ම flatten කරලා linear projection එකකින් token එකක් කරනවා, position embeddings එකතු කරනවා, මුලට class token එකක් ([CLS]) දානවා. හැම pixel එකක්ම token එකක් කළොත් sequence එක අතිවිශාලයි, attention O(n²) නිසා ගණනය කරන්න බෑ.',
@@ -606,7 +625,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 19
     {
       id: 'generative-architectures',
-      title: 'Autoencoders, VAE Reparameterization, Diffusion (DDPM, DDIM, CFG, Latent, DiT) සහ FID',
+      title: 'Autoencoders, VAEs, Diffusion (DDPM, DDIM, CFG, Latents, DiT), and FID',
+      si: 'ඔයා දූවිලි වැදුණු පින්තූරයක් ටිකෙන් ටික පිරිසිදු කරනවා වගේ diffusion model එක noise එක අඩු කරමින් image එක හදනවා. CFG එක prompt තියෙන සහ නැති predictions අතර වෙනස වැඩි කරලා description එකට වැඩි අවධානයක් දෙන්න කියනවා. Latent diffusion එක මුලින් photo එක කුඩා latent එකකට හරවන නිසා 512×512×3 අගයන් වෙනුවට 64×64×4, අගයන් 48 ගුණයක් අඩුවෙන් වැඩ කරනවා. VAE එකේ reparameterization trick එකෙන් μ සහ σ හරහා gradients ගලා යන්න පුළුවන්.',
       examRefs: ['NN-044', 'NN-045', 'NN-049', 'NN-102', 'NN-103', 'NN-104', 'NN-105', 'NN-142', 'NN-143', 'NN-144'],
       body: [
         'Autoencoder: encoder එක input එක පොඩි latent code එකකට (bottleneck) compress කරනවා, decoder එක ආයේ input එක reconstruct කරනවා, reconstruction loss එකකින් train වෙනවා. GAN එකක් කවදාවත් දීපු input එකක් reconstruct කරන්නේ නෑ. VAE (Variational Autoencoder): reconstruction loss එකට අමතරව KL divergence term එකක්, encoder එකේ latent distribution එක standard normal prior එකට ඇදලා තියනවා. ඒ නිසා latent space එක smooth, sample කරන්න පුළුවන්. මුළු objective එක ELBO. Adversarial loss GAN වල.',
@@ -638,7 +658,8 @@ head.weight = emb.weight     # weight tying: දැන් matrix එක එක�
     // 20 (beyond exam)
     {
       id: 'tiny-gpt-forward-pass-and-config',
-      title: 'Beyond the Exam: Tiny GPT එකක Forward Pass එක Shapes එක්ක සහ config.json කියවීම',
+      title: 'Beyond the Exam: A Tiny GPT Forward Pass and Reading config.json',
+      si: 'ඔයා tiny GPT එකකට batch 1ක tokens 5ක් දෙනවා කියලා හිත. Embedding-ээс පස්සේ shape එක (1,5,64), attention heads 4කට බෙදුවාම (1,4,5,16), scores shape එක (1,4,5,5) වෙනවා. Block එකේ residual stream shape එක (1,5,64) ලෙසම පවතිනවා; LM head එක අවසානයේ vocabulary 1,000 logits දෙයි. config.json කියවලා hidden size 4,096 සහ heads 32 නම් head_dim=4,096÷32=128 කියලා ගණනය කරන්න පුළුවන්.',
       examRefs: ['NN-035', 'NN-048', 'NN-052', 'NN-061', 'NN-090', 'NN-094'],
       body: [
         'දැන් අපි ඉගෙන ගත්ත කෑලි ඔක්කොම එකට තියලා tiny GPT එකක් හරහා එක forward pass එකක් යමු. Settings: vocab 1,000, d_model 64, heads 4 (head_dim 16), layers 2, FFN hidden 256, batch 1, input tokens 5. (1) Token IDs: (1, 5). (2) nn.Embedding lookup: (1, 5, 64). Learned positions නම් position vectors (5, 64) එකතු කරනවා (RoPE නම් මෙතන නෙවෙයි, attention ඇතුළේ). (3) Block එක ඇතුළේ: Norm → (1, 5, 64). Q, K, V projections: (1, 5, 64) බැගින්. Heads වලට reshape + transpose: (1, 4, 5, 16). Scores q@kᵀ: (1, 4, 5, 5). Causal mask, softmax. weights@v: (1, 4, 5, 16). Transpose + reshape: (1, 5, 64). W_O: (1, 5, 64). Residual add.',
@@ -679,84 +700,84 @@ print(2 * L * kv * hd * 2 / 1024, 'KiB KV cache per token (FP16)')  # 128`,
 
   quiz: [
     {
-      q: 'Sigmoid layers 10ක් හරහා (හැම එකකම derivative එක උපරිම 0.25, weights ≈ 1) පළමු layer එකට එන gradient factor එක ආසන්න වශයෙන් කීයද?',
-      options: ['0.025', '2.5', 'ආසන්න වශයෙන් 10⁻⁶', 'ආසන්න වශයෙන් 10⁻²⁰'],
+      q: 'Across 10 sigmoid layers, each with a maximum derivative of 0.25 and weights near 1, what is the approximate gradient factor reaching the first layer?',
+      options: ['0.025', '2.5', 'Approximately 10⁻⁶', 'Approximately 10⁻²⁰'],
       answer: 2,
-      why: '0.25¹⁰ ≈ 9.5 × 10⁻⁷ ≈ 10⁻⁶. 0.025 එන්නේ 0.25 × 0.1 කියලා වැරදියට ගුණ කළොත්. බලය (power) දාන්න ඕනේ.',
+      why: '0.25¹⁰≈9.5×10⁻⁷≈10⁻⁶. The incorrect 0.025 comes from multiplying 0.25 by 0.1; the derivative must be raised to a power.',
     },
     {
-      q: 'SwiGLU FFN එකක d_model = 4,096, hidden = 11,008, biases නෑ. Parameters කීයද?',
+      q: 'How many parameters are in a SwiGLU FFN with d_model=4,096, hidden=11,008, and no biases?',
       options: ['≈ 45M', '≈ 90M', '≈ 135M', '≈ 180M'],
       answer: 2,
-      why: 'Gate, up, down matrices තුනයි, හැම එකක්ම 4,096 × 11,008 ≈ 45.1M. 3 × 45.1M ≈ 135M. 90M = matrices දෙකක් විතරක් ගණන් කරපු වැරැද්ද.',
+      why: 'There are three gate, up, and down matrices, each 4,096×11,008≈45.1M parameters. Three times 45.1M is about 135M; 90M counts only two matrices.',
     },
     {
-      q: 'd_model = 4,096, query heads 32 (head_dim 128), KV heads 8 තියෙන GQA model එකක W_K matrix එකේ shape එක මොකක්ද?',
+      q: 'For GQA with d_model=4,096, 32 query heads (head_dim 128), and 8 KV heads, what is the shape of W_K?',
       options: ['4,096 × 4,096', '4,096 × 1,024', '4,096 × 128', '1,024 × 1,024'],
       answer: 1,
-      why: 'W_K = d_model × (KV heads × head_dim) = 4,096 × (8 × 128) = 4,096 × 1,024. 4,096 × 4,096 = MHA, 4,096 × 128 = MQA.',
+      why: 'W_K=d_model×(KV heads×head_dim)=4,096×(8×128)=4,096×1,024. A 4,096×4,096 matrix is MHA; 4,096×128 is MQA.',
     },
     {
-      q: 'Layer එකක්, heads 32, batch 1, sequence 4,096, FP16 නම් full attention score matrix එකට memory කීයද?',
+      q: 'How much memory does a full attention score matrix need for one layer, 32 heads, batch 1, sequence length 4,096, and FP16?',
       options: ['32 MiB', '128 MiB', '512 MiB', '1 GiB'],
       answer: 3,
-      why: '4,096² = 16.8M scores × 32 heads = 536.9M scores × 2 bytes = 1,073,741,824 bytes = 1 GiB. FlashAttention මේක materialize කරන්නේ නැත්තේ ඒ නිසා.',
+      why: '4,096²=16.8M scores per head; ×32=536.9M scores; ×2 bytes=1,073,741,824 bytes=1 GiB. FlashAttention avoids materializing this matrix.',
     },
     {
-      q: 'FlashAttention ගැන වැරදි ප්‍රකාශය කුමක්ද?',
+      q: 'Which statement about FlashAttention is false?',
       options: [
-        'ඒක HBM reads/writes අඩු කරනවා',
-        'ඒක standard attention එකට වඩා වෙනස් approximate outputs දෙනවා',
-        'Forward pass එකේ අමතර memory O(n) (row statistics)',
-        'FLOPs තවමත් O(n²)',
+        'It reduces HBM reads and writes',
+        'It produces approximate outputs that differ from standard attention',
+        'The forward pass uses O(n) extra memory for row statistics',
+        'FLOPs remain O(n²)',
       ],
       answer: 1,
-      why: 'FlashAttention exact (rounding හැර). වාසිය memory traffic වලින්. Backward එකේදී save කරපු statistics වලින් recompute කරනවා.',
+      why: 'FlashAttention is exact apart from floating-point rounding. Its benefit comes from lower memory traffic; backward recomputes from saved statistics.',
     },
     {
-      q: 'RoPE relative position encode කරනවා කියන්නේ ඇයි, vectors absolute position එකෙන් rotate කළත්?',
+      q: 'Why does RoPE encode relative position even though it rotates vectors according to absolute position?',
       options: [
-        'Distance එකකට learned bias එකක් එකතු කරන නිසා',
-        'Position m න් rotate කරපු query එකයි n න් rotate කරපු key එකයි අතර dot product එක m − n මත විතරක් රඳා පවතින නිසා',
-        'Positions sequence length එකෙන් බෙදන නිසා',
-        'Adjacent tokens වලට විතරක් apply වෙන නිසා',
+        'Because it adds a learned bias for each distance',
+        'Because the dot product between a query rotated at m and a key rotated at n depends only on m−n',
+        'Because positions are divided by sequence length',
+        'Because it applies only to adjacent tokens',
       ],
       answer: 1,
-      why: 'Rotations compose වෙනවා: (R_m q)·(R_n k) = q·(R_(n−m) k). Learned bias per distance කියන්නේ T5 relative bias.',
+      why: 'Rotations compose: (R_m q)·(R_n k)=q·(R_(n−m)k). A learned bias per distance is T5 relative bias.',
     },
     {
-      q: 'Chinchilla rule of thumb එකට අනුව 70B model එකකට compute-optimal training tokens කීයද?',
+      q: 'Under the Chinchilla rule of thumb, how many compute-optimal training tokens should a 70B model use?',
       options: ['140B', '300B', '1.4T', '14T'],
       answer: 2,
-      why: '70B × parameter එකකට tokens 20 = 1.4T. 300B කියන්නේ 175B GPT-3 පාවිච්චි කරපු ප්‍රමාණය, ඒක undertrained.',
+      why: '70B×20 tokens per parameter=1.4T. The 300B option is the amount used for 175B GPT-3, which was undertrained by this rule.',
     },
     {
-      q: 'Sliding-window attention, window 4,096, layers 32. Input එකේ ඉඳන් top layer එකට තොරතුරු යන්න පුළුවන් theoretical උපරිම දුර කීයද?',
+      q: 'With sliding-window attention, window 4,096, and 32 layers, what is the theoretical maximum distance information can travel from input to the top layer?',
       options: ['4,096', '8,192', '32', '≈ 131K (32 × 4,096)'],
       answer: 3,
-      why: 'හැම layer එකක්ම තව window එකක් පස්සට තොරතුරු ගෙනියනවා, ඉතින් receptive field ≈ layers × w = 131,072. ප්‍රායෝගික recall එක මීට අඩුයි.',
+      why: 'Each layer can pass information another window backward, so receptive field≈layers×w=131,072. Practical recall is lower.',
     },
     {
-      q: 'MoE training වලදී දැනටමත් පිරුණු expert කෙනෙක්ට route වෙන tokens වලට සාමාන්‍යයෙන් මොකද වෙන්නේ?',
+      q: 'During MoE training, what usually happens to tokens routed to an expert that is already at capacity?',
       options: [
-        'Experts ඔක්කොටම යවනවා',
-        'මුළු batch එකම discard කරනවා',
-        'ඒ layer එකේ expert computation එකෙන් drop වෙලා residual connection එක හරහා යනවා',
-        'Expert capacity එක automatic වැඩි වෙනවා',
+        'They are sent to every expert',
+        'The entire batch is discarded',
+        'They skip that layer’s expert computation and continue through the residual connection',
+        'The expert capacity increases automatically',
       ],
       answer: 2,
-      why: 'Fixed capacity = (tokens/experts) × capacity factor නිසා static shapes ලැබෙනවා. Overflow tokens expert එක මගහැරලා residual එකෙන් ඉස්සරහට යනවා.',
+      why: 'Fixed capacity=(tokens/experts)×capacity factor gives static shapes. Overflow tokens skip the expert and continue along the residual path.',
     },
     {
-      q: 'Text-to-image diffusion වල classifier-free guidance කරන්නේ මොකක්ද?',
+      q: 'What does classifier-free guidance do in text-to-image diffusion?',
       options: [
-        'වෙනම image classifier එකක් train කරලා sampling steer කරනවා',
-        'Unconditional noise prediction එකේ ඉඳන් text-conditional prediction එක දිශාවට extrapolate කරනවා',
-        'Sampling වලදී text encoder එක අයින් කරනවා',
-        'Denoising steps එකකට අඩු කරනවා',
+        'It trains a separate image classifier to steer sampling',
+        'It extrapolates from unconditional noise prediction toward the text-conditional prediction',
+        'It removes the text encoder during sampling',
+        'It reduces denoising to one step',
       ],
       answer: 1,
-      why: 'ε = ε_uncond + w·(ε_cond − ε_uncond). එකම model එක prompt එක්කත් නැතුවත් predict කරනවා. External classifier gradients කියන්නේ පරණ classifier guidance.',
+      why: 'ε=ε_uncond+w·(ε_cond−ε_uncond). The same model predicts with and without the prompt. External classifier gradients describe the older classifier-guidance method.',
     },
   ],
 }

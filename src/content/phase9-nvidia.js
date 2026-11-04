@@ -1,656 +1,1170 @@
 export default {
-  id: 'nvidia',
-  number: 9,
-  title: 'NVIDIA AI Stack & LLM Serving',
-  titleSi: 'NVIDIA AI Stack: GPU එකේ ඉඳන් LLM එකක් users ලට serve කරනකම්',
-  summary:
-    'LLM එකක් හදන්න, train කරන්න, users ලට දෙන්න ඕනේ GPUs, libraries, servers ගොඩක්. මේ phase එකෙන් ඔයා NVIDIA GPU එකක් ඇතුළේ මොනවද තියෙන්නේ, CUDA, TensorRT, Triton, NIM, NeMo වගේ tools මොකටද, LLM serving වල TTFT, KV cache, batching වගේ දේවල් වැඩ කරන්නේ කොහොමද කියලා ඉගෙන ගන්නවා. NVIDIA NCA-GENL exam එකේ ලොකු කොටසක් එන්නේ මේ ටිකෙන්.',
-  duration: 'සති 4-6',
-  topics: [
+  "id": "nvidia",
+  "number": 9,
+  "title": "NVIDIA AI Stack & LLM Serving",
+  "titleSi": "NVIDIA AI platform: from GPU hardware to serving language models",
+  "summary": "Learn how NVIDIA GPU hardware, CUDA libraries, model optimization and serving systems work together. This phase covers GPU architecture and precision, multi-GPU communication, TensorRT, Triton, NIM, LLM serving metrics, batching, memory planning, operations, and PyTorch tooling for NVIDIA NCA-GENL preparation.",
+  "duration": "4-6 weeks",
+  "topics": [
     {
-      id: 'gpu-hardware-basics',
-      examRefs: ['DEP-001', 'DEP-002', 'DEP-003', 'DEP-004'],
-      title: 'GPU Hardware: CUDA Cores, Tensor Cores, SMs, Warps, HBM',
-      body: [
-        'GPU එකක් කියන්නේ එකම වැඩේ දහස් ගණනක් එකවර කරන්න පුළුවන් chip එකක්. CPU එකක තියෙන්නේ ගොඩක් දක්ෂ cores ටිකයි. GPU එකක තියෙන්නේ සරල cores දහස් ගණනක්. AI වල ගොඩක් වැඩ matrix multiplication නිසා, GPU එක ඒකට හරියටම ගැළපෙනවා.',
-        'GPU එක හැදිලා තියෙන්නේ Streaming Multiprocessors (SMs) කියන blocks ගොඩකින්. හැම SM එකක් ඇතුළෙම CUDA cores, Tensor Cores, registers, shared memory තියෙනවා. ඔයාගේ program එකේ thread blocks hardware එක විසින් SMs වලට බෙදලා දෙනවා. SM එක threads run කරන්නේ 32 දෙනාගේ කණ්ඩායම් වලින්. ඒ කණ්ඩායමට කියන්නේ warp කියලා. Warp එකක threads 32ම එකම instruction එක එකවර කරනවා. (AMD වල "wavefront" එක 64ක්, ඒක පටලවගන්න එපා.)',
-        'CUDA cores කරන්නේ සාමාන්‍ය ගණන් (scalar/vector arithmetic), thread එකකට එක ගණනක් වගේ. Tensor Cores කියන්නේ විශේෂ units. ඒවා එක instruction එකකින් පොඩි matrix tile එකක multiply-accumulate එකක්ම කරනවා, සාමාන්‍යයෙන් FP16/BF16/FP8 වගේ අඩු precision එකකින්, accumulate කරන්නේ වැඩි precision එකකින්. Transformers වල වැඩි කාලයක් යන GEMM (matrix multiply) වැඩේට Tensor Cores තමයි වීරයා. Tensor Cores memory එකක් නෙවෙයි, compute units.',
-        'HBM (High Bandwidth Memory) කියන්නේ A100, H100 වගේ data-center GPUs වල ප්‍රධාන memory එක. DRAM chips එක උඩ එක තට්ටු කරලා (stacked) GPU die එක ළඟින්ම එකම package එකේ තියලා, ගොඩක් පළල bus එකකින් connect කරනවා. ඒ නිසා තත්පරයට terabytes ගණනක් (TB/s) bandwidth ලැබෙනවා. Gaming cards වල තියෙන්නේ GDDR (පටු bus, වැඩි clock). SM එක ඇතුළේ තියෙන shared memory කියන්නේ පොඩි on-chip SRAM එකක්, ඒක HBM නෙවෙයි.',
+      "id": "gpu-hardware-basics",
+      "examRefs": [
+        "DEP-001",
+        "DEP-002",
+        "DEP-003",
+        "DEP-004"
       ],
-      analogy:
-        'GPU එක ලොකු කොත්තු කඩයක් කියලා හිතන්න. SM එකක් කියන්නේ එක කුස්සියක්. කුස්සියක ඉන්න සාමාන්‍ය කෝකියෝ CUDA cores. Tensor Core එක කියන්නේ එක පාරට කොත්තු plate 16ක් කොටන විශේෂ machine එකක්. Warp එක කියන්නේ එකම order එක එකවර කරන කෝකියෝ 32 දෙනාගේ කණ්ඩායමක්. HBM කියන්නේ කුස්සිය ළඟින්ම තියෙන ලොකු ගබඩාව, ඒකට තියෙන්නේ lanes සිය ගණනක් තියෙන පළල පාරක්.',
-      example:
-        'H100 එකක SMs සිය ගණනක් තියෙනවා. ඔයා thread 1024ක block එකක් launch කරාම, ඒක SM එකක run වෙන්නේ warps 32ක් (1024 ÷ 32) විදිහට. ඒ නිසා block size එක හැමවෙලේම 32 ගුණාකාරයක් (128, 256, 512) වෙන්න තෝරන්නේ. 100ක් දැම්මොත් අන්තිම warp එකේ threads 4ක් හිස්ව තියෙනවා.',
-      keyPoints: [
-        'SM = GPU එකේ මූලික block එක (CUDA cores + Tensor Cores + registers + shared memory).',
-        'Warp = එකට run වෙන threads 32ක කණ්ඩායම.',
-        'Tensor Cores = අඩු precision matrix multiply-accumulate කරන විශේෂ units. Transformers වේගවත් වෙන්නේ මේවා නිසා.',
-        'HBM = GPU package එකේම stacked DRAM. TB/s bandwidth. GDDR සහ shared memory එක්ක පටලවගන්න එපා.',
+      "title": "GPU Hardware: CUDA Cores, Tensor Cores, SMs, Warps, HBM",
+      "body": [
+        "A GPU is a chip designed to perform many similar operations in parallel. CPUs have fewer, more complex cores; GPUs have many simpler execution units. Matrix multiplication is common in AI, so this parallel design makes GPUs useful for AI workloads.",
+        "A GPU contains Streaming Multiprocessors (SMs). Each SM has CUDA cores, Tensor Cores, registers, and shared memory, and hardware schedules thread blocks onto SMs. Threads execute in groups of 32 called warps; threads in a warp execute the same instruction together. NVIDIA warps have 32 threads; AMD wavefronts commonly have 64.",
+        "CUDA cores handle general scalar and vector arithmetic. Tensor Cores are compute units, not memory: they perform matrix multiply-accumulate operations on small tiles, often using FP16, BF16, or FP8 inputs with higher-precision accumulation. They accelerate GEMM operations common in Transformers.",
+        "A100 and H100 data-center GPUs use High Bandwidth Memory (HBM): stacked DRAM close to the GPU die, connected through a wide interface for very high bandwidth. Many gaming GPUs use GDDR memory instead. Shared memory is small, on-chip SRAM inside an SM; it is not HBM."
       ],
-      terms: [
-        { en: 'CUDA Core', si: 'Scalar/vector ගණන් කරන සාමාන්‍ය GPU core එක.' },
-        { en: 'Tensor Core', si: 'පොඩි matrix tiles වල multiply-accumulate එක instruction එකකින් කරන විශේෂ unit එක. Volta generation එකෙන් මුලින්ම ආවා.' },
-        { en: 'Streaming Multiprocessor (SM)', si: 'Thread blocks schedule වෙන hardware block එක. GPU එකක SMs ගොඩක් තියෙනවා.' },
-        { en: 'Warp', si: 'NVIDIA GPU එකක එකට execute වෙන threads 32ක group එක.' },
-        { en: 'HBM', si: 'High Bandwidth Memory. GPU die එක ළඟ stacked DRAM, ඉතා පළල interface එකකින් TB/s ලබාදෙනවා.' },
-        { en: 'GEMM', si: 'General Matrix Multiply. Transformer layers වල වැඩි කාලයක් යන්නේ මේකට.' },
+      "analogy": "Imagine a large kottu shop. Each SM is a kitchen, CUDA cores are cooks handling individual calculations, and a Tensor Core is a machine that quickly mixes a small matrix-sized batch. A warp is 32 cooks following the same instruction. HBM is the nearby warehouse connected by a wide road.",
+      "example": "A thread block with 1,024 threads is scheduled as 1,024 ÷ 32 = 32 warps. A block size divisible by 32, such as 128, 256, or 512, avoids unused lanes. A block of 100 uses four warps, with 100 − 96 = 4 threads in the last warp and 28 inactive lanes.",
+      "keyPoints": [
+        "SMs contain compute units and on-chip resources; thread blocks are scheduled onto SMs.",
+        "A warp is 32 NVIDIA threads executing together.",
+        "CUDA cores handle general arithmetic; Tensor Cores accelerate matrix multiply-accumulate.",
+        "HBM is stacked high-bandwidth memory; shared memory is on-chip SRAM, and GDDR is a different memory type."
       ],
+      "terms": [
+        {
+          "en": "CUDA Core",
+          "si": "A GPU execution unit for general scalar and vector arithmetic."
+        },
+        {
+          "en": "Tensor Core",
+          "si": "A specialized compute unit for matrix multiply-accumulate operations."
+        },
+        {
+          "en": "Streaming Multiprocessor (SM)",
+          "si": "A GPU hardware unit that schedules and runs thread blocks."
+        },
+        {
+          "en": "Warp",
+          "si": "A group of 32 NVIDIA threads that execute together."
+        },
+        {
+          "en": "HBM",
+          "si": "High Bandwidth Memory: stacked DRAM close to a GPU die with a wide interface."
+        },
+        {
+          "en": "GEMM",
+          "si": "General Matrix Multiply, a common operation in transformer layers."
+        }
+      ],
+      "si": "ඔයා GPU එක Colombo කෑම කඩයක කුස්සියක් වගේ හිතන්න. SM එකක් කුස්සියක්, CUDA cores සාමාන්‍ය වැඩ කරන කෝකියෝ, Tensor Core එක නම් plate ගොඩකට එකවර කොත්තු දාන machine එකක් වගේ. Warp එකක කෝකියෝ 32 දෙනා එකම instruction එකට වැඩ කරනවා. HBM කියන්නේ කුස්සිය ළඟ තියෙන ලොකු ගබඩාව; shared memory නම් කුස්සිය ඇතුළේ පොඩි shelf එකක්."
     },
     {
-      id: 'gpu-generations-precision',
-      examRefs: ['DEP-005', 'DEP-006', 'DEP-007', 'DEP-124', 'DEP-126'],
-      title: 'GPU Generations & Number Precisions (FP32, TF32, FP16, BF16, INT8, FP8)',
-      body: [
-        'NVIDIA data-center GPUs වල නම් වල මුල් අකුරෙන් architecture එක කියවෙනවා. V100 = Volta (Tensor Cores මුලින්ම ආවේ මෙතනින්). A100 = Ampere (TF32 සහ BF16 Tensor Core support එක ආවා). H100 = Hopper (FP8 Tensor Cores සහ Transformer Engine ආවා). B200 = Blackwell (දෙවෙනි generation Transformer Engine එක, FP4 support එකත් එක්ක). A100 ට Hopper, H100 ට Ampere කියලා මාරු කරන එක exam එකේ පොදු උගුලක්.',
-        'Precision කියන්නේ එක අංකයක් ගබඩා කරන්න bits කීයක් පාවිච්චි කරනවද කියන එක. FP32 = bytes 4. FP16 සහ BF16 = bytes 2. INT8 සහ FP8 = byte 1. INT4/FP4 = byte භාගයක්. අඩු bits නම් memory අඩුයි, වේගය වැඩියි, ඒත් නිරවද්‍යතාව ටිකක් අඩු වෙන්න පුළුවන්.',
-        'FP16 සහ BF16 දෙකම bits 16යි, memory එක සමානයි. වෙනස මෙහෙමයි: BF16 ට FP32 ට සමාන exponent range එකක් තියෙනවා (ලොකු පොඩි අංක දෙකම අල්ලගන්න පුළුවන්), ඒත් mantissa bits අඩුයි (7, FP16 ට 10). ඒ නිසා FP16 වල පොඩි gradients බිංදුවට වැටෙන (underflow) ප්‍රශ්නය BF16 වල වෙන්නේ නැති තරම්. TF32 කියන්නේ Ampere එකෙන් ආපු mode එකක්. FP32 matmuls Tensor Cores මත run කරන්න දෙනවා, accumulate කරන්නේ FP32 වලින්. PyTorch වල FP32 matmuls වලට TF32 default එකෙන් off. torch.set_float32_matmul_precision("high") දැම්මාම on වෙනවා.',
-        'Transformer Engine කියන්නේ Hopper එකෙන් ආපු hardware + software එකක්. ඒක layer එකෙන් layer එකට scaling factors බලාගන්න නිසා FP8 training සහ inference ආරක්ෂිතව කරන්න පුළුවන්. NeMo සහ Megatron-LM FP8 training වලට ඒක පාවිච්චි කරනවා. වැදගත්: A100 (Ampere) එකේ native FP8 Tensor Cores නෑ. A100 වලට INT8 හරි weight-only INT4 හරි තමයි යොදන්නේ. FP8 තියෙන්නේ Ada Lovelace (L40S), Hopper (H100), Blackwell (B200) වල.',
+      "id": "gpu-generations-precision",
+      "examRefs": [
+        "DEP-005",
+        "DEP-006",
+        "DEP-007",
+        "DEP-124",
+        "DEP-126"
       ],
-      analogy:
-        'Precision කියන්නේ කඩේ තරාදිය වගේ. FP32 කියන්නේ ගෑම් එකකටත් හරියට කියන රත්තරන් තරාදිය. FP16/BF16 කියන්නේ සාමාන්‍ය කඩේ තරාදිය. INT8/FP8 කියන්නේ "කිලෝ භාගයයි, කිලෝ එකයි" විතරක් කියන පරණ තරාදිය. සහල් කිලෝ 50ක් කිරන්න රත්තරන් තරාදිය ඕනේ නෑ. BF16 කියන්නේ ලොකු ගෝනිත් පොඩි පැකට්ටුත් කිරන්න පුළුවන්, ඒත් දශම ස්ථාන අඩු තරාදියක්.',
-      example:
-        'ඔයාට 7B parameter model එකක් තියෙනවා. FP32: 7 × 4 = 28 GB. FP16/BF16: 7 × 2 = 14 GB. INT8/FP8: 7 GB. INT4: 3.5 GB. FP8 වලින් run කරන්න ඕනේ නම් H100 එකක් ගන්න ඕනේ. A100 එකක නම් INT8 හෝ INT4 weight-only quantization එකක් තෝරන්න.',
-      keyPoints: [
-        'Volta (V100) → Ampere (A100) → Hopper (H100) → Blackwell (B200).',
-        'Ampere: TF32 + BF16. Hopper: FP8 + Transformer Engine. Blackwell: FP4.',
-        'BF16 = FP32 range එක, අඩු precision. FP16 training වල loss scaling (GradScaler) ඕනේ, BF16 වල සාමාන්‍යයෙන් ඕනේ නෑ.',
-        'A100 වල native FP8 නෑ.',
+      "title": "GPU Generations & Number Precisions (FP32, TF32, FP16, BF16, INT8, FP8)",
+      "body": [
+        "NVIDIA data-center GPU families indicate their architecture: V100 is Volta, A100 is Ampere, H100 is Hopper, and B200 is Blackwell. Volta introduced Tensor Cores; Ampere added TF32 and BF16 Tensor Core support; Hopper introduced FP8 Tensor Cores and Transformer Engine; Blackwell adds a second-generation Transformer Engine and FP4 support. Do not mix up A100/Ampere and H100/Hopper.",
+        "Precision describes how many bits represent a value. FP32 uses 4 bytes; FP16 and BF16 use 2; INT8 and FP8 use 1; INT4 and FP4 use half a byte per value. Lower precision can reduce memory use and increase speed, but may reduce numerical accuracy.",
+        "FP16 and BF16 both use 16 bits. BF16 has the same exponent range as FP32 but fewer mantissa bits (7 versus FP16’s 10), so it can represent very large and very small magnitudes and is less prone to gradient underflow. Ampere TF32 accelerates FP32 matrix multiplication on Tensor Cores while accumulating in FP32; PyTorch FP32 matmuls do not use TF32 by default, and torch.set_float32_matmul_precision(\"high\") enables it.",
+        "Transformer Engine is NVIDIA hardware and software for adapting per-layer scaling so FP8 can be used in training and inference. NeMo and Megatron-LM can use it for FP8 training. A100 has no native FP8 Tensor Cores; it supports options such as INT8 or weight-only INT4 instead. FP8 is supported on Ada Lovelace (L40S), Hopper (H100), and Blackwell (B200) GPUs."
       ],
-      terms: [
-        { en: 'Volta / Ampere / Hopper / Blackwell', si: 'V100 / A100 / H100 / B200 GPU generations, පිළිවෙළින්.' },
-        { en: 'Transformer Engine', si: 'Per-layer scaling බලාගෙන FP8 (Blackwell වල FP4 ත්) ආරක්ෂිතව පාවිච්චි කරන්න දෙන NVIDIA technology එක. Hopper එකෙන් ආවා.' },
-        { en: 'TF32', si: 'Ampere එකෙන් ආපු format එක. FP32 matmuls Tensor Cores මත run කරනවා.' },
-        { en: 'FP16 / BF16', si: 'Bits 16 formats. BF16 ට FP32 range එක, FP16 ට වැඩි mantissa precision.' },
-        { en: 'INT8 / FP8', si: 'Byte 1 formats. INT8 integer, FP8 floating point (Hopper+ වල native).' },
+      "analogy": "Precision is like a weighing scale. FP32 is a fine jeweller’s scale, FP16/BF16 a regular shop scale, and INT8/FP8 a coarse scale. You do not need jeweller-level precision to weigh 50 kg of rice. BF16 can cover both very large sacks and tiny packets, but gives fewer decimal details.",
+      "example": "For a 7-billion-parameter model, approximate weight storage is: FP32, 7B × 4 bytes = 28 GB; FP16/BF16, 7B × 2 = 14 GB; INT8/FP8, 7B × 1 = 7 GB; INT4, 7B × 0.5 = 3.5 GB. Native FP8 requires supported hardware such as H100; A100 users can consider INT8 or weight-only INT4.",
+      "keyPoints": [
+        "Architecture order: Volta/V100, Ampere/A100, Hopper/H100, Blackwell/B200.",
+        "Ampere adds TF32 and BF16 support; Hopper adds FP8 and Transformer Engine; Blackwell adds FP4.",
+        "BF16 has FP32’s exponent range; FP16 training may need gradient scaling.",
+        "A100 does not have native FP8 Tensor Cores."
       ],
+      "terms": [
+        {
+          "en": "Volta / Ampere / Hopper / Blackwell",
+          "si": "NVIDIA GPU architecture generations used by V100, A100, H100, and B200, respectively."
+        },
+        {
+          "en": "Transformer Engine",
+          "si": "NVIDIA technology that uses per-layer scaling for low-precision formats such as FP8."
+        },
+        {
+          "en": "TF32",
+          "si": "An Ampere-era format for accelerating FP32 matrix multiplication on Tensor Cores."
+        },
+        {
+          "en": "FP16 / BF16",
+          "si": "16-bit floating-point formats; BF16 has a wider exponent range than FP16."
+        },
+        {
+          "en": "INT8 / FP8",
+          "si": "8-bit integer and floating-point formats, respectively."
+        }
+      ],
+      "si": "ඔයාට 7B parameter model එකක් තියෙනවා නම් FP32 weights වලට 28 GB යනවා: 7 × 4 = 28. FP16 හෝ BF16 කළොත් 7 × 2 = 14 GB; INT8 කළොත් 7 GB; INT4 කළොත් 3.5 GB. Bits අඩු වුණාම memory අඩුවෙනවා, ඒත් නිරවද්‍යතාවට බලපෑමක් වෙන්න පුළුවන්. A100 එක Ampere, H100 එක Hopper; FP8 සඳහා H100 වගේ GPU එකක් ඕනේ."
     },
     {
-      id: 'multi-gpu-networking',
-      examRefs: ['DEP-009', 'DEP-028', 'DEP-029', 'DEP-030', 'DEP-032', 'DEP-066', 'DEP-105', 'DEP-127', 'DEP-141', 'DEP-142'],
-      title: 'Multi-GPU: NVLink, NVSwitch, InfiniBand, GPUDirect RDMA, NCCL, DGX vs HGX',
-      body: [
-        'ලොකු LLM එකක් එක GPU එකකට හරියන්නේ නෑ. ඒ නිසා GPUs ගොඩක් එකට වැඩ කරන්න ඕනේ. එතකොට ඒ GPUs අතර data යවන "පාරවල්" ගොඩක් වැදගත්. Server එක (node එක) ඇතුළේ GPUs අතර කෙලින්ම connect කරන ඉතා වේගවත් link එක NVLink. ඒක PCIe වලට වඩා ගොඩක් වේගවත්, තත්පරයට GB සිය ගණනක්.',
-        'NVLink විතරක් තිබුණොත් හැම GPU යුගලයක්ම කෙලින්ම connect වෙන්නේ නෑ. NVSwitch කියන්නේ switch fabric එකක්. ඒකෙන් 8-GPU server එකක හැම GPU එකකටම අනිත් හැම GPU එකක් එක්කම එකවර full NVLink bandwidth එකෙන් කතා කරන්න පුළුවන් (all-to-all). Server (node) අතර, ඒ කියන්නේ racks අතර, data යවන්නේ InfiniBand වගේ network එකකින්, RDMA එක්ක. GPUDirect RDMA කියන්නේ GPU memory එකේ ඉඳන් network card එකට කෙලින්ම data යවන එක, CPU memory එක හරහා copy එකක් නැතුව. ඒකෙන් latency සහ CPU වැඩ අඩු වෙනවා.',
-        'NCCL (NVIDIA Collective Communications Library) කියන්නේ GPUs අතර all-reduce, all-gather, reduce-scatter, broadcast වගේ "collective" operations කරන library එක. Data-parallel training වල gradients average කරන all-reduce එක කරන්නේ NCCL. PyTorch distributed වල GPU default backend එකත් NCCL. NCCL hang එකක්, ඒ කියන්නේ job එක පළවෙනි all-reduce එකේ හිරවෙලා ඉන්න එක, ගොඩක් වෙලාවට connectivity ප්‍රශ්නයක්. NCCL_DEBUG=INFO දාලා ආයෙත් run කරාම NCCL තෝරන transport, network interface, topology logs වල පේනවා. වැරදි interface එකක් තෝරලා නම් NCCL_SOCKET_IFNAME වලින් හදන්න පුළුවන්. Firewall/InfiniBand connectivity එකත් බලන්න. Precision වෙනස් කරලා hang එක හැදෙන්නේ නෑ.',
-        'DGX කියන්නේ NVIDIA ම හදන සම්පූර්ණ, ready-made AI system එක (software සහ support එක්ක). HGX කියන්නේ NVLink/NVSwitch එක්ක තියෙන multi-GPU baseboard එක. Dell, Supermicro වගේ server partners ඒක තමන්ගේ servers වලට දානවා. Parallelism ගැන පොඩි rule එකක්: tensor parallelism හැම layer එකකම all-reduce කරන නිසා ඒක NVLink domain එක (එකම node එක) ඇතුළේ තියන්න. Nodes අතර pipeline parallelism හෝ data parallelism පාවිච්චි කරන්න. උදා: nodes 2ක් නම් TP=8 node එක ඇතුළේ, PP=2 nodes අතර.',
+      "id": "multi-gpu-networking",
+      "examRefs": [
+        "DEP-009",
+        "DEP-028",
+        "DEP-029",
+        "DEP-030",
+        "DEP-032",
+        "DEP-066",
+        "DEP-105",
+        "DEP-127",
+        "DEP-141",
+        "DEP-142"
       ],
-      analogy:
-        'NVLink කියන්නේ එකම ගෙදර කාමර අතර තියෙන දොරවල් වගේ. NVSwitch කියන්නේ ගෙදර මැද ශාලාව, ඕනෑම කාමරයක ඉඳන් ඕනෑම කාමරයකට එකවර යන්න පුළුවන්. InfiniBand කියන්නේ ගම් දෙකක් අතර highway එක. GPUDirect RDMA කියන්නේ කඩේට භාණ්ඩ ගබඩාවෙන් කෙලින්ම lorry එකට දාන එක, මැද තියෙන ගෙදර සාලෙට ගෙනත් තියන්නේ නැතුව. NCCL කියන්නේ හැමෝගෙම ලකුණු එකතු කරලා average එක හැමෝටම කියන class monitor වගේ.',
-      example:
-        '70B model එකක් FP16 වලින් weights විතරක් 140 GB. එක GPU එකක 80 GB විතරයි. TP=2 දැම්මොත් GPU එකකට 70 GB යි. TP=4 හෝ TP=8 දැම්මොත් KV cache එකටත් ඉඩ ඉතුරු වෙනවා. ඒ TP=8 shards ටික NVSwitch තියෙන එකම 8-GPU node එකක තියන්න. Ethernet එකකින් connect කරපු nodes දෙකකට බෙදුවොත් හැම layer එකකම all-reduce එක හෙමින් link එකේ හිරවෙනවා.',
-      keyPoints: [
-        'NVLink = node එක ඇතුළේ GPU-GPU වේගවත් link. NVSwitch = all-to-all NVLink fabric.',
-        'InfiniBand + RDMA = nodes අතර. GPUDirect RDMA = GPU memory ↔ NIC කෙලින්ම.',
-        'NCCL = all-reduce වගේ collectives. Hang එකක් නම් NCCL_DEBUG=INFO.',
-        'DGX = සම්පූර්ණ NVIDIA system. HGX = partners ලට දෙන GPU baseboard.',
-        'TP node එක ඇතුළේ, PP/DP nodes අතර.',
+      "title": "Multi-GPU: NVLink, NVSwitch, InfiniBand, GPUDirect RDMA, NCCL, DGX vs HGX",
+      "body": [
+        "A large language model may not fit on one GPU, so multiple GPUs must exchange data efficiently. NVLink is a high-speed connection between GPUs inside a server (node), with substantially more bandwidth than PCIe.",
+        "NVSwitch connects GPUs through a switch fabric, enabling an eight-GPU system to communicate all-to-all at NVLink bandwidth. Across nodes or racks, systems can use InfiniBand with RDMA. GPUDirect RDMA transfers data directly between GPU memory and a network adapter, avoiding an intermediate CPU-memory copy and reducing CPU work and latency.",
+        "NCCL (NVIDIA Collective Communications Library) implements operations such as all-reduce, all-gather, reduce-scatter, and broadcast. Data-parallel training uses all-reduce to combine gradients; NCCL is PyTorch Distributed’s default GPU backend. For a collective that hangs, inspect NCCL_DEBUG=INFO logs, selected interface and topology, NCCL_SOCKET_IFNAME, firewall rules, and InfiniBand connectivity. A precision change will not fix a connectivity failure.",
+        "DGX is a complete NVIDIA-built AI system with software and support. HGX is a multi-GPU baseboard platform that server partners such as Dell and Supermicro integrate into their systems. Tensor parallelism communicates within every layer, so keep it inside a fast NVLink node when possible; use pipeline or data parallelism across nodes. For example, use TP=8 on a node and PP=2 across two nodes."
       ],
-      terms: [
-        { en: 'NVLink', si: 'GPUs අතර (සමහර CPUs එක්කත්) high-bandwidth, low-latency direct interconnect. PCIe ට වඩා ගොඩක් වේගවත්.' },
-        { en: 'NVSwitch', si: 'Node එකක හැම GPU එකක්ම full NVLink bandwidth එකෙන් එකවර connect කරන switch chips.' },
-        { en: 'InfiniBand', si: 'Nodes අතර low-latency, high-bandwidth RDMA network එක. NCCL inter-node collectives වලට පාවිච්චි කරනවා.' },
-        { en: 'GPUDirect RDMA', si: 'GPU memory සහ network adapter අතර host memory copy එකක් නැතුව කෙලින්ම data transfer.' },
-        { en: 'NCCL', si: 'NVIDIA Collective Communications Library. All-reduce, all-gather, broadcast. PyTorch GPU distributed default backend.' },
-        { en: 'NCCL hang', si: 'Collective එකක් (සාමාන්‍යයෙන් පළවෙනි all-reduce) නතර නොවී හිරවීම. බොහෝවිට network interface/connectivity ප්‍රශ්නයක්.' },
-        { en: 'DGX vs HGX', si: 'DGX = turnkey NVIDIA system + software. HGX = OEMs තමන්ගේ servers වලට දාන GPU board platform.' },
-        { en: 'Data / Tensor / Pipeline Parallelism', si: 'DP = model copy එක හැම GPU එකකම, data බෙදනවා. TP = එක layer එකේ matrices බෙදනවා. PP = layers කණ්ඩායම් වලට බෙදලා stages හදනවා.' },
+      "analogy": "NVLink is like doors between rooms in one house; NVSwitch is a central hall connecting every room. InfiniBand is a highway between towns. GPUDirect RDMA is loading a delivery truck directly from a warehouse instead of carrying goods through the living room. NCCL is a class monitor collecting everyone’s marks and sharing the average.",
+      "example": "A 70B model in FP16 needs about 70B × 2 = 140 GB for weights, more than one 80 GB GPU. TP=2 uses about 70 GB of weights per GPU; TP=4 or TP=8 leaves more room for KV cache. Keep an eight-way TP group on an NVSwitch node; splitting it across slower Ethernet nodes makes each layer’s all-reduce wait on the network.",
+      "keyPoints": [
+        "NVLink is a fast intra-node GPU link; NVSwitch provides an all-to-all fabric.",
+        "InfiniBand and RDMA connect nodes; GPUDirect RDMA avoids a host-memory copy.",
+        "NCCL provides collective operations; use NCCL_DEBUG=INFO when diagnosing hangs.",
+        "DGX is a complete NVIDIA system; HGX is a GPU baseboard platform for server partners.",
+        "Prefer TP within a node; PP or DP can span nodes."
       ],
+      "terms": [
+        {
+          "en": "NVLink",
+          "si": "A high-bandwidth, low-latency interconnect between GPUs and some CPUs."
+        },
+        {
+          "en": "NVSwitch",
+          "si": "Switch chips that connect GPUs in a node through an NVLink fabric."
+        },
+        {
+          "en": "InfiniBand",
+          "si": "A high-bandwidth, low-latency network commonly used between compute nodes."
+        },
+        {
+          "en": "GPUDirect RDMA",
+          "si": "Direct data transfer between GPU memory and a network adapter without a host-memory copy."
+        },
+        {
+          "en": "NCCL",
+          "si": "NVIDIA Collective Communications Library for GPU collectives such as all-reduce."
+        },
+        {
+          "en": "NCCL hang",
+          "si": "A collective operation that stops progressing, often due to connectivity or interface problems."
+        },
+        {
+          "en": "DGX vs HGX",
+          "si": "DGX is a complete NVIDIA system; HGX is a GPU platform integrated by server vendors."
+        },
+        {
+          "en": "Data / Tensor / Pipeline Parallelism",
+          "si": "DP splits data across model copies; TP splits layer computation; PP assigns layer stages to devices."
+        }
+      ],
+      "si": "70B model එකක FP16 weights විතරක් 70 × 2 = 140 GB වෙනවා, ඒ නිසා 80 GB GPU එකකට තනිවම දාන්න බෑ. TP=2 කළොත් GPU එකකට weights 70 GB පමණ බෙදෙනවා. NVLink කියන්නේ එක server එකේ GPU අතර ඉක්මන් පාර; InfiniBand කියන්නේ servers අතර පාර. ඔයා NCCL hang එකක් දැක්කොත් network interface සහ connectivity logs බලන්න, precision මාරු කරලා විසඳෙන්නේ නෑ."
     },
     {
-      id: 'cuda-libraries-rapids',
-      examRefs: ['DEP-008', 'DEP-010', 'DEP-019', 'DEP-027', 'DEP-034', 'DEP-052', 'DEP-097'],
-      title: 'CUDA, cuDNN, cuBLAS & RAPIDS (cuDF, cuML, Spark, XGBoost, cuVS)',
-      body: [
-        'CUDA කියන්නේ NVIDIA ගේ parallel computing platform එක සහ programming model එක. Language extensions, nvcc compiler එක, runtime සහ driver APIs, libraries ඔක්කොම ඒකේ කොටස්. PyTorch කියන්නේ framework එකක්. ඒක යට වැඩ කරන්නේ CUDA සහ CUDA libraries.',
-        'cuBLAS = BLAS API එකේ NVIDIA implementation එක. Transformers වල linear projections වල GEMM කරන්නේ මේකෙන් (පුළුවන් තැන් වල Tensor Cores එක්ක). cuDNN = deep neural networks වලට primitives: convolutions, normalization, attention වගේ. Frameworks මේවා යටින් call කරනවා. මතක තියාගන්න: cuBLAS = සාමාන්‍ය linear algebra, cuDNN = NN-specific ops, NCCL = GPUs අතර communication.',
-        'Driver vs runtime: Container එකක් ඇතුළේ CUDA runtime libraries තියෙනවා. ඒත් kernel driver එක එන්නේ host එකෙන්. අලුත් CUDA runtime එකකට ප්‍රමාණවත් තරම් අලුත් host driver එකක් ඕනේ. "driver is insufficient" error එකක් ආවොත් host driver එක upgrade කරන්න, නැත්නම් පරණ CUDA image එකක් ගන්න. Docker container එකකට GPU පේන්නේ host එකේ NVIDIA Container Toolkit එක install කරලා docker run --gpus all දුන්නොත් විතරයි.',
-        'RAPIDS කියන්නේ data science වැඩ GPU එකට ගෙනියන libraries එකතුවක්. cuDF = pandas වගේ API එකක් තියෙන GPU dataframes (පරණ pandas code වලට cudf.pandas accelerator mode එකත් තියෙනවා). cuML = scikit-learn වගේ API එකක් තියෙන GPU ML algorithms (k-means, random forest, UMAP). cuGraph = graph analytics. RAPIDS Accelerator for Apache Spark = Spark plugin එකක්, support කරන SQL/DataFrame operations job code එක වෙනස් නොකර GPU එකේ run කරනවා. XGBoost ට native CUDA support තියෙනවා: version 2.0 සිට device="cuda" සහ tree_method="hist" දැම්මාම GPU එකේ train වෙනවා (පරණ versions වල tree_method="gpu_hist"). cuVS = GPU vector search සහ clustering library එක (CAGRA graph index, IVF variants). RAG වල vector index ඉක්මනට build කරන්න මේක පාවිච්චි වෙනවා.',
+      "id": "cuda-libraries-rapids",
+      "examRefs": [
+        "DEP-008",
+        "DEP-010",
+        "DEP-019",
+        "DEP-027",
+        "DEP-034",
+        "DEP-052",
+        "DEP-097"
       ],
-      analogy:
-        'CUDA කියන්නේ GPU එකට කතා කරන භාෂාව සහ පාරවල් පද්ධතිය. cuBLAS, cuDNN කියන්නේ ඒ භාෂාවෙන් ලියපු ready-made recipe පොත් වගේ. PyTorch කියන්නේ ඒ recipe පොත් පාවිච්චි කරලා කෑම හදන restaurant එක. RAPIDS කියන්නේ Excel/pandas වැඩ කරන කාර්යාලයකට tuk-tuk එක වෙනුවට train එකක් දුන්නා වගේ, එකම පාරේ ගොඩක් ඉක්මනට යනවා.',
-      example:
-        'ඔයාගේ pandas preprocessing එක 50 GB log file එකක පැය ගණන් යනවා. import cudf කරලා හෝ cudf.pandas mode එකෙන් run කරාම එකම වගේ code එකෙන් GPU එකේ විනාඩි කිහිපයකින් ඉවර වෙන්න පුළුවන්. ඊට පස්සේ embeddings cluster කරන්න cuML KMeans, ඒ embeddings වලට vector index එකක් හදන්න cuVS CAGRA.',
-      keyPoints: [
-        'CUDA = platform එක. PyTorch = framework එක (CUDA මත).',
-        'cuBLAS = GEMM/linear algebra. cuDNN = conv, norm, attention වගේ NN primitives.',
-        'Host driver එක container එකේ CUDA runtime එකට ගැළපෙන්න ඕනේ.',
-        'cuDF ≈ pandas, cuML ≈ scikit-learn, cuVS = vector search, Spark plugin = RAPIDS Accelerator.',
+      "title": "CUDA, cuDNN, cuBLAS & RAPIDS (cuDF, cuML, Spark, XGBoost, cuVS)",
+      "body": [
+        "CUDA is NVIDIA’s parallel-computing platform and programming model, including language extensions, the nvcc compiler, runtime and driver APIs, and libraries. PyTorch is a framework that uses CUDA and its libraries underneath.",
+        "cuBLAS implements dense linear algebra and GEMM; cuDNN provides deep-neural-network primitives such as convolutions, normalization, and attention. Frameworks call these libraries. Remember: cuBLAS is general linear algebra, cuDNN is neural-network operations, and NCCL communicates between GPUs.",
+        "CUDA runtime libraries can be inside a container, but the kernel driver comes from the host and must be new enough for that runtime. If the driver is insufficient, upgrade the host driver or use a compatible older CUDA image. Docker sees GPUs only when the host has NVIDIA Container Toolkit and the container is run with --gpus all.",
+        "RAPIDS brings data-science workloads to GPUs: cuDF offers a pandas-like dataframe API, cuML scikit-learn-like ML algorithms, and cuGraph graph analytics. RAPIDS Accelerator for Apache Spark accelerates supported SQL/DataFrame operations. XGBoost 2.0+ uses device=\"cuda\" and tree_method=\"hist\" for GPU training (older releases used gpu_hist). cuVS provides GPU vector search and clustering, including CAGRA and IVF variants, useful for building vector indexes in RAG. cuGraph supplies graph analytics. cuDF also offers cudf.pandas accelerator mode for some existing pandas code. The RAPIDS Spark plugin runs supported SQL and DataFrame operations on the GPU without requiring substantial job-code changes."
       ],
-      terms: [
-        { en: 'CUDA', si: 'NVIDIA parallel computing platform + programming model (toolkit, nvcc, runtime, driver APIs).' },
-        { en: 'cuBLAS', si: 'GPU dense linear algebra (GEMM) library එක.' },
-        { en: 'cuDNN', si: 'Convolution, normalization, attention වගේ deep learning primitives library එක.' },
-        { en: 'NVIDIA Container Toolkit', si: 'Docker containers වලට GPU devices සහ host driver libraries inject කරන tool එක. --gpus flag එකත් එක්ක.' },
-        { en: 'cuDF', si: 'RAPIDS GPU dataframe library එක. Pandas-like API.' },
-        { en: 'cuML', si: 'RAPIDS GPU ML algorithms. Scikit-learn-like API.' },
-        { en: 'RAPIDS Accelerator for Apache Spark', si: 'Spark SQL/DataFrame operations GPU එකේ run කරන plugin එක, job code එක ගොඩක් වෙනස් නොකර.' },
-        { en: 'GPU-accelerated XGBoost', si: 'XGBoost 2.x: device="cuda", tree_method="hist". පරණ: tree_method="gpu_hist".' },
-        { en: 'cuVS', si: 'RAPIDS GPU vector search/clustering library එක (CAGRA, IVF-PQ).' },
+      "analogy": "CUDA is the language and road system for communicating with the GPU. cuBLAS and cuDNN are ready-made recipe books; PyTorch is a restaurant using those recipes. RAPIDS is like replacing a tuk-tuk with a train for large pandas-style data jobs.",
+      "example": "If pandas preprocessing on a 50 GB log file takes hours, cuDF or cudf.pandas may run similar operations on a GPU in less time, depending on hardware and workload. You can then cluster embeddings with cuML KMeans and build a vector index with cuVS CAGRA.",
+      "keyPoints": [
+        "CUDA is NVIDIA’s platform; PyTorch is a framework built to use it.",
+        "cuBLAS handles linear algebra; cuDNN supplies neural-network primitives.",
+        "The host driver must support the container’s CUDA runtime.",
+        "cuDF is pandas-like, cuML is scikit-learn-like, and cuVS supports vector search."
       ],
+      "terms": [
+        {
+          "en": "CUDA",
+          "si": "NVIDIA parallel-computing platform and programming model."
+        },
+        {
+          "en": "cuBLAS",
+          "si": "NVIDIA library for GPU dense linear algebra and GEMM."
+        },
+        {
+          "en": "cuDNN",
+          "si": "Library of deep-learning primitives such as convolution and normalization."
+        },
+        {
+          "en": "NVIDIA Container Toolkit",
+          "si": "Software that exposes NVIDIA GPUs to containers."
+        },
+        {
+          "en": "cuDF",
+          "si": "RAPIDS GPU dataframe library with a pandas-like API."
+        },
+        {
+          "en": "cuML",
+          "si": "RAPIDS GPU machine-learning library with a scikit-learn-like API."
+        },
+        {
+          "en": "RAPIDS Accelerator for Apache Spark",
+          "si": "Plugin that accelerates supported Spark SQL and DataFrame operations on GPUs."
+        },
+        {
+          "en": "GPU-accelerated XGBoost",
+          "si": "XGBoost GPU training, configured in current versions with device=\"cuda\" and tree_method=\"hist\"."
+        },
+        {
+          "en": "cuVS",
+          "si": "RAPIDS GPU library for vector search and clustering."
+        }
+      ],
+      "si": "ඔයාගේ pandas code එක 50 GB log file එකක පැය ගණන් ගන්නවා කියලා හිතන්න. cuDF හෝ cudf.pandas දාලා GPU එකේ ඒ වැඩ ඉක්මන් කරන්න පුළුවන්, workload එකට අනුව. පස්සේ embeddings 10,000ක් cuML KMeans වලින් group කරලා, cuVS වලින් vector index එකක් හදන්න පුළුවන්. CUDA කියන්නේ GPU platform එක; PyTorch කියන්නේ ඒක භාවිතා කරන framework එක."
     },
     {
-      id: 'nvidia-software-platform',
-      examRefs: ['DEP-011', 'DEP-012', 'DEP-013', 'DEP-018', 'DEP-100', 'DEP-101', 'DEP-111'],
-      title: 'NGC, NVIDIA AI Enterprise, NeMo & Megatron-LM',
-      body: [
-        'NGC catalog කියන්නේ NVIDIA ගේ tested software hub එක. ඒකේ GPU-optimized containers (PyTorch, NeMo, Triton), pretrained models, Helm charts, resources තියෙනවා. Images pull කරන්නේ nvcr.io registry එකෙන්. NGC PyTorch container එකක් (nvcr.io/nvidia/pytorch:<yy.mm>-py3) පාවිච්චි කරාම CUDA, cuDNN, NCCL, PyTorch versions එකට ගැළපෙන විදිහට test කරලා, tune කරලා ලැබෙනවා. Tags year.month විදිහට මාසිකව එනවා. NGC එක managed Kubernetes service එකක් නෙවෙයි. ඒකේ දේවල් run කරන්නේ ඔයාගේම infrastructure එකේ හෝ cloud එකේ. Host driver එක තාමත් ඕනේ.',
-        'NVIDIA AI Enterprise කියන්නේ licensed, supported software suite එකක්. Production වලට security updates දාපු NVIDIA AI frameworks, tools, NIM වගේ microservices, enterprise support සහ certification එක්ක. ඒක software, hardware නෙවෙයි. Free fork එකකුත් නෙවෙයි, commercial license එකක්.',
-        'NeMo framework කියන්නේ LLMs වගේ generative AI models build කරන්න, train කරන්න, customize කරන්න (pretraining, fine-tuning, alignment) තියෙන NVIDIA framework එක. ඒක හදලා තියෙන්නේ Megatron-Core මත. Megatron-LM කියන්නේ intra-layer tensor parallelism ප්‍රායෝගිකව හඳුන්වා දුන්න project එක. ඒක tensor, pipeline, data parallelism එකතු කරලා parameters බිලියන සිය ගණනක models train කරනවා.',
-        'NeMo පවුලේ කොටස් (පස්සේ phases වල මේවා ගැන තව බලනවා): NeMo Curator = training data පිරිසිදු කරනවා (text extraction, language ID, quality filtering, exact/fuzzy dedup), RAPIDS හරහා GPU එකේ. NeMo Customizer = models fine-tune කරන (උදා: LoRA) microservice එක. NeMo-Aligner = reward model training, PPO RLHF, DPO, SteerLM. NeMo Evaluator = benchmarks, custom datasets, LLM-as-a-judge evaluations run කරන microservice එක. NeMo Retriever = RAG වලට embedding, reranking, extraction models NIM microservices විදිහට. NeMo Guardrails = deploy කරපු LLM app එක වටේ programmable rails (topic එකේ තියාගන්න, input/output check කරන්න, jailbreaks block කරන්න). Guardrails weights වෙනස් කරන්නේ නෑ, runtime එකේ වැඩ කරන්නේ.',
+      "id": "nvidia-software-platform",
+      "examRefs": [
+        "DEP-011",
+        "DEP-012",
+        "DEP-013",
+        "DEP-018",
+        "DEP-100",
+        "DEP-101",
+        "DEP-111"
       ],
-      analogy:
-        'NGC කියන්නේ Keells super එක වගේ. හැම බඩුවක්ම check කරලා, pack කරලා shelf එකේ තියෙනවා, ඔයාට ගෙදර ගෙනිහින් උයන්න විතරයි. NVIDIA AI Enterprise කියන්නේ ඒ බඩු වලට warranty සහ හැම වෙලේම call කරන්න පුළුවන් service center එකක් එක්ක ගන්න membership එක. NeMo කියන්නේ සම්පූර්ණ කුස්සිය: Curator එළවළු සෝදනවා, Customizer සහ Aligner රස හදනවා, Evaluator රස බලනවා, Guardrails කෑම මේසෙට යන්න කලින් ආරක්ෂාව බලනවා.',
-      example:
-        'ඔයාගේ company එකට සිංහල customer-support bot එකක් ඕනේ. NeMo Curator වලින් chat logs ටිකේ duplicates සහ කුණු අයින් කරනවා. NeMo Customizer වලින් LoRA fine-tune කරනවා. NeMo Evaluator වලින් benchmark කරනවා. NIM එකක් විදිහට deploy කරලා, NeMo Retriever එක්ක RAG එකක් හදනවා. අන්තිමට NeMo Guardrails දානවා bot එක දේශපාලනය ගැන කතා නොකර තියාගන්න.',
-      keyPoints: [
-        'NGC = containers, models, Helm charts (nvcr.io).',
-        'NVIDIA AI Enterprise = licensed + supported production software suite.',
-        'NeMo = generative AI models build/customize කරන framework, Megatron-Core මත.',
-        'Curator (data), Customizer (fine-tune), Aligner (RLHF/DPO), Evaluator (eval), Retriever (RAG), Guardrails (runtime safety).',
+      "title": "NGC, NVIDIA AI Enterprise, NeMo & Megatron-LM",
+      "body": [
+        "The NGC catalog is NVIDIA’s tested software hub, with GPU-optimized containers (including PyTorch, NeMo, and Triton), pretrained models, Helm charts, and other resources. Images come from nvcr.io. NGC PyTorch images package compatible, tested CUDA, cuDNN, NCCL, and PyTorch versions, often with year-month tags. NGC is not a managed Kubernetes service: run its contents on your own infrastructure or cloud, and still provide a host driver.",
+        "NVIDIA AI Enterprise is a commercially licensed, supported software suite for production, including NVIDIA AI frameworks and tools, microservices such as NIM, security updates, and enterprise support. It is software, not hardware, and is not a free fork.",
+        "NeMo is NVIDIA’s framework for building, training, and customizing generative models through pretraining, fine-tuning, and alignment. It is built on Megatron-Core. Megatron-LM popularized practical intra-layer tensor parallelism and combines tensor, pipeline, and data parallelism for very large models.",
+        "NeMo components serve different stages: Curator extracts, filters, and deduplicates training data, with GPU acceleration via RAPIDS; Customizer fine-tunes models such as with LoRA; NeMo-Aligner supports reward-model training, PPO-based RLHF, DPO, and SteerLM; Evaluator runs benchmarks and LLM-as-a-judge evaluations; Retriever provides embedding, reranking, and extraction models as NIM microservices for RAG; Guardrails applies programmable runtime checks to inputs and outputs and can block jailbreak attempts. Guardrails changes runtime behavior, not model weights. Curator workflows can include text extraction, language identification, quality filtering, and exact or fuzzy deduplication, with GPU acceleration through RAPIDS. Guardrails can keep the conversation on topic and check inputs and outputs, but add runtime latency."
       ],
-      terms: [
-        { en: 'NGC Catalog', si: 'NVIDIA GPU-optimized containers, models, Helm charts තියෙන hub එක.' },
-        { en: 'NVIDIA AI Enterprise', si: 'Enterprise support සහිත, commercially licensed NVIDIA AI software suite එක.' },
-        { en: 'NeMo Framework', si: 'LLMs pretrain, fine-tune, align කරන NVIDIA framework එක.' },
-        { en: 'Megatron-LM / Megatron-Core', si: 'Tensor + pipeline + data parallelism එකට දාලා ඉතා ලොකු models train කරන library එක.' },
-        { en: 'NeMo Curator', si: 'GPU-accelerated training data curation (filtering, dedup).' },
-        { en: 'NeMo Customizer', si: 'Models fine-tune කරන්න NeMo microservice එක.' },
-        { en: 'NeMo-Aligner', si: 'Reward models, RLHF (PPO), DPO, SteerLM alignment.' },
-        { en: 'NeMo Evaluator', si: 'Benchmarks සහ LLM-as-a-judge evaluations run කරන microservice එක.' },
-        { en: 'NeMo Retriever', si: 'Embedding සහ reranking models NIM microservices විදිහට.' },
-        { en: 'NeMo Guardrails', si: 'App එක සහ LLM අතර ඉන්න runtime rails toolkit එක (Colang flows). Extra latency එකතු කරනවා.' },
+      "analogy": "NGC is like a Keells supermarket shelf of checked and packaged ingredients. NVIDIA AI Enterprise is like buying those ingredients with a warranty and a support desk. NeMo is a kitchen: Curator prepares ingredients, Customizer and Aligner adjust the recipe, Evaluator tastes it, and Guardrails checks it before serving.",
+      "example": "For a customer-support bot, Curator can remove duplicate and low-quality chat logs; Customizer can fine-tune with LoRA; Evaluator can test it; NIM can package deployment; Retriever can add RAG; and Guardrails can enforce runtime rules about allowed topics.",
+      "keyPoints": [
+        "NGC offers containers, models, and Helm charts through nvcr.io.",
+        "NVIDIA AI Enterprise is a licensed and supported production software suite.",
+        "NeMo builds and customizes generative AI models on Megatron-Core.",
+        "Curator handles data; Customizer fine-tunes; Aligner aligns; Evaluator measures; Retriever supports RAG; Guardrails checks runtime interactions."
       ],
+      "terms": [
+        {
+          "en": "NGC Catalog",
+          "si": "NVIDIA hub for GPU-optimized containers, models, Helm charts, and resources."
+        },
+        {
+          "en": "NVIDIA AI Enterprise",
+          "si": "Commercially licensed NVIDIA AI software with production support."
+        },
+        {
+          "en": "NeMo Framework",
+          "si": "NVIDIA framework for building, training, and customizing generative AI models."
+        },
+        {
+          "en": "Megatron-LM / Megatron-Core",
+          "si": "Tools for large-model training using tensor, pipeline, and data parallelism."
+        },
+        {
+          "en": "NeMo Curator",
+          "si": "Tools for extracting, filtering, and deduplicating training data."
+        },
+        {
+          "en": "NeMo Customizer",
+          "si": "NeMo service for fine-tuning models."
+        },
+        {
+          "en": "NeMo-Aligner",
+          "si": "Tools for reward modeling and alignment methods including PPO RLHF and DPO."
+        },
+        {
+          "en": "NeMo Evaluator",
+          "si": "Service for benchmarks and model evaluations."
+        },
+        {
+          "en": "NeMo Retriever",
+          "si": "NIM-based embedding and reranking services for retrieval workflows."
+        },
+        {
+          "en": "NeMo Guardrails",
+          "si": "Runtime toolkit for controlling interactions around an LLM application."
+        }
+      ],
+      "si": "ඔයාගේ customer-support bot එකට chat logs 10,000ක් තියෙනවා කියලා හිතන්න. NeMo Curator එකෙන් duplicate logs අයින් කරන්න, Customizer එකෙන් LoRA fine-tune කරන්න, Evaluator එකෙන් test කරන්න පුළුවන්. NIM එකෙන් service එක package කරලා, Retriever එකෙන් RAG දාන්නත් පුළුවන්. Guardrails නම් runtime එකේ input සහ output පරීක්ෂා කරනවා; model weights වෙනස් කරන්නේ නෑ."
     },
     {
-      id: 'llm-serving-metrics',
-      examRefs: ['DEP-047', 'DEP-048', 'DEP-049', 'DEP-050', 'DEP-102'],
-      title: 'LLM Serving: Prefill vs Decode, TTFT, TPOT, Throughput, Streaming, Speculative Decoding',
-      body: [
-        'LLM එකක් answer එකක් හදන්නේ අදියර දෙකකින්. පළවෙනි එක prefill. ඒකේදී prompt එකේ tokens ඔක්කොම එක පාරට (parallel) model එක හරහා යවලා, KV cache එක පුරවලා, පළවෙනි output token එක හදනවා. දෙවෙනි එක decode. ඒකේදී එක පාරකට එක token එක බැගින් හදනවා. Prefill compute-bound (එක weight read එකකට tokens ගොඩක් ගණන් කරනවා). Batch-1 decode memory-bandwidth-bound (හැම token එකකටම weights ඔක්කොම HBM එකෙන් කියවන්න ඕනේ, ගණන් අඩුයි).',
-        'TTFT (Time To First Token) = request එක යවපු වෙලාවේ ඉඳන් පළවෙනි token එක එනකම් කාලය. ඒක තීරණය වෙන්නේ ප්‍රධාන වශයෙන් prefill සහ queue එකේ ඉන්න කාලයෙන්. "Bot එක උත්තරේ පටන් ගන්න පරක්කුයි" කියන පැමිණිල්ල TTFT ගැන. TPOT (Time Per Output Token) හෝ inter-token latency = පළවෙනි token එකෙන් පස්සේ tokens දෙකක් අතර සාමාන්‍ය කාලය. ඒක decode වේගය. ගණන් කරන්නේ: (total latency − TTFT) ÷ (tokens − 1).',
-        'Latency = එක request එකක් ඉවර වෙන්න යන කාලය. Throughput = තත්පරයකට system එක ඉවර කරන වැඩ ප්‍රමාණය (requests/s හෝ tokens/s). Batch එක ලොකු කරාම throughput වැඩි වෙනවා, ඒත් එක එක request එකේ latency වැඩි වෙනවා. Chat වගේ interactive වැඩ වලට TTFT සහ TPOT වැදගත්. රෑ run වෙන offline batch jobs වලට throughput (cost) වැදගත්.',
-        'Streaming කියන්නේ tokens හැදෙන ගමන්ම client එකට යවන එක. OpenAI-compatible API එකක "stream": true දැම්මාම Server-Sent Events (SSE) හරහා data: chunks එනවා, අන්තිමට data: [DONE]. gRPC (HTTP/2 + binary Protocol Buffers) bidirectional streaming support කරනවා, internal service-to-service calls වලට හොඳයි. Browsers වලට REST/JSON + SSE හොඳයි. Streaming එකෙන් generation එක වේගවත් වෙන්නේ නෑ, පේන latency එක (perceived latency) අඩු වෙනවා. Speculative decoding: පොඩි draft model එකක් tokens කිහිපයක් අනුමාන කරනවා, ලොකු model එක ඒවා එකම forward pass එකකින් verify කරනවා. Accept/reject rule එක නිසා output distribution එක ලොකු model එකේම එකයි (lossless). Draft එක නිතර reject වුණොත් speedup එක නැති වෙනවා.',
+      "id": "llm-serving-metrics",
+      "examRefs": [
+        "DEP-047",
+        "DEP-048",
+        "DEP-049",
+        "DEP-050",
+        "DEP-102"
       ],
-      analogy:
-        'කොත්තු order එකක් හිතන්න. Prefill කියන්නේ order එක අහලා, ඔක්කොම බඩු එකවර කපලා ලෑස්ති කරන එක. TTFT කියන්නේ ඔයාගේ plate එකට පළවෙනි හැන්ද වැටෙනකම් ඉන්න කාලය. Decode කියන්නේ ඊට පස්සේ හැන්දෙන් හැන්ද plate එකට දාන එක, TPOT කියන්නේ හැඳි දෙකක් අතර කාලය. Throughput කියන්නේ කඩේ පැයකට plates කීයක් දෙනවද කියන එක. Speculative decoding කියන්නේ assistant කෙනෙක් ඊළඟ හැඳි 5 ලෑස්ති කරලා තියනවා, ප්‍රධාන කෝකියා බලලා "ඔව්" කියන ඒවා එක පාරට දානවා.',
-      example:
-        'Prompt එකේ tokens 8,000යි. Prefill වේගය තත්පරයට tokens 10,000ක් නම් TTFT ≈ 0.8 s. ඊට පස්සේ output tokens 200ක් තත්පරයට tokens 50ක decode වේගයෙන් හදන්න 4 s යනවා. මුළු කාලය ≈ 4.8 s. TPOT = 1 ÷ 50 = 20 ms. Throughput උදාහරණයක්: batch එකේ sequences 32යි, එක decode step එකක් 25 ms නම්, system throughput = 32 ÷ 0.025 = tokens 1,280/s, ඒත් එක user කෙනෙකුට පේන්නේ tokens 40/s විතරයි.',
-      keyPoints: [
-        'Prefill = prompt එක parallel, compute-bound, TTFT තීරණය කරනවා.',
-        'Decode = token එකෙන් එක, memory-bandwidth-bound, TPOT තීරණය කරනවා.',
-        'Latency vs throughput trade-off එක batch size එකෙන් පාලනය වෙනවා.',
-        'Streaming = SSE (browser/REST) හෝ gRPC streaming. Perceived latency අඩු කරනවා.',
-        'Speculative decoding = draft model + verify, lossless speedup, acceptance rate එක මත රඳා පවතී.',
+      "title": "LLM Serving: Prefill vs Decode, TTFT, TPOT, Throughput, Streaming, Speculative Decoding",
+      "body": [
+        "LLM generation has two stages. During prefill, the model processes prompt tokens in parallel, fills the KV cache, and produces the first output token. During decode, it generates one token at a time. Prefill is often compute-bound; batch-one decode is often memory-bandwidth-bound because each step reads model weights from HBM for relatively little computation.",
+        "TTFT (Time To First Token) is the time from request submission to the first token, influenced mainly by prefill and queueing. TPOT (Time Per Output Token), also called inter-token latency, is the average gap between generated tokens after the first: (total latency − TTFT) ÷ (tokens − 1).",
+        "Latency is the completion time for one request; throughput is completed requests or tokens per second. Larger batches can improve throughput while increasing individual latency. TTFT and TPOT matter for interactive chat; throughput and cost matter more for offline batch jobs.",
+        "Streaming sends tokens as they are generated. OpenAI-compatible APIs can use stream:true over Server-Sent Events, ending with data: [DONE]. gRPC uses HTTP/2 and Protocol Buffers and supports bidirectional streaming; browser apps commonly use REST/JSON with SSE. Streaming improves perceived waiting time, not generation speed. Speculative decoding uses a small draft model and a larger model to verify candidate tokens; accepted output retains the larger model’s distribution, but low acceptance reduces speedup."
       ],
-      terms: [
-        { en: 'Prefill', si: 'Prompt tokens ඔක්කොම එකවර process කරලා KV cache එක පුරවන අදියර.' },
-        { en: 'Decode', si: 'එක step එකකට එක token එක බැගින් generate කරන අදියර.' },
-        { en: 'TTFT', si: 'Time To First Token. Prefill + queueing.' },
-        { en: 'TPOT / Inter-token Latency', si: 'පළවෙනි token එකෙන් පස්සේ tokens අතර සාමාන්‍ය කාලය.' },
-        { en: 'Throughput', si: 'ඒකක කාලයකට ඉවර කරන requests හෝ tokens ගණන.' },
-        { en: 'Server-Sent Events (SSE)', si: 'HTTP response එක open තියාගෙන data: chunks push කරන streaming ක්‍රමය.' },
-        { en: 'gRPC', si: 'HTTP/2 + Protocol Buffers. අඩු overhead, bidirectional streaming. Browsers වලට gRPC-Web ඕනේ.' },
-        { en: 'Speculative Decoding', si: 'Draft model එකේ අනුමාන ලොකු model එක එක pass එකකින් verify කරන lossless speedup ක්‍රමය.' },
-        { en: 'p50 / p99 Latency', si: 'Requests වලින් 50% / 99% ඉවර වුණ කාල සීමාව. p99 = tail latency, maximum එක නෙවෙයි.' },
+      "analogy": "For a kottu order, prefill is preparing all ingredients after hearing the order. TTFT is the wait until the first spoonful arrives; decode is adding the next spoonful, and TPOT is the gap between spoonfuls. Throughput is how many plates the shop serves per hour.",
+      "example": "An 8,000-token prompt at 10,000 prompt tokens/s takes about 8,000 ÷ 10,000 = 0.8 s for prefill. Generating 200 tokens at 50 tokens/s takes 200 ÷ 50 = 4 s; total is about 4.8 s, and TPOT is 1 ÷ 50 = 0.02 s = 20 ms. With 32 sequences and a 25 ms decode step, aggregate throughput is 32 ÷ 0.025 = 1,280 tokens/s, while each user sees about 40 tokens/s.",
+      "keyPoints": [
+        "Prefill processes the prompt in parallel and strongly affects TTFT.",
+        "Decode emits one token per step and strongly affects TPOT.",
+        "Batch size trades per-request latency against aggregate throughput.",
+        "SSE or gRPC streaming lowers perceived latency, not compute time.",
+        "Speculative decoding speedup depends on draft-token acceptance."
       ],
+      "terms": [
+        {
+          "en": "Prefill",
+          "si": "Stage that processes prompt tokens and fills the KV cache before generation."
+        },
+        {
+          "en": "Decode",
+          "si": "Stage that generates output one token at a time."
+        },
+        {
+          "en": "TTFT",
+          "si": "Time To First Token: time from request submission until the first generated token."
+        },
+        {
+          "en": "TPOT / Inter-token Latency",
+          "si": "Average time between generated tokens after the first."
+        },
+        {
+          "en": "Throughput",
+          "si": "Requests or tokens completed per unit of time."
+        },
+        {
+          "en": "Server-Sent Events (SSE)",
+          "si": "HTTP streaming format that sends event data in chunks."
+        },
+        {
+          "en": "gRPC",
+          "si": "RPC framework using HTTP/2 and Protocol Buffers with streaming support."
+        },
+        {
+          "en": "Speculative Decoding",
+          "si": "Draft-and-verify generation using a smaller draft model and a larger model."
+        },
+        {
+          "en": "p50 / p99 Latency",
+          "si": "Latency thresholds below which 50% or 99% of requests complete."
+        }
+      ],
+      "si": "ඔයා Colombo වල bot එකකට prompt එකක් යැව්වම, prefill එක prompt tokens ඔක්කොම process කරන අදියරයි. පළවෙනි token එක එන්න තත්පර 0.8 ගියොත් ඒක TTFT. පස්සේ token එකකට 20 ms ගන්නවා නම් ඒක TPOT. Streaming එකෙන් token එක හදපු ගමන් පෙන්වනවා, ඒ නිසා බලන් ඉන්න හැඟීම අඩුයි; model එකේ ගණනය ඉක්මන් කරන්නේ නෑ."
     },
     {
-      id: 'batching-and-memory-math',
-      examRefs: ['DEP-071', 'DEP-072', 'DEP-125', 'DEP-145'],
-      title: 'Batching, KV Cache & GPU Memory Calculations',
-      body: [
-        'Decode එකේදී weights කියවන එක තමයි වියදම. Batching කරාම එකම weight read එක sequences ගොඩකට පාවිච්චි වෙනවා. ඒ නිසා throughput ගොඩක් වැඩි වෙනවා. Static batching වල batch එක fixed. කෙටි උත්තර ඉවර වුණත් batch එකේ දිගම sequence එක ඉවර වෙනකම් ඒ slots හිස්ව බලාගෙන ඉන්නවා. Continuous batching (in-flight batching) වල හැම decode step එකකදීම ඉවර වුණ sequences batch එකෙන් අයින් වෙනවා, අලුත් requests ඇතුළු වෙනවා. ඒ නිසා GPU එක හිස් වෙන්නේ නෑ.',
-        'KV cache කියන්නේ කලින් tokens වල key සහ value tensors, හැම attention layer එකකටම, save කරලා තියන තැන. ඒ නිසා අලුත් token එකක් හදද්දී පරණ ඔක්කොම ආයෙත් ගණන් කරන්න ඕනේ නෑ. KV cache එක sequence length එකත් එක්කත්, batch size එකත් එක්කත් linear විදිහට ලොකු වෙනවා. Paged KV cache (PagedAttention) වල KV cache එක fixed-size blocks වලට කඩලා, block table එකකින් map කරනවා. Blocks එකට ළඟ ළඟ තියෙන්න ඕනේ නෑ. ඒ නිසා memory fragmentation නැති තරම්, max length එකට කලින්ම allocate කරන්න ඕනේ නෑ.',
-        'Weight memory ගණනය: parameters ගණන × එක parameter එකකට bytes. FP32 = 4, FP16/BF16 = 2, INT8/FP8 = 1, INT4 = 0.5. උදා: 13B × 2 = 26 GB (BF16). 8B INT4 = 8 × 0.5 = 4 GB. මේ weights විතරයි. KV cache සහ activations වලට තව memory ඕනේ. Inference වල optimizer states නෑ, ඒවා training වලට විතරයි.',
-        'KV cache size එක වචන වලින්: token එකකට KV bytes = 2 (key එකයි value එකයි) × layers ගණන × KV heads ගණන × head dimension × එක අංකයකට bytes. ඊට පස්සේ ඒක tokens ගණනින් ගුණ කරනවා, ඒ ප්‍රතිඵලය එකවර ඉන්න sequences ගණනින් ගුණ කරනවා. උගුල් දෙකක්: 2 (K සහ V) අමතක කරන එක, සහ GQA model එකක query heads ගණන (උදා: 32) KV heads (උදා: 8) වෙනුවට පාවිච්චි කරන එක. Weight-only INT4 quantization (උදා: AWQ) batch-1 decode එක ගොඩක් වේගවත් කරනවා, මොකද decode memory-bandwidth-bound, weights bytes 4 ගුණයකින් අඩු වුණාම කෙලින්ම කාලය අඩු වෙනවා. ඒත් ලොකු batch prefill එක compute-bound, weights FP16/BF16 වලට dequantize කරලා ගණන් කරන නිසා එතන ලාභය පොඩියි. ලොකු prompt එකක prefill එකක් නිසා අනිත් අයගේ decode එක හිරවෙනවා නම් chunked prefill (prompt එක කෑලි වලට කඩලා decode steps අතර දාන එක) උදව් වෙනවා.',
+      "id": "batching-and-memory-math",
+      "examRefs": [
+        "DEP-071",
+        "DEP-072",
+        "DEP-125",
+        "DEP-145"
       ],
-      analogy:
-        'Static batching කියන්නේ "bus එක පිරෙනකම් යන්නේ නෑ, ඔක්කොම බහිනකම් අලුත් අය ගන්නෙත් නෑ" කියන bus එකක් වගේ. Kandy යන කෙනා බහිනකම් Kadawatha බැහැපු අයගේ seats හිස්. Continuous batching කියන්නේ Colombo city bus එක වගේ, හැම halt එකකම බහින අය බහිනවා, අලුත් අය නගිනවා. Paged KV cache කියන්නේ seats ගාණට ticket දෙනවා මිසක් මුළු bus එකම එක පවුලකට book කරන්නේ නෑ.',
-      example:
-        'Model එකේ layers 32, KV heads 8, head dimension 128, KV cache FP16 (bytes 2). Token එකකට: 2 × 32 × 8 × 128 × 2 = 131,072 bytes = 128 KiB. Tokens 4,096ක sequence එකකට: 4,096 × 128 KiB = 512 MiB (≈ 0.5 GB). Weights load කරලා ඉතුරු 40 GB නම්: 40 ÷ 0.5 ≈ sequences 80ක් එකවර. 2 අමතක කළොත් 160 කියලා වැරදි උත්තරයක් එනවා. Static batching උදාහරණය: sequences 4ක, tokens 100, 100, 100, 1,000. Useful වැඩ = 1,300, allocate කරපු slots = 4 × 1,000 = 4,000. Utilization 32.5% විතරයි.',
-      code: {
-        lang: 'python',
-        src: `# KV cache සහ weights memory ගණනය (GB වලින්, ආසන්න වශයෙන්)
-layers, kv_heads, head_dim = 32, 8, 128
-bytes_per_val = 2            # FP16 = bytes 2
-seq_len = 4096
-
-# 2 = key එකයි value එකයි දෙකම
-per_token = 2 * layers * kv_heads * head_dim * bytes_per_val
-per_seq_gb = per_token * seq_len / 1024**3
-print(per_token, "bytes/token")          # 131072
-print(round(per_seq_gb, 2), "GB/seq")     # 0.5
-
-free_gb = 40                 # weights වලට පස්සේ ඉතුරු memory
-print(int(free_gb / per_seq_gb), "sequences")  # ~80
-
-params_b = 13                # parameters බිලියන 13
-print(params_b * 2, "GB weights in BF16")      # 26`,
+      "title": "Batching, KV Cache & GPU Memory Calculations",
+      "body": [
+        "Batching reuses each model-weight read across several sequences, improving throughput. Static batching keeps a fixed group until its longest sequence finishes, leaving unused slots when short answers end. Continuous (in-flight) batching removes finished sequences and admits new requests each decode step, keeping the GPU busier.",
+        "The KV cache stores keys and values from previous tokens for every attention layer, so they need not be recomputed for each new token. Its size grows linearly with sequence length and batch size. Paged KV cache divides storage into fixed-size blocks tracked by a block table, reducing fragmentation and avoiding allocation for a sequence’s maximum length in advance.",
+        "Approximate weight memory is parameter count × bytes per parameter: FP32=4, FP16/BF16=2, INT8/FP8=1, INT4=0.5. Thus 13B BF16 weights need 13 × 2 = 26 GB; 8B INT4 needs 8 × 0.5 = 4 GB. These figures exclude KV cache and activations. Inference does not need training optimizer states.",
+        "KV bytes per token = 2 (key and value) × layers × KV heads × head dimension × bytes per value. Multiply by sequence length and concurrent sequences. Do not omit the factor of 2 or substitute query-head count for KV-head count in GQA (for example, 32 query heads but 8 KV heads). Weight-only INT4 such as AWQ can help batch-one, memory-bound decode; large compute-bound prefill may benefit less. Chunked prefill divides long prompts into pieces so they can be interleaved with decode steps. Prefix caching can reuse KV cache for a common prompt prefix across requests."
+      ],
+      "analogy": "Static batching is like a bus that waits for the longest trip before taking new passengers: seats stay empty after short-trip passengers get off. A Colombo city bus with new passengers boarding at each stop resembles continuous batching. Paged KV cache is like selling tickets by seat or block instead of reserving an entire bus for one family.",
+      "example": "For 32 layers, 8 KV heads, head dimension 128, and FP16 (2 bytes), each token uses 2 × 32 × 8 × 128 × 2 = 131,072 bytes = 128 KiB. A 4,096-token sequence uses 4,096 × 128 KiB = 512 MiB ≈ 0.5 GB. If 40 GB remains after weights, 40 ÷ 0.5 ≈ 80 such sequences fit approximately. Four sequences of lengths 100, 100, 100, and 1,000 use 1,300 useful token slots but static allocation reserves 4 × 1,000 = 4,000, so utilization is 1,300 ÷ 4,000 = 32.5%.",
+      "code": {
+        "lang": "python",
+        "src": "# Approximate KV-cache and weight memory calculations in GB\nlayers, kv_heads, head_dim = 32, 8, 128\nbytes_per_val = 2            # FP16 = 2 bytes\nseq_len = 4096\n\n# 2 counts both the key and value\nper_token = 2 * layers * kv_heads * head_dim * bytes_per_val\nper_seq_gb = per_token * seq_len / 1024**3\nprint(per_token, \"bytes/token\")          # 131072\nprint(round(per_seq_gb, 2), \"GB/seq\")     # 0.5\n\nfree_gb = 40                 # memory remaining after weights\nprint(int(free_gb / per_seq_gb), \"sequences\")  # ~80\n\nparams_b = 13                # 13 billion parameters\nprint(params_b * 2, \"GB weights in BF16\")      # 26"
       },
-      keyPoints: [
-        'Continuous/in-flight batching = හැම step එකකම join/leave. Static = දිගම එක ඉවර වෙනකම් බලාගෙන ඉන්නවා.',
-        'Weights GB ≈ parameters (බිලියන) × bytes per parameter.',
-        'KV per token = 2 × layers × KV heads × head dim × bytes.',
-        'KV cache = sequence length × batch size අනුව linear.',
-        'Paged KV cache = blocks, අඩු fragmentation, waste එක sequence එකකට block එකකට අඩුයි.',
+      "keyPoints": [
+        "Continuous batching admits and removes sequences at each step; static batching waits for the longest.",
+        "Approximate weight GB = parameters in billions × bytes per parameter.",
+        "KV bytes/token = 2 × layers × KV heads × head dimension × bytes per value.",
+        "KV cache grows linearly with sequence length and concurrent sequences.",
+        "Paged KV cache allocates blocks and reduces fragmentation and unused capacity."
       ],
-      terms: [
-        { en: 'Static Batching', si: 'Batch එක fixed, දිගම sequence එක ඉවර වෙනකම් අලුත් requests ගන්නේ නෑ.' },
-        { en: 'Continuous / In-flight Batching', si: 'Iteration-level scheduling. ඉවර වුණ sequences අයින් වෙලා අලුත් ඒවා හැම step එකකම එනවා.' },
-        { en: 'KV Cache', si: 'කලින් tokens වල keys සහ values, හැම layer එකකටම cache කරලා තියන එක.' },
-        { en: 'Paged KV Cache / PagedAttention', si: 'KV cache එක non-contiguous fixed-size blocks වල block table එකකින් තියන ක්‍රමය.' },
-        { en: 'Grouped-Query Attention (GQA)', si: 'Query heads ගොඩකට KV heads ටිකක් share කරනවා. KV cache එක ඒ අනුපාතයෙන් පොඩි වෙනවා.' },
-        { en: 'Chunked Prefill', si: 'දිග prompt එකක prefill එක කෑලි වලට කඩලා decode steps එක්ක මිශ්‍ර කරන එක.' },
-        { en: 'Prefix Caching', si: 'Prompts කිහිපයකට පොදු prefix එකේ KV cache එක reuse කරන එක.' },
+      "terms": [
+        {
+          "en": "Static Batching",
+          "si": "Fixed group of sequences that waits for the longest sequence to finish."
+        },
+        {
+          "en": "Continuous / In-flight Batching",
+          "si": "Scheduling that admits and removes sequences during generation."
+        },
+        {
+          "en": "KV Cache",
+          "si": "Stored attention keys and values from prior tokens."
+        },
+        {
+          "en": "Paged KV Cache / PagedAttention",
+          "si": "KV storage organized into fixed-size blocks tracked by a block table."
+        },
+        {
+          "en": "Grouped-Query Attention (GQA)",
+          "si": "Attention design where multiple query heads share fewer key/value heads."
+        },
+        {
+          "en": "Chunked Prefill",
+          "si": "Splitting a long prompt’s prefill into chunks interleaved with decoding."
+        },
+        {
+          "en": "Prefix Caching",
+          "si": "Reusing cached prompt-prefix computation across requests."
+        }
       ],
+      "si": "ඔයාගේ model එකේ layers 32, KV heads 8, head dimension 128, FP16 නම් token එකකට 2 × 32 × 8 × 128 × 2 = 131,072 bytes යනවා. Tokens 4,096ක් නම් 4,096 × 128 KiB = 512 MiB පමණයි. Weights පස්සේ 40 GB ඉතුරු නම් 40 ÷ 0.5 = sequences 80ක් පමණ තියාගන්න පුළුවන්. 2 කියන K සහ V දෙක අමතක කරන්න එපා."
     },
     {
-      id: 'tensorrt-onnx',
-      examRefs: ['DEP-016', 'DEP-038', 'DEP-062', 'DEP-063', 'DEP-084', 'DEP-085', 'DEP-110', 'DEP-120', 'DEP-121', 'DEP-143'],
-      title: 'ONNX & TensorRT: Engines, Profiles, Plugins, INT8 Calibration',
-      body: [
-        'ONNX (Open Neural Network Exchange) කියන්නේ framework එකකට බැඳිලා නැති, standard operators graph එකක් විදිහට model එකක් ලියන open format එක. PyTorch එකෙන් torch.onnx.export කරලා ONNX Runtime හෝ TensorRT එකට දෙන්න පුළුවන්. වැදගත් දෙයක්: dynamic_axes නොදුන්නොත් export එක example input එකේ shape එක (batch size, sequence length) fix කරනවා. dynamic_axes වලින් batch සහ seq dimensions variable කියලා mark කරන්න. Tracing වලින් export කරද්දී data-dependent if/else එකේ trace කරද්දී ගිය branch එක විතරයි graph එකට එන්නේ, ඒ නිසා හැම input එකකටම ඒ branch එකම run වෙනවා. ඒක හදන්න torch.where වගේ tensor ops වලින් ලියන්න, scripting පාවිච්චි කරන්න, නැත්නම් අලුත් dynamo-based exporter එක පාවිච්චි කරන්න. export_params අක්‍රිය කරන්න එපා, එතකොට weights file එකට එන්නේ නෑ.',
-        'TensorRT කියන්නේ inference optimizer සහ runtime එකක්. ඒක network එක (බොහෝවිට ONNX හරහා) අරගෙන layer fusion කරනවා (උදා: GEMM + bias + activation එක kernel එකකට), precision තෝරනවා (FP16/INT8/FP8), target GPU එකට වේගවත්ම kernels auto-tune කරලා තෝරනවා, අන්තිමට serialized engine එකක් (.plan) හදනවා. trtexec කියන command-line tool එකෙන් ONNX එකකින් engine එකක් build කරලා benchmark කරන්න පුළුවන්. TensorRT network එක හරහා requests serve කරන්නේ නෑ, ඒක Triton ගේ වැඩේ.',
-        'Engine portability: TensorRT engine එක build කරපු GPU architecture එකටයි TensorRT version එකටයි specialize වෙලා. A100 එකේ build කරපු engine එක H100 එකේ load වෙන්නේ නෑ, target hardware එකේ ආයෙත් build කරන්න ඕනේ. (සීමාව architecture සහ version අනුව, එක එක physical card එක අනුව නෙවෙයි.) Optimization profiles: dynamic dimensions වලට min, opt, max shapes දෙනවා. උදා: sequence length min=1, opt=256, max=2048. වැඩිපුර එන shape එකට kernels tune වෙනවා, මුළු range එකම valid.',
-        'Plugins: ONNX parser එක TensorRT support නොකරන custom operator එකක් ගැන complain කරොත්, ඒ op එකට TensorRT plugin එකක් (සාමාන්‍යයෙන් CUDA kernel එකක්) ලියලා හෝ තියෙන එකක් register කරනවා. INT8 calibration: post-training INT8 quantization වලදී representative sample inputs ටිකක් network එක හරහා යවලා activations වල value ranges මනිනවා, ඒ අනුව scale factors තෝරනවා. Weights train වෙන්නේ නෑ. Calibration data එක ඇත්ත data එකට සමාන නැත්නම් clipping හෝ නරක resolution එකක් එනවා.',
+      "id": "tensorrt-onnx",
+      "examRefs": [
+        "DEP-016",
+        "DEP-038",
+        "DEP-062",
+        "DEP-063",
+        "DEP-084",
+        "DEP-085",
+        "DEP-110",
+        "DEP-120",
+        "DEP-121",
+        "DEP-143"
       ],
-      analogy:
-        'ONNX කියන්නේ ඕනෑම රටක airport එකක පිළිගන්න standard shipping container එක වගේ. TensorRT කියන්නේ ඒ container එකේ තියෙන බඩු ඔයාගේ නිශ්චිත lorry එකට (GPU එකට) හරියටම ගැළපෙන්න නැවත pack කරන කෙනා. A100 lorry එකට pack කරපු එක H100 lorry එකට දාන්න බෑ, ආයෙත් pack කරන්න ඕනේ. INT8 calibration කියන්නේ මහත්තයාගේ ඇඳුම් size එක මනින්න කලින් ඇත්ත customers ලා කිහිප දෙනෙක්ව මැනලා බලන එක.',
-      example:
-        'ඔයාගේ BERT classifier එක PyTorch එකෙන් export කරනවා: dynamic_axes={"input_ids": {0: "batch", 1: "seq"}}. ඊට පස්සේ trtexec --onnx=model.onnx --saveEngine=model.plan --fp16 කරනවා. Sequence length 1-2048, ගොඩක් requests 256 tokens ළඟ නම් profile එක min=1, opt=256, max=2048. ඒ engine එක H100 cluster එකේ deploy කරන්න ඕනේ නම් H100 එකකම build කරන්න.',
-      keyPoints: [
-        'ONNX = framework-neutral format. dynamic_axes නැත්නම් shapes fix වෙනවා.',
-        'TensorRT = layer fusion + precision + kernel auto-tuning → serialized engine.',
-        'Engine එක GPU architecture + TensorRT version එකට specific.',
-        'Optimization profile = dynamic dims වලට min/opt/max. Plugin = unsupported ops වලට.',
-        'INT8 calibration = activation ranges මනින්න representative data.',
+      "title": "ONNX & TensorRT: Engines, Profiles, Plugins, INT8 Calibration",
+      "body": [
+        "ONNX (Open Neural Network Exchange) is an open, framework-neutral graph format using standard operators. Export from PyTorch with torch.onnx.export, then use ONNX Runtime or TensorRT. Without dynamic_axes, export can fix batch and sequence dimensions to the example input shape. Mark variable dimensions explicitly. Tracing may capture only the branch taken for data-dependent if/else; use tensor operations such as torch.where, scripting, or the newer Dynamo-based exporter when appropriate. Keep export_params enabled to include weights.",
+        "TensorRT is an inference optimizer and runtime. It can fuse layers (for example, GEMM, bias, and activation into one kernel), select precision such as FP16/INT8/FP8, tune kernels for a target GPU, and serialize an engine (.plan). trtexec can build and benchmark an engine from ONNX. TensorRT optimizes inference; Triton is commonly used to serve requests.",
+        "An engine is specialized to GPU architecture and TensorRT version; build it for the target deployment hardware. Dynamic dimensions use an optimization profile with minimum, optimum, and maximum shapes, such as sequence length 1, 256, and 2,048. The optimum shape guides tuning while the supported range remains valid.",
+        "If the ONNX parser does not support an operator, provide/register a TensorRT plugin, often implemented with a CUDA kernel. Post-training INT8 calibration runs representative samples through the network to measure activation ranges and choose scales; it does not train weights. Unrepresentative calibration data can cause clipping or poor resolution."
       ],
-      terms: [
-        { en: 'ONNX', si: 'Open Neural Network Exchange. Standard operators graph format එක.' },
-        { en: 'Dynamic Axes', si: 'ONNX export වල variable විදිහට තියන dimensions (batch, sequence).' },
-        { en: 'TensorRT Engine (.plan)', si: 'Specific GPU එකට optimize කරපු serialized inference artifact එක.' },
-        { en: 'Layer Fusion', si: 'Operations කිහිපයක් එක kernel එකකට එකතු කරලා memory round trips සහ launches අඩු කරන එක.' },
-        { en: 'Optimization Profile', si: 'Dynamic input dimension එකකට min/opt/max shapes.' },
-        { en: 'TensorRT Plugin', si: 'TensorRT වලට නැති operator එකක් එකතු කරන custom layer implementation එක.' },
-        { en: 'INT8 Calibration', si: 'Sample data වලින් activation ranges මැනලා INT8 scale factors තෝරන එක.' },
-        { en: 'trtexec', si: 'ONNX එකකින් engine build කරලා latency/throughput benchmark කරන TensorRT CLI tool එක.' },
+      "analogy": "ONNX is like a standard shipping container accepted in many places. TensorRT repacks it to fit a particular GPU truck. An engine built for an A100 may need rebuilding for the target H100 architecture and TensorRT version. INT8 calibration is like measuring real customers before choosing standard clothing sizes.",
+      "example": "Export BERT with dynamic_axes={\"input_ids\": {0: \"batch\", 1: \"seq\"}}, then run trtexec --onnx=model.onnx --saveEngine=model.plan --fp16. For sequence lengths 1–2,048 with most requests near 256, use min=1, opt=256, max=2,048. Build the engine for the GPU architecture and TensorRT version used in deployment.",
+      "keyPoints": [
+        "ONNX is framework-neutral; declare dynamic dimensions when needed.",
+        "TensorRT fuses layers, selects precision, tunes kernels, and serializes an engine.",
+        "Build engines for the target GPU architecture and TensorRT version.",
+        "Profiles set min/opt/max shapes; plugins implement unsupported operators.",
+        "INT8 calibration measures activation ranges using representative data."
       ],
+      "terms": [
+        {
+          "en": "ONNX",
+          "si": "Open, framework-neutral format for neural-network computation graphs."
+        },
+        {
+          "en": "Dynamic Axes",
+          "si": "Dimensions such as batch or sequence length that can vary in an ONNX model."
+        },
+        {
+          "en": "TensorRT Engine (.plan)",
+          "si": "Serialized inference engine optimized for a target GPU and software version."
+        },
+        {
+          "en": "Layer Fusion",
+          "si": "Combining multiple operations to reduce kernel launches and memory traffic."
+        },
+        {
+          "en": "Optimization Profile",
+          "si": "Minimum, optimum, and maximum input shapes for dynamic dimensions."
+        },
+        {
+          "en": "TensorRT Plugin",
+          "si": "Custom implementation of an operation not otherwise supported by TensorRT."
+        },
+        {
+          "en": "INT8 Calibration",
+          "si": "Choosing INT8 activation scales by measuring representative sample inputs."
+        },
+        {
+          "en": "trtexec",
+          "si": "TensorRT command-line utility to build and benchmark engines."
+        }
+      ],
+      "si": "ඔයා BERT model එක batch size 1 හෝ 16කින් දෙන්න යනවා නම් ONNX export එකේ batch dimension එක dynamic කියලා සලකුණු කරන්න. TensorRT එක layers fuse කරලා, target GPU එකට kernels tune කරලා .plan engine එකක් හදනවා. Sequence length 1 සිට 2,048 දක්වා නම් min=1, opt=256, max=2,048 profile එකක් දාන්න පුළුවන්. INT8 calibration එකට ඇත්ත data වගේ samples යොදාගන්න."
     },
     {
-      id: 'tensorrt-llm',
-      examRefs: ['DEP-017', 'DEP-058', 'DEP-064', 'DEP-065', 'DEP-122', 'DEP-123', 'DEP-139'],
-      title: 'TensorRT-LLM: In-flight Batching, Paged KV Cache, Memory Fraction',
-      body: [
-        'සාමාන්‍ය TensorRT එක LLMs වලට ඇති වෙන්නේ නෑ. Autoregressive generation වලට KV cache management, token-level batching, multi-GPU sharding ඕනේ. TensorRT-LLM කියන්නේ ඒවා එකතු කරපු inference library එක: optimized attention kernels, paged KV cache, in-flight batching, multi-GPU tensor parallelism. ඒක training tool එකක් නෙවෙයි, GPUs සඳහා inference library එකක්.',
-        'සාමාන්‍ය workflow එක: Hugging Face weights download කරනවා → TensorRT-LLM checkpoint එකකට convert කරනවා (ඕනේ නම් මෙතනදී quantize කරනවා) → trtllm-build වලින් engine එක build කරනවා → Triton හරහා serve කරනවා. අලුත් versions වල මේ steps automatic කරන high-level LLM API එකකුත් තියෙනවා. Triton එකේ TensorRT-LLM engines serve කරන්නේ tensorrtllm backend එකෙන්. ඒකේ in-flight batching සහ KV-cache management තියෙනවා.',
-        'Build-time limits: max_batch_size, max_num_tokens, max_seq_len engine එක ඇතුළටම bake වෙනවා. Engine එක max_seq_len 4,096 එක්ක build කරලා නම්, 8,192 tokens conversations වලට engine එක ආයෙත් build කරන්න ඕනේ (model එක ඒ context එක support කරනවා නම්), ලොකු KV cache එකට memory තියෙනවද කියලත් බලන්න. Client එකේ max_tokens වැඩි කරලා වැඩක් නෑ.',
-        'KV-cache memory fraction: TensorRT-LLM weights load කරලා ඉතුරු free GPU memory එකෙන් ලොකු කොටසක් paged KV-cache pool එකට කලින්ම අල්ලගන්නවා (kv_cache_free_gpu_mem_fraction). ඒ නිසා එකම GPU එකේ පොඩි embedding model එකක් run කරොත් ඒකට OOM එනවා. විසඳුම: ඒ fraction එක අඩු කරන්න (concurrent sequences ටිකක් අඩු වෙනවා), නැත්නම් MIG වලින් models වෙන් කරන්න.',
+      "id": "tensorrt-llm",
+      "examRefs": [
+        "DEP-017",
+        "DEP-058",
+        "DEP-064",
+        "DEP-065",
+        "DEP-122",
+        "DEP-123",
+        "DEP-139"
       ],
-      analogy:
-        'TensorRT-LLM කියන්නේ සාමාන්‍ය restaurant එකක් (TensorRT) අරගෙන, buffet එකකට ඕනේ විශේෂ දේවල් එකතු කරා වගේ: plates ඉවර වෙන ගමන්ම අලුත් අයව ඇතුළට ගන්නවා (in-flight batching), මේස කෑලි වලට බෙදලා දෙනවා (paged KV cache). KV memory fraction එක කියන්නේ restaurant එක මුළු car park එකෙන් 90%ක් තමන්ගේ customers ලට reserve කරන එක. ළඟ තියෙන පොඩි කඩේට වාහනයක් නවත්තන්න ඉඩ නෑ.',
-      example:
-        'H100 80 GB එකක 8B model එකක් FP16 වලින් (16 GB) TensorRT-LLM එක්ක run කරනවා. ඉතුරු 64 GB න් 90%ක් (≈ 57 GB) KV pool එකට යනවා. එකම GPU එකේ 4 GB ඕනේ embedding model එකකට ඉඩ නෑ. Fraction එක 0.7 කරාම KV pool එක ≈ 45 GB, embedding model එකට ඉඩ ලැබෙනවා. ඒත් එකවර serve කරන්න පුළුවන් sequences ගණන ටිකක් අඩු වෙනවා.',
-      keyPoints: [
-        'TensorRT-LLM = TensorRT + LLM features (paged KV, in-flight batching, TP).',
-        'HF weights → checkpoint (+quantize) → trtllm-build → Triton (tensorrtllm backend).',
-        'max_seq_len, max_batch_size, max_num_tokens = build-time limits. වෙනස් කරන්න rebuild.',
-        'kv_cache_free_gpu_mem_fraction අඩු කරාම අනිත් processes වලට memory ඉතුරු වෙනවා.',
+      "title": "TensorRT-LLM: In-flight Batching, Paged KV Cache, Memory Fraction",
+      "body": [
+        "General TensorRT does not provide all the features needed for autoregressive LLM generation, such as KV-cache management, token-level batching, and multi-GPU sharding. TensorRT-LLM is an inference library with optimized attention kernels, paged KV cache, in-flight batching, and tensor parallelism; it is not a training tool.",
+        "A common workflow converts Hugging Face weights to a TensorRT-LLM checkpoint, optionally quantizes, builds an engine with trtllm-build, and serves it through Triton’s tensorrtllm backend. Higher-level LLM APIs can automate parts of this workflow. The backend provides in-flight batching and KV-cache management. Multi-LoRA serving can keep one base model loaded, select a LoRA adapter for each request, and mix adapters in a batch when supported.",
+        "Limits such as max_batch_size, max_num_tokens, and max_seq_len are set at engine build time. If an engine supports max_seq_len=4,096, serving 8,192-token conversations requires rebuilding if the model supports that context, and enough memory must be available for the larger KV cache. Raising a client max_tokens value alone does not change the engine limit.",
+        "TensorRT-LLM can reserve a large fraction of free GPU memory after loading weights for its paged KV-cache pool using kv_cache_free_gpu_mem_fraction. A second model on the same GPU may then run out of memory. Lowering the fraction frees memory but can reduce concurrent sequence capacity; MIG can isolate models."
       ],
-      terms: [
-        { en: 'TensorRT-LLM', si: 'NVIDIA GPUs මත LLM inference optimize කරන library එක.' },
-        { en: 'In-flight Batching', si: 'TensorRT-LLM ගේ continuous batching එක. Sequences step එකෙන් step එකට join/leave.' },
-        { en: 'trtllm-build', si: 'TensorRT-LLM checkpoint එකකින් engine එක build කරන command එක.' },
-        { en: 'KV-cache Memory Fraction', si: 'Weights වලින් පස්සේ ඉතුරු free memory එකෙන් KV pool එකට ගන්න කොටස.' },
-        { en: 'Multi-LoRA Serving', si: 'එක base model එකක් + LoRA adapters ගොඩක්, request එකෙන් request එකට adapter එක තෝරනවා, එකම batch එකේ mix වෙන්න පුළුවන්.' },
+      "analogy": "TensorRT-LLM adds LLM-specific features to an inference kitchen: new diners join as others finish (in-flight batching), and KV-cache storage is allocated in blocks. Reserving 90% of a car park for one restaurant’s guests can leave no space for a nearby shop.",
+      "example": "On an 80 GB H100, an 8B FP16 model’s weights need about 8 × 2 = 16 GB. If roughly 64 GB remains and 90% is reserved, about 57.6 GB goes to KV cache, leaving little for another 4 GB embedding model. Reducing the fraction to 0.7 reserves about 44.8 GB and leaves more room, but supports fewer concurrent sequences.",
+      "keyPoints": [
+        "TensorRT-LLM adds LLM inference features such as paged KV cache and in-flight batching.",
+        "Typical flow: Hugging Face weights → checkpoint/optional quantization → trtllm-build → Triton backend.",
+        "Sequence, batch, and token limits are build-time settings; rebuild to change them.",
+        "Lower KV-cache memory fraction can make room for other processes but reduce concurrency."
       ],
+      "terms": [
+        {
+          "en": "TensorRT-LLM",
+          "si": "NVIDIA library for optimizing LLM inference on NVIDIA GPUs."
+        },
+        {
+          "en": "In-flight Batching",
+          "si": "Continuous batching that admits and removes sequences between decode steps."
+        },
+        {
+          "en": "trtllm-build",
+          "si": "Command used to build a TensorRT-LLM engine."
+        },
+        {
+          "en": "KV-cache Memory Fraction",
+          "si": "Share of free GPU memory reserved for the KV-cache pool."
+        },
+        {
+          "en": "Multi-LoRA Serving",
+          "si": "Serving multiple LoRA adapters with one base model and selecting adapters per request."
+        }
+      ],
+      "si": "ඔයා 8B FP16 model එකක් 80 GB H100 එකක දානවා නම් weights වලට 8 × 2 = 16 GB යනවා. ඉතුරු 64 GBන් 90%ක් KV cache එකට reserve කළොත් 57.6 GB පමණ ගන්න වෙන්න පුළුවන්. ඒ නිසා 4 GB embedding model එකකට ඉඩ නොලැබෙන්න පුළුවන්. Fraction එක 0.7 කළොත් KV pool එක අඩුවෙනවා, හැබැයි එකවර serve කරන sequences ගණනත් අඩු වෙයි."
     },
     {
-      id: 'triton-basics',
-      examRefs: ['DEP-015', 'DEP-020', 'DEP-021', 'DEP-022', 'DEP-053', 'DEP-054', 'DEP-055', 'DEP-060', 'DEP-113', 'DEP-144'],
-      title: 'Triton Inference Server: Model Repository, config.pbtxt, Batching, Ports',
-      body: [
-        'Triton Inference Server කියන්නේ open-source, multi-framework inference server එකක්. TensorRT, ONNX Runtime, PyTorch, Python වගේ backends වල models HTTP/gRPC හරහා serve කරනවා, dynamic batching සහ concurrent model execution එක්ක. (OpenAI ගේ "Triton" GPU kernel language එක වෙනම project එකක්, නම විතරයි සමාන.) Default ports: 8000 = HTTP/REST, 8001 = gRPC, 8002 = Prometheus metrics.',
-        'Model repository layout: <repository>/<model-name>/config.pbtxt සහ numeric version folders. උදා: models/llm_encoder/config.pbtxt සහ models/llm_encoder/1/model.plan. Version folder එක model name folder එකට ඇතුළේ, ඒක අංකයක් වෙන්න ඕනේ. config.pbtxt එකේ max_batch_size > 0 නම් Triton dims වලට පේන්නේ නැති implicit batch dimension එකක් ඉස්සරහින් එකතු කරනවා. ඒ කියන්නේ dims: [ -1 ] ඇත්තටම [batch, seq_len]. max_batch_size: 0 නම් implicit batch dim එකක් නෑ, Triton requests එකතු කරන්නෙත් නෑ, dims කියන්නේ සම්පූර්ණ shape එක.',
-        'instance_group එකෙන් model එකේ execution instances කීයක්, කොහෙද තියෙන්නේ කියලා කියනවා. count: 2, kind: KIND_GPU, gpus: [0] කියන්නේ GPU 0 එකේ copies දෙකක්, requests දෙකක් එකවර run වෙනවා. ඒක layers GPUs අතර බෙදන එකක් (model parallelism) නෙවෙයි. Dynamic batcher එක ළඟ ළඟ එන requests ටිකක් පොඩ්ඩක් තියාගෙන (max_queue_delay_microseconds වෙනකම්) එක batch එකකට එකතු කරනවා. Queue delay එක වැඩි කරාම batches ලොකුයි, throughput වැඩියි, ඒත් latency එකත් වැඩියි.',
-        'preferred_batch_size: [ 8, 16 ] කියන්නේ batcher එක මේ sizes හදන්න උත්සාහ කරනවා, එකක් හැදුණු ගමන් කලින්ම යවනවා. නැත්නම් queue delay එක ඉවර වුණාම පුළුවන් ලොකුම batch එක යවනවා. අනිත් sizes තාමත් max_batch_size වෙනකම් allowed. Backend එක සමහර sizes වලට විශේෂයෙන් වේගවත් නම් (උදා: TensorRT profiles) මේක ප්‍රයෝජනවත්. ගොඩක් models වලට මේක නොදා queue delay එකට විතරක් තියන එක හොඳට වැඩ කරනවා.',
+      "id": "triton-basics",
+      "examRefs": [
+        "DEP-015",
+        "DEP-020",
+        "DEP-021",
+        "DEP-022",
+        "DEP-053",
+        "DEP-054",
+        "DEP-055",
+        "DEP-060",
+        "DEP-113",
+        "DEP-144"
       ],
-      analogy:
-        'Triton කියන්නේ Pettah bus stand එක වගේ. Model repository එක කියන්නේ route board එක: route නම (model name), ඊට පහළින් bus අංක (versions). config.pbtxt කියන්නේ bus එකේ නීති පත්‍රය: seats කීයද (max_batch_size), buses කීයක් එකවර දුවනවද (instance_group). Dynamic batcher එක කියන්නේ conductor තත්පර කිහිපයක් බලාගෙන ඉඳලා තව මගීන් ටිකක් නග්ගගෙන යන එක. වැඩි වෙලා බලාගෙන හිටියොත් bus එක පිරෙනවා, ඒත් මගීන්ට පරක්කුයි.',
-      example:
-        'පහළ config එකේ max_batch_size: 32 සහ input dims: [ -1 ]. Client එකට පේන්නේ [batch, seq_len] shape එකක්, batch 1-32, sequence length variable. instance_group count 2 නිසා GPU 0 එකේ copies දෙකක්. Metrics වල queue time එක ඉහළ යනවා, compute time එක එකම විදිහට තියෙනවා, GPU එකේ memory ඉතුරුයි නම්, instances වැඩි කරන්න හෝ dynamic batching tune කරන්න. Batch එක අඩු කරන එක queue එක තවත් නරක් කරනවා.',
-      code: {
-        lang: 'text',
-        src: `# models/classifier/config.pbtxt
-# Folder layout: models/classifier/1/model.onnx
-name: "classifier"
-platform: "onnxruntime_onnx"
-max_batch_size: 32          # > 0 නිසා implicit batch dim එකක් එනවා
-input [ { name: "input_ids" data_type: TYPE_INT64 dims: [ -1 ] } ]
-output [ { name: "logits" data_type: TYPE_FP32 dims: [ 3 ] } ]
-
-instance_group [ { count: 2 kind: KIND_GPU gpus: [ 0 ] } ]  # GPU 0 එකේ copies 2ක්
-
-dynamic_batching {
-  preferred_batch_size: [ 8, 16 ]       # මේ sizes වලට උත්සාහ කරනවා
-  max_queue_delay_microseconds: 2000    # උපරිම 2 ms බලාගෙන ඉන්නවා
-}`,
+      "title": "Triton Inference Server: Model Repository, config.pbtxt, Batching, Ports",
+      "body": [
+        "Triton Inference Server is an open-source multi-framework server that serves TensorRT, ONNX Runtime, PyTorch, and Python backend models over HTTP or gRPC, with dynamic batching and concurrent model execution. OpenAI Triton, the GPU-kernel language, is a different project. Default ports: 8000 HTTP/REST, 8001 gRPC, and 8002 Prometheus metrics.",
+        "A model repository uses <repository>/<model-name>/config.pbtxt and numeric version folders, such as models/llm_encoder/config.pbtxt and models/llm_encoder/1/model.plan. When max_batch_size > 0, Triton adds an implicit batch dimension before the configured dims; dims [-1] therefore represents [batch, seq_len]. With max_batch_size=0 there is no implicit batch dimension and Triton does not batch requests.",
+        "instance_group controls how many model instances run and where. For example, count:2, kind:KIND_GPU, gpus:[0] creates two copies on GPU 0, enabling concurrent requests; it does not split model layers across GPUs. The dynamic batcher briefly queues independent requests, up to max_queue_delay_microseconds, to form batches. Longer queue delay may improve throughput but also increases latency.",
+        "preferred_batch_size:[8,16] asks the batcher to try those sizes and send a batch as soon as one is formed; otherwise it can send the largest available batch when the queue delay expires. Other sizes up to max_batch_size remain allowed. This setting helps when a backend has especially efficient profiles for selected sizes; many models work well with queue delay alone."
+      ],
+      "analogy": "Triton is like the Pettah bus stand. The model repository is the route board, version folders are bus numbers, and config.pbtxt states the seat limit and how many buses run. The dynamic batcher is a conductor who waits briefly for more passengers; waiting can fill the bus but delays departure.",
+      "example": "With max_batch_size:32 and input dims:[-1], the client supplies [batch, seq_len] where batch is 1–32. Two instance_group copies on GPU 0 can run requests concurrently. If queue time is high, compute time steady, and GPU memory is available, consider tuning instances or dynamic batching; reducing the batch may worsen queueing.",
+      "code": {
+        "lang": "text",
+        "src": "# models/classifier/config.pbtxt\n# Folder layout: models/classifier/1/model.onnx\nname: \"classifier\"\nplatform: \"onnxruntime_onnx\"\nmax_batch_size: 32          # positive value adds an implicit batch dimension\ninput [ { name: \"input_ids\" data_type: TYPE_INT64 dims: [ -1 ] } ]\noutput [ { name: \"logits\" data_type: TYPE_FP32 dims: [ 3 ] } ]\n\ninstance_group [ { count: 2 kind: KIND_GPU gpus: [ 0 ] } ]  # two copies on GPU 0\n\ndynamic_batching {\n  preferred_batch_size: [ 8, 16 ]       # try these batch sizes\n  max_queue_delay_microseconds: 2000    # wait up to 2 ms\n}"
       },
-      keyPoints: [
-        'Ports: 8000 HTTP, 8001 gRPC, 8002 metrics.',
-        'Layout: models/<name>/config.pbtxt + models/<name>/<version>/model file.',
-        'max_batch_size > 0 = dims වලට ඉස්සරහින් implicit batch dim. 0 = batching නෑ.',
-        'instance_group count = එකම model එකේ concurrent copies.',
-        'Queue delay වැඩි = throughput වැඩි, latency වැඩි.',
+      "keyPoints": [
+        "Default ports: 8000 HTTP, 8001 gRPC, 8002 metrics.",
+        "Model folders contain config.pbtxt and numeric version directories.",
+        "max_batch_size > 0 adds an implicit batch dimension; 0 disables it.",
+        "instance_group count creates concurrent model copies, not model parallelism.",
+        "Longer queue delay may improve throughput but add latency."
       ],
-      terms: [
-        { en: 'Triton Inference Server', si: 'Multi-framework open-source model serving runtime එක (HTTP/gRPC).' },
-        { en: 'Model Repository', si: 'Model name folders, ඇතුළේ config.pbtxt සහ numeric version folders.' },
-        { en: 'config.pbtxt', si: 'Triton model configuration file එක (protobuf text format).' },
-        { en: 'max_batch_size', si: 'Batch size උපරිමය. > 0 නම් implicit batch dim එකක් dims වලට ඉස්සරහින්.' },
-        { en: 'instance_group', si: 'Model instances ගණන සහ ඒවා තියෙන තැන (GPU/CPU).' },
-        { en: 'Dynamic Batcher', si: 'Server එකේ independent requests එකතු කරලා batches හදන scheduler එක.' },
-        { en: 'preferred_batch_size', si: 'Dynamic batcher එක හදන්න කැමති batch sizes.' },
-        { en: 'max_queue_delay_microseconds', si: 'Batch එකක් හදන්න request එකක් උපරිම බලාගෙන ඉන්න කාලය.' },
+      "terms": [
+        {
+          "en": "Triton Inference Server",
+          "si": "Open-source server for deploying inference models from multiple frameworks."
+        },
+        {
+          "en": "Model Repository",
+          "si": "Directory tree containing model configuration and version folders."
+        },
+        {
+          "en": "config.pbtxt",
+          "si": "Triton model configuration file in protobuf text format."
+        },
+        {
+          "en": "max_batch_size",
+          "si": "Maximum batch size and whether Triton adds an implicit batch dimension."
+        },
+        {
+          "en": "instance_group",
+          "si": "Configuration for model instance count and placement on CPU or GPU."
+        },
+        {
+          "en": "Dynamic Batcher",
+          "si": "Scheduler that combines independent requests into batches."
+        },
+        {
+          "en": "preferred_batch_size",
+          "si": "Batch sizes that a Triton dynamic batcher preferentially forms."
+        },
+        {
+          "en": "max_queue_delay_microseconds",
+          "si": "Maximum time a request waits while Triton forms a batch."
+        }
       ],
+      "si": "ඔයා Triton එකේ model එකක් models/classifier/1/model.onnx folder එකේ තියාගෙන config.pbtxt දානවා. max_batch_size 32 සහ dims [-1] නම් client එක [batch, seq_len] shape එකක් යවයි; batch එක 1 සිට 32 දක්වා වෙන්න පුළුවන්. GPU 0 එකේ instance copies 2ක් නම් requests දෙකක් එකවර run වෙන්න පුළුවන්. Queue එකට 2 ms බලාගන්න කිව්වොත් batch එක ලොකු වෙයි, නමුත් latency වැඩි වෙන්නත් පුළුවන්."
     },
     {
-      id: 'triton-advanced',
-      examRefs: ['DEP-056', 'DEP-057', 'DEP-059', 'DEP-061', 'DEP-083', 'DEP-103', 'DEP-114', 'DEP-115', 'DEP-116', 'DEP-118', 'DEP-119', 'DEP-148'],
-      title: 'Triton Advanced: Sequence Batcher, Decoupled, Ensembles vs BLS, Ops Features',
-      body: [
-        'Sequence batcher: State තියාගන්න models (උදා: audio chunks අතර hidden state තියාගන්න streaming speech model එකක්) වලට. Correlation ID එකකින් එකම sequence එකේ requests ඔක්කොම එකම model instance එකට යවනවා, start/end control signals එක්ක. Dynamic batcher එක requests independent කියලා හිතලා ඕනෑම instance එකකට යවනවා, ඒ නිසා stateful models වලට ගැළපෙන්නේ නෑ. Decoupled models: Default එකෙන් Triton එක request එකකට හරියටම response එකයි. model_transaction_policy { decoupled: true } දැම්මාම request එකකට responses 0ක් හෝ ගොඩක් යවන්න පුළුවන්. Token by token streaming වලට ඕනේ මේක (gRPC streaming හෝ generate-stream endpoint හරහා).',
-        'Ensemble: Models කිහිපයක් (උදා: Python tokenizer → TensorRT encoder → postprocess) static DAG එකකට සම්බන්ධ කරනවා. Client එක call එකයි කරන්නේ, intermediate tensors network එකේ යන්නේ නෑ. ඒත් ensemble එකකට data අනුව branch වෙන්න හෝ loop කරන්න බෑ. BLS (Business Logic Scripting) කියන්නේ Python backend model එකක් ඇතුළේ ඉඳන් අනිත් Triton models call කරන එක, if/else සහ loops එක්ක. Python backend: model.py එකක TritonPythonModel class එකක් (initialize, execute, finalize) ලියලා ඕනෑම Python code එකක් (regex, tokenization) Triton ඇතුළේ run කරන්න පුළුවන්.',
-        'Response cache: Request inputs hash කරලා, හරියටම එකම request එක ආයෙත් ආවොත් save කරපු response එක දෙනවා. Deterministic models වලට, එකම inputs නිතර එනවා නම් (උදා: ජනප්‍රිය queries වල embeddings) හොඳයි. Temperature 0.8 වගේ sampling කරන LLM එකකට hits නැති තරම්. ඒක LLM එකේ KV cache එකත් නෙවෙයි. Model warmup: model_warmup in config.pbtxt එකෙන් load වෙද්දීම synthetic requests යවනවා. ඒ නිසා deploy එකෙන් පස්සේ පළවෙනි requests slow වෙන්නේ නෑ.',
-        'Version policy: Default එක latest { num_versions: 1 }, ඒ කියන්නේ ලොකුම අංකය තියෙන version එක විතරයි serve වෙන්නේ. Versions කිහිපයක් ඕනේ නම් all {} හෝ specific { versions: [2, 3] }, client එක /v2/models/<name>/versions/<v>/infer එකට යවනවා. Hot-loading: --model-control-mode=explicit දාලා POST /v2/repository/models/<name>/load වගේ API calls වලින් server එක restart නොකර models load/unload කරනවා. none mode එකේ startup එකේදී ඔක්කොම load කරලා පස්සේ වෙනස්කම් ignore කරනවා. poll mode එකකුත් තියෙනවා. Readiness probe එකට GET /v2/health/ready (port 8000). /v2/health/live එක liveness වලට. Metrics (port 8002) වල queue time, compute time වගේ දේවල් තියෙනවා. Triton Model Analyzer එක instance count, batch size, dynamic batching settings sweep කරලා latency limit එකක් ඇතුළේ හොඳම config එක හොයනවා.',
+      "id": "triton-advanced",
+      "examRefs": [
+        "DEP-056",
+        "DEP-057",
+        "DEP-059",
+        "DEP-061",
+        "DEP-083",
+        "DEP-103",
+        "DEP-114",
+        "DEP-115",
+        "DEP-116",
+        "DEP-118",
+        "DEP-119",
+        "DEP-148"
       ],
-      analogy:
-        'Ensemble එක කියන්නේ factory එකක fixed conveyor belt එකක් වගේ: කපනවා → පාට කරනවා → pack කරනවා, හැම වෙලේම එකම පිළිවෙළ. BLS කියන්නේ supervisor කෙනෙක්: "මේක රතු නම් A machine එකට, නිල් නම් B එකට, QC fail නම් ආයෙත් යවන්න." Sequence batcher එක කියන්නේ එකම patient ව හැම වෙලේම එකම doctor ට යවන එක, මොකද doctor ළඟ තියෙන්නේ ඒ patient ගේ file එක. Response cache එක කියන්නේ කඩේ මුදලාලි "කිරි පැකට් එකක් කීයද?" කියන ප්‍රශ්නයට කට පාඩමින් උත්තර දෙන එක.',
-      example:
-        'Pipeline එකක්: පොඩි classifier එකකින් ප්‍රශ්නය "billing" ද "technical" ද කියලා බලනවා, ඒ අනුව LLM දෙකෙන් එකකට යවනවා, validation model එක accept කරනකම් loop කරනවා. Branch සහ loop තියෙන නිසා ensemble එකක් බෑ, BLS ඕනේ. Folders 1/, 2/, 3/ තියෙනවා, version_policy නෑ නම් serve වෙන්නේ 3 විතරයි. Kubernetes readiness probe එක /v2/health/ready වලට දැම්මොත් models load වෙනකම් traffic එන්නේ නෑ.',
-      keyPoints: [
-        'Sequence batcher = stateful models, correlation ID, එකම instance.',
-        'Decoupled = request එකකට responses ගොඩක් (token streaming).',
-        'Ensemble = static DAG. BLS = Python එකෙන් conditionals/loops.',
-        'Response cache = exact repeat inputs වලට විතරයි. Warmup = cold start latency අඩු කරනවා.',
-        'Default version policy = latest 1. Hot-load = explicit model control mode. Ready probe = /v2/health/ready.',
+      "title": "Triton Advanced: Sequence Batcher, Decoupled, Ensembles vs BLS, Ops Features",
+      "body": [
+        "The sequence batcher is for stateful models, such as streaming speech models that preserve hidden state across audio chunks. A correlation ID routes requests in one sequence to the same model instance, with start/end signals. The dynamic batcher treats requests as independent and may send them to different instances. By default Triton returns one response per request; model_transaction_policy { decoupled:true } permits zero or multiple responses, useful for token-by-token streaming over gRPC or a supported streaming endpoint.",
+        "An ensemble links several models as a static directed acyclic graph (DAG), such as Python tokenizer → TensorRT encoder → postprocess. The client makes one call and intermediate tensors stay server-side; an ensemble cannot branch on data or loop. BLS (Business Logic Scripting) calls other Triton models from a Python backend and supports conditionals and loops. A Python backend model.py defines TritonPythonModel methods initialize, execute, and finalize.",
+        "The response cache hashes request inputs and reuses a saved response for an exact repeat, useful for deterministic models with repeated inputs. It is rarely useful for sampled generation such as temperature 0.8 and is different from an LLM KV cache. model_warmup can send synthetic requests at load time to reduce first-request slowdowns.",
+        "The default version policy is latest {num_versions:1}; use all {} or specific versions such as {versions:[2,3]} to serve others. Explicit model-control mode supports loading or unloading through repository API calls without restarting; none loads at startup, and poll is another mode. Readiness is /v2/health/ready on port 8000; liveness is /v2/health/live. Port 8002 exposes metrics such as queue and compute time. Triton Model Analyzer sweeps instance counts, batch sizes, and dynamic-batching settings to find configurations within latency constraints."
       ],
-      terms: [
-        { en: 'Sequence Batcher', si: 'Correlation ID අනුව sequence එකක requests එකම instance එකට යවන stateful scheduler එක.' },
-        { en: 'Decoupled Model', si: 'Request එකකට responses 0ක් හෝ ගොඩක් යවන්න පුළුවන් Triton model mode එක.' },
-        { en: 'Ensemble Model', si: 'Models කිහිපයක outputs → inputs map කරපු server-side static pipeline (DAG) එක.' },
-        { en: 'BLS (Business Logic Scripting)', si: 'Python backend එකේ ඉඳන් අනිත් models call කරන, control flow සහිත ක්‍රමය.' },
-        { en: 'Python Backend', si: 'model.py එකේ TritonPythonModel (initialize/execute/finalize) ලියලා Python code serve කරන backend එක.' },
-        { en: 'Response Cache', si: 'එකම inputs වලට කලින් response එක ආපහු දෙන Triton cache එක.' },
-        { en: 'Model Warmup', si: 'Load වෙද්දී synthetic requests යවලා lazy initialization ඉවර කරන එක.' },
-        { en: 'Version Policy', si: 'latest (default, 1), all, specific: කුමන versions serve කරනවද.' },
-        { en: 'Model Control Mode', si: 'none / poll / explicit. Explicit = API එකෙන් load/unload (hot-loading).' },
-        { en: 'Readiness vs Liveness', si: '/v2/health/ready = inference වලට ready ද. /v2/health/live = process එක ජීවත්ද.' },
-        { en: 'Triton Model Analyzer', si: 'Triton configs sweep කරලා constraints යටතේ හොඳම ඒවා report කරන tool එක (Perf Analyzer පාවිච්චි කරනවා).' },
+      "analogy": "An ensemble is a fixed factory conveyor belt: cut, paint, pack, always in order. BLS is a supervisor who sends red items to machine A and blue items to B, or retries a failed quality check. A sequence batcher sends one patient to the same doctor because that doctor holds the patient’s file.",
+      "example": "A classifier routes a request to one of two LLMs and loops until a validation model accepts it. Because routing and looping are needed, use BLS rather than a static ensemble. With version folders 1, 2, and 3 and no version policy, only version 3 is served. A Kubernetes readiness probe on /v2/health/ready prevents traffic before models are ready.",
+      "keyPoints": [
+        "Sequence batching preserves state by correlation ID and instance.",
+        "Decoupled models can return multiple responses for streaming.",
+        "Ensemble is a static DAG; BLS supports Python control flow.",
+        "Response cache reuses exact inputs; warmup reduces cold-start latency.",
+        "Default version policy serves latest one; ready and live endpoints differ."
       ],
+      "terms": [
+        {
+          "en": "Sequence Batcher",
+          "si": "Scheduler that routes stateful sequences to a consistent model instance by correlation ID."
+        },
+        {
+          "en": "Decoupled Model",
+          "si": "Triton model mode that can return zero or multiple responses per request."
+        },
+        {
+          "en": "Ensemble Model",
+          "si": "Static server-side pipeline connecting multiple models as a DAG."
+        },
+        {
+          "en": "BLS (Business Logic Scripting)",
+          "si": "Python-based method for calling Triton models with control flow."
+        },
+        {
+          "en": "Python Backend",
+          "si": "Triton backend that runs Python model code."
+        },
+        {
+          "en": "Response Cache",
+          "si": "Triton cache that reuses outputs for identical inputs."
+        },
+        {
+          "en": "Model Warmup",
+          "si": "Synthetic requests sent during load to reduce first-request overhead."
+        },
+        {
+          "en": "Version Policy",
+          "si": "Configuration selecting which numeric model versions Triton serves."
+        },
+        {
+          "en": "Model Control Mode",
+          "si": "Triton mode controlling model loading through startup, polling, or explicit API calls."
+        },
+        {
+          "en": "Readiness vs Liveness",
+          "si": "Readiness checks whether inference can receive traffic; liveness checks process health."
+        },
+        {
+          "en": "Triton Model Analyzer",
+          "si": "Tool that searches Triton configurations under performance constraints."
+        }
+      ],
+      "si": "ඔයා audio එක තත්පර 1 බැගින් chunks කරලා speech model එකට යවනවා නම්, එක conversation එකේ chunks ටික එකම model instance එකට යන්න ඕනේ. Sequence batcher එක correlation ID එකෙන් ඒක කරයි. Models තුනක් සරල පිළිවෙළකට යනවා නම් ensemble හොඳයි. Billing නම් LLM Aට, technical නම් LLM Bට යවලා ආයෙත් validate කරන්න ඕනේ නම් BLS වල conditionals සහ loops යොදාගන්න."
     },
     {
-      id: 'nim-microservices',
-      examRefs: ['DEP-014', 'DEP-067', 'DEP-068', 'DEP-069', 'DEP-070', 'DEP-149'],
-      title: 'NVIDIA NIM: Optimized Inference Microservices',
-      body: [
-        'NIM (NVIDIA Inference Microservice) කියන්නේ model එකක්, optimized inference engine එකක් සහ standard API එකක් එකට pack කරපු prebuilt container එකක්. එක container එකක් run කරලා model එක deploy කරන්න පුළුවන්. LLM NIMs OpenAI-compatible routes දෙනවා, උදා: /v1/chat/completions, /v1/models. ඒ නිසා දැනට openai Python client එක පාවිච්චි කරන code එකක base_url එක NIM endpoint එකට (උදා: http://localhost:8000/v1) මාරු කරලා model name එක දැම්මාම ඇති.',
-        'Optimized profiles: LLM NIM එකක් start වෙද්දී detect කරපු GPU එකට සහ configuration එකට (උදා: tensor-parallel layout) ගැළපෙන prebuilt optimized profile එකක් (engine + settings) automatically තෝරනවා. ගැළපෙන එකක් නැත්නම් generic backend එකකට fallback වෙනවා. ඔයාට engines build කරන්න ඕනේ නෑ. LLM NIM සහ TensorRT-LLM multi-LoRA serving support කරනවා: එක base model එකක් load කරලා request එකෙන් request එකට LoRA adapter එක තෝරනවා.',
-        'NIM pull කිරීම: NIM images තියෙන්නේ NGC registry එකේ (nvcr.io). docker login nvcr.io කරලා, NGC_API_KEY environment variable එක container එකට දෙන්න ඕනේ, model assets download කරන්න. ඒක නැත්නම් authorization error එකක් එනවා. Host එකේ full CUDA toolkit එක ඕනේ නෑ, driver එකයි container toolkit එකයි ඇති. Reverse proxy එකක් හරහා NIM streaming කරද්දී ඔක්කොම අන්තිමට එකපාර එනවා නම්, proxy එක response buffer කරනවා. උදා: NGINX වල proxy_buffering off.',
-        'NIM vs Triton: NIM = packaged, optimized, supported model එකක් standard API එකක් එක්ක, ඉක්මනින් deploy කරන්න. Triton = custom, mixed pipelines වලට. උදා: ONNX vision model + Python preprocessing + XGBoost model එක ensemble එකක. ඒ වගේ heterogeneous pipeline එකකට කෙලින්ම Triton තමයි හොඳ. (NIM සහ Triton දෙකම NVIDIA AI Enterprise එකේ කොටස්.)',
+      "id": "nim-microservices",
+      "examRefs": [
+        "DEP-014",
+        "DEP-067",
+        "DEP-068",
+        "DEP-069",
+        "DEP-070",
+        "DEP-149"
       ],
-      analogy:
-        'NIM කියන්නේ Pizza Hut එකෙන් ගෙන්වන ready-made pizza එක වගේ: box එක ඇරලා කන්න විතරයි, ඔයාගේ oven එකට (GPU එකට) ගැළපෙන විදිහට කලින්ම හදලා. Triton කියන්නේ ඔයාගේම කුස්සිය, ඕනෑම කෑමක් ඕනෑම විදිහකට මිශ්‍ර කරලා හදන්න පුළුවන්, ඒත් වැඩ වැඩියි. NGC API key එක කියන්නේ delivery එක ගන්න ඕනේ order number එක.',
-      example:
-        'ඔයාගේ app එක දැනට OpenAI API එක call කරනවා. Company data එළියට යවන්න බැරි නිසා Llama NIM එකක් local H100 එකක run කරනවා: docker login nvcr.io, NGC_API_KEY දාලා docker run --gpus all. Container එක H100 එකට ගැළපෙන profile එක තෝරනවා. Code එකේ base_url="http://localhost:8000/v1" කරලා model name එක වෙනස් කළා. වෙන කිසිම වෙනසක් ඕනේ නෑ.',
-      keyPoints: [
-        'NIM = model + optimized engine + OpenAI-compatible API, එක container එකක.',
-        'Startup එකේදී GPU එකට ගැළපෙන optimized profile එක auto-select කරනවා.',
-        'Pull කරන්න NGC API key ඕනේ (nvcr.io).',
-        'Packaged LLM → NIM. Custom mixed pipeline → Triton.',
+      "title": "NVIDIA NIM: Optimized Inference Microservices",
+      "body": [
+        "NVIDIA NIM (NVIDIA Inference Microservice) packages a model, optimized inference engine, and standard API in a prebuilt container. An LLM NIM exposes OpenAI-compatible routes such as /v1/chat/completions and /v1/models, so an existing OpenAI Python client can often point to the NIM base URL, such as http://localhost:8000/v1, and use the NIM model name.",
+        "At startup an LLM NIM selects an optimized profile (engine and settings) suited to the detected GPU and configuration, such as tensor-parallel layout; if no matching profile exists, it may use a generic backend. You do not need to build the engine yourself. LLM NIM and TensorRT-LLM support multi-LoRA serving, selecting an adapter per request while sharing a base model.",
+        "NIM images are in the NGC registry nvcr.io. Authenticate with docker login nvcr.io and provide NGC_API_KEY to download authorized model assets. The host needs a compatible driver and container toolkit, not necessarily the full CUDA toolkit. If a reverse proxy buffers a stream until completion, disable buffering (for example, proxy_buffering off in NGINX).",
+        "NIM is a packaged, optimized, supported model service with a standard API for quick deployment. Triton is more flexible for custom mixed pipelines, such as an ONNX vision model, Python preprocessing, and XGBoost in one ensemble. Both are part of NVIDIA AI Enterprise."
       ],
-      terms: [
-        { en: 'NVIDIA NIM', si: 'Prebuilt, optimized inference microservice container එක, standard APIs එක්ක.' },
-        { en: 'NIM Optimized Profile', si: 'Specific GPU + TP layout එකකට prebuilt engine සහ settings.' },
-        { en: 'NGC API Key', si: 'nvcr.io එකෙන් images සහ model assets ගන්න authentication key එක.' },
-        { en: 'OpenAI-compatible Endpoint', si: '/v1/chat/completions වගේ routes. OpenAI client code එක base_url මාරු කරලා පාවිච්චි කරන්න පුළුවන්.' },
+      "analogy": "NIM is like a ready-made Pizza Hut pizza: open the box and serve it, with the package selected for your oven (GPU). Triton is your own kitchen, flexible enough to mix different dishes but requiring more setup. An NGC API key is like the authorization needed to collect the delivery.",
+      "example": "If an app currently calls an OpenAI API but company data must stay local, run a Llama NIM on an H100, authenticate to nvcr.io, pass NGC_API_KEY, and start the container with GPU access. Point the client base_url to http://localhost:8000/v1 and select the NIM model name.",
+      "keyPoints": [
+        "NIM packages a model, optimized engine, and API in a container.",
+        "Startup selects a compatible GPU profile when available.",
+        "NGC authentication is required for authorized images and model assets.",
+        "Use packaged LLM services for NIM; use Triton for custom mixed pipelines."
       ],
+      "terms": [
+        {
+          "en": "NVIDIA NIM",
+          "si": "Prebuilt NVIDIA inference microservice container with an optimized model and API."
+        },
+        {
+          "en": "NIM Optimized Profile",
+          "si": "Engine and settings selected for a GPU and serving configuration."
+        },
+        {
+          "en": "NGC API Key",
+          "si": "Credential used to access authorized NGC images and model assets."
+        },
+        {
+          "en": "OpenAI-compatible Endpoint",
+          "si": "API routes compatible with clients expecting OpenAI-style requests."
+        }
+      ],
+      "si": "ඔයාගේ app එක OpenAI client එකෙන් request යවනවා කියලා හිතන්න. Company data පිටතට යවන්න බැරි නම් Llama NIM එක local H100 එකක ධාවනය කරන්න පුළුවන්. NGC එකට login වෙලා API key දීලා container එක පටන් ගන්න. පස්සේ base_url එක http://localhost:8000/v1 කරලා model name එක මාරු කළොත් client code එකේ වෙනස්කම් අඩුයි."
     },
     {
-      id: 'scaling-llm-serving',
-      examRefs: ['DEP-051', 'DEP-086', 'DEP-089', 'DEP-090', 'DEP-091', 'DEP-092', 'DEP-093', 'DEP-094', 'DEP-095', 'DEP-099', 'DEP-104', 'DEP-112', 'DEP-117', 'DEP-136', 'DEP-137', 'DEP-138', 'DEP-147', 'DEP-150'],
-      title: 'Scaling LLM Serving: Little\'s Law, Replicas, Load Balancing, Autoscaling',
-      body: [
-        'Little\'s law කියන්නේ සරල සම්බන්ධයක්: system එකේ එකවර ඉන්න requests ගණන = තත්පරයට එන requests ගණන × එක request එකක් system එකේ ඉන්න සාමාන්‍ය කාලය. (L = λ × W. L = එකවර ඉන්න ගණන, λ = arrival rate, W = සාමාන්‍ය කාලය.) මේකෙන් ඔයාට concurrency එක, ඒ නිසා batch size එකයි KV cache capacity එකයි plan කරන්න පුළුවන්. බෙදන්න එපා, ගුණ කරන්න.',
-        'Replicas ගණන: peak traffic එක × (1 + headroom) ÷ එක replica එකකට SLO එක ඇතුළේ handle කරන්න පුළුවන් requests/s, ඊට පස්සේ උඩට round කරන්න. Load test එකෙන් batch size තෝරද්දී latency SLO එක රකින ගමන් වැඩිම throughput එක දෙන setting එක ගන්න. Concurrency වැඩි කරද්දී throughput එක පැතලි වෙලා latency එක දෙගුණ වෙනවා නම් server එක saturate වෙලා.',
-        'Load balancing: LLM requests වල වියදම ගොඩක් වෙනස් (tokens 10ක් vs 4,000ක්). ඒ නිසා round-robin වලින් සමහර replicas වල දිග queues, සමහර ඒවා නිකන්. Least-outstanding-requests හෝ load/KV-cache-aware routing හොඳයි. Prompt prefix එක cache එකේ තියෙන replica එකට යවන prefix-aware routing එකෙන් prefix-cache hits වැඩි වෙනවා. Client පැත්තෙන් prompts එකින් එක යවනවා නම් GPU එක නිකන් ඉන්නවා. Async client එකකින් concurrency limit එකක් එක්ක එකවර යවන්න, එතකොට server එකට continuous batching කරන්න පුළුවන්.',
-        'Autoscaling: GPU-Util ටිකක් load එකකටත් 100% ළඟට යන නිසා demand එක track කරන්න හොඳ signal එකක් නෙවෙයි. Queued/pending requests හෝ replica එකකට KV-cache utilization හොඳයි. Kubernetes HPA එකට GPU metrics ගන්න සාමාන්‍ය පාර: DCGM Exporter → Prometheus → Prometheus Adapter (custom metrics). Scale-to-zero කරාම GPU cost අඩුයි, ඒත් පළවෙනි request එකට ලොකු cold start (images pull, weights load, engines warm). Minimum warm replica එකක් තියන්න හෝ weights persistent volume එකක cache කරන්න.',
-        'Kubernetes probes: weights download/load කරන්න විනාඩි 6ක් යන LLM pod එකක liveness probe එක කලින්ම fire වුණොත් Kubernetes container එක kill කරලා restart loop එකක් හැදෙනවා. විසඳුම startup probe එකක් (හෝ දිග initial delay එකක්) දාන එක, සහ weights persistent volume එකක cache කරන එක. Readiness probe එක අයින් කරන එක වැරදියි, එතකොට ready නැති pod එකට traffic යනවා. Alerts වලට හොඳම signals: request error rate, p95/p99 latency (TTFT එකත් එක්ක), queue depth, GPU memory/utilization. p99 = 4.5 s කියන්නේ requests වලින් 99%ක් 4.5 s ඇතුළේ ඉවරයි, slowest 1% ඊට වඩා යනවා (maximum එක නෙවෙයි). BLEU වගේ reference-based scores live traffic එකට බෑ, ඒවා offline evaluation වලට.',
-        'Rollouts: Canary = production traffic එකෙන් පොඩි % එකක් අලුත් version එකට යවලා metrics බලලා ටික ටික වැඩි කරන එක. Blue-green = පරිසර දෙකක් (blue පරණ, green අලුත්) පැත්තකින් පැත්තට තියලා router එක එකපාර මාරු කරන එක, rollback එකත් එකපාර ආපහු මාරු කරලා. Shadow (mirrored) = live requests වල copies අලුත් model එකට යවනවා, ඒකේ responses log කරනවා විතරයි, users ට දෙන්නේ නෑ (user impact බිංදුවයි, ඒත් extra compute). Canary උගුලක්: 1% traffic විනාඩි 10ක errors 0යි, baseline 0.2%යි කියලා promote කරන්න එපා. Requests සිය ගණනක errors 0ක් දකින එක සාමාන්‍යයි, sample එක පොඩි වැඩියි. දිගට හෝ වැඩි traffic එකකින් run කරලා, එකම කාල කවුළුවේ baseline එක්ක සසඳන්න. Self-host vs API cost: self-host cost per million = GPU පැයක මිල ÷ (tokens/s × 3,600 × utilization ÷ 1,000,000). Utilization එක අමතක කරන එක පොදු වැරැද්ද.',
+      "id": "scaling-llm-serving",
+      "examRefs": [
+        "DEP-051",
+        "DEP-086",
+        "DEP-089",
+        "DEP-090",
+        "DEP-091",
+        "DEP-092",
+        "DEP-093",
+        "DEP-094",
+        "DEP-095",
+        "DEP-099",
+        "DEP-104",
+        "DEP-112",
+        "DEP-117",
+        "DEP-136",
+        "DEP-137",
+        "DEP-138",
+        "DEP-147",
+        "DEP-150"
       ],
-      analogy:
-        'Little\'s law එක Cargills cashier queue එකකින් තේරුම් ගන්න. විනාඩියකට customers 4 දෙනෙක් එනවා, එක්කෙනෙක් කඩේ ඇතුළේ සාමාන්‍යයෙන් විනාඩි 10ක් ඉන්නවා නම්, ඕනෑම වෙලාවක කඩේ ඇතුළේ 4 × 10 = 40ක් ඉන්නවා. Load balancing කියන්නේ cashier ලා අතර "එක්කෙනාට එක්කෙනා" බෙදන්නේ නැතුව, බඩු අඩුවෙන් තියෙන queue එකට යවන එක, මොකද එක trolley එකක බඩු 2ක්, තව එකක 200ක්.',
-      example:
-        'LLM service එකට තත්පරයට requests 20ක් එනවා, එකක් සාමාන්‍යයෙන් 3 s. Little\'s law: 20 × 3 = 60 requests එකවර. Replicas: load test එකේ replica එකක් SLO එක ඇතුළේ 12 req/s. Peak 100 req/s, headroom 20%: 100 × 1.2 = 120. 120 ÷ 12 = replicas 10. Cost: GPU එක පැයට $4, 2,000 tokens/s නම්, පැයට 2,000 × 3,600 = tokens මිලියන 7.2. Million එකකට ≈ $0.56. GPU එක 50%ක් විතරක් busy නම් ඇත්ත cost එක දෙගුණයි. තව එකක්: GPU පැය $3, peak 3,000 tokens/s, 50% busy නම් පැයට 1,500 × 3,600 = මිලියන 5.4, million එකකට ≈ $0.56. API එක million එකට $0.50 නම් API එක ටිකක් ලාබයි (100% කියලා හිතුවොත් $0.28 කියලා වැරදි උත්තරයක් එනවා).',
-      keyPoints: [
-        'Little\'s law: එකවර requests = arrival rate × සාමාන්‍ය කාලය.',
-        'Replicas = peak × (1 + headroom) ÷ replica capacity, round up.',
-        'LLM load balancing = least-outstanding / KV-aware / prefix-aware, round-robin නෙවෙයි.',
-        'Autoscale on queue depth හෝ KV-cache utilization, GPU-Util මත නෙවෙයි.',
-        'දිග load එකක් තියෙන pods වලට startup probe එකක්. Traffic යවන්නේ readiness probe එක pass වුණාම විතරයි.',
-        'Canary = ටික ටික. Blue-green = එකපාර switch. Shadow = users ට බලපෑමක් නෑ. පොඩි canary sample එකකින් තීරණ ගන්න එපා.',
+      "title": "Scaling LLM Serving: Little's Law, Replicas, Load Balancing, Autoscaling",
+      "body": [
+        "Little’s law relates average in-flight requests to arrival rate and time in the system: L = λ × W. L is concurrency, λ is requests per second, and W is average seconds per request. Use it to estimate concurrency and plan batch size and KV-cache capacity; multiply rate by time.",
+        "Estimate replicas by dividing peak traffic × (1 + headroom) by the requests per second one replica can handle within its SLO, then round up. Choose batch settings from load tests that meet latency SLOs while maximizing throughput. If concurrency rises but throughput flattens and latency doubles, the server is saturated.",
+        "LLM request costs vary greatly, such as 10 versus 4,000 tokens, so round-robin can create uneven queues. Least-outstanding-request or load/KV-aware routing can help; prefix-aware routing sends a prompt to a replica with its prefix cached. Send requests concurrently with a bounded async client so the server can use continuous batching.",
+        "GPU utilization alone is a weak demand signal; queue depth or per-replica KV-cache utilization is often more useful. A common Kubernetes GPU-metrics path is DCGM Exporter → Prometheus → Prometheus Adapter. Scale-to-zero saves GPU cost but causes cold starts for image pulls, weight loads, and engine warmup; keep a warm replica or cache weights on persistent storage.",
+        "For slow model startup, a liveness probe can restart a pod before weights load. Use a startup probe or adequate initial delay, and cache weights on persistent storage. Keep readiness probes so unready pods do not receive traffic. Monitor errors, p95/p99 latency including TTFT, queue depth, and GPU memory/utilization. p99=4.5 s means 99% of requests finish within 4.5 s; it is not the maximum. BLEU-like reference scores are for offline evaluation, not live traffic.",
+        "Canary sends a small share of production traffic to a new version and increases it after checking metrics. Blue-green switches routing between two environments and supports quick rollback. Shadowing mirrors live requests but does not show new outputs to users, at extra compute cost. Do not promote on a tiny sample: zero errors in 1% traffic for 10 minutes is weak evidence if the baseline is 0.2%. Compare adequate samples over the same time window. Approximate self-host cost per million tokens = GPU hourly cost ÷ (tokens/s × 3,600 × utilization ÷ 1,000,000); forgetting utilization understates cost. For another cost check, a $3 GPU-hour at 3,000 tokens/s and 50% utilization delivers 1,500 × 3,600 = 5.4 million tokens per hour, or about $3 ÷ 5.4 = $0.56 per million. An API priced at $0.50 per million is slightly cheaper; ignoring utilization would incorrectly estimate about $0.28."
       ],
-      terms: [
-        { en: 'Little\'s Law', si: 'L = λ × W. එකවර ඉන්න ගණන = arrival rate × system එකේ ඉන්න කාලය.' },
-        { en: 'Replica', si: 'Model server එකේ එකම copy එකක් (pod එකක්).' },
-        { en: 'Least-outstanding-requests Routing', si: 'දැනට අඩුම වැඩ තියෙන replica එකට request එක යවන load balancing ක්‍රමය.' },
-        { en: 'Prefix-aware Routing', si: 'එකම prompt prefix එකේ KV cache එක තියෙන replica එකට යවන එක.' },
-        { en: 'Cold Start', si: 'අලුත් replica එකක් ready වෙන්න images, weights load කරන්න යන ලොකු කාලය.' },
-        { en: 'Canary / Blue-green / Shadow', si: 'Canary = පොඩි % traffic. Blue-green = පරිසර දෙකක් අතර එකපාර switch. Shadow = copies යවලා output log කරනවා, users ට දෙන්නේ නෑ.' },
-        { en: 'Startup Probe', si: 'Container එක start වෙලා ඉවර වෙනකම් liveness checks කල් දාන Kubernetes probe එක.' },
-        { en: 'p95 / p99 Latency', si: 'Requests වලින් 95% / 99% ඉවර වුණ කාලය. Tail latency. p50 සහ p99 අතර ලොකු පරතරයක් = queuing හෝ දිග generations.' },
-        { en: 'Cost per Million Tokens', si: 'GPU පැයක මිල ÷ පැයකට ඇත්තටම හදන tokens මිලියන ගණන (utilization එකත් එක්ක).' },
+      "analogy": "At a Cargills cashier, if 4 customers arrive each minute and each spends 10 minutes inside on average, about 4 × 10 = 40 customers are in the shop. Load balancing should send customers to the shorter, faster-moving queue, not simply alternate regardless of trolley size.",
+      "example": "At 20 requests/s and 3 s average time, Little’s law gives 20 × 3 = 60 concurrent requests. If one replica handles 12 requests/s within its SLO and peak is 100 requests/s with 20% headroom, capacity needed is 100 × 1.2 = 120; 120 ÷ 12 = 10 replicas. At $4/GPU-hour and 2,000 tokens/s, full utilization yields 2,000 × 3,600 = 7.2 million tokens/hour, or about $4 ÷ 7.2 = $0.56 per million. At 50% utilization, cost doubles to about $1.11.",
+      "keyPoints": [
+        "Little’s law: in-flight requests = arrival rate × average time.",
+        "Replicas = peak traffic × (1 + headroom) ÷ tested replica capacity, rounded up.",
+        "For variable LLM workloads, consider outstanding requests, KV cache, and prefix-aware routing.",
+        "Autoscale using queue depth or KV-cache utilization rather than GPU-Util alone.",
+        "Use startup and readiness probes for slow model loads; monitor tail latency and errors.",
+        "Canary, blue-green, and shadow rollouts differ; evaluate canaries with adequate samples."
       ],
+      "terms": [
+        {
+          "en": "Little's Law",
+          "si": "Relationship stating average in-system requests equal arrival rate multiplied by average time in the system."
+        },
+        {
+          "en": "Replica",
+          "si": "An independently running copy of a model service."
+        },
+        {
+          "en": "Least-outstanding-requests Routing",
+          "si": "Routing requests to the replica currently handling the fewest outstanding requests."
+        },
+        {
+          "en": "Prefix-aware Routing",
+          "si": "Routing a prompt to a replica that already caches its shared prefix."
+        },
+        {
+          "en": "Cold Start",
+          "si": "Startup delay while a service pulls images, loads weights, and initializes engines."
+        },
+        {
+          "en": "Canary / Blue-green / Shadow",
+          "si": "Rollout strategies using gradual traffic, environment switching, or mirrored requests."
+        },
+        {
+          "en": "Startup Probe",
+          "si": "Kubernetes probe that allows a slow-starting container time to initialize before liveness checks."
+        },
+        {
+          "en": "p95 / p99 Latency",
+          "si": "Latency limits met by 95% or 99% of requests, used to measure tail performance."
+        },
+        {
+          "en": "Cost per Million Tokens",
+          "si": "GPU hourly cost divided by the number of millions of tokens served per hour."
+        }
+      ],
+      "si": "ඔයාගේ service එකට තත්පරයකට requests 20ක් එනවා, එකක් සාමාන්‍යයෙන් තත්පර 3ක් ඉන්නවා නම් 20 × 3 = 60 requests එකවර තියෙනවා. Replica එකක් 12 requests/s handle කරනවා නම්, 100 requests/s peak එකට 20% headroom දාද්දී 100 × 1.2 ÷ 12 = 10 replicas ඕනේ. GPU 50%ක් විතරක් busy නම් token එකකට වැය full utilization එකට වඩා දෙගුණයක් වෙනවා."
     },
     {
-      id: 'gpu-operations',
-      examRefs: ['DEP-031', 'DEP-033', 'DEP-035', 'DEP-036', 'DEP-037', 'DEP-046', 'DEP-073', 'DEP-074', 'DEP-087', 'DEP-088', 'DEP-096', 'DEP-098', 'DEP-109', 'DEP-128', 'DEP-129', 'DEP-130', 'DEP-135', 'DEP-140', 'DEP-146'],
-      title: 'GPU Operations: MIG, GPU Operator, DCGM, nvidia-smi, Nsight, Jetson',
-      body: [
-        'MIG (Multi-Instance GPU): A100 හෝ H100 එකක් isolated instances 7ක් දක්වා කඩනවා. හැම instance එකකටම තමන්ගේම SMs, L2 cache, memory hardware එකෙන්ම වෙන් කරලා. ඒ නිසා එක tenant කෙනෙක්ගේ load එක අනිත් අයව slow කරන්නේ නෑ, memory කියවන්නත් බෑ. A100 80GB එකක 1g.10gb instances උපරිමය 7යි (80 ÷ 10 = 8 නෙවෙයි, compute slices 7යි). Time-slicing වලින් GPU එකක් pods කිහිපයකට share කරනවා, ඒත් memory හෝ fault isolation නෑ. එක pod එකකට අනිත් අයගේ memory ඉවර කරන්න, latency නරක් කරන්න පුළුවන්. CUDA MPS (Multi-Process Service) වලින් processes කිහිපයක kernels එකවර run වෙනවා, ඒත් isolation MIG ට වඩා දුර්වලයි.',
-        'Kubernetes වල: NVIDIA device plugin එක nvidia.com/gpu කියන resource එක advertise කරනවා. Pod එකක් resources.limits: nvidia.com/gpu: 1 කියලා ඉල්ලනවා. මේක integer එකක්, 0.5 දාන්න බෑ, share කරන්න ඕනේ නම් MIG හෝ time-slicing. NVIDIA GPU Operator එක nodes වල GPU software stack එක automatic install කරලා manage කරනවා: driver, container toolkit, device plugin, GPU feature discovery, DCGM Exporter, MIG manager. Triton වගේ apps ඒකේ කොටසක් නෙවෙයි, ඒවා ඔයා උඩින් deploy කරනවා.',
-        'DCGM (Data Center GPU Manager) = cluster එකේ GPUs monitor කරන්න, health check කරන්න, diagnose කරන්න. Utilization, memory, power, errors වගේ telemetry DCGM Exporter එකෙන් Prometheus වලට යවනවා. Uncorrectable ECC errors හෝ Xid errors වැඩි වෙනවා නම් node එක cordon/drain කරලා DCGM diagnostics run කරන්න, hardware එක repair කරන්න. nvidia-smi = shell එකෙන් GPU එකක memory, utilization, temperature, power, processes ඉක්මනට බලන්න. GPU-Util කියන්නේ "අඩුම තරමේ එක kernel එකක් හරි run වුණ කාලයේ ප්‍රතිශතය". ඒ නිසා SMs ටිකක් විතරක් පාවිච්චි කරන පොඩි kernels වලටත් 100% පෙන්නන්න පුළුවන්. 100% කියන්නේ GPU එක සම්පූර්ණයෙන් පාවිච්චි වෙනවා කියන එක නෙවෙයි.',
-        'Profiling: Nsight Systems (nsys) = මුළු application එකේ timeline එක (CPU threads, CUDA API calls, kernels, memory copies, idle gaps). පටන් ගන්න තැන මේක. Nsight Compute (ncu) = එක kernel එකක් ගැඹුරින් (occupancy, memory throughput, stall reasons). Workflow: nsys වලින් hotspot එක හොයනවා → ncu වලින් ඒ kernel එක විශ්ලේෂණය කරනවා. Jetson (උදා: Jetson Orin) = robots, devices වලට power-efficient embedded computer එකක්, integrated GPU එකක් එක්ක. Network නැති තැන්, data එළියට යවන්න බැරි තැන් වලට හොඳයි. Jetson වල CPU සහ GPU එකම physical memory එක share කරනවා (unified memory), ඒ නිසා OS, weights, KV cache ඔක්කොම එකම budget එකට හරියන්න ඕනේ. පොඩි, quantize කරපු models පාවිච්චි කරන්නේ ඒ නිසා. Edge vs cloud: data device එකෙන් එළියට යවන්න බැරි, network එක නිතර නැති වෙන, local latency සීමා තද තැන් වලට edge. ලොකුම models serve කරන්නත්, හදිසි traffic spikes දරාගන්නත් cloud හොඳයි. nvidia-smi topo -m කියන්නේ GPUs අතර interconnect topology matrix එක, usage නෙවෙයි.',
+      "id": "gpu-operations",
+      "examRefs": [
+        "DEP-031",
+        "DEP-033",
+        "DEP-035",
+        "DEP-036",
+        "DEP-037",
+        "DEP-046",
+        "DEP-073",
+        "DEP-074",
+        "DEP-087",
+        "DEP-088",
+        "DEP-096",
+        "DEP-098",
+        "DEP-109",
+        "DEP-128",
+        "DEP-129",
+        "DEP-130",
+        "DEP-135",
+        "DEP-140",
+        "DEP-146"
       ],
-      analogy:
-        'MIG කියන්නේ ලොකු ගෙයක් වෙනම දොරවල්, වෙනම මීටර් එක්ක annex 7කට කඩලා කුලියට දෙනවා වගේ. Time-slicing කියන්නේ එකම කාමරය පැය ගාණට මාරුවෙන් දෙනවා වගේ, කලින් හිටපු කෙනා බඩු දාලා ගියොත් ඊළඟ කෙනාට ඉඩ නෑ. nvidia-smi GPU-Util 100% කියන්නේ "කඩේ open" කියන board එක වගේ. Open කියලා කඩේ පිරිලා කියන එක නෙවෙයි. Nsight Systems කියන්නේ CCTV footage එක, Nsight Compute කියන්නේ එක කෝකියෙක්ගේ වැඩ slow-motion එකෙන් බලන එක.',
-      example:
-        'Tenants 20ක, හැම model එකකටම 10 GB ට අඩුවෙන් ඕනේ. එකිනෙකාගේ load එකෙන් බලපෑම් වෙන්න බෑ. විසඳුම: A100 80GB GPUs MIG 1g.10gb instances 7 බැගින් කඩලා tenants ලට දෙන්න. තව උදාහරණයක්: nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv -l 5 වලින් තත්පර 5න් 5ට CSV log එකක්. "CUDA out of memory" ආවොත් nvidia-smi processes section එක බලන්න. පරණ notebook kernel එකක් 60 GB අල්ලගෙන ඉන්නවා නම් ඒක නවත්තන්න.',
-      keyPoints: [
-        'MIG = hardware isolation, instances 7ක් දක්වා. Time-slicing = isolation නෑ.',
-        'GPU Operator = driver, toolkit, device plugin, DCGM exporter, MIG manager automate කරනවා.',
-        'DCGM = fleet monitoring/diagnostics. nvidia-smi = ඉක්මන් snapshot.',
-        'GPU-Util 100% ≠ GPU එක full. Nsight Systems → Nsight Compute.',
-        'Jetson = edge, unified memory.',
+      "title": "GPU Operations: MIG, GPU Operator, DCGM, nvidia-smi, Nsight, Jetson",
+      "body": [
+        "MIG (Multi-Instance GPU) partitions an A100 or H100 into up to seven isolated instances with dedicated SMs, L2 cache, and memory, reducing interference and preventing tenants from reading one another’s memory. An A100 80 GB supports at most seven 1g.10gb instances, not eight: it has seven compute slices. Time-slicing shares one GPU across pods without memory or fault isolation; one pod can consume memory or harm another’s latency. CUDA MPS runs kernels from several processes concurrently but provides weaker isolation than MIG.",
+        "In Kubernetes, the NVIDIA device plugin advertises nvidia.com/gpu; a pod requests an integer such as 1, not 0.5. Use MIG or time-slicing for sharing. GPU Operator automates the node GPU stack: driver, container toolkit, device plugin, GPU Feature Discovery, DCGM Exporter, and MIG manager. Applications such as Triton are deployed separately.",
+        "DCGM monitors, checks, and diagnoses fleet GPU health and exports utilization, memory, power, and errors to Prometheus. For uncorrectable ECC or repeated Xid errors, cordon/drain the node, run diagnostics, and investigate hardware. nvidia-smi quickly shows memory, utilization, temperature, power, and processes. GPU-Util measures the fraction of time at least one kernel ran, so even small kernels can show 100%; it does not prove full GPU capacity is used.",
+        "Nsight Systems (nsys) shows an application-wide timeline of CPU threads, CUDA calls, kernels, copies, and idle gaps; start profiling there. Nsight Compute (ncu) examines one kernel’s occupancy, memory throughput, and stalls. Jetson Orin is an embedded, power-efficient edge computer. Its CPU and GPU share unified physical memory, so OS, weights, and KV cache share one budget; small or quantized models are often appropriate. Edge fits disconnected, privacy-sensitive, or tight-latency locations; cloud suits very large models and traffic spikes. nvidia-smi topo -m shows GPU interconnect topology, not utilization."
       ],
-      terms: [
-        { en: 'MIG (Multi-Instance GPU)', si: 'එක GPU එකක් dedicated compute + memory සහිත isolated instances 7ක් දක්වා කඩන එක.' },
-        { en: 'Time-slicing', si: 'GPU එක workloads අතර කාලය අනුව මාරු කරන sharing ක්‍රමය. Memory isolation නෑ.' },
-        { en: 'CUDA MPS', si: 'Processes කිහිපයක kernels shared server context එකක් හරහා එකවර run කරන service එක.' },
-        { en: 'NVIDIA Device Plugin', si: 'Kubernetes වලට nvidia.com/gpu resource එක advertise කරන component එක.' },
-        { en: 'NVIDIA GPU Operator', si: 'Kubernetes nodes වල GPU software stack එක install/lifecycle-manage කරන operator එක.' },
-        { en: 'DCGM / DCGM Exporter', si: 'Data Center GPU Manager. GPU telemetry, health, diagnostics. Exporter එක Prometheus වලට.' },
-        { en: 'nvidia-smi', si: 'GPU memory, utilization, temperature, processes පෙන්වන CLI tool එක.' },
-        { en: 'Nsight Systems (nsys)', si: 'System-wide timeline profiler එක.' },
-        { en: 'Nsight Compute (ncu)', si: 'Kernel-level ගැඹුරු profiler එක (occupancy, stalls).' },
-        { en: 'Jetson', si: 'Edge AI වලට NVIDIA embedded modules (උදා: Orin). CPU+GPU unified memory.' },
+      "analogy": "MIG is like dividing a large house into seven annexes with separate doors and meters. Time-slicing is like sharing one room by the hour: the previous tenant’s belongings can still cause trouble. GPU-Util at 100% is like a shop’s “open” sign; it does not mean the shop is full. Nsight Systems is CCTV footage; Nsight Compute is slow-motion study of one cook.",
+      "example": "For 20 tenants needing under 10 GB each and isolation, an A100 80 GB can provide at most seven 1g.10gb MIG instances, so multiple GPUs are required. To sample GPU memory and utilization every five seconds, use nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv -l 5. On CUDA OOM, inspect running processes before changing the model.",
+      "keyPoints": [
+        "MIG provides hardware isolation in up to seven instances; time-slicing does not isolate memory.",
+        "GPU Operator automates the node driver and GPU components, not application deployment.",
+        "DCGM supports fleet monitoring; nvidia-smi is a quick snapshot.",
+        "100% GPU-Util does not mean all compute is saturated; use nsys then ncu.",
+        "Jetson is an edge platform with shared unified memory."
       ],
+      "terms": [
+        {
+          "en": "MIG (Multi-Instance GPU)",
+          "si": "Hardware partitioning that creates isolated compute and memory instances on a GPU."
+        },
+        {
+          "en": "Time-slicing",
+          "si": "Sharing a GPU by scheduling workloads at different times without memory isolation."
+        },
+        {
+          "en": "CUDA MPS",
+          "si": "Service that enables concurrent CUDA work from multiple processes."
+        },
+        {
+          "en": "NVIDIA Device Plugin",
+          "si": "Kubernetes component that advertises NVIDIA GPU resources."
+        },
+        {
+          "en": "NVIDIA GPU Operator",
+          "si": "Kubernetes operator that manages GPU software components on nodes."
+        },
+        {
+          "en": "DCGM / DCGM Exporter",
+          "si": "GPU management and telemetry tools; the exporter sends metrics to Prometheus."
+        },
+        {
+          "en": "nvidia-smi",
+          "si": "Command-line tool for viewing GPU status, memory, and processes."
+        },
+        {
+          "en": "Nsight Systems (nsys)",
+          "si": "Profiler showing system-wide CPU, GPU, and transfer timelines."
+        },
+        {
+          "en": "Nsight Compute (ncu)",
+          "si": "Profiler for detailed analysis of individual GPU kernels."
+        },
+        {
+          "en": "Jetson",
+          "si": "NVIDIA embedded platform for edge computing with shared CPU/GPU memory."
+        }
+      ],
+      "si": "A100 80 GB එක 1g.10gb MIG instances වලට බෙදුවොත් උපරිම 7යි; 80 ÷ 10 = 8 වුණත් GPU එකේ compute slices 7ක් විතරයි. Tenant 20 දෙනෙක්ට instance 20ක් ඕනේ නම් GPU එකකට 7ක් නිසා GPUs කිහිපයක් ඕනේ. Time-slicing එකෙන් share කළත් memory isolation ලැබෙන්නේ නෑ. nvidia-smi එකේ 100% GPU-Util දැක්කම GPU එක සම්පූර්ණයෙන් busy කියලා තීරණය කරන්න එපා."
     },
     {
-      id: 'pytorch-inference-practicalities',
-      examRefs: ['DEP-023', 'DEP-024', 'DEP-025', 'DEP-045', 'DEP-075', 'DEP-076', 'DEP-078', 'DEP-080', 'DEP-131'],
-      title: 'PyTorch Inference: eval(), no_grad, Devices, Autocast, Timing, OOM',
-      body: [
-        'model.eval() සහ torch.no_grad() දෙක දෙකක්. model.eval() එකෙන් dropout සහ batch normalization වගේ layers inference behaviour එකට මාරු කරනවා (dropout drop කරන්නේ නෑ, batch norm running statistics පාවිච්චි කරනවා). ඒකෙන් gradients නතර වෙන්නේ නෑ. torch.no_grad() එකෙන් autograd graph එක record කරන්නේ නෑ, ඒ නිසා backward වලට activations save වෙන්නේ නෑ, memory සහ compute අඩුයි. ඒත් layers වල behaviour එක වෙනස් කරන්නේ නෑ. Inference වලට දෙකම ඕනේ. torch.inference_mode() කියන්නේ no_grad ට වඩා තද, ටිකක් වේගවත් version එකක් (ඒකේ tensors පස්සේ autograd වලට පාවිච්චි කරන්න බෑ).',
-        'Device mismatch: tokenizer එක දෙන්නේ CPU tensors. Model එක cuda එකේ නම් inputs ත් cuda වලට යවන්න ඕනේ. PyTorch තනියම data move කරන්නේ නෑ. වැදගත් උගුලක්: tensor එකක x.to("cuda") in-place නෙවෙයි, අලුත් tensor එකක් return කරනවා, x = x.to("cuda") කියලා ලියන්න ඕනේ. (nn.Module.to() නම් in-place.) Device-agnostic code: device = torch.device("cuda" if torch.cuda.is_available() else "cpu").',
-        'Autocast / mixed precision: torch.autocast(device_type="cuda", dtype=torch.float16 හෝ torch.bfloat16) ඇතුළේ ops ආරක්ෂිත තැන් වලදී අඩු precision එකෙන් run වෙනවා, Tensor Cores පාවිච්චි වෙනවා. FP16 training වල GradScaler එක loss එක scale කරලා පොඩි gradients බිංදුවට වැටෙන එක (underflow) නවත්තනවා. BF16 වල FP32 range එක තියෙන නිසා සාමාන්‍යයෙන් GradScaler ඕනේ නෑ.',
-        'GPU code එක time කරන හැටි: CUDA kernels asynchronous විදිහට launch වෙනවා. Python line එක return වෙන්නේ GPU එක වැඩේ ඉවර කරන්න කලින්. ඒ නිසා clock එක කියවන්න කලින් torch.cuda.synchronize() call කරන්න (හෝ CUDA events), warm-up iterations ටිකකුත් කරන්න. නැත්නම් ඔයා මනින්නේ launch time එක විතරයි. Unexpected OOM: (1) nvidia-smi එකේ වෙනත් පරණ process එකක් memory අල්ලගෙන ඉන්නවද බලන්න. (2) no_grad නැතුව inference කරනවද. (3) TensorRT-LLM වගේ engine එකක් KV pool එකට memory කලින්ම අල්ලගත්තද. (4) batch size හෝ sequence length එක KV cache එකට ලොකු වැඩිද.',
+      "id": "pytorch-inference-practicalities",
+      "examRefs": [
+        "DEP-023",
+        "DEP-024",
+        "DEP-025",
+        "DEP-045",
+        "DEP-075",
+        "DEP-076",
+        "DEP-078",
+        "DEP-080",
+        "DEP-131"
       ],
-      analogy:
-        'model.eval() කියන්නේ cricket player කෙනෙක් practice net එකෙන් match එකට මාරු වෙනවා වගේ, දැන් අත්හදා බැලීම් (dropout) නෑ. no_grad කියන්නේ match එකේ video record කරන්නේ නැතුව සෙල්ලම් කරනවා වගේ, පස්සේ analysis (backward) එකක් නැති නිසා memory card එක පිරෙන්නේ නෑ. synchronize නැතුව time කරන එක කියන්නේ ලියුමක් post box එකට දාපු වෙලාව "ලියුම ලැබුණු වෙලාව" කියලා ලියනවා වගේ.',
-      example:
-        'Synchronize නැතුව model(x) time කරාම 0.3 ms කියලා පෙන්නනවා. ඇත්තටම GPU එක 25 ms ගන්නවා. torch.cuda.synchronize() දාලා, iterations 3ක් warm-up කරලා මැන්නාම හරි අගය 25 ms එනවා. පහළ code එකේ eval, inference_mode, autocast, synchronize ඔක්කොම එකට තියෙනවා.',
-      code: {
-        lang: 'python',
-        src: `import time, torch
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = torch.nn.Linear(512, 10).to(device)   # Module.to() in-place
-model.eval()                                  # dropout/batchnorm inference mode
-x = torch.randn(8, 512).to(device)            # inputs ත් එකම device එකට
-
-with torch.inference_mode(), torch.autocast(device_type=device.type, dtype=torch.bfloat16):
-    for _ in range(3):                        # warm-up
-        model(x)
-    if device.type == "cuda":
-        torch.cuda.synchronize()              # GPU එක ඉවර වෙනකම් ඉන්න
-    start = time.time()
-    y = model(x)
-    if device.type == "cuda":
-        torch.cuda.synchronize()
-print(y.shape, f"{(time.time() - start) * 1000:.2f} ms")  # (8, 10)`,
+      "title": "PyTorch Inference: eval(), no_grad, Devices, Autocast, Timing, OOM",
+      "body": [
+        "model.eval() changes layer behavior for inference: dropout is disabled and batch normalization uses running statistics. It does not stop gradients. torch.no_grad() prevents autograd graph recording, saving activation memory and compute, but does not change layer behavior. Inference usually needs both. torch.inference_mode() is stricter and can be faster, but its tensors cannot later be used by autograd.",
+        "Tokenizers commonly return CPU tensors. If the model is on CUDA, move inputs to the same device; PyTorch does not move them automatically. Tensor x.to(\"cuda\") returns a new tensor, so assign it back; nn.Module.to() modifies the module in place. Device-agnostic code can choose cuda when torch.cuda.is_available(), otherwise cpu.",
+        "Within torch.autocast, supported operations can use FP16 or BF16 to use Tensor Cores. FP16 training often uses GradScaler to prevent small gradients underflowing to zero; BF16’s FP32-like range usually avoids the need for scaling.",
+        "CUDA kernel launches are asynchronous, so a Python timer can stop before the GPU finishes. Warm up and call torch.cuda.synchronize() before reading the clock (or use CUDA events). For unexpected OOM, check for other processes in nvidia-smi, missing no_grad/inference_mode, engine-reserved KV memory, and overly large batch or sequence length."
+      ],
+      "analogy": "model.eval() is like a cricket player moving from practice nets to a match: dropout experiments stop and batch norm uses running statistics. no_grad is like not recording a video for later analysis, so memory is not kept for backward. Timing without synchronize is like recording when a letter enters the post box, not when it arrives.",
+      "example": "A model call may appear to take 0.3 ms without synchronization even though the GPU needs 25 ms. Warm up for three iterations, synchronize, time the call, and synchronize again; the measured value is then close to actual GPU execution time.",
+      "code": {
+        "lang": "python",
+        "src": "import time, torch\n\ndevice = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\nmodel = torch.nn.Linear(512, 10).to(device)   # Module.to() in-place\nmodel.eval()                                  # dropout/batchnorm inference mode\nx = torch.randn(8, 512).to(device)            # put inputs on the same device\n\nwith torch.inference_mode(), torch.autocast(device_type=device.type, dtype=torch.bfloat16):\n    for _ in range(3):                        # warm-up\n        model(x)\n    if device.type == \"cuda\":\n        torch.cuda.synchronize()              # wait for the GPU to finish\n    start = time.time()\n    y = model(x)\n    if device.type == \"cuda\":\n        torch.cuda.synchronize()\nprint(y.shape, f\"{(time.time() - start) * 1000:.2f} ms\")  # (8, 10)"
       },
-      keyPoints: [
-        'eval() = layer behaviour. no_grad/inference_mode = autograd off. දෙකම ඕනේ.',
-        'tensor.to() in-place නෙවෙයි. Inputs සහ model එකම device එකේ.',
-        'FP16 → GradScaler. BF16 → සාමාන්‍යයෙන් ඕනේ නෑ.',
-        'GPU timing = warm-up + torch.cuda.synchronize().',
-        'OOM නම් මුලින්ම nvidia-smi processes බලන්න.',
+      "keyPoints": [
+        "eval() changes layer behavior; no_grad/inference_mode disables autograd tracking.",
+        "Tensor.to() returns a new tensor; keep model and input on the same device.",
+        "FP16 training often uses GradScaler; BF16 usually does not need it.",
+        "For GPU timing, warm up and synchronize.",
+        "For OOM, first inspect existing processes and KV-cache reservations."
       ],
-      terms: [
-        { en: 'model.eval()', si: 'Submodules වල training=False කරනවා. Dropout off, batch norm running stats.' },
-        { en: 'torch.no_grad()', si: 'Block එක ඇතුළේ gradient tracking off.' },
-        { en: 'torch.inference_mode()', si: 'no_grad ට වඩා තද, autograd bookkeeping ත් skip කරන mode එක.' },
-        { en: 'Device Mismatch Error', si: 'Model එක GPU එකේ, inputs CPU එකේ (හෝ අනිත් පැත්ත) නිසා එන error එක.' },
-        { en: 'torch.autocast', si: 'Ops automatic විදිහට FP16/BF16 වලින් run කරන mixed precision context එක.' },
-        { en: 'GradScaler', si: 'FP16 gradient underflow නවත්තන්න loss එක scale කරන tool එක.' },
-        { en: 'torch.cuda.synchronize()', si: 'GPU එකේ queue වෙලා තියෙන වැඩ ඉවර වෙනකම් CPU එක නවත්තන call එක.' },
+      "terms": [
+        {
+          "en": "model.eval()",
+          "si": "Sets PyTorch modules to evaluation behavior, such as disabling dropout."
+        },
+        {
+          "en": "torch.no_grad()",
+          "si": "Disables gradient tracking within a PyTorch context."
+        },
+        {
+          "en": "torch.inference_mode()",
+          "si": "Inference context that disables autograd and additional bookkeeping."
+        },
+        {
+          "en": "Device Mismatch Error",
+          "si": "Error caused by model and input tensors being on different devices."
+        },
+        {
+          "en": "torch.autocast",
+          "si": "Context that selects lower precision for supported operations."
+        },
+        {
+          "en": "GradScaler",
+          "si": "Tool that scales FP16 training loss to reduce gradient underflow."
+        },
+        {
+          "en": "torch.cuda.synchronize()",
+          "si": "Waits until queued CUDA work on the device is complete."
+        }
       ],
+      "si": "ඔයා model එක GPU එකේ තියාගෙන inputs CPU එකේ තැබුවොත් device mismatch error එකක් එනවා. x.to(\"cuda\") අලුත් tensor එකක් දෙන නිසා x = x.to(\"cuda\") කියලා assign කරන්න. GPU call එකක් 0.3 ms වගේ පෙනුණත් synchronize නැත්නම් ඇත්තටම 25 ms ගන්න පුළුවන්. Iterations 3ක් warm-up කරලා, synchronize කරලා, පස්සේ time කරන්න."
     },
     {
-      id: 'pytorch-training-tooling',
-      examRefs: ['DEP-026', 'DEP-039', 'DEP-040', 'DEP-041', 'DEP-042', 'DEP-043', 'DEP-044', 'DEP-077', 'DEP-079', 'DEP-081', 'DEP-082', 'DEP-106', 'DEP-107', 'DEP-108', 'DEP-132', 'DEP-133', 'DEP-134'],
-      title: 'PyTorch & Hugging Face Tooling: Autograd, DataLoader, torch.compile, Accelerate, Checkpoints',
-      body: [
-        'Dataset එකකින් කියන්නේ එක sample එකක් ගන්න හැටි (__len__, __getitem__). DataLoader එක ඒක wrap කරලා batches හදනවා: batch_size, shuffle, collate_fn, num_workers. Nsight Systems එකේ GPU එක නිකන් ඉන්න gaps තියෙනවා, ඒ වෙලාවේ main CPU thread එක images decode/augment කරනවා නම්, GPU එක data loading නිසා බඩගින්නේ (starved). විසඳුම: num_workers > 0 (worker processes වලින් batches parallel විදිහට හදනවා) සහ pin_memory=True (page-locked memory නිසා host-to-device copies වේගවත්). pin_memory එක්ක .to("cuda", non_blocking=True) දැම්මාම copy එක compute එකත් එක්ක overlap වෙනවා.',
-        'torch.compile(model) කියන්නේ TorchDynamo වලින් Python operations graphs විදිහට අල්ලගෙන, backend එකකින් (default TorchInductor) fused kernels generate කරන එක. පළවෙනි calls slow, මොකද එතකොට compile වෙනවා. අලුත් input shape එකක් ආවාම guards කැඩිලා recompilation එකක් වෙන්න පුළුවන්, ඒකෙන් තත්පර ගණන් latency spikes එනවා. විසඳුම: dynamic=True, නැත්නම් inputs fixed lengths ටිකකට (buckets) pad කරලා ඒවා warm-up කරන්න. LLM engines decode step එක CUDA Graphs වලින් capture කරනවා, kernels සිය ගණනක් එක launch එකකින් replay කරලා CPU launch overhead එක අයින් කරන්න.',
-        'Hugging Face Accelerate: එකම PyTorch training loop එක CPU, එක GPU, GPUs ගොඩක්, nodes ගොඩක් මත (mixed precision එක්ක) පොඩි code වෙනස්කම් වලින් run කරන්න. Accelerator.prepare() එක model, optimizer, dataloaders wrap කරනවා. from_pretrained(..., device_map="auto") කියන්නේ layers GPUs අතර (ඕනේ නම් CPU එකටත්) බෙදලා model එක fit කරන එක. ඒත් layers එකින් එක sequential run වෙන නිසා එක වෙලාවකට එක GPU එකයි වැඩ. ඒක tensor parallelism නෙවෙයි.',
-        'Checkpoint formats: pickle-based .bin/.pt files load කරද්දී file එකේ තියෙන code run වෙන්න පුළුවන් (supply-chain risk). .safetensors වල තියෙන්නේ raw tensors සහ metadata විතරයි, code run වෙන්නේ නෑ, zero-copy memory mapping නිසා load එක වේගවත්. (Compression format එකක් නෙවෙයි.) PyTorch recommend කරන්නේ torch.save(model.state_dict(), "model.pt") කරලා, පස්සේ model class එක හදලා load_state_dict කරන එක. මුළු module එකම pickle කරාම code refactor කරාම කැඩෙනවා.',
-        'PyTorch මූලික දේවල් තුනක්: (1) Autograd: w = torch.tensor(3.0, requires_grad=True), loss = w ** 2, loss.backward() කරාම w.grad = 2 × w = 6. backward call කරලා නැත්නම් හෝ requires_grad False නම් grad එක None. (2) backward() gradients .grad එකට එකතු (accumulate) කරනවා, ඒ නිසා හැම step එකකම optimizer.zero_grad() call කරන්න ඕනේ. නැත්නම් පරණ gradients අලුත් ඒවට එකතු වෙනවා. (3) nn.Module එකක් model(x) විදිහට call කරාම __call__ හරහා forward එක run වෙනවා, registered hooks එක්ක. model.forward(x) කෙලින්ම වැඩ කරනවා, ඒත් hooks skip වෙනවා. Linear(512, 10) එකකට (8, 512) input එකක් දුන්නොත් output එක (8, 10).',
-        'Hugging Face මූලික දේවල්: pipeline("sentiment-analysis") කියන්නේ default model එකක්, tokenizer එක, pre/post-processing එකට bundle කරපු high-level inference wrapper එකක් (label සහ score දෙනවා, train කරන්නේ නෑ). Text generation වලට AutoTokenizer සහ AutoModelForCausalLM (generate() support කරන LM head එක). AutoModelForSequenceClassification = classification head, AutoModelForMaskedLM = BERT වගේ masked models. datasets.load_dataset("imdb") Hub එකෙන් data Apache Arrow format එකෙන් download කරලා cache කරනවා (map, filter තියෙනවා). Disk එකට ලොකු වැඩි dataset එකකට load_dataset(..., streaming=True), ඒකෙන් IterableDataset එකක් එනවා, records iterate කරද්දී කියවනවා.',
+      "id": "pytorch-training-tooling",
+      "examRefs": [
+        "DEP-026",
+        "DEP-039",
+        "DEP-040",
+        "DEP-041",
+        "DEP-042",
+        "DEP-043",
+        "DEP-044",
+        "DEP-077",
+        "DEP-079",
+        "DEP-081",
+        "DEP-082",
+        "DEP-106",
+        "DEP-107",
+        "DEP-108",
+        "DEP-132",
+        "DEP-133",
+        "DEP-134"
       ],
-      analogy:
-        'DataLoader workers කියන්නේ කොත්තු කඩේ එළවළු කපන අතුරු කෝකියෝ වගේ. ප්‍රධාන කෝකියා (GPU) තනියම එළවළු කපනවා නම් තාච්චිය නිකන් රත් වෙනවා. Helpers 4ක් දැම්මාම කොටන එක නවතින්නේ නෑ. torch.compile කියන්නේ අලුත් route එකක පළවෙනි දවසේ පාර හොයාගෙන යනවා (slow), පස්සේ දවස් වල කෙලින්ම යනවා. පාර වෙනස් වුණොත් ආයෙත් හොයන්න ඕනේ. safetensors කියන්නේ seal කරපු සහල් ගෝනියක්, pickle කියන්නේ ඇතුළේ මොනවා තියෙනවද දන්නේ නැති parcel එකක්.',
-      example:
-        'Training step එකක් 200 ms, ඒකෙන් 120 ms GPU එක data එනකම් බලාගෙන. num_workers=8, pin_memory=True දැම්මාම step එක 90 ms ට අඩු වෙනවා. Hugging Face එකෙන් third-party model එකක් ගන්නවා නම් model.safetensors file එක තෝරන්න, pytorch_model.bin එක නෙවෙයි.',
-      keyPoints: [
-        'GPU starved by data loading → num_workers > 0, pin_memory=True.',
-        'torch.compile = first call slow, shapes වෙනස් වුණාම recompile.',
-        'Accelerate = එකම loop එක ඕනෑම hardware setup එකක.',
-        'device_map="auto" = fit කරනවා, ඒත් sequential (TP නෙවෙයි).',
-        'safetensors = ආරක්ෂිත, ඉක්මන්. state_dict save කරන්න.',
+      "title": "PyTorch & Hugging Face Tooling: Autograd, DataLoader, torch.compile, Accelerate, Checkpoints",
+      "body": [
+        "A Dataset defines how to get a sample (__len__, __getitem__); DataLoader wraps it into batches with options such as batch_size, shuffle, collate_fn, and num_workers. If Nsight Systems shows GPU idle gaps while the CPU decodes or augments images, the GPU is starved for data. Worker processes (num_workers>0) prepare batches in parallel. pin_memory=True uses page-locked host memory; pairing it with .to(\"cuda\", non_blocking=True) can overlap copies with compute.",
+        "torch.compile(model) uses TorchDynamo to capture Python operations as graphs and a backend such as TorchInductor to generate fused kernels. Initial calls are slow while compiling. New shapes can break guards and trigger costly recompilation; consider dynamic=True or padding to fixed-length buckets and warming them up. CUDA Graphs capture a decode step so many kernel launches can be replayed together, reducing CPU launch overhead.",
+        "Hugging Face Accelerate lets one PyTorch loop run across CPU, one or multiple GPUs, and multiple nodes with limited code changes; Accelerator.prepare wraps models, optimizers, and dataloaders. from_pretrained(..., device_map=\"auto\") places layers across available GPUs and possibly CPU to fit the model, but layers run sequentially; this is not tensor parallelism.",
+        "Pickle-based .bin/.pt checkpoints can execute code when loaded, so only load trusted files. safetensors stores tensors and metadata without executing code and supports memory mapping; it is not compression. PyTorch recommends saving model.state_dict() and loading it into the model class rather than pickling the full module, which is brittle across code refactors.",
+        "Autograd example: w=3 with requires_grad=True and loss=w**2 gives w.grad=2×w=6 after loss.backward(). Gradients are None without backward or requires_grad. backward() accumulates into .grad, so call optimizer.zero_grad() each step. Calling model(x) uses __call__ and registered hooks before forward; direct model.forward(x) skips hooks. Linear(512,10) maps an (8,512) input to (8,10).",
+        "Hugging Face pipeline(\"sentiment-analysis\") bundles a default model, tokenizer, and preprocessing/postprocessing for inference; it returns labels and scores but does not train. Use AutoTokenizer with AutoModelForCausalLM for generation, AutoModelForSequenceClassification for classification, or AutoModelForMaskedLM for BERT-like masked models. datasets.load_dataset(\"imdb\") downloads and caches Arrow data with map/filter support. For data too large for disk, streaming=True returns an IterableDataset that reads records during iteration."
       ],
-      terms: [
-        { en: 'DataLoader', si: 'Dataset එකක් batches වලට හරවන, shuffle සහ parallel workers සහිත iterator එක.' },
-        { en: 'num_workers', si: 'Batches parallel විදිහට හදන worker processes ගණන.' },
-        { en: 'pin_memory', si: 'Page-locked host memory. Async, වේගවත් GPU copies.' },
-        { en: 'torch.compile', si: 'TorchDynamo + TorchInductor වලින් fused kernels හදන PyTorch compiler එක.' },
-        { en: 'Recompilation', si: 'අලුත් shapes නිසා guards කැඩිලා ආයෙත් compile වීම.' },
-        { en: 'CUDA Graphs', si: 'Kernels sequence එකක් එක launch එකකින් replay කරන ක්‍රමය. Static shapes ඕනේ.' },
-        { en: 'Hugging Face Accelerate', si: 'Distributed/mixed precision training පොඩි code වෙනස්කම් වලින් කරන්න library එක.' },
-        { en: 'safetensors', si: 'Raw tensors විතරක් තියෙන, code execute නොවෙන, memory-mappable weights format එක.' },
-        { en: 'state_dict', si: 'Model එකේ parameters සහ buffers dictionary එක. Save කරන්න recommend කරන ක්‍රමය.' },
-        { en: 'Autograd / backward()', si: 'Gradients automatic ගණනය කරලා .grad එකට එකතු කරන PyTorch system එක.' },
-        { en: 'optimizer.zero_grad()', si: 'Gradients accumulate වෙන නිසා හැම step එකකම .grad clear කරන call එක.' },
-        { en: 'nn.Module __call__ vs forward', si: 'module(x) = forward + hooks. module.forward(x) = hooks skip.' },
-        { en: 'pipeline()', si: 'Model + tokenizer + pre/post-processing bundle කරපු Hugging Face inference wrapper එක.' },
-        { en: 'AutoModelForCausalLM', si: 'Next-token prediction head එක තියෙන, generate() කරන්න පුළුවන් decoder-only model class එක.' },
-        { en: 'load_dataset / streaming=True', si: 'Hub එකෙන් Arrow-backed Dataset එකක් load කරනවා. streaming=True = download නොකර IterableDataset එකක්.' },
+      "analogy": "DataLoader workers are helpers chopping vegetables while the GPU is the main cook; without helpers the pan waits. torch.compile is like learning a new route on day one and taking it quickly later, unless the route changes. safetensors is a sealed rice sack; an untrusted pickle is a parcel whose contents may run code when opened.",
+      "example": "If a training step takes 200 ms, with 120 ms waiting for data, num_workers=8 and pin_memory=True may reduce the wait when storage and CPU can keep up. For a third-party Hugging Face model, prefer its safetensors weights when available. For w=3, loss=w²=9 and d(loss)/dw=2w=6, so backward gives gradient 6.",
+      "keyPoints": [
+        "If data loading starves the GPU, try parallel workers and pinned memory.",
+        "torch.compile has compile overhead and may recompile for new shapes.",
+        "Accelerate supports varied hardware; device_map=\"auto\" fits layers but is not tensor parallelism.",
+        "Prefer safetensors for untrusted weights and save state_dict checkpoints.",
+        "Gradients accumulate; clear them each step. Call model(x) to preserve hooks.",
+        "Hugging Face pipeline is inference; select the appropriate AutoModel class for the task."
       ],
-    },
+      "terms": [
+        {
+          "en": "DataLoader",
+          "si": "PyTorch iterator that batches dataset samples and can shuffle or use workers."
+        },
+        {
+          "en": "num_workers",
+          "si": "Number of worker processes used to prepare data batches."
+        },
+        {
+          "en": "pin_memory",
+          "si": "Page-locked host memory that can enable faster asynchronous GPU copies."
+        },
+        {
+          "en": "torch.compile",
+          "si": "PyTorch compiler stack using graph capture and a backend such as TorchInductor."
+        },
+        {
+          "en": "Recompilation",
+          "si": "Compilation triggered again when guards or input shapes change."
+        },
+        {
+          "en": "CUDA Graphs",
+          "si": "Captured GPU operation sequences that can be replayed with reduced launch overhead."
+        },
+        {
+          "en": "Hugging Face Accelerate",
+          "si": "Library for adapting PyTorch training loops to different hardware setups."
+        },
+        {
+          "en": "safetensors",
+          "si": "Tensor-only weight format that does not execute pickle code when loaded."
+        },
+        {
+          "en": "state_dict",
+          "si": "Dictionary of a PyTorch model’s parameters and buffers."
+        },
+        {
+          "en": "Autograd / backward()",
+          "si": "PyTorch system that computes gradients and accumulates them in .grad."
+        },
+        {
+          "en": "optimizer.zero_grad()",
+          "si": "Call that clears accumulated gradients before a training step."
+        },
+        {
+          "en": "nn.Module __call__ vs forward",
+          "si": "Calling module(x) runs hooks and forward; direct forward() skips hooks."
+        },
+        {
+          "en": "pipeline()",
+          "si": "Hugging Face inference wrapper bundling model, tokenizer, and processing steps."
+        },
+        {
+          "en": "AutoModelForCausalLM",
+          "si": "Hugging Face model class with a causal language-model head for generation."
+        },
+        {
+          "en": "load_dataset / streaming=True",
+          "si": "Dataset loading from the Hub; streaming returns an iterable without downloading all data."
+        }
+      ],
+      "si": "ඔයාගේ training step එක 200 ms යනවා, ඒකෙන් 120 ms GPU එක data එනකම් බලාගෙන ඉන්නවා නම් DataLoader workers වැඩි කරලා බලන්න. num_workers=8 සහ pin_memory=True දාලා images කිහිපයක් parallel prepare කරන්න පුළුවන්, හැබැයි CPU සහ disk එකත් වේගවත් වෙන්න ඕනේ. w=3 සහ loss=w² නම් gradient එක 2 × 3 = 6. backward() පස්සේ optimizer.zero_grad() නොකළොත් පරණ gradient එකත් එකතු වෙනවා."
+    }
   ],
-  quiz: [
+  "quiz": [
     {
-      q: 'Hopper (H100) architecture එකෙන් මුලින්ම ආපු, layer එකෙන් layer එකට scaling බලාගෙන FP8 training/inference කරන්න දෙන feature එක මොකක්ද?',
-      options: ['TF32 mode', 'Transformer Engine', 'NVSwitch', 'Multi-Instance GPU'],
-      answer: 1,
-      why: 'Transformer Engine සහ FP8 Tensor Cores ආවේ Hopper එකෙන්. TF32 සහ BF16 ආවේ Ampere (A100) එකෙන්. A100 වල native FP8 නෑ.',
-    },
-    {
-      q: 'Triton config.pbtxt එකක max_batch_size: 16 සහ input dims: [ -1 ] තියෙනවා. Client එක යවන්න ඕනේ input tensor එකේ shape එක මොකක්ද?',
-      options: [
-        '[-1] විතරයි, batch dimension එකක් නෑ',
-        '[batch, seq_len], batch 1-16, sequence length variable',
-        '[16, -1], batch එක හැම වෙලේම 16ම වෙන්න ඕනේ',
-        '[seq_len, 16]',
+      "q": "Which Hopper (H100) feature uses per-layer scaling to support FP8 training and inference?",
+      "options": [
+        "TF32 mode",
+        "Transformer Engine",
+        "NVSwitch",
+        "Multi-Instance GPU"
       ],
-      answer: 1,
-      why: 'max_batch_size > 0 නම් Triton dims වලට ඉස්සරහින් පේන්නේ නැති implicit batch dimension එකක් එකතු කරනවා. Batch එක 16 වෙනකම් ඕනෑම size එකක් වෙන්න පුළුවන්.',
+      "answer": 1,
+      "why": "Transformer Engine and FP8 Tensor Cores arrived with Hopper. TF32 and BF16 came with Ampere, and A100 has no native FP8 Tensor Cores."
     },
     {
-      q: 'Chat app එකේ users ලා "bot එක උත්තරේ පටන් ගන්න පරක්කුයි" කියනවා, ඒත් මුළු response time එක හොඳයි. ඒ පැමිණිල්ල හොඳටම පෙන්නන metric එක සහ ඒක තීරණය කරන අදියර මොකක්ද?',
-      options: [
-        'TPOT, decode අදියර',
-        'TTFT, prefill අදියර (සහ queueing)',
-        'Cluster throughput, decode අදියර',
-        'p50 latency, tokenization',
+      "q": "A Triton config has max_batch_size:16 and input dims:[-1]. What input shape should the client send?",
+      "options": [
+        "[-1] only; there is no batch dimension",
+        "[batch, seq_len], with batch 1–16 and variable sequence length",
+        "[16,-1]; every batch must have exactly 16 items",
+        "[seq_len,16]"
       ],
-      answer: 1,
-      why: 'TTFT = පළවෙනි token එක එනකම් කාලය. ඒක තීරණය වෙන්නේ prompt එක process කරන prefill එකෙන් සහ queue එකේ ඉන්න කාලයෙන්. TPOT කියන්නේ ඊට පස්සේ tokens අතර කාලය.',
+      "answer": 1,
+      "why": "A positive max_batch_size adds an implicit batch dimension before the configured dimensions. The batch may be any supported size up to 16."
     },
     {
-      q: 'Model එකේ layers 32, KV heads 8, head dimension 128, KV cache FP16. Tokens 4,096ක එක sequence එකකට ආසන්න KV cache එක කීයද?',
-      options: ['256 MiB', '512 MiB', '1 GiB', '2 GiB'],
-      answer: 1,
-      why: 'Token එකකට 2 (K,V) × 32 × 8 × 128 × 2 bytes = 131,072 bytes = 128 KiB. 4,096 × 128 KiB = 512 MiB. 2 අමතක කරොත් 256 MiB කියලා වැරදි උත්තරයක් එනවා.',
-    },
-    {
-      q: 'A100 එකක build කරපු TensorRT engine එකක් එකම container එකේ H100 node එකක load වෙන්නේ නෑ. හේතුව මොකක්ද?',
-      options: [
-        'H100 වල TensorRT support නෑ',
-        'Engine එක build කරපු GPU architecture එකටයි TensorRT version එකටයි specialize වෙලා, target GPU එකේ rebuild කරන්න ඕනේ',
-        'Engine files physical GPU serial number එකට lock වෙලා',
-        'ONNX file එක delete වෙලා',
+      "q": "Users say the bot is slow to start answering, but total response time is acceptable. Which metric and stage best match the complaint?",
+      "options": [
+        "TPOT, decode stage",
+        "TTFT, prefill and queueing",
+        "Cluster throughput, decode stage",
+        "p50 latency, tokenization"
       ],
-      answer: 1,
-      why: 'TensorRT build එකේදී target GPU එකට kernels තෝරලා tune කරනවා. ඒ නිසා engines architecture සහ version අතර portable නෑ. සීමාව architecture අනුව, එක එක card එක අනුව නෙවෙයි.',
+      "answer": 1,
+      "why": "TTFT measures time until the first token and is affected by prompt prefill and queueing. TPOT measures the gap between later tokens."
     },
     {
-      q: 'Tenants ගොඩකගේ පොඩි models (10 GB ට අඩු) A100 GPUs මත run කරන්න ඕනේ. එක tenant කෙනෙක්ගේ load එක අනිත් අයට බලපාන්න හෝ memory කියවන්න බෑ. හොඳම විසඳුම?',
-      options: [
-        'Time-slicing වලින් pods 4ක් එක GPU එකක',
-        'MIG වලින් GPU එක isolated instances වලට කඩලා tenants ලට දෙන එක',
-        'Tensor parallelism 8',
-        'nvidia.com/gpu: 0.5 කියලා pod spec එකේ දාන එක',
+      "q": "A model has 32 layers, 8 KV heads, head dimension 128, and FP16 KV cache. About how much cache does one 4,096-token sequence use?",
+      "options": [
+        "256 MiB",
+        "512 MiB",
+        "1 GiB",
+        "2 GiB"
       ],
-      answer: 1,
-      why: 'MIG හැම instance එකකටම dedicated SMs, cache, memory දෙනවා, isolation එක hardware එකෙන්. Time-slicing වල memory/fault isolation නෑ. nvidia.com/gpu integer එකක් නිසා 0.5 reject වෙනවා.',
+      "answer": 1,
+      "why": "Per token: 2 (K and V) × 32 × 8 × 128 × 2 bytes = 131,072 bytes = 128 KiB. Then 4,096 × 128 KiB = 512 MiB."
     },
     {
-      q: 'LLM service එකකට තත්පරයට requests 20ක් එනවා, එක request එකක් සාමාන්‍යයෙන් තත්පර 3ක් system එකේ ඉන්නවා. Little\'s law අනුව ඕනෑම වෙලාවක එකවර ඉන්න requests ආසන්න ගණන?',
-      options: ['6.7', '23', '60', '600'],
-      answer: 2,
-      why: 'L = λ × W = 20 × 3 = 60. 6.7 එන්නේ ගුණ කරනවා වෙනුවට බෙදුවොත්.',
-    },
-    {
-      q: 'Inference script එකක model.eval() call කරලා තියෙනවා, ඒත් torch.no_grad() නෑ. මොකද වෙන්නේ?',
-      options: [
-        'Dropout තාමත් active, outputs random',
-        'Layers inference mode එකේ, ඒත් autograd graph එක record වෙන නිසා අනවශ්‍ය memory සහ compute යනවා',
-        'Model එක automatic CPU එකට යනවා',
-        'කිසිම වෙනසක් නෑ, eval() එකෙන් gradients ත් නතර වෙනවා',
+      "q": "Why will a TensorRT engine built on A100 not necessarily load on an H100 node?",
+      "options": [
+        "H100 does not support TensorRT",
+        "The engine is specialized for GPU architecture and TensorRT version; rebuild for the target",
+        "Engine files are locked to a physical GPU serial number",
+        "The ONNX file was deleted"
       ],
-      answer: 1,
-      why: 'eval() dropout/batch norm behaviour එක වෙනස් කරනවා, autograd නතර කරන්නේ නෑ. Gradient tracking නවත්තන්න no_grad() හෝ inference_mode() ඕනේ.',
+      "answer": 1,
+      "why": "TensorRT selects and tunes kernels for the target architecture. Portability limits depend on architecture and version, not an individual card’s serial number."
     },
-  ],
-}
+    {
+      "q": "Many tenants need small models under 10 GB on A100 GPUs, with hardware isolation between tenants. What is the best approach?",
+      "options": [
+        "Time-slice four pods on one GPU",
+        "Partition GPUs with MIG and assign instances",
+        "Use tensor parallelism 8",
+        "Set nvidia.com/gpu:0.5 in the pod"
+      ],
+      "answer": 1,
+      "why": "MIG gives each instance dedicated compute and memory isolation. Time-slicing does not isolate memory, and Kubernetes GPU resource requests are integers."
+    },
+    {
+      "q": "An LLM service receives 20 requests per second and each request spends 3 seconds in the system on average. By Little’s law, how many requests are in the system on average?",
+      "options": [
+        "6.7",
+        "23",
+        "60",
+        "600"
+      ],
+      "answer": 2,
+      "why": "L = λ × W = 20 × 3 = 60 concurrent requests."
+    },
+    {
+      "q": "An inference script calls model.eval() but not torch.no_grad(). What happens?",
+      "options": [
+        "Dropout stays active and outputs are random",
+        "Layers use evaluation behavior, but autograd records a graph and uses unnecessary memory and compute",
+        "The model automatically moves to CPU",
+        "Nothing changes; eval() also disables gradients"
+      ],
+      "answer": 1,
+      "why": "eval() changes layer behavior such as dropout and batch normalization, but does not stop autograd. Use no_grad() or inference_mode() to disable gradient tracking."
+    }
+  ]
+};

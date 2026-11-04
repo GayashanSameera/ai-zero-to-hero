@@ -2,96 +2,99 @@ export default {
   id: 'cert-practical',
   number: 22,
   title: 'Certification Guide & Hands-On Practitioner Skills',
-  titleSi: 'NVIDIA Certification මඟපෙන්වීම සහ ඇත්ත වැඩ කරන්න ඕනේ Practical Skills',
+  titleSi: 'A practical guide to NVIDIA certifications and hands-on skills',
   summary:
-    'මේ phase එක ඔයාගේ exam සිතියම සහ "අත් දෙකෙන් කරන" වැඩ ටිකයි. NVIDIA certifications මොනවද, ඔයා යන්න ඕනේ පාර (NCA-GENL → NCP-AAI), NCA-GENL exam එකේ domains, study plan එක, සහ කලින් phases වල ගැඹුරින් නොකියපු study-guide කොටස් (Python tools, data analysis, RLHF feedback, security, lifecycle) මෙතන තියෙනවා. අන්තිමට fine-tune, deploy, RAG eval, GPU profiling සහ troubleshooting පියවරෙන් පියවර කරලා බලනවා.',
-  duration: 'සති 2-3 (exam එකට කලින් revision එකත් එක්ක)',
+    'Use this phase as both an exam roadmap and a practical workbook. It explains NVIDIA certification options, a suggested NCA-GENL → NCP-AAI route, the NCA-GENL domains, and study-guide topics not covered in depth earlier, including Python tools, data analysis, RLHF feedback, security, and the model lifecycle. The final topics walk through fine-tuning, deployment, RAG evaluation, GPU profiling, and troubleshooting.',
+  duration: '2-3 weeks, including revision before the exam',
   topics: [
     // 1
     {
       id: 'nvidia-cert-map',
+      si: 'ඔයාට AI certification එකක් තෝරද්දී job එකට ගැළපෙන path එක බලන්න. උදාහරණයක්ට, Associate exam එක පැයක් සහ USD 125ක් වෙද්දී Professional එක පැය 2ක් සහ USD 200–500ක් වෙන්න පුළුවන්. Rs. 300කට USD 1ක් කියලා හිතුවොත් USD 325 කියන්නේ Rs. 97,500ක් වගේ. Book කරන්න කලින් NVIDIA site එකේ අද මිල, විස්තර බලන්න.',
       title: 'NVIDIA Certification Map: Codes, Levels, Time, Prices, Certiverse & 2-Year Validity',
       body: [
-        'NVIDIA එකේ එකම එක "AI certification" එකක් නෑ. Role එකට (developer, infrastructure, data science) සහ level එකට අනුව වෙන වෙනම exams තියෙනවා. Code එකේ මුල බලලා level එක අඳුනගන්න පුළුවන්. NCA කියන්නේ NVIDIA-Certified Associate (entry level). NCP කියන්නේ NVIDIA-Certified Professional (අත්දැකීම් තියෙන අයට).',
-        'Associate exams පහක් තියෙනවා. හැම එකම පැය 1යි, USD 125යි. NCA-GENL (Generative AI LLMs), NCA-GENM (Generative AI Multimodal), NCA-AIIO (AI Infrastructure and Operations), NCA-ADS (Accelerated Data Science), NCA-AMAD (AI Models and Application Development). NCA-AMAD ගැන අපේ study docs වල තියෙන්නේ නම, code එක, level එක, කාලය සහ මිල විතරයි. ඒකේ domains දැනගන්න ඕනේ නම් NVIDIA page එකම බලන්න.',
-        'Professional exams අටක් තියෙනවා. හැම එකම පැය 2යි. NCP-GENL (Generative AI LLMs), NCP-AAI (Agentic AI), NCP-ADS (Accelerated Data Science), NCP-OUSD (OpenUSD Development) කියන ඒවා USD 200 බැගින්. NCP-AII (AI Infrastructure), NCP-AIN (AI Networking), NCP-ARI (AI Rack and Interconnect) USD 400 බැගින්. NCP-AIO (AI Operations) USD 500යි.',
-        'NVIDIA වෙලාවෙන් වෙලාවට මිල, ප්‍රශ්න ගණන සහ domains වෙනස් කරනවා. ඒ නිසා book කරන්න කලින් nvidia.com/en-us/learn/certification එකේ verify කරන්න. Exams ඔක්කොම English වලින්. ගෙදර ඉඳන් online කරන්නේ Certiverse platform එක හරහා. Remote proctor කෙනෙක් webcam එකෙන් ඔයාව බලාගෙන ඉන්නවා. Certificate එක අවුරුදු 2ක් valid. Recertify කරන්න ආයෙත් exam එක ලියන්න ඕනේ.',
+        'NVIDIA offers multiple AI certifications rather than one general certificate. Exams differ by role (developer, infrastructure, or data science) and level. The prefix identifies the level: NCA means NVIDIA-Certified Associate, an entry-level certification; NCP means NVIDIA-Certified Professional, intended for people with deeper experience.',
+        'There are five Associate exams. Each lasts 1 hour and costs USD 125: NCA-GENL (Generative AI LLMs), NCA-GENM (Generative AI Multimodal), NCA-AIIO (AI Infrastructure and Operations), NCA-ADS (Accelerated Data Science), and NCA-AMAD (AI Models and Application Development). Our study documents list only NCA-AMAD’s name, code, level, duration, and price; consult NVIDIA’s page for its exam domains.',
+        'There are eight Professional exams, each lasting 2 hours. NCP-GENL (Generative AI LLMs), NCP-AAI (Agentic AI), NCP-ADS (Accelerated Data Science), and NCP-OUSD (OpenUSD Development) cost USD 200 each. NCP-AII (AI Infrastructure), NCP-AIN (AI Networking), and NCP-ARI (AI Rack and Interconnect) cost USD 400 each. NCP-AIO (AI Operations) costs USD 500.',
+        'NVIDIA may change prices, question counts, and domains. Verify the details at nvidia.com/en-us/learn/certification before booking. Exams are in English and are taken online through Certiverse with a remote proctor monitoring you by webcam. A certificate is valid for 2 years; recertification requires taking the exam again.',
       ],
       analogy:
-        'Driving license එක හිතන්න. Motorcycle, light vehicle, heavy vehicle කියලා categories තියෙනවා. Light vehicle එක (Associate) ගන්න ලේසියි. Heavy vehicle එකට (Professional) අත්දැකීම් ඕනේ. License එකට expiry date එකක් තියෙනවා වගේම NVIDIA certificate එකත් අවුරුදු 2කින් renew කරන්න ඕනේ.',
+        'Think of a driving licence with motorcycle, light-vehicle, and heavy-vehicle categories. The Associate level is an entry point, while Professional exams expect deeper experience. Like a licence, a NVIDIA certificate has an expiry period and is valid for 2 years.',
       example:
-        'ඔයාගේ සැලැස්මේ වියදම: NCA-GENL USD 125 + NCP-AAI USD 200 = USD 325. Optional NCA-AIIO USD 125 එකතු කළොත් USD 450. උදාහරණයක් විදිහට USD 1 ≈ Rs. 300 කියලා ගත්තොත් USD 325 ≈ Rs. 97,500යි. අවුරුදු 2කට පස්සේ recertify කරද්දී ආයෙත් exam fee එක ගෙවන්න වෙනවා. (මිල සහ exchange rate දෙකම book කරන දවසේ verify කරන්න.)',
+        'Plan the fees: NCA-GENL USD 125 + NCP-AAI USD 200 = USD 325. Adding optional NCA-AIIO at USD 125 brings the total to USD 450. At an illustrative rate of USD 1 ≈ Rs. 300, USD 325 ≈ Rs. 97,500 (325 × 300). After 2 years, recertification requires another exam fee. Verify both prices and the exchange rate when booking.',
       keyPoints: [
-        'NCA = Associate (පැය 1, USD 125). NCP = Professional (පැය 2, USD 200-500).',
-        'Exams online, English, Certiverse හරහා remote proctoring.',
-        'Validity අවුරුදු 2යි. Recertify = exam එක ආයෙත් ලියන එක.',
-        'මිල සහ විස්තර වෙනස් විය හැකියි. Book කරන්න කලින් NVIDIA certification පිටුවෙන් verify කරන්න.',
+        'NCA = Associate (1 hour, USD 125). NCP = Professional (2 hours, USD 200-500).',
+        'Exams are online in English through Certiverse with remote proctoring.',
+        'Certificates are valid for 2 years. Recertification means taking the exam again.',
+        'Prices and details can change; verify them on NVIDIA’s certification page before booking.',
       ],
       terms: [
-        { en: 'Associate (NCA)', si: 'Entry level certification. මූලික සංකල්ප තේරුම් ගැනීම පරීක්ෂා කරනවා.' },
-        { en: 'Professional (NCP)', si: 'ඉහළ level එක. Production අත්දැකීම් සහ ගැඹුරු දැනුම බලාපොරොත්තු වෙනවා.' },
-        { en: 'Certiverse', si: 'NVIDIA exams online විකුණලා, remote proctoring එක්ක පවත්වන platform එක.' },
-        { en: 'Remote Proctoring', si: 'Exam එක කරද්දී webcam එකෙන් කෙනෙක් ඔයාව නිරීක්ෂණය කරන එක.' },
-        { en: 'Recertification', si: 'අවුරුදු 2න් certificate එක අලුත් කරගන්න exam එක ආයෙත් ලියන එක.' },
-        { en: 'NCA-AMAD', si: 'AI Models and Application Development Associate. පැය 1, USD 125. Domains සඳහා NVIDIA page එක බලන්න.' },
+        { en: 'Associate (NCA)', si: 'An entry-level certification that checks understanding of foundational concepts.' },
+        { en: 'Professional (NCP)', si: 'An advanced level that expects deeper knowledge and production experience.' },
+        { en: 'Certiverse', si: 'The platform used to deliver NVIDIA exams online with remote proctoring.' },
+        { en: 'Remote Proctoring', si: 'A proctor monitors the exam-taker remotely through a webcam.' },
+        { en: 'Recertification', si: 'Taking the exam again to renew a certificate after its 2-year validity period.' },
+        { en: 'NCA-AMAD', si: 'AI Models and Application Development Associate; 1 hour, USD 125. See NVIDIA’s page for exam domains.' },
       ],
     },
     // 2
     {
       id: 'cert-path-choice',
+      si: 'ඔයාගේ job එක developer නම් NCA-GENL එකෙන් පටන් ගන්න පුළුවන්; infrastructure නම් NCA-AIIO ගැළපෙනවා. ඔයාගේ architecture ඉලක්කයට NCA-GENL පස්සේ NCP-AAI යන පාර හොඳයි. උදාහරණයක්ට, EKS එකේ agent එකක් scale කරන තීරණ NCP-AAI එක්ක සම්බන්ධයි. GPU එකට G6 ද P5 ද කියන infrastructure තීරණයට NCA-AIIO දැනුමත් උදව් වෙනවා.',
       title: 'Which Path? Developer, Infrastructure, Data Science, and Your NCA-GENL → NCP-AAI Route',
       body: [
-        'පටන් ගන්න exam එක role එක අනුව තෝරන්න. AI / LLM / developer පාර: NCA-GENL එකෙන් පටන් අරන්, පස්සේ NCP-GENL හෝ NCP-AAI. Infrastructure / data center / DevOps පාර: NCA-AIIO එකෙන් පටන් අරන්, පස්සේ NCP-AII හෝ NCP-AIO. Data science පාර: NCA-ADS එකෙන් පටන් අරන්, පස්සේ NCP-ADS.',
-        'ඔයා AWS-focused full-stack tech lead කෙනෙක්, architecture පැත්තට යනවා. ඒ නිසා ඔයාගේ පාර: (1) NCA-GENL (USD 125, පැය 1): LLM, RAG, prompting මූලික දේවල්. Professional exams දෙකටම අඩිතාලම. (2) NCP-AAI (USD 200, පැය 2): ප්‍රධාන ඉලක්කය. Application builders ලාට තියෙන වැඩියෙන්ම architecture-focused NVIDIA exam එක. ඒකෙන් භාගයක් විතර agent architecture & design, deployment & scaling, evaluation ගැන. Production වල දුවන agentic systems එක්ක hands-on අත්දැකීම් බලාපොරොත්තු වෙනවා. (3) Optional NCA-AIIO (USD 125): GPU instances, EKS GPU clusters, on-prem vs cloud වගේ GPU infrastructure sizing තීරණ ඔයාගේ architect role එකට එනවා නම්.',
-        'NCP-GENL ඇයි ඔයාට දෙවෙනි තැනට? ඒක model optimization, fine-tuning, multi-GPU parallelism වලට බර වැඩියි. ඒක ML engineer කෙනෙක්ගේ දවසේ වැඩට කිට්ටුයි. NCP-GENL domains සහ මේ site එකේ ඒවා උගන්වන තැන්: Model optimization 17% (Phase 9, 14), GPU acceleration & optimization 14% (Phase 9, 15, 8), Prompt engineering 13% (Phase 6, 12), Fine-tuning 13% (Phase 5, 15), Data preparation 9% (Phase 15, 14), Model deployment 9% (Phase 7, 9), Evaluation 7% (Phase 11), Production monitoring & reliability 7% (Phase 7), LLM architecture 6% (Phase 5, 16), Safety, ethics & compliance 5% (Phase 10). අපේ doc එකට අනුව NVIDIA page එකේ Fine-tuning domain description එක වැරදියට OpenUSD ගැන කියනවා. ඒ නිසා ඒ topics prerequisites වලින් ගත්තේ.',
-        'NCP-AAI: ප්‍රශ්න 60-70, මිනිත්තු 120. NVIDIA recommend කරන්නේ AI/ML roles වල අවුරුදු 1-2ක් සහ production ගිය agentic projects. Domains: Agent architecture & design 15%, Agent development 15%, Evaluation & tuning 13%, Deployment & scaling 13%, Cognition, planning & memory 10%, Knowledge integration & data handling 10%, NVIDIA platform implementation 7%, Run, monitor & maintain 5%, Safety, ethics & compliance 5%, Human-AI interaction & oversight 5% (එකතුව 98%යි, NVIDIA දීලා තියෙන විදිහටම). Agents ගැන Phase 12 බලන්න, RAG ගැන Phase 13. Optional DLI courses: Building RAG Agents With LLMs, Evaluating RAG and Semantic Search Systems, Building Agentic AI Applications With LLMs, Introduction to Deploying RAG Pipelines for Production at Scale.',
+        'Choose an exam path based on your role. For AI, LLM, or developer work, start with NCA-GENL and then consider NCP-GENL or NCP-AAI. For infrastructure, data-center, or DevOps work, start with NCA-AIIO and then consider NCP-AII or NCP-AIO. For data science, start with NCA-ADS and then consider NCP-ADS.',
+        'For an AWS-focused full-stack tech lead moving toward architecture, a suggested route is: (1) NCA-GENL (USD 125, 1 hour) for LLM, RAG, and prompting foundations that support either Professional exam. (2) NCP-AAI (USD 200, 2 hours) as the main target; it is the more architecture-focused NVIDIA exam for application builders, with roughly half its coverage on agent architecture and design, deployment and scaling, and evaluation. Production experience with agentic systems is expected. (3) Optional NCA-AIIO (USD 125) if GPU infrastructure sizing—such as GPU instances, EKS GPU clusters, and on-premises versus cloud—is part of your architect role.',
+        'Why place NCP-GENL second? It focuses more on model optimization, fine-tuning, and multi-GPU parallelism, which are closer to an ML engineer’s daily work. Its domains and related material here are: Model optimization 17% (Phases 9, 14), GPU acceleration and optimization 14% (Phases 9, 15, 8), prompt engineering 13% (Phases 6, 12), fine-tuning 13% (Phases 5, 15), data preparation 9% (Phases 15, 14), model deployment 9% (Phases 7, 9), evaluation 7% (Phase 11), production monitoring and reliability 7% (Phase 7), LLM architecture 6% (Phases 5, 16), and safety, ethics, and compliance 5% (Phase 10). The study document notes that the fine-tuning domain description on NVIDIA’s page appears to refer to OpenUSD; it therefore used the listed topics and prerequisites.',
+        'NCP-AAI: 60–70 questions and 120 minutes. NVIDIA recommends 1–2 years in AI/ML roles and experience with agentic projects in production. Its domains are Agent architecture and design 15%, Agent development 15%, Evaluation and tuning 13%, Deployment and scaling 13%, Cognition, planning, and memory 10%, Knowledge integration and data handling 10%, NVIDIA platform implementation 7%, Run, monitor, and maintain 5%, Safety, ethics, and compliance 5%, and Human-AI interaction and oversight 5% (98% total, as listed by NVIDIA). See Phase 12 for agents and Phase 13 for RAG. Optional DLI courses include Building RAG Agents With LLMs, Evaluating RAG and Semantic Search Systems, Building Agentic AI Applications With LLMs, and Introduction to Deploying RAG Pipelines for Production at Scale.',
       ],
       analogy:
-        'A/L වලදී stream එක තෝරනවා වගේ. Maths stream එකෙන් engineering යනවා, Bio stream එකෙන් medicine යනවා. ඔයා මුලින්ම "LLM stream" එක (NCA-GENL) තෝරලා, පස්සේ "architect degree" එක (NCP-AAI) කරනවා. NCP-GENL කියන්නේ ඒ stream එකේම "research engineer" degree එක වගේ. හොඳයි, ඒත් ඔයාගේ job එකට කෙළින්ම ගැළපෙන්නේ නෑ.',
+        'It is like choosing an A/L stream: a Maths stream may lead toward engineering, while a Biology stream may lead toward medicine. You can begin with the LLM foundation (NCA-GENL) and then pursue the architecture-focused NCP-AAI. NCP-GENL is another useful route, but its optimization emphasis may fit an ML engineering role more directly.',
       example:
-        'Client කෙනෙක් අහනවා: "අපේ support agent එක Bedrock එකේද, EKS එකේ NIM එක්කද දුවන්න ඕනේ?" Agent design, tool calling, evaluation, scaling ගැන උත්තරය NCP-AAI එකෙන් එනවා. "EKS cluster එකට G6 ද P5 ද? On-prem DGX එකක් ගන්නද?" කියන කොටසට NCA-AIIO දැනුම උදව් වෙනවා. "LoRA rank එක 16ද 64ද, tensor parallelism 2ද 4ද?" කියන ප්‍රශ්න NCP-GENL එකේ ලෝකය.',
+        'A client asks whether to run a support agent on Bedrock or with NIM on EKS. NCP-AAI topics help frame questions about agent design, tool calling, evaluation, and scaling. NCA-AIIO knowledge helps with choices such as G6 versus P5 instances or an on-premises DGX system. LoRA rank and tensor-parallelism choices are closer to NCP-GENL topics.',
       keyPoints: [
-        'Developer → NCA-GENL. Infrastructure → NCA-AIIO. Data science → NCA-ADS.',
-        'ඔයාගේ පාර: NCA-GENL → NCP-AAI → (optional) NCA-AIIO.',
-        'NCP-GENL = optimization, fine-tuning, multi-GPU. ML engineer role එකට වඩා ගැළපෙනවා.',
-        'NCP-AAI = ප්‍රශ්න 60-70, මිනිත්තු 120, agent architecture / deployment / evaluation බර වැඩියි.',
+        'Developer → NCA-GENL; infrastructure → NCA-AIIO; data science → NCA-ADS.',
+        'Suggested route: NCA-GENL → NCP-AAI → optional NCA-AIIO.',
+        'NCP-GENL emphasizes optimization, fine-tuning, and multi-GPU work, so it may fit an ML engineer role more closely.',
+        'NCP-AAI has 60–70 questions in 120 minutes and emphasizes agent architecture, deployment, and evaluation.',
       ],
       terms: [
-        { en: 'NCP-AAI', si: 'Agentic AI Professional. Agents design කරලා production එකේ දුවන එක ගැන.' },
-        { en: 'NCP-GENL', si: 'Generative AI LLMs Professional. ප්‍රශ්න 60-70, මිනිත්තු 120, LLM අත්දැකීම් අවුරුදු 2-3ක් recommend කරනවා.' },
-        { en: 'NCA-AIIO', si: 'AI Infrastructure and Operations Associate. ප්‍රශ්න 50, මිනිත්තු 60. GPU hardware, networking, Kubernetes/Slurm, nvidia-smi/DCGM, MIG/vGPU.' },
-        { en: 'DLI (Deep Learning Institute)', si: 'NVIDIA එකේ courses දෙන අංශය. Exams වලට recommend කරන courses මෙතනින්.' },
+        { en: 'NCP-AAI', si: 'NVIDIA Certified Professional: Agentic AI; focuses on designing and operating agents in production.' },
+        { en: 'NCP-GENL', si: 'NVIDIA Certified Professional: Generative AI LLMs; 60–70 questions, 120 minutes, and 2–3 years of LLM experience recommended.' },
+        { en: 'NCA-AIIO', si: 'AI Infrastructure and Operations Associate; 50 questions, 60 minutes, and topics such as GPU hardware, networking, Kubernetes/Slurm, nvidia-smi/DCGM, and MIG/vGPU.' },
+        { en: 'DLI (Deep Learning Institute)', si: 'NVIDIA’s learning organization, which offers courses recommended for exam preparation.' },
       ],
     },
     // 3
     {
       id: 'nca-genl-exam-guide',
+      si: 'NCA-GENL එක පැයක් තියෙන English exam එකක්, මිල USD 125. NVIDIA page එකේ question count එක විස්තර අනුව 50–60 අතර වෙන්න පුළුවන්, ඒ නිසා booking එකේදී confirm කරන්න. Domains වලින් Core ML 30%, Software Development 24%, Experimentation 22%, Data Analysis 14%, Trustworthy AI 10% බරයි. ඔයාට කාලය සීමිත නම් ලොකු percentage තියෙන domains වලට වැඩිපුර practice කරන්න.',
       title: 'NCA-GENL Exam Guide: Format, Five Domains, Weights & What Each Really Tests',
       body: [
-        'NCA-GENL format එක: මිනිත්තු 60යි. NVIDIA page එකේ exam details කොටස multiple-choice ප්‍රශ්න 50-60ක් කියනවා, නමුත් එහි overview එක 50 ප්‍රශ්න කියලා දක්වනවා; ඒ නිසා නිශ්චිත ගණන booking වෙලාවේ confirm කරන්න. මිල USD 125, online, Certiverse හරහා, English. Prerequisite එක generative AI සහ LLMs ගැන මූලික අවබෝධයක් විතරයි. Passing score එක publish කරලා නෑ. මේ විස්තර වෙනස් විය හැකි නිසා exam එක book කරන්න කලින් NVIDIA certification පිටුවෙන් verify කරන්න.',
-        'Domains පහ: Core machine learning & AI knowledge 30% (ප්‍රශ්න 15-18 විතර), Software development 24% (12-14), Experimentation 22% (11-13), Data analysis 14% (7-8), Trustworthy AI 10% (5-6). ප්‍රශ්න ගණන් NVIDIA publish කරලා නෑ. ඒවා ප්‍රශ්න 50-60 මත හදපු ඇස්තමේන්තු විතරයි.',
-        'Domain එකෙන් ඇත්තටම බලන්නේ මොනවද? Core ML (30%): supervised / unsupervised, overfitting, activations, optimizers, Transformer, attention, tokenization, embeddings, prompting, RAG, vector DBs, Python NLP tools. මේවා Phase 2, 3, 4, 5, 6, 13, 14, 16, 17 වල තියෙනවා. Software development (24%): NeMo, NIM, Triton, TensorRT-LLM, ONNX, NGC, quantization, batching, KV cache, LoRA, RLHF/DPO. Phase 9, 14, 15, 7 බලන්න. Experimentation (22%): data preparation, training settings, mixed precision, experiment tracking, perplexity / BLEU / ROUGE, benchmarks, LLM-as-a-judge. Phase 15 සහ 11.',
-        'Data analysis (14%): classification metrics, regression metrics (R² ඇතුළුව), loss curves, EDA, correlation vs causation, charts, RAPIDS. Phase 1, 2, 17, 0 සහ මේ phase එකේ data analysis topic එක. Trustworthy AI (10%): ethical principles, privacy සහ consent, trustworthiness වැඩි කරන tools/techniques, bias අඩු කිරීම. Phase 10 බලන්න. NVIDIA detailed blueprint එක ප්‍රශ්න scenario-based කියලා හෝ ඒවායේ format එක නිශ්චිතව කියන්නේ නෑ. මේ site එකේ scenario questions යොදාගන්නේ concepts apply කරන්න practice එකක් විදිහට මිස exam format එක ගැන guarantee එකක් විදිහට නෙවෙයි.',
-        'NVIDIA companion overview එකේ "alignment" කියන මාතෘකාව සඳහන් වෙනවා. නමුත් detailed weighted domain list එකේ ඒක වෙනම objective එකක් හෝ වෙනම weight එකක් ලෙස නම් කරලා නැහැ. RLHF/DPO වගේ alignment concepts Experimentation සහ model customization පාඩම් එක්ක revision කරන්න; වෙනම exam domain එකක් කියලා හිතන්න එපා.',
+        'NCA-GENL lasts 60 minutes. The exam-details section on NVIDIA’s page says 50–60 multiple-choice questions, while its overview says 50; confirm the exact count when booking. It costs USD 125, is online through Certiverse, and is in English. The prerequisite is a basic understanding of generative AI and LLMs. No passing score is published. Verify these details on NVIDIA’s certification page before booking, since they may change.',
+        'The five domains are Core Machine Learning and AI Knowledge 30% (about 15–18 questions), Software Development 24% (12–14), Experimentation 22% (11–13), Data Analysis 14% (7–8), and Trustworthy AI 10% (5–6). NVIDIA does not publish question counts per domain; these are estimates based on a 50–60-question exam.',
+        'What does each domain cover? Core ML (30%) includes supervised and unsupervised learning, overfitting, activations, optimizers, Transformers, attention, tokenization, embeddings, prompting, RAG, vector databases, and Python NLP tools (Phases 2, 3, 4, 5, 6, 13, 14, 16, 17). Software Development (24%) includes NeMo, NIM, Triton, TensorRT-LLM, ONNX, NGC, quantization, batching, KV cache, LoRA, and RLHF/DPO (Phases 9, 14, 15, 7). Experimentation (22%) includes data preparation, training settings, mixed precision, experiment tracking, perplexity/BLEU/ROUGE, benchmarks, and LLM-as-a-judge (Phases 15 and 11).',
+        'Data Analysis (14%) includes classification and regression metrics (including R²), loss curves, EDA, correlation versus causation, charts, and RAPIDS (Phases 1, 2, 17, 0, and this phase’s data-analysis topic). Trustworthy AI (10%) covers ethical principles, privacy and consent, tools and techniques that improve trustworthiness, and bias reduction (Phase 10). NVIDIA’s detailed blueprint does not specify that questions are scenario-based or define a precise question format. Scenario questions here are practice for applying concepts, not a promise about the exam format.',
+        'NVIDIA’s companion overview mentions “alignment,” but its detailed weighted-domain list does not name alignment as a separate objective or weighted domain. Review alignment concepts such as RLHF/DPO with experimentation and model-customization material; do not treat alignment as a separate exam domain.',
       ],
       analogy:
-        'A/L paper එකක marking scheme එක වගේ. Part A එකට ලකුණු 30%ක් නම්, ඔයා revision කාලයෙනුත් 30%ක් විතර ඒකට දෙනවා. Trustworthy AI 10% විතරයි කියලා අතඅරින්නත් එපා. ඒ ප්‍රශ්න 5-6 ලේසියෙන්ම ගන්න පුළුවන් ලකුණු.',
+        'Think of an A/L marking scheme: if Part A is worth 30%, you might spend roughly 30% of revision time on it. Do not ignore Trustworthy AI just because it is worth 10%; those estimated 5–6 questions still matter.',
       example:
-        'ඔයාට study පැය 40ක් තියෙනවා කියමු. Weight එකට අනුව බෙදුවොත්: Core ML 40 × 0.30 = පැය 12. Software development 40 × 0.24 ≈ පැය 9.6. Experimentation 40 × 0.22 ≈ පැය 8.8. Data analysis 40 × 0.14 ≈ පැය 5.6. Trustworthy AI 40 × 0.10 = පැය 4. Maths වලට බය නම් Core ML සහ Data analysis වලට පැය 2-3ක් extra දාන්න.',
+        'Suppose you have 40 study hours. Allocating them by domain weight gives Core ML: 40 × 0.30 = 12 hours; Software Development: 40 × 0.24 = 9.6 hours; Experimentation: 40 × 0.22 = 8.8 hours; Data Analysis: 40 × 0.14 = 5.6 hours; Trustworthy AI: 40 × 0.10 = 4 hours. If math is difficult for you, add 2–3 extra hours to Core ML and Data Analysis.',
       keyPoints: [
-        'NVIDIA exam details 50-60 multiple-choice ප්‍රශ්න කියනවා; page overview එක 50 කියන නිසා නිශ්චිත ගණන booking වෙලාවේ verify කරන්න. කාලය මිනිත්තු 60යි; passing score publish කරලා නෑ.',
+        'NVIDIA’s exam details say 50–60 multiple-choice questions while its overview says 50; verify the count at booking. The exam is 60 minutes, and no passing score is published.',
         'Core ML 30% > Software dev 24% > Experimentation 22% > Data analysis 14% > Trustworthy AI 10%.',
-        'ප්‍රශ්න ගණන් (15-18, 12-14, 11-13, 7-8, 5-6) ඇස්තමේන්තු විතරයි.',
-        'Scenario-style questions වලින් මෙතන concepts apply කරලා practice කරනවා; NVIDIA exam එකේ ප්‍රශ්න format එක ගැන guarantee එකක් නෑ.',
-        'Alignment companion overview එකේ සඳහන් වුණත් detailed blueprint එකේ වෙනම weight කළ domain එකක් නෙවෙයි.',
+        'Question-count ranges (15–18, 12–14, 11–13, 7–8, and 5–6) are estimates only.',
+        'Scenario-style questions here let you practise applying concepts; they do not guarantee the NVIDIA exam’s question format.',
+        'Alignment appears in the companion overview but is not a separately weighted domain in the detailed blueprint.',
       ],
       terms: [
-        { en: 'Exam Domain', si: 'Exam එකේ කොටසක්. Weight එකෙන් කියන්නේ ප්‍රශ්න වලින් කොච්චර ප්‍රතිශතයක් ඒකෙන්ද කියලා.' },
-        { en: 'Weight', si: 'Domain එකකට exam එකේ තියෙන කොටස (%).' },
-        { en: 'Scenario Question', si: 'කතාවක් / තත්වයක් දීලා හොඳම tool එක හෝ ක්‍රමය තෝරන්න කියන පුහුණු ප්‍රශ්න ආකාරයක්. NVIDIA exam එකේ මේවායේ ප්‍රතිශතයක් හෝ format එකක් නිලව සඳහන් කරලා නෑ.' },
+        { en: 'Exam Domain', si: 'A section of an exam. Its weight is the estimated share of questions assigned to that section.' },
+        { en: 'Weight', si: 'The percentage of an exam assigned to a domain.' },
+        { en: 'Scenario Question', si: 'A practice question that gives a situation and asks you to choose a suitable tool or approach. NVIDIA does not officially specify a percentage or format for these questions.' },
       ],
       resources: [
-        { title: 'NVIDIA NCA-GENL official exam page', url: 'https://www.nvidia.com/en-us/learn/certification/generative-ai-llm-associate/', description: 'විභාග domains, weight සහ යාවත්කාලීන exam තොරතුරු.' },
+        { title: 'NVIDIA NCA-GENL official exam page', url: 'https://www.nvidia.com/en-us/learn/certification/generative-ai-llm-associate/', description: 'Official exam domains, weights, and current exam information.' },
       ],
       domainChecklist: [
         {
@@ -162,28 +165,29 @@ export default {
     // 4
     {
       id: 'nca-genl-study-plan',
+      si: 'ඔයාට සතියකට පැය 10ක් දාන්න පුළුවන් නම් සති 4කින් පැය 40ක් පාඩම් කරගන්න පුළුවන්. පළමු සතියේ fundamentals, දෙවැනියේ prompting සහ RAG, තුන්වැනියේ fine-tuning සහ inference, හතරවැනියේ analysis සහ revision කරන්න. Maths අමාරු නම් Colombo බස් එකේ ගමන වගේ buffer දවස් 2–3ක් තියාගෙන සති 6කට දිගු කරන්න. Exam දවසට කලින් webcam, internet සහ ID එක test කරලා තියාගන්න.',
       title: 'Your 4-Week NCA-GENL Plan, Official DLI Courses, Reading List & Exam-Day Tips',
       body: [
-        'Study guide එකේ සැලැස්ම experienced full-stack developer කෙනෙකුට සති 4යි. ඔයාට maths අමාරු නිසා, හැම සතියකටම "buffer" දවස් 2-3ක් තියාගන්න. අවශ්‍ය නම් සති 6කට දික් කරන්න. Week 1: ML / DL fundamentals, Transformers, tokenization, embeddings (Phase 17, 3, 5, 16, 14). Hands-on: Fundamentals of Deep Learning notebooks, Attention සහ BERT papers කියවන්න. Week 2: prompt engineering, RAG, vector DBs, spaCy (Phase 6, 12, 13, 4). Hands-on: Rapid Application Development with LLMs course එක, build.nvidia.com NIM endpoint එකක් සහ Milvus හෝ pgvector එක්ක RAG chatbot එකක්.',
-        'Week 3: customization (LoRA, PEFT, RLHF), inference optimization, NVIDIA tools, experimentation, metrics (Phase 15, 9, 14, 11). Hands-on: පොඩි model එකක් LoRA වලින් fine-tune කරන්න, Triton හෝ NIM වලින් serve කරන්න, lm-evaluation-harness run කරන්න. Week 4: data analysis, trustworthy AI, NeMo Guardrails, revision (Phase 1, 17, 10, මේ phase එක). Hands-on: RAG bot එකට NeMo Guardrails දාන්න, practice tests කරලා දුර්වල domains ආයෙත් බලන්න.',
-        'NVIDIA මේ certification එකට courses කිහිපයක් recommend කරනවා. ඒවා exam requirements වලට අමතර ඉගෙනුම් සම්පත්: topic එකකට අනුව එකක් තෝරාගෙන, app එකේ අදාළ lessons සහ hands-on practice එක්ක යන්න. Course availability, format සහ price වෙනස් වෙන්න පුළුවන්; latest විස්තර official link එකෙන් බලන්න. තව කියවීම්: Attention Is All You Need, LoRA paper, BERT paper, Prompt Engineering Guide (promptingguide.ai), NVIDIA blog: Prompt Engineering and P-Tuning, Mastering LLM Techniques: Inference Optimization සහ Customization, What Is RAG?, Hugging Face Illustrating RLHF, Hugging Face LLM Course (tokenizers, datasets, fine-tuning chapters), Triton Quick Start, TensorRT Get Started, NeMo Best Practices, NVIDIA GenerativeAIExamples repo, What Is Trustworthy AI?, NIST AI RMF.',
-        'Exam-day tips: ප්‍රශ්නයකට මිනිත්තුවක් විතරයි. අමාරු ප්‍රශ්න flag කරලා අන්තිමට එන්න. NeMo, NIM, Triton, TensorRT-LLM, NeMo Guardrails, RAPIDS එකිනෙක මොකටද කියලා පැහැදිලිව දැනගන්න. Code ලියන්න නෑ, ඒත් spaCy, NumPy, scikit-learn, Hugging Face මොකටද කියලා අඳුනගන්න ඕනේ. Remote proctored නිසා කලින් දවසේ webcam, internet, mic test කරන්න. මේසය හිස් කරන්න. Phone එක කාමරෙන් එළියට. Power cut එකකට UPS එකක් හෝ fully charged laptop එකක් තියාගන්න.',
+        'The study guide proposes a 4-week plan for an experienced full-stack developer. Leave 2–3 buffer days each week, especially if maths is difficult, and extend the plan to 6 weeks if needed. Week 1: ML/DL foundations, Transformers, tokenization, and embeddings (Phases 17, 3, 5, 16, 14). Work through Fundamentals of Deep Learning notebooks and read the Attention and BERT papers. Week 2: prompt engineering, RAG, vector databases, and spaCy (Phases 6, 12, 13, 4). Take Rapid Application Development with LLMs and build a RAG chatbot using a build.nvidia.com NIM endpoint and Milvus or pgvector.',
+        'Week 3: customization (LoRA, PEFT, RLHF), inference optimization, NVIDIA tools, experimentation, and metrics (Phases 15, 9, 14, 11). Fine-tune a small model with LoRA, serve it with Triton or NIM, and run lm-evaluation-harness. Week 4: data analysis, Trustworthy AI, NeMo Guardrails, and revision (Phases 1, 17, 10, and this phase). Add NeMo Guardrails to the RAG bot, take practice tests, and revisit weak domains.',
+        'NVIDIA recommends several courses for this certification. These are learning resources, not additional exam requirements; choose courses for the topics you need and pair them with the relevant lessons and hands-on practice in this app. Course availability, format, and price may change; check the official links for current details. Further reading includes Attention Is All You Need, the LoRA and BERT papers, Prompt Engineering Guide (promptingguide.ai), NVIDIA’s Prompt Engineering and P-Tuning blog, Mastering LLM Techniques: Inference Optimization and Customization, What Is RAG?, Hugging Face Illustrating RLHF, relevant chapters of the Hugging Face LLM Course, Triton Quick Start, TensorRT Get Started, NeMo Best Practices, the NVIDIA GenerativeAIExamples repository, What Is Trustworthy AI?, and the NIST AI RMF.',
+        'Exam-day tips: you have about one minute per question. Flag difficult questions and return to them later. Know what NeMo, NIM, Triton, TensorRT-LLM, NeMo Guardrails, and RAPIDS are used for. You do not need to write code, but should recognize what spaCy, NumPy, scikit-learn, and Hugging Face are for. Since the exam is remotely proctored, test your webcam, internet, and microphone the day before. Clear your desk, leave your phone outside the room, and prepare a UPS or fully charged laptop in case of a power cut.',
       ],
       analogy:
-        'O/L / A/L වලට කලින් tuition class එකක syllabus එක cover කරලා, model papers කරලා, අන්තිම සතියේ දුර්වල chapters විතරක් ආයෙත් බලනවා වගේ. Exam දවසට කලින් admission card, පෑන, ID හදලා තියනවා වගේම, මෙතන webcam, internet, ID card ලෑස්ති කරනවා.',
+        'It is like preparing for O/L or A/L exams: cover the syllabus, practise model papers, and revisit weak chapters in the final week. Just as you prepare your admission card, pen, and ID, prepare your webcam, internet connection, and ID for this exam.',
       example:
-        'සතියක දවසක ක්‍රමයක්: රෑ 8-9 site එකේ phase එකක topics 2ක් කියවන්න. 9-9.30 quiz එක කරන්න. සෙනසුරාදා පැය 3ක් hands-on lab එක (උදා: Week 2 RAG chatbot). ඉරිදා පැය 1ක් ඒ සතියේ වැරදුණු quiz ප්‍රශ්න notebook එකක ලියලා ආයෙත් බලන්න. සතියට පැය 10ක් විතර. සති 4 → පැය 40යි.',
+        'A sample week: on weekdays, read two topics from a phase on the site from 8–9 p.m., then take a quiz from 9–9:30 p.m. Spend 3 hours on Saturday on a hands-on lab, such as the Week 2 RAG chatbot. On Sunday, spend 1 hour writing down and reviewing missed quiz questions. That is about 10 hours per week, or 4 × 10 = 40 hours over 4 weeks.',
       keyPoints: [
         'Week 1 fundamentals → Week 2 prompting/RAG → Week 3 customization/inference/eval → Week 4 analysis/trust/revision.',
-        'Maths අමාරු නම් buffer දවස් තියාගන්න, සති 6ක් වුණත් කමක් නෑ.',
-        'Rapid Application Development With LLMs = ප්‍රධාන DLI course එක.',
-        'Exam දවසේ: flag කරලා ඉස්සරහට යන්න, webcam / internet / මේසය කලින් check කරන්න.',
+        'If maths is difficult, leave buffer days and extend the plan to 6 weeks if needed.',
+        'Rapid Application Development With LLMs is the main DLI course in this study plan.',
+        'On exam day, flag difficult questions and check the webcam, internet, and desk setup in advance.',
       ],
       terms: [
-        { en: 'Rapid Application Development With LLMs', si: 'NCA-GENL එකට NVIDIA recommend කරන ප්‍රධාන DLI course එක.' },
-        { en: 'Fundamentals of Deep Learning', si: 'NVIDIA DLI course එකක්. Materials GitHub එකේ නොමිලේ තියෙනවා.' },
-        { en: 'build.nvidia.com', si: 'NIM models API එකෙන් try කරන්න පුළුවන් NVIDIA site එක.' },
-        { en: 'Flag for Review', si: 'අමාරු ප්‍රශ්නයක් සලකුණු කරලා පස්සේ ආයෙත් එන්න තියන එක.' },
+        { en: 'Rapid Application Development With LLMs', si: 'The main DLI course recommended here for NCA-GENL preparation.' },
+        { en: 'Fundamentals of Deep Learning', si: 'An NVIDIA DLI course with learning materials available on GitHub.' },
+        { en: 'build.nvidia.com', si: 'An NVIDIA site where you can try models through NIM APIs.' },
+        { en: 'Flag for Review', si: 'Marking a difficult exam question so you can return to it later.' },
       ],
       resources: [
         { title: 'Getting Started With Deep Learning', url: 'https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-FX-01+V1', description: 'Self-paced; deep learning fundamentals, architectures, augmentation, and transfer learning.' },
@@ -197,63 +201,65 @@ export default {
     // 5
     {
       id: 'python-tools-to-recognize',
+      si: 'ඔයාට bank complaints 10,000කින් branch නාම සහ දිනයන් ගන්න ඕනේ නම් spaCy NER ගැළපෙනවා. Complaints positive ද negative ද කියලා වෙන් කරලා 5-fold cross-validation කරන්න scikit-learn යොදාගන්න. ඒවායේ embeddings දාලා සමාන complaints හොයන්න Milvus හෝ pgvector වගේ vector database එකක් භාවිතා කරන්න. NumPy ගණිතයට, Keras neural networks හදන්න, Hugging Face pretrained models ගන්න උපකාරී.',
       title: 'Python Tools to Recognize: spaCy, NumPy, Keras, scikit-learn, Hugging Face & Vector DB Clients',
       body: [
-        'Exam එකේ ඔයාට code ලියන්න වෙන්නේ නෑ. ඒත් "මේ වැඩේට කොයි library එකද?" කියලා අහනවා. ඒ නිසා හැම tool එකකම "එක වාක්‍ය job description එක" මතක තියාගන්න. වැඩි විස්තර Phase 1 (NumPy, pandas) සහ Phase 4 (spaCy, Hugging Face) වල තියෙනවා.',
-        'spaCy: production-ready NLP pipeline එකක්. Tokenization, named-entity recognition (NER), part-of-speech (POS) tagging, lemmatization, dependency parsing එකම pipeline එකකින් කරනවා. RAG එකකට කලින් documents වලින් නම්, ස්ථාන, දින අරගන්න හොඳයි. NumPy: numbers arrays (vectors, matrices) වේගයෙන් ගණනය කරන්න. Embeddings, cosine similarity, matrix multiply වගේ දේවල් යටින් NumPy. Keras: neural networks ලේසියෙන් හදන්න high-level API එක (layers එකින් එක ගහලා model.fit()). scikit-learn: classic ML (logistic regression, random forest, k-means), train/test split, cross-validation, metrics (accuracy, F1, R²).',
-        'Hugging Face: transformers (pretrained models සහ tokenizers load කරන්න), datasets (ලොකු datasets load කරලා map / filter කරන්න), peft (LoRA), trl (SFT, DPO training), Hub (models / datasets share කරන තැන). Vector DB clients: pymilvus (Milvus), faiss (FAISS library, Meta එකේ), pgvector (PostgreSQL extension, Python එකෙන් psycopg / SQLAlchemy හරහා), chromadb, qdrant-client. මේවා embeddings save කරලා "මේකට ළඟම vectors මොනවද?" කියලා හොයනවා (Phase 13).',
-        'GPU පැත්තෙන්: RAPIDS cuDF = GPU pandas, cuML = GPU scikit-learn (Phase 9, 17). NeMo = LLM build / customize කරන NVIDIA framework එක. Exam එකේ trap එකක්: spaCy සහ NLTK දෙකම NLP. ඒත් spaCy production pipelines වලට, NLTK වැඩිපුර ඉගෙනීමට / research වලට.',
+        'The exam does not ask you to write code, but may ask which library fits a task. Learn a one-sentence job description for each tool. See Phase 1 for NumPy and pandas and Phase 4 for spaCy and Hugging Face.',
+        'spaCy is a production-ready NLP pipeline for tokenization, named-entity recognition (NER), part-of-speech (POS) tagging, lemmatization, and dependency parsing. It can extract names, places, and dates from documents before RAG. NumPy provides fast numeric arrays for vectors, matrices, embeddings, cosine similarity, and matrix multiplication. Keras is a high-level API for building neural networks with layers and model.fit(). scikit-learn provides classic ML algorithms (logistic regression, random forest, k-means), train/test splitting, cross-validation, and metrics such as accuracy, F1, and R².',
+        'Hugging Face includes transformers (load pretrained models and tokenizers), datasets (load, map, and filter datasets), peft (LoRA), trl (SFT and DPO training), and the Hub (share models and datasets). Vector database clients include pymilvus (Milvus), faiss (the FAISS library), pgvector (a PostgreSQL extension used through clients such as psycopg or SQLAlchemy), chromadb, and qdrant-client. They store embeddings and search for nearby vectors (Phase 13).',
+        'For GPU work, RAPIDS cuDF is similar to pandas and cuML offers GPU-accelerated ML tools (Phases 9, 17). NeMo is NVIDIA’s framework for building and customizing LLMs. One exam distinction: both spaCy and NLTK support NLP, but spaCy is commonly used for production pipelines while NLTK is often used for learning and research.',
       ],
       analogy:
-        'Hardware shop එකක tools වගේ. Screwdriver (NumPy) හැම තැනම පාවිච්චි වෙනවා. Drill machine (Keras) එකෙන් ඉක්මනට සිදුරු. Toolbox set එක (scikit-learn) හැම මූලික වැඩේටම. ලොකු ready-made parts කඩේ (Hugging Face Hub). Electrician ගේ special tester එක (spaCy) text ඇතුළේ මොකද තියෙන්නේ කියලා හොයනවා. Exam එකේ අහන්නේ "ලයිට් එකේ වයර් check කරන්න මොකක්ද?" වගේ ප්‍රශ්න.',
+        'Think of a hardware shop’s tools: NumPy is like a screwdriver used in many jobs; Keras is like a drill for assembling neural networks; and scikit-learn is a toolbox for common ML tasks. The Hugging Face Hub is like a shop of ready-made parts, while spaCy is a specialist tool for inspecting what is inside text. An exam question might ask which tool you would use to inspect a light’s wiring.',
       example:
-        'Scenario: "Bank complaints 10,000ක් තියෙනවා. ඒවයේ තියෙන branch නම් සහ දින ඉක්මනට extract කරන්න ඕනේ." → spaCy NER. "Complaints positive / negative කියලා classify කරන්න logistic regression එකක් train කරලා 5-fold cross-validation කරන්න." → scikit-learn. "Complaint embeddings 10,000 save කරලා similar complaints හොයන්න." → Milvus / FAISS / pgvector.',
+        'For 10,000 bank complaints, use spaCy NER to extract branch names and dates. To classify complaints as positive or negative with logistic regression and 5-fold cross-validation, use scikit-learn. To store 10,000 complaint embeddings and search for similar complaints, use Milvus, FAISS, or pgvector.',
       code: {
         lang: 'python',
         src: `# pip install spacy numpy && python -m spacy download en_core_web_sm
 import spacy, numpy as np
 
-nlp = spacy.load("en_core_web_sm")          # පොඩි English pipeline එක
+nlp = spacy.load("en_core_web_sm")          # Load a small English pipeline
 doc = nlp("Keells opened a new store in Kandy on 5 May 2025.")
-for ent in doc.ents:                          # NER: නම්, ස්ථාන, දින
+for ent in doc.ents:                          # NER: names, places, dates
     print(ent.text, ent.label_)               # Keells ORG, Kandy GPE, ...
 print([(t.text, t.pos_) for t in doc][:4])    # POS tagging
 
 a, b = np.array([1.0, 2.0, 3.0]), np.array([2.0, 4.0, 6.5])
 cos = a @ b / (np.linalg.norm(a) * np.linalg.norm(b))   # cosine similarity
-print(round(cos, 3))                          # 1ට ළඟයි = දිශාව සමානයි`,
+print(round(cos, 3))                          # Near 1 means similar directions`,
       },
       keyPoints: [
-        'spaCy = NER, POS, tokenization pipeline. NumPy = arrays සහ ගණිතය.',
-        'Keras = neural nets ලේසියෙන්. scikit-learn = classic ML, CV, metrics.',
+        'spaCy = NER, POS, and tokenization pipeline. NumPy = arrays and numerical computing.',
+        'Keras = an easy-to-use neural-network API. scikit-learn = classic ML, cross-validation, and metrics.',
         'Hugging Face = transformers, datasets, peft, trl, Hub.',
-        'pymilvus, faiss, pgvector, chromadb = embeddings save කරලා similarity search.',
+        'pymilvus, faiss, pgvector, and chromadb = store embeddings and search by similarity.',
       ],
       terms: [
-        { en: 'spaCy', si: 'Industrial NLP library එක. NER, POS tagging, lemmatization, dependency parsing.' },
-        { en: 'NumPy', si: 'Python එකේ fast numeric arrays library එක.' },
-        { en: 'Keras', si: 'Neural networks ලේසියෙන් හදන high-level API එක.' },
-        { en: 'scikit-learn', si: 'Classic ML algorithms, preprocessing, cross-validation, metrics.' },
-        { en: 'Hugging Face transformers / datasets', si: 'Pretrained models + tokenizers load කරන්න / datasets load කරලා process කරන්න.' },
-        { en: 'Vector DB Client', si: 'pymilvus, faiss, pgvector වගේ vector database එකට කතා කරන Python library එක.' },
+        { en: 'spaCy', si: 'An industrial NLP library for NER, POS tagging, lemmatization, and dependency parsing.' },
+        { en: 'NumPy', si: 'A Python library for fast numeric arrays.' },
+        { en: 'Keras', si: 'A high-level API for building neural networks.' },
+        { en: 'scikit-learn', si: 'A library for classic ML algorithms, preprocessing, cross-validation, and metrics.' },
+        { en: 'Hugging Face transformers / datasets', si: 'Tools for loading pretrained models and tokenizers and for loading and processing datasets.' },
+        { en: 'Vector DB Client', si: 'A Python library, such as pymilvus, faiss, or pgvector, for interacting with a vector database.' },
       ],
     },
     // 6
     {
       id: 'numbers-to-know',
+      si: 'ඔයාට 7B parameter model එක FP16-කින් තියාගන්න නම් 7B × 2 bytes = 14 GB weights ඕනේ. Adam mixed-precision training-ට parameter එකකට දළ වශයෙන් 16 bytes, ඒ නිසා 7B × 16 ≈ 112 GB, activations තවමත් ඇතුළත් නෑ. Sequence length එක 2 ගුණ කළොත් attention වැඩේ n² නිසා දළ වශයෙන් 4 ගුණ වෙනවා. Colombo දවස් ගණනාවක් chat history තියාගන්න KV cache එකත් GPU memory කනවා.',
       title: 'Numbers to Know: 12·d² per Layer, Weight Memory, 16 Bytes per Parameter, KV Cache, n²',
       body: [
-        'Study guide එකේ "Numbers to know" table එකේ ගණන් පහක් තියෙනවා. මේවා කට පාඩම් කරනවාට වඩා "ඇයි" කියලා තේරුම් ගත්තම exam එකේ ලේසියි. ගැඹුරු ගණනය Phase 16 (parameter counting) සහ Phase 14 (GPU memory math) වල තියෙනවා.',
-        '(1) Parameters per layer ≈ 12·d². d කියන්නේ model width එක (හැම token එකක්ම නිරූපණය කරන vector එකේ දිග). Attention කොටසේ d × d ප්‍රමාණයේ matrices 4ක් තියෙනවා (Q, K, V, output). ඒ 4·d². Feed-forward කොටසේ d එක 4d දක්වා පුළුල් කරලා ආයෙත් d එකට අඩු කරන matrices 2ක් තියෙනවා. එකක් d × 4d, අනික 4d × d. ඒ 8·d². එකතුව 12·d². (2) Attention cost O(n²·d): හැම token එකක්ම අනිත් හැම token එකක් එක්කම සසඳන නිසා, sequence length n දෙගුණ කළොත් වැඩේ හතර ගුණයක් වෙනවා.',
-        '(3) Weights memory = parameters ගණන × එක parameter එකකට bytes. FP16 = bytes 2, INT8 = 1, INT4 = 0.5. 7B model: FP16 14 GB, INT8 7 GB, INT4 3.5 GB. (4) Adam + mixed precision training ≈ parameter එකකට bytes 16 (activations නැතුව): weights, gradients, FP32 master copy, Adam states දෙක. 7B × 16 ≈ 112 GB. LoRA / PEFT උදව් වෙන්නේ ඒ නිසා. (5) KV cache = 2 × layers × KV heads × head dimension × sequence length × batch size × bytes. 2 එක K සහ V දෙකට. Llama 2 7B FP16: token එකකට ≈ 0.5 MB, tokens 4,096ට ≈ 2 GB.',
+        'The study guide highlights five useful estimates. Understanding why they work is more useful on an exam than memorizing them. See Phase 16 for parameter counting and Phase 14 for GPU-memory calculations.',
+        '(1) Parameters per layer ≈ 12·d², where d is the model width, or the length of each token vector. Attention has four d × d matrices (Q, K, V, and output), giving 4·d². The feed-forward network expands d to 4d and projects it back, using matrices d × 4d and 4d × d for 8·d². Together these give 12·d². (2) Attention cost is O(n²·d): each token is compared with the others, so doubling sequence length n makes this work about four times larger.',
+        '(3) Weight memory = parameter count × bytes per parameter. FP16 uses 2 bytes, INT8 uses 1, and INT4 uses 0.5. A 7B model therefore needs about 14 GB at FP16, 7 GB at INT8, or 3.5 GB at INT4 for weights. (4) Adam mixed-precision training uses roughly 16 bytes per parameter before activations: weights, gradients, an FP32 master copy, and two Adam states. For 7B parameters, 7B × 16 ≈ 112 GB; this is one reason LoRA/PEFT is useful. (5) KV cache = 2 × layers × KV heads × head dimension × sequence length × batch size × bytes. The factor 2 accounts for K and V. For Llama 2 7B in FP16, the estimate is about 0.5 MB per token, or about 2 GB for 4,096 tokens.',
       ],
       analogy:
-        'Model weights කියන්නේ ගෙදර ගෙනියන බඩු. KV cache කියන්නේ කතාව අතරතුර ලියන notes. Training කරද්දී ඔයාට බඩු විතරක් නෙවෙයි, "ඊයේ මොකද වුණේ" (gradients) සහ "සාමාන්‍යයෙන් කොහාටද යන්නේ" (Adam states) කියන notebooks තුන හතරකුත් ගෙනියන්න වෙනවා. ඒ නිසා lorry එක (GPU memory) 8 ගුණයක් ලොකු වෙන්න ඕනේ.',
+        'Model weights are like the luggage you carry to a house. The KV cache is like notes you keep during a conversation. During training, you also need notebooks for gradients and Adam states, not just the weights, so the GPU-memory “lorry” needs much more capacity.',
       example:
-        'Llama 2 7B: d = 4096, layers 32. 12 × 4096² ≈ 201 million per layer. × 32 ≈ 6.4 billion. Embedding + output layers (32,000 × 4096 × 2 ≈ 0.26B) එකතු කළාම ≈ 6.7B. ඒ "7B" කියන නම. KV cache: 2 × 32 × 32 × 128 × 2 bytes = 524,288 bytes ≈ 0.5 MB per token. Users 8 දෙනෙක්, හැම කෙනාම tokens 4,096 → 0.5 MB × 4,096 × 8 ≈ 16 GB. Weights 14 GB + KV 16 GB = 30 GB. 24 GB GPU එකකට ඒක ගැළපෙන්නේ නෑ.',
+        'For Llama 2 7B, take d = 4,096 and 32 layers. Per layer, 12 × 4,096² ≈ 201 million parameters; across 32 layers that is about 6.4 billion. Adding embedding and output layers (32,000 × 4,096 × 2 ≈ 0.26B) gives about 6.7B, hence the “7B” label. KV cache per token: 2 × 32 × 32 × 128 × 2 bytes = 524,288 bytes ≈ 0.5 MB. With 8 users and 4,096 tokens each, 0.5 MB × 4,096 × 8 ≈ 16 GB. Weights (14 GB) plus KV cache (16 GB) total about 30 GB, so this estimate does not fit on a 24 GB GPU.',
       code: {
         lang: 'python',
-        src: `# Llama 2 7B වගේ model එකක ගණන් ඉක්මනට බලමු
+        src: `# Quickly estimate memory and parameters for a model such as Llama 2 7B
 params = 7e9
 for name, bytes_per in [("FP16", 2), ("INT8", 1), ("INT4", 0.5)]:
     print(name, params * bytes_per / 1e9, "GB weights")   # 14, 7, 3.5
@@ -266,105 +272,108 @@ print("KV/token ~", kv_per_token / 2**20, "MB")             # ~0.5 MB
 print("KV 4096 tokens ~", kv_per_token * 4096 / 2**30, "GB") # ~2 GB`,
       },
       keyPoints: [
-        '12·d² = attention 4·d² + FFN 8·d². Parameters වැඩි කොටස FFN එකේ.',
+        '12·d² = 4·d² for attention + 8·d² for the FFN. The FFN contains more of these parameters.',
         'Weights memory = params × bytes. 7B → 14 / 7 / 3.5 GB (FP16 / INT8 / INT4).',
         'Adam training ≈ 16 bytes/param → 7B ≈ 112 GB.',
-        'KV cache sequence length සහ batch size එක්ක linear විදිහට වැඩි වෙනවා. Attention n² විදිහට.',
+        'KV cache grows linearly with sequence length and batch size. Attention work grows with n².',
       ],
       terms: [
-        { en: 'd_model (d)', si: 'Model width එක. හැම token vector එකකම numbers ගණන.' },
-        { en: 'O(n²)', si: 'Input එක දෙගුණ වුණාම වැඩේ හතර ගුණයක් වෙන ජාතියේ වර්ධනය.' },
-        { en: 'Bytes per Parameter', si: 'එක weight එකක් save කරන්න ඕනේ memory. FP32 4, FP16 2, INT8 1, INT4 0.5.' },
-        { en: 'KV Cache', si: 'Generation අතරතුර කලින් tokens වල K සහ V save කරන memory එක.' },
+        { en: 'd_model (d)', si: 'The model width: the number of values in each token vector.' },
+        { en: 'O(n²)', si: 'A growth pattern where doubling the input length makes the work about four times larger.' },
+        { en: 'Bytes per Parameter', si: 'The memory needed to store one weight: FP32 4, FP16 2, INT8 1, and INT4 0.5 bytes.' },
+        { en: 'KV Cache', si: 'Memory that stores keys and values from earlier tokens during generation.' },
       ],
     },
     // 7
     {
       id: 'following-llm-research',
+      si: 'ඔයා අලුත් LLM paper එකක් බලද්දී abstract එකෙන් ප්‍රශ්නය සහ ප්‍රධාන අදහස හඳුනාගන්න. ඊට පස්සේ baseline එක, dataset එක, evaluation metric එක සහ ablation results බලන්න. arXiv එකේ paper එකක් තියෙනවා කියලා ඒක peer review වෙලා හෝ claim එක සත්‍යයි කියලා අදහස් වෙන්නේ නෑ. ක්‍රිකට් scorecard එකක් බලනවා වගේ, headline එකට වඩා actual results සහ සසඳපු baseline එක බලන්න.',
       title: 'Keeping Up with LLM Research Papers & Trends: Where and How',
       body: [
-        'Core ML domain එකේ "new LLM research papers සහ trends follow කරන එක" ලැයිස්තුගත කරලා තියෙනවා. Exam එක අහන්නේ ඔයා හැම paper එකම කියෙව්වද කියලා නෙවෙයි. අහන්නේ මෑත කාලයේ වැදගත් අදහස් (RoPE, GQA, FlashAttention, MoE, LoRA, DPO, speculative decoding, reasoning models) අඳුනගන්න පුළුවන්ද කියලා. Paper කියවන ක්‍රමය ගැන Phase 8 එකේ "Reading Research Papers" topic එක බලන්න.',
-        'කොහෙන්ද? arXiv (cs.CL = language, cs.LG = machine learning, cs.AI) අලුත් papers මුලින්ම එන තැන. Hugging Face Papers (daily papers) එකේ community එක ජනප්‍රිය papers upvote කරනවා. NVIDIA Technical Blog සහ NVIDIA Research site එක NVIDIA tools (TensorRT-LLM, NeMo, NIM) වල අලුත් features පැහැදිලි කරනවා. GTC talks (NVIDIA conference) on-demand බලන්න පුළුවන්. NeurIPS, ICML, ICLR, ACL, EMNLP කියන්නේ ප්‍රධාන research conferences. Model release වෙද්දී model card සහ technical report එකත් කියවන්න.',
-        'කොහොමද? Paper එකක් පාස් 3කින් කියවන්න. පාස් 1: title, abstract, figures, conclusion (මිනිත්තු 10). "මේක මට වැදගත්ද?" කියලා තීරණය කරන්න. පාස් 2: method කොටස සහ results tables. Baseline එක මොකක්ද, improvement එක කොච්චරද, මොන benchmark එකේද. පාස් 3 (ඇත්තටම ඕනේ නම් විතරයි): ගණිතය සහ code. සතියකට papers 1-2ක් විතරක් තෝරලා, එක paper එකකට "එක වාක්‍ය සාරාංශයක්" notebook එකක ලියන්න. Hype එකට රැවටෙන්න එපා: පොඩි benchmark එකක 1% improvement එකක් ලොකු දෙයක් නෙවෙයි.',
+        'The Core ML domain includes following new LLM research and trends. The exam is not about reading every paper; it expects you to recognize important ideas such as RoPE, GQA, FlashAttention, MoE, LoRA, DPO, speculative decoding, and reasoning models. See Phase 8, “Reading Research Papers,” for a method to read papers.',
+        'Where to look: arXiv (cs.CL for language, cs.LG for machine learning, and cs.AI) is an early source for papers. The community upvotes popular daily papers on Hugging Face Papers. NVIDIA Technical Blog and NVIDIA Research explain features in NVIDIA tools such as TensorRT-LLM, NeMo, and NIM. GTC conference talks are available on demand. NeurIPS, ICML, ICLR, ACL, and EMNLP are major research conferences. When a model is released, read its model card and technical report as well.',
+        'How to read: use three passes. Pass 1: read the title, abstract, figures, and conclusion (about 10 minutes) to decide whether it matters to you. Pass 2: read the method and results tables; note the baseline, size of the improvement, and benchmark. Pass 3: read the mathematics and code only if needed. Choose just 1–2 papers per week and write a one-sentence summary of each in a notebook. Do not be swayed by hype: a 1% improvement on a small benchmark may not be significant.',
       ],
       analogy:
-        'Cricket fan කෙනෙක් හැම match එකම පැය 8ක් බලන්නේ නෑ. Highlights (abstract) බලනවා, scorecard (results table) බලනවා, ලොකු match එකක් නම් විතරක් full replay (full paper) බලනවා. Research follow කරන එකත් එහෙමයි.',
+        'A cricket fan does not watch every match for eight hours. They watch highlights (the abstract), check the scorecard (results table), and watch a full replay (the paper) only for an important match. Follow research in the same selective way.',
       example:
-        'සතියේ routine එකක්: සඳුදා උදේ මිනිත්තු 15ක් Hugging Face daily papers top 10 බලන්න. එකක් තෝරලා abstract + figures කියවන්න. Notebook එකේ: "GQA: query heads කිහිපයක් එකම K/V head එකක් share කරනවා → KV cache එක කුඩා වෙනවා → inference වේගවත්." මාසෙකට පස්සේ ඔයාට වැදගත් ideas 4-8ක් ලේසියෙන් පැහැදිලි කරන්න පුළුවන්.',
+        'A weekly routine: spend 15 minutes on Monday morning reviewing the top 10 Hugging Face daily papers. Choose one and read its abstract and figures. In your notebook write, “GQA: several query heads share one K/V head → smaller KV cache → faster inference.” After a month, you may be able to explain 4–8 useful ideas clearly.',
       keyPoints: [
-        'arXiv, Hugging Face Papers, NVIDIA Technical Blog, GTC, conferences = ප්‍රධාන sources.',
-        'පාස් 3: abstract/figures → method/results → maths/code (අවශ්‍ය නම්).',
-        'Exam එකට ඕනේ ideas අඳුනගන්න එක: RoPE, GQA, FlashAttention, MoE, LoRA, DPO, speculative decoding.',
-        'Baseline, benchmark, improvement size බලලා hype එක වෙන් කරන්න.',
+        'Main sources include arXiv, Hugging Face Papers, NVIDIA Technical Blog, GTC, and conferences.',
+        'Use three passes: abstract/figures → method/results → mathematics/code if needed.',
+        'Recognize concepts such as RoPE, GQA, FlashAttention, MoE, LoRA, DPO, and speculative decoding.',
+        'Assess claims by checking the baseline, benchmark, and size of the improvement.',
       ],
       terms: [
-        { en: 'arXiv', si: 'Research papers peer review එකට කලින්ම නොමිලේ publish කරන site එක.' },
-        { en: 'Hugging Face Papers', si: 'දවසේ ජනප්‍රිය AI papers community එක upvote කරන page එක.' },
-        { en: 'Technical Report', si: 'අලුත් model එකක් release කරද්දී එයාලා training, data, results ගැන ලියන document එක.' },
-        { en: 'Baseline', si: 'අලුත් ක්‍රමය සසඳන පරණ / සරල ක්‍රමය.' },
+        { en: 'arXiv', si: 'A site where research papers are made freely available before peer review.' },
+        { en: 'Hugging Face Papers', si: 'A page where the community upvotes popular AI papers each day.' },
+        { en: 'Technical Report', si: 'A document accompanying a model release that describes training, data, and results.' },
+        { en: 'Baseline', si: 'An existing or simpler method used to compare with a new method.' },
       ],
     },
     // 8
     {
       id: 'llm-app-components',
+      si: 'LLM app එක model call එක විතරක් නෙවෙයි; loader, retriever, prompt, client, validator සහ logging එකට වැඩ කරනවා. උදාහරණයක්ට FAQ bot එකක් chunks 4ක් ගෙන model එකට යවලා JSON answer එක validate කරනවා. API එක 429 error දුන්නොත් retries සහ timeout නිසා service එක වහාම අසාර්ථක නොවෙයි. කඩේ kitchen එකක එක් එක් කෙනාට වෙනම වැඩක් තියෙනවා වගේ components වෙන් කරලා හදන්න.',
       title: 'Writing Scripts & Software Components for LLM Applications',
       body: [
-        'Software development domain එකේ "LLM applications වලට scripts සහ software components ලියන එක" තියෙනවා. LLM app එකක් කියන්නේ model call එකක් විතරක් නෙවෙයි. ඒක කොටස් ගොඩක් එකතු කරපු pipeline එකක්: document loader, chunker, embedding client, vector store, retriever, prompt template, LLM client, output parser / validator, guardrails, logging. ඔයා full-stack tech lead කෙනෙක් නිසා මේක ඔයාට හුරු "microservice design" එකමයි.',
-        'හොඳ LLM client component එකක ගුණ: (1) Config එක code එකේ hard-code නොකර environment variables / config file එකෙන් (model name, base URL, temperature). (2) Timeout සහ retries (exponential backoff), මොකද APIs වෙලාවකට 429 (rate limit) හෝ 5xx දෙනවා. (3) Structured output: JSON schema එකක් ඉල්ලලා, parse කරලා validate කරන්න (Phase 6, 14). (4) Logging: prompt version, model, tokens, latency හැම call එකකටම. (5) API keys code එකේ නෙවෙයි (මේ phase එකේ security topic එක බලන්න).',
-        'NVIDIA NIM endpoints OpenAI-compatible API එකක් දෙන නිසා, openai Python SDK එකම base_url එක මාරු කරලා පාවිච්චි කරන්න පුළුවන්. ඒ කියන්නේ build.nvidia.com එකේ hosted NIM එකයි, ඔයාගේම GPU එකේ දුවන NIM / vLLM එකයි අතර මාරු වෙන්න code එකේ URL එක විතරයි වෙනස් කරන්න ඕනේ. මේක portability එකට ලොකු වාසියක්.',
+        'The Software Development domain includes writing scripts and components for LLM applications. An LLM app is more than a model call; it is a pipeline of components such as a document loader, chunker, embedding client, vector store, retriever, prompt template, LLM client, output parser/validator, guardrails, and logging. This is similar to microservice design.',
+        'A good LLM client component should: (1) read configuration (model name, base URL, temperature) from environment variables or a config file instead of hard-coding it; (2) use timeouts and retries with exponential backoff because APIs can return 429 rate-limit or 5xx errors; (3) request structured output such as JSON and parse and validate it (Phases 6, 14); (4) log prompt version, model, tokens, and latency for each call; and (5) keep API keys out of code (see this phase’s security topic).',
+        'NVIDIA NIM endpoints provide an OpenAI-compatible API, so you can use the OpenAI Python SDK and change its base_url. This can make it possible to switch between hosted NIM on build.nvidia.com and NIM or vLLM running on your own GPU by changing the URL. This can improve portability.',
       ],
       analogy:
-        'Kottu කඩේක kitchen එක හිතන්න. එක්කෙනෙක් එළවළු කපනවා (chunker), එක්කෙනෙක් රොටී තලනවා (embedder), chef (LLM) අන්තිම පිඟාන හදනවා, cashier (output validator) bill එක හරිද බලනවා. හැම කෙනාටම වෙනම වැඩක් තියෙන නිසා එක්කෙනෙක් අසනීප වුණත් (API error) අනිත් අය වැඩ නවත්වන්නේ නෑ, retry කරනවා.',
+        'Think of a kottu shop kitchen: one person chops vegetables (chunker), another prepares the roti (embedder), the chef (LLM) makes the final dish, and the cashier (output validator) checks the bill. Each has a separate job, so if one part is temporarily unavailable because of an API error, retries can help the workflow recover.',
       example:
-        'Customer FAQ bot: request එකක් ආවම → retriever chunks 4ක් ගේනවා (≈ ms 40) → prompt template එකට දානවා → LLM client call (timeout තත්පර 30, retries 3) → JSON parser එක {"answer": ..., "sources": [...]} validate කරනවා → log: model=llama-3.1-8b, input 1,200 tokens, output 150 tokens, latency 1.8 s. Parse එක fail වුණොත් එක පාරක් retry කරලා, ආයෙත් fail නම් "මට විශ්වාසයෙන් කියන්න බෑ" fallback එක.',
+        'Customer FAQ bot: when a request arrives, the retriever fetches 4 chunks (about 40 ms), which are added to the prompt template. The LLM client call has a 30-second timeout and 3 retries. A JSON parser validates {"answer": ..., "sources": [...]}. Log model=llama-3.1-8b, 1,200 input tokens, 150 output tokens, and 1.8 s latency. If parsing fails, retry once; if it fails again, return an “I cannot answer confidently” fallback.',
       code: {
         lang: 'python',
         src: `import os
-from openai import OpenAI   # NIM = OpenAI-compatible API
+from openai import OpenAI   # NIM provides an OpenAI-compatible API
 
 client = OpenAI(base_url=os.environ.get("LLM_BASE_URL", "https://integrate.api.nvidia.com/v1"),
-                api_key=os.environ["NVIDIA_API_KEY"],   # key එක env එකෙන්, code එකේ නෙවෙයි
-                timeout=30, max_retries=3)              # timeout + retries
+                api_key=os.environ["NVIDIA_API_KEY"],   # Read the key from the environment, not code
+                timeout=30, max_retries=3)              # Set timeout and retries
 
 def ask(question: str, context: str) -> str:
     resp = client.chat.completions.create(
         model=os.environ.get("LLM_MODEL", "meta/llama-3.1-8b-instruct"),
-        messages=[{"role": "system", "content": "Context එකෙන් විතරක් උත්තර දෙන්න."},
+        messages=[        {"role": "system", "content": "Answer using only the context."},
                   {"role": "user", "content": f"Context:\\n{context}\\n\\nQ: {question}"}],
         temperature=0.2, max_tokens=300)
-    print("tokens:", resp.usage.total_tokens)              # cost / monitoring සඳහා log කරන්න
+    print("tokens:", resp.usage.total_tokens)              # Log for cost and monitoring
     return resp.choices[0].message.content`,
       },
       keyPoints: [
         'LLM app = loader, chunker, embedder, retriever, prompt, LLM client, validator, logging.',
-        'Config env vars වලින්, timeouts + retries, structured output validate කරන්න.',
-        'NIM / vLLM OpenAI-compatible නිසා base_url එක මාරු කළාම ඇති.',
-        'හැම call එකකම model, prompt version, tokens, latency log කරන්න.',
+        'Read configuration from environment variables, use timeouts and retries, and validate structured output.',
+        'NIM and vLLM offer OpenAI-compatible APIs, so switching the base_url may be enough.',
+        'Log the model, prompt version, token counts, and latency for every call.',
       ],
       terms: [
-        { en: 'OpenAI-compatible API', si: 'OpenAI API එකේ format එකම පාවිච්චි කරන endpoint එකක්. NIM, vLLM එහෙමයි.' },
-        { en: 'Exponential Backoff', si: 'Retry එකක් අතරේ බලාගෙන ඉන්න කාලය 1s, 2s, 4s වගේ දෙගුණ කරන එක.' },
-        { en: 'Prompt Template', si: 'Variables දාන්න තැන් තියෙන, version කරපු prompt එක.' },
-        { en: 'Output Validator', si: 'Model output එක schema එකට ගැළපෙනවද කියලා check කරන component එක.' },
+        { en: 'OpenAI-compatible API', si: 'An endpoint that uses the OpenAI API format; NIM and vLLM provide compatible APIs.' },
+        { en: 'Exponential Backoff', si: 'Increasing the wait between retries, for example 1, 2, then 4 seconds.' },
+        { en: 'Prompt Template', si: 'A versioned prompt with placeholders for variables.' },
+        { en: 'Output Validator', si: 'A component that checks whether model output matches a required schema.' },
       ],
     },
     // 9
     {
       id: 'choosing-comparing-stack',
+      si: 'ඔයා private documents නිතර update කරන support bot එකක් හදනවා නම් RAG එක fine-tuning වලට වඩා ගැළපෙන්න පුළුවන්. 8B model එකක් FP16 weights සඳහා 16 GB පමණ ගන්නවා, ඒකට KV cache එකත් එකතු කරන්න ඕනේ. Hosted API එක ලේසියි, self-hosted NIM හෝ vLLM එකට GPU සහ නඩත්තුව ඕනේ. Cost, portability, compatibility, usability වලට ලකුණු දීලා weighted score එක ගණනය කරන්න.',
       title: 'Choosing Data, Hardware & Software for a Use Case; Comparing on Cost, Portability, Compatibility, Usability',
       body: [
-        'Use case එකකට stack එක තෝරද්දී ප්‍රශ්න තුනක් අහන්න. Data: මොන data ද (text, PDF, tables), කොච්චරද, private ද, කොච්චර නිතර update වෙනවද? Private සහ නිතර වෙනස් වෙන දැනුම නම් RAG. Style / format උගන්වන්න නම් fine-tuning (Phase 13, 15). Hardware: model එක memory එකට ගැළපෙනවද? 8B model එකක් FP16 නම් ≈ 16 GB weights + KV cache. 24 GB GPU (L4, A10G) එකක් ඇති වෙන්න පුළුවන්. 70B FP16 ≈ 140 GB, 80 GB GPUs කිහිපයක් හෝ quantization ඕනේ. Training ද inference ද? Training වලට memory සහ GPU-to-GPU bandwidth ගොඩක් ඕනේ.',
-        'Software: hosted API (build.nvidia.com, Bedrock) ද self-hosted ද? Self-hosted නම් NIM (ලේසිම, optimized container), vLLM (open-source, flexible), Triton + TensorRT-LLM (උපරිම performance, ඒත් setup එක අමාරුයි). Training / customization වලට NeMo හෝ Hugging Face (transformers + peft + trl). Data processing වලට RAPIDS හෝ NeMo Curator.',
-        'Technologies සසඳන්න දෙයාකාර හතරක් (Experimentation domain එකේ තියෙනවා): Cost: GPU පැයකට, token 1M කට, engineering time සහ maintenance. Portability: වෙන cloud එකකට / on-prem වලට ගෙනියන්න ලේසිද? Containers, ONNX, OpenAI-compatible APIs portability වැඩි කරනවා. Vendor lock-in අඩු කරනවා. Compatibility: ඔයාගේ GPU architecture, CUDA / driver versions, framework (PyTorch), model format (safetensors, GGUF, ONNX) එක්ක වැඩ කරනවද? Usability: docs, learning curve, team එකේ skills, community support.',
-        'ප්‍රායෝගික ක්‍රමය: weighted decision matrix එකක්. Criteria හතරට weights දීලා (එකතුව 1), හැම option එකකටම 1-5 score දීලා, weight × score එකතු කරන්න. Architect කෙනෙක් විදිහට මේ matrix එක Architecture Decision Record (ADR) එකක ලියලා තියාගන්න.',
+        'When choosing a stack for a use case, ask about three areas. Data: what types (text, PDFs, tables), how much, whether it is private, and how often it changes. RAG can suit private, frequently changing knowledge; fine-tuning can teach style or format (Phases 13, 15). Hardware: will the model fit in memory? An 8B FP16 model needs about 16 GB for weights plus KV cache, so a 24 GB GPU (L4, A10G) may be enough for some workloads. A 70B FP16 model needs about 140 GB for weights, requiring several 80 GB GPUs or quantization. Training needs much more memory and GPU-to-GPU bandwidth than inference.',
+        'Software: choose a hosted API (build.nvidia.com, Bedrock) or self-hosting. For self-hosting, NIM is an optimized container, vLLM is flexible open source, and Triton with TensorRT-LLM can target high performance but requires more setup. Use NeMo or Hugging Face (transformers, peft, trl) for training/customization and RAPIDS or NeMo Curator for data processing.',
+        'Compare technologies on four factors from the Experimentation domain: Cost (GPU-hour, per million tokens, engineering time, and maintenance); Portability (ease of moving across clouds or on premises—containers, ONNX, and OpenAI-compatible APIs can help reduce vendor lock-in); Compatibility (fit with GPU architecture, CUDA/driver versions, PyTorch, and formats such as safetensors, GGUF, or ONNX); and Usability (documentation, learning curve, team skills, and community support).',
+        'A practical method is a weighted decision matrix. Assign weights to the four criteria that sum to 1, score each option from 1 to 5, then add weight × score. Record the matrix and reasoning in an Architecture Decision Record (ADR).',
       ],
       analogy:
-        'Colombo ඉඳන් Kandy යන්න transport තෝරනවා වගේ. Train එක ලාභයි (cost) ඒත් වෙලාවට යන්නේ නෑ. Taxi එක ලේසියි (usability) ඒත් ගණන්. ඔයාගේම car එක ඕනෙම තැනකට යන්න පුළුවන් (portability) ඒත් maintenance ඕනේ. Bus එකට ඔයාගේ luggage එක ගැළපෙනවද (compatibility)? වැදගත්ම දේට වැඩි weight එකක් දීලා තෝරනවා.',
+        'Choosing a stack is like choosing transport from Colombo to Kandy. A train may cost less, a taxi may be easier but more expensive, and your own car may go anywhere but needs maintenance. Check whether your luggage fits on the bus (compatibility), then give more weight to the factors that matter most.',
       example:
-        'Option A: Hosted API. Cost 3, Portability 2, Compatibility 5, Usability 5. Option B: Self-hosted NIM on EKS. Cost 4, Portability 4, Compatibility 4, Usability 3. Weights: cost 0.4, portability 0.2, compatibility 0.2, usability 0.2. A = 0.4×3 + 0.2×2 + 0.2×5 + 0.2×5 = 1.2 + 0.4 + 1.0 + 1.0 = 3.6. B = 0.4×4 + 0.2×4 + 0.2×4 + 0.2×3 = 1.6 + 0.8 + 0.8 + 0.6 = 3.8. B ටිකක් ඉස්සරහින්. ඒත් traffic අඩු නම් cost score එක වෙනස් වෙලා A දිනන්න පුළුවන්.',
+        'Option A, a hosted API, scores Cost 3, Portability 2, Compatibility 5, Usability 5. Option B, self-hosted NIM on EKS, scores 4, 4, 4, 3. Use weights 0.4, 0.2, 0.2, 0.2. A = 0.4×3 + 0.2×2 + 0.2×5 + 0.2×5 = 1.2 + 0.4 + 1.0 + 1.0 = 3.6. B = 0.4×4 + 0.2×4 + 0.2×4 + 0.2×3 = 1.6 + 0.8 + 0.8 + 0.6 = 3.8. B scores slightly higher, but with low traffic a changed cost score could make A the better choice.',
       code: {
         lang: 'python',
-        src: `# Weighted decision matrix: technologies සසඳන්න
+        src: `# Compare technologies with a weighted decision matrix
 weights = {"cost": 0.4, "portability": 0.2, "compatibility": 0.2, "usability": 0.2}
 options = {
     "Hosted API":      {"cost": 3, "portability": 2, "compatibility": 5, "usability": 5},
@@ -372,76 +381,78 @@ options = {
     "Triton+TRT-LLM":  {"cost": 5, "portability": 3, "compatibility": 3, "usability": 2},
 }
 for name, s in options.items():
-    total = sum(weights[k] * s[k] for k in weights)   # weight × score එකතුව
-    print(f"{name:16} {total:.2f}")                   # ලොකුම අගය = හොඳම තේරීම`,
+    total = sum(weights[k] * s[k] for k in weights)   # Sum of weight times score
+    print(f"{name:16} {total:.2f}")                   # Highest score = best fit`,
       },
       keyPoints: [
-        'Data → RAG ද fine-tune ද. Hardware → memory ගැළපෙනවද, training ද inference ද. Software → hosted ද self-hosted ද.',
-        'NIM = ලේසිම optimized serving. vLLM = flexible open-source. Triton + TRT-LLM = උපරිම performance.',
-        'Cost, portability, compatibility, usability හතරෙන්ම සසඳන්න.',
-        'Weighted decision matrix + ADR = architect කෙනෙක්ගේ හොඳ පුරුද්ද.',
+        'Data: choose RAG or fine-tuning. Hardware: check memory fit and whether the task is training or inference. Software: choose hosted or self-hosted.',
+        'NIM = optimized serving in a container. vLLM = flexible open source. Triton + TRT-LLM = a high-performance serving stack.',
+        'Compare cost, portability, compatibility, and usability.',
+        'A weighted decision matrix and ADR are useful architecture practices.',
       ],
       terms: [
-        { en: 'Portability', si: 'Stack එක වෙන environment එකකට ලේසියෙන් ගෙනියන්න පුළුවන්කම.' },
-        { en: 'Compatibility', si: 'GPU, CUDA, framework, model format එක්ක ගැළපීම.' },
-        { en: 'Vendor Lock-in', si: 'එක provider කෙනෙක්ගෙන් අයින් වෙන්න අමාරු වෙන තත්වය.' },
-        { en: 'Architecture Decision Record (ADR)', si: 'තීරණයක්, විකල්ප සහ හේතු ලියලා තියන කෙටි document එක.' },
+        { en: 'Portability', si: 'How easily a stack can be moved to another environment.' },
+        { en: 'Compatibility', si: 'Whether the stack works with a GPU, CUDA, framework, and model format.' },
+        { en: 'Vendor Lock-in', si: 'A situation where it is difficult to move away from one provider.' },
+        { en: 'Architecture Decision Record (ADR)', si: 'A short document recording a decision, alternatives, and reasons.' },
       ],
     },
     // 10
     {
       id: 'monitoring-processes',
+      si: 'ඔයාගේ scraping job එක සාමාන්‍යයෙන් දවසකට documents 5,000ක් ගෙනාවත් අද 300ක් විතරක් ලැබුණොත් ඒක බලන්න ඕනේ. Null text 2% ඉඳන් 40%ට ගියොත් website එකේ වෙනසක් හෝ pipeline දෝෂයක් වෙන්න පුළුවන්. Training run එකේ config, data version, git commit සහ validation loss සටහන් කළාම හොඳම run එක හොයාගන්න ලේසියි. Production bot එකේ p95 latency තත්පර 3 ඉක්මවූ විට alert එකක් දාන්න.',
       title: 'Monitoring Data Collection, Experiments & Software Processes',
       body: [
-        'Software development domain එකේ "data collection, experiments, software processes monitor කරන එක" කියලා තියෙනවා. මේ තුන වෙන වෙනම බලමු. MLOps monitoring සහ drift ගැන Phase 7, experiment tracking සහ reproducibility ගැන Phase 11 බලන්න.',
-        'Data collection monitoring: data pipeline එක හරියට data එකතු කරනවද? බලන්න ඕනේ: rows ගණන (හදිසියේ 0 වුණාද?), schema එක (columns වෙනස් වුණාද?), null / empty values ප්‍රතිශතය, duplicates, freshness (අන්තිම data එක ආවේ කවදද?), label distribution (positive / negative අනුපාතය හදිසියේ වෙනස් වුණාද?). Scraping කරනවා නම් fail වෙච්ච URLs ගණන සහ language mix එකත් බලන්න.',
-        'Experiment monitoring: Weights & Biases හෝ MLflow එකට හැම run එකකම config එක (learning rate, batch size, LoRA rank), data version එක, code git commit එක, training / validation loss curves, eval metrics, GPU utilization log කරන්න. Loss එක NaN වුණොත් හෝ validation loss එක වැඩි වෙන්න පටන් ගත්තොත් alert එකක්. මේකෙන් "කොයි run එකද හොඳම, ඇයි?" කියලා පස්සේ හොයාගන්න පුළුවන්.',
-        'Software process monitoring: production service එකේ logs, metrics, traces. Metrics: requests per second, error rate, p50 / p95 latency, TTFT, tokens per second, GPU utilization සහ memory (DCGM exporter → Prometheus / CloudWatch), queue length. LLM-specific: token usage සහ cost, guardrail block rate, user thumbs up / down, hallucination complaints. Alerts SLO එකට අනුව (උදා: p95 latency > 3 s මිනිත්තු 5ක්).',
+        'The Software Development domain includes monitoring data collection, experiments, and software processes. Consider each separately. See Phase 7 for MLOps monitoring and drift, and Phase 11 for experiment tracking and reproducibility.',
+        'For data-collection monitoring, check whether the pipeline is collecting data correctly: row counts (did they suddenly fall to zero?), schema (did columns change?), null/empty-value percentage, duplicates, freshness (when did data last arrive?), and label distribution (did the positive/negative ratio change?). For scraping, also track failed URLs and the language mix.',
+        'For experiment monitoring, log each run’s configuration (learning rate, batch size, LoRA rank), data version, Git commit, training and validation loss curves, evaluation metrics, and GPU utilization in Weights & Biases or MLflow. Alert if loss becomes NaN or validation loss starts increasing. This helps answer which run worked best and why.',
+        'For software-process monitoring, collect production logs, metrics, and traces. Metrics include requests per second, error rate, p50/p95 latency, TTFT, tokens per second, GPU utilization and memory (DCGM exporter → Prometheus/CloudWatch), and queue length. LLM-specific metrics include token use and cost, guardrail block rate, user feedback, and hallucination complaints. Set alerts against an SLO, for example p95 latency above 3 seconds for 5 minutes.',
       ],
       analogy:
-        'Ceylon tea factory එකක් හිතන්න. දළු එකතු කරන තැන (data collection) බර කිලෝ කීයද, තෙත අධිකද බලනවා. Factory එක ඇතුළේ (experiments) හැම batch එකකම උෂ්ණත්වය, කාලය ලියනවා, හොඳම තේ එක හැදුණේ මොන settings වලින්ද දැනගන්න. Packing line එකේ (software process) පැකට් කීයක් එනවද, කැඩිලාද බලනවා. එක තැනක් නිරීක්ෂණය නොකළොත් අවුල වෙන්නේ අන්තිමට.',
+        'Think of a Ceylon tea factory. At collection, workers check the weight and moisture of leaves (data collection). Inside, they record the temperature and time for each batch (experiments) to learn which settings made the best tea. On the packing line (software process), they count packages and check for damage. If one stage is not monitored, problems may only become visible at the end.',
       example:
-        'Daily scraping job එක සාමාන්‍යයෙන් documents 5,000ක් ගේනවා. අද 300යි. Null text 2% ඉඳන් 40% දක්වා ගියා. Alert එක ගිහින් බැලුවම website එකේ HTML structure එක වෙනස් වෙලා. මේක නොදැක්කා නම් ඊළඟ fine-tune එක හිස් text 40%ක් එක්ක train වෙලා model එක නරක් වෙනවා.',
+        'A daily scraping job normally collects 5,000 documents, but today it collected only 300 and null text rose from 2% to 40%. An alert reveals that the website’s HTML structure changed. Without that alert, the next fine-tuning run could train on 40% empty text and harm the model.',
       code: {
         lang: 'python',
         src: `import pandas as pd
 
-df = pd.read_json("todays_batch.jsonl", lines=True)   # අද එකතු කරපු data
+df = pd.read_json("todays_batch.jsonl", lines=True)   # Load today's collected data
 checks = {
-    "rows": len(df),                                     # rows ගණන
-    "null_text_pct": df["text"].isna().mean() * 100,     # හිස් text %
-    "dup_pct": df.duplicated("text").mean() * 100,       # duplicates %
-    "missing_cols": {"text", "source", "date"} - set(df.columns),  # schema
+    "rows": len(df),                                     # Row count
+    "null_text_pct": df["text"].isna().mean() * 100,     # Percentage of empty text
+    "dup_pct": df.duplicated("text").mean() * 100,       # Percentage of duplicates
+    "missing_cols": {"text", "source", "date"} - set(df.columns),  # Missing schema columns
 }
 print(checks)
 if checks["rows"] < 1000 or checks["null_text_pct"] > 5:
-    print("ALERT: data collection එකේ ප්‍රශ්නයක්!")     # pipeline එක නවත්වන්න`,
+    print("ALERT: data collection problem!")             # Stop the pipeline`,
       },
       keyPoints: [
         'Data: rows, schema, nulls, duplicates, freshness, label distribution.',
         'Experiments: config, data version, git commit, loss curves, metrics → W&B / MLflow.',
         'Software: latency p95, TTFT, error rate, GPU util, tokens, cost, guardrail blocks.',
-        'Alerts SLO එකට අනුව. Data ප්‍රශ්න ඉක්මනට අල්ලන්න.',
+        'Set alerts against SLOs to catch data problems early.',
       ],
       terms: [
-        { en: 'Data Freshness', si: 'අන්තිම data එක ආවේ කොච්චර කාලෙකට කලින්ද කියන එක.' },
-        { en: 'Experiment Tracking', si: 'හැම training run එකකම settings සහ results save කරලා සසඳන එක.' },
-        { en: 'SLO (Service Level Objective)', si: 'Service එක තියාගන්න ඕනේ ඉලක්කය. උදා: requests 95%ක් තත්පර 3ට අඩුවෙන්.' },
-        { en: 'DCGM Exporter', si: 'GPU metrics Prometheus වගේ monitoring system එකකට යවන NVIDIA tool එක.' },
+        { en: 'Data Freshness', si: 'How recently new data was received.' },
+        { en: 'Experiment Tracking', si: 'Saving and comparing settings and results for each training run.' },
+        { en: 'SLO (Service Level Objective)', si: 'A target for a service, such as 95% of requests completing in under 3 seconds.' },
+        { en: 'DCGM Exporter', si: 'An NVIDIA tool that sends GPU metrics to a monitoring system such as Prometheus.' },
       ],
     },
     // 11
     {
       id: 'dataset-preparation',
+      si: 'ඔයා සිංහල FAQ documents 1,000ක් RAG සඳහා සකස් කරනවා නම් මුලින්ම duplicate, හිස් text සහ වැරදි encoding ඉවත් කරන්න. පසුව sentence boundary සහ අර්ථය සලකා chunks හදා metadata එක් කරන්න. Tokenizer එකෙන් token ගණන බලන්න; characters 500ක් හැම model එකකටම සමාන tokens නෙවෙයි. Fine-tuning හෝ RLHF සඳහා නම් private data, license සහ labels ගැනත් පරීක්ෂා කරන්න.',
       title: 'Preparing Datasets for Pretraining, Fine-Tuning & RLHF: Scraping, Cleaning, Tokenization',
       body: [
-        'Experimentation domain එකේ dataset preparation ප්‍රශ්න එනවා. Data curation (quality filtering, MinHash dedup, decontamination, NeMo Curator) ගැඹුරින් Phase 15 එකේ තියෙනවා. මෙතන අපි අදියර තුනටම dataset එකක හැඩය සහ පියවර එකට බලමු.',
-        'Pretraining data: labels නැති raw text ගොඩක්. පියවර: (1) Scraping / collection: robots.txt සහ website terms ගරු කරන්න, licenses බලන්න (copyright තියෙන content). (2) HTML එකෙන් text extract කරන්න (menus, ads අයින් කරන්න). (3) Language identification. (4) Quality filtering (ගොඩක් කෙටි, අමුතු characters, spam). (5) Deduplication (exact සහ near-duplicate). (6) PII අයින් කිරීම (phone numbers, emails, NIC numbers). (7) Benchmark test data අයින් කිරීම (decontamination). (8) Tokenize කරලා fixed-length sequences වලට pack කිරීම.',
-        'Fine-tuning (SFT) data: instruction → response pairs, සාමාන්‍යයෙන් JSONL එකක chat "messages" format එකෙන්. ප්‍රමාණයට වඩා quality වැදගත්. Model එකේ chat template එකෙන්ම format කරන්න. Loss එක ගණන් කරන්නේ assistant tokens වලට විතරයි (loss masking). RLHF / DPO data: prompt එකක් + උත්තර දෙකක් + කොයි එකද හොඳ කියලා: {"prompt", "chosen", "rejected"}. මේවා එකතු කරන හැටි ඊළඟ topic එකේ.',
-        'Tokenization පියවරේදී: model එකේම tokenizer එක පාවිච්චි කරන්න (වෙන tokenizer එකක් නෙවෙයි). Token lengths බලලා max length එකට වඩා දිග examples truncate වෙනවද බලන්න. Pretraining වලට sequences pack කරනවා (පොඩි documents එකට අලවලා padding නැති කරනවා). Fine-tuning වලට padding හෝ packing. Tokenization ගැඹුරින් Phase 14.',
+        'Dataset preparation is covered in the Experimentation domain. See Phase 15 for deeper treatment of curation, quality filtering, MinHash deduplication, decontamination, and NeMo Curator. Here we review the shape of datasets and the steps for three training stages.',
+        'Pretraining data is a large collection of unlabeled raw text. Steps: (1) scrape or collect data while respecting robots.txt, website terms, and licenses; (2) extract text from HTML and remove menus and ads; (3) identify language; (4) filter low-quality items such as very short text, unusual characters, and spam; (5) remove exact and near duplicates; (6) remove PII such as phone numbers, emails, and NIC numbers; (7) decontaminate by excluding benchmark test data; (8) tokenize and pack into fixed-length sequences.',
+        'Fine-tuning (SFT) data consists of instruction → response pairs, usually in JSONL chat “messages” format. Quality matters more than quantity. Format data with the model’s chat template and calculate loss only on assistant tokens (loss masking). RLHF/DPO data pairs a prompt with two responses and a preference: {"prompt", "chosen", "rejected"}. The next topic explains how to collect it.',
+        'For tokenization, use the model’s own tokenizer. Inspect token lengths and check whether examples longer than the maximum are truncated. For pretraining, pack sequences by joining short documents to reduce padding; for fine-tuning, use padding or packing as appropriate. See Phase 14 for more on tokenization.',
       ],
       analogy:
-        'Rice and curry එකක් උයන්න කලින් කරන preparation එක වගේ. සහල් ගේනවා (scraping), ගල් අහුලනවා (cleaning), එකම සහල් දෙපාරක් දාන්නේ නෑ (dedup), නරක් වෙච්ච ඒවා අයින් කරනවා (quality filter), හට්ටියට ගැළපෙන ප්‍රමාණයට මනිනවා (tokenize + pack). Preparation එක නරක නම් හොඳම chef ට (model) වත් හොඳ කෑමක් හදන්න බෑ.',
+        'It is like preparing rice and curry: collect the rice (scraping), remove stones (cleaning), avoid adding the same rice twice (deduplication), discard spoiled grains (quality filtering), and measure portions to fit the pot (tokenizing and packing). Poor preparation limits even the best chef (model).',
       example:
         'Sri Lankan news sites වලින් articles 100,000ක් scrape කළා. HTML extract කළාම හිස් / ගොඩක් කෙටි ඒවා 8,000ක්. Near-duplicates (එකම news එක sites කිහිපයක) 22,000ක්. ඉතුරු 70,000. Tokenize කළාම සාමාන්‍යයෙන් article එකකට tokens 900 → ≈ tokens 63 million. Tokens 2,048 sequences වලට pack කළාම ≈ sequences 30,800ක්.',
       code: {
@@ -465,18 +476,19 @@ print("truncated:", sum(l == 2048 for l in lengths))           # කැපුණ
         'Pretraining: scrape → extract → language ID → filter → dedup → PII → decontaminate → tokenize + pack.',
         'SFT: instruction/response JSONL, chat template, assistant tokens විතරක් loss.',
         'RLHF/DPO: prompt + chosen + rejected.',
-        'Model එකේම tokenizer එක, truncation check කරන්න.',
+        'Use the model’s own tokenizer and check for truncation.',
       ],
       terms: [
-        { en: 'Web Scraping', si: 'Websites වලින් automatic විදිහට content එකතු කිරීම. robots.txt සහ terms ගරු කරන්න ඕනේ.' },
-        { en: 'robots.txt', si: 'Website එක bots වලට කොයි pages බලන්න පුළුවන්ද කියලා කියන file එක.' },
-        { en: 'Sequence Packing', si: 'පොඩි examples කිහිපයක් එක sequence එකකට අලවලා padding නාස්තිය අඩු කිරීම.' },
-        { en: 'Preference Pair', si: 'එකම prompt එකට හොඳ (chosen) සහ නරක (rejected) උත්තර දෙකක්.' },
+        { en: 'Web Scraping', si: 'Automatically collecting content from websites while respecting robots.txt and site terms.' },
+        { en: 'robots.txt', si: 'A file that tells bots which pages on a website they may access.' },
+        { en: 'Sequence Packing', si: 'Combining short examples into one sequence to reduce padding waste.' },
+        { en: 'Preference Pair', si: 'Two responses to one prompt: the preferred (chosen) response and the other (rejected) response.' },
       ],
     },
     // 12
     {
       id: 'human-feedback-collection',
+      si: 'ඔයා annotator කෙනෙකුට එකම ප්‍රශ්නයට model එකේ answers දෙකක් පෙන්වා වඩා හොඳ එක තෝරන්න කියන්න. ඔවුන්ගේ කැමැත්ත, භාෂාව සහ rating guideline එක සටහන් කළොත් feedback එක තේරුම් ගන්න පුළුවන්. Answer දෙකම නරක නම් ඒකත් සටහන් කරන්න, අනිවාර්යයෙන් winner එකක් තෝරන්න එපා. Annotators 3 දෙනෙක් දාලා disagreement වැඩි උදාහරණ review කිරීමෙන් quality පාලනය කරන්න.',
       title: 'Collecting Human Feedback for RLHF: Preference UI, Pairwise Comparisons, Guidelines, Quality Control',
       body: [
         'RLHF එකේ දෙවැනි පියවර reward model එක train කරන එක. ඒකට human preference data ඕනේ (RLHF සහ DPO maths Phase 15 එකේ). ප්‍රශ්නය: ඒ data එක හොඳට එකතු කරන්නේ කොහොමද? Exam එකේ "Collecting human feedback for RLHF" කියලා කෙළින්ම තියෙනවා.',
@@ -522,6 +534,7 @@ print(sum(x == y for x, y in zip(a, b)) / len(a))   # 0.8 = 80% එකඟයි`
     // 13
     {
       id: 'data-analysis-r2-trends',
+      si: 'ඔයා Colombo සහ Kandy branches වල sales model දෙකක් සසඳනවා නම් එකම test data සහ metric භාවිතා කරන්න. R² 1ට ආසන්න නම් model එක target එකේ වෙනස්වීම් හොඳින් පැහැදිලි කරනවා; 0ට අඩු අගයක් average prediction එකටත් වඩා නරක විය හැකියි. සති 4ක trend එක line chart එකකින්, branches සසඳන්න bar chart එකකින් පෙන්වන්න. වැසි දවස් sales සහ traffic දෙකටම බලපාන confounder එකක් විය හැකියි.',
       title: 'Data Analysis Domain: Comparing Models (Loss, R²), Data Mining, Charts, Trends & Confounding Factors',
       body: [
         'Data analysis domain එක 14%යි. ප්‍රධාන කොටස් තුනක්: statistical metrics වලින් models සසඳන එක, data mining සහ visualization, සහ trends සහ results වලට බලපාන factors හොයන එක. Classification metrics Phase 2 සහ 17, EDA සහ charts Phase 1, correlation vs causation Phase 0 එකේ තියෙනවා.',
@@ -566,6 +579,7 @@ plt.xlabel("epoch"); plt.ylabel("loss"); plt.legend(); plt.show()   # trend = li
     // 14
     {
       id: 'security-privacy-consent',
+      si: 'ඔයාගේ API key එක public GitHub එකට ගියොත් මුලින්ම key එක revoke කරලා අලුත් එකක් හදන්න; commit එක මකා දැමීම විතරක් ප්‍රමාණවත් නෑ. Training service එකට අවශ්‍ය bucket එකට විතරක් access දෙන්න, production database එකට අනවශ්‍ය permission දෙන්න එපා. Customer data encrypt කරලා policy එක අනුව, උදාහරණයට දවස් 30කට පස්සේ මකන්න. Privacy කියන්නේ data ආරක්ෂා කිරීමයි; consent කියන්නේ ඒ අරමුණට භාවිතා කරන්න අවසර තිබීමයි.',
       title: 'Protecting Datasets, Weights, Prompts & Credentials; Least Privilege, Retention, Supply Chain, Privacy vs Consent',
       body: [
         'AI system එකක ආරක්ෂා කරන්න ඕනේ වත්කම් හතරක් තියෙනවා. Datasets (customer data, training data), model weights (මිලියන ගණන් වියදම් කරලා හදපු IP එක), prompts (system prompt එකේ business logic, සමහර වෙලාවට leak වෙන්න පුළුවන්), credentials (API keys, DB passwords). Credentials කවදාවත් code එකේ හෝ Git එකේ තියන්න එපා. AWS Secrets Manager / SSM Parameter Store, HashiCorp Vault වගේ secrets manager එකකින් runtime එකේදී ගන්න. Local එකේ .env file එක .gitignore එකට දාන්න. gitleaks / git-secrets වගේ tools commit එකට කලින් scan කරන්න. Key එකක් leak වුණොත් commit එක මකනවා විතරක් නෙවෙයි, key එක වහාම rotate (revoke) කරන්න.',
@@ -612,6 +626,7 @@ print("key loaded:", key[:4] + "****")                    # logs වල key එ�
     // 15
     {
       id: 'model-lifecycle-deployment',
+      si: 'ඔයා model එක v1 සිට v2ට update කරනකොට model file, config, dataset සහ code version එක සටහන් කරන්න. New version එකේ error rate වැඩි වුණොත් කලින් stable version එකට rollback කරන්න පුළුවන්. Offline inference එකෙන් සකස් කළ batch එකක් පසුව process කරනවා; online inference එක request ආපු වෙලාවේ answer දෙයි. Cloud, data center හෝ local deployment තෝරද්දී network, privacy, latency සහ GPU resource සලකා බලන්න.',
       title: 'Model Lifecycle: Versioning, Updates, Rollback; Local vs Cloud vs Data Center; Offline vs Online Inference',
       body: [
         'Model එකක් deploy කරලා ඉවර නෑ. ඒකට ජීවිත චක්‍රයක් (lifecycle) තියෙනවා: develop → evaluate → register → deploy → monitor → update / retire. Model registry එකක (MLflow, SageMaker Model Registry) හැම version එකක්ම, ඒකේ training data version එක, eval results, approve කරපු කෙනා save කරන්න (Phase 7). LLM app එකක version කරන්න ඕනේ model එක විතරක් නෙවෙයි: prompt template, retrieval index, embedding model, guardrail config එකත්.',
@@ -641,6 +656,7 @@ print("key loaded:", key[:4] + "****")                    # logs වල key එ�
     // 16
     {
       id: 'hands-on-finetune-deploy',
+      si: 'ඔයා පුංචි dataset එකක LoRA adapter එකක් train කරලා base model එක වෙනස් නොකර task එකකට tune කරන්න පුළුවන්. Training ඉවර වුණාම model/API එක serve කරලා curl හෝ Python request එකකින් test කරන්න. GPU memory අඩු නම් batch size 8 වෙනුවට 2 කරලා gradient accumulation steps 4ක් දාන්න; effective batch එක 8ම වෙනවා. Output, latency සහ errors සටහන් කරලා deployment එක සාර්ථකද බලන්න.',
       title: 'Hands-On: Fine-Tune on an NVIDIA GPU, Then Deploy a Model and Test Its API (curl & Python)',
       body: [
         'පියවර 1: NVIDIA GPU environment එකක් ගන්න. විකල්ප: Google Colab (T4), AWS EC2 G5 / G6 instance එකක් (Deep Learning AMI), හෝ ඔයාගේ GPU එක. Terminal එකේ nvidia-smi දුවලා GPU එක, driver version එක, memory එක පේනවද බලන්න. Dependency අවුල් නැතුව පටන් ගන්න හොඳම ක්‍රමය NGC PyTorch container එක: docker run --gpus all -it --rm nvcr.io/nvidia/pytorch:<YY.MM>-py3 (tag එක NGC catalog එකෙන් තෝරන්න). Container එක ඇතුළේ python -c "import torch; print(torch.cuda.is_available())" → True ද බලන්න.',
@@ -685,6 +701,7 @@ print("latency s:", round(time.time() - t0, 2),
     // 17
     {
       id: 'hands-on-rag-eval',
+      si: 'ඔයා Colombo bus routes ගැන documents 20ක් එකතු කරලා text chunks සහ embeddings හදන්න. User question එකක් ආවම අදාළ chunks 3ක් retrieve කරලා ඒ context එකෙන් answer කරන්න කියලා model එකට දෙන්න. Answer එක source document එකේ තියෙන දේට ගැළපෙනවද, citation එක හරිද කියලා ප්‍රශ්න 10ක test set එකකින් බලන්න. Answer එක ලස්සන වුණත් source එකේ සාක්ෂි නැත්නම් ඒක හොඳ RAG answer එකක් නෙවෙයි.',
       title: 'Hands-On: Build a Small RAG Prototype and Evaluate Answers Against Source Documents',
       body: [
         'පියවර 1: Documents 10-20ක් තෝරන්න (උදා: ඔයාගේ company HR policies හෝ Sri Lanka tourism PDFs). Load කරලා chunks වලට කඩන්න (tokens 300-500, overlap 50). හැම chunk එකකටම source file එක සහ page number එක metadata විදිහට තියාගන්න. පියවර 2: Embedding model එකකින් (NVIDIA NeMo Retriever embedding NIM හෝ sentence-transformers) embed කරලා FAISS, Milvus හෝ pgvector එකක save කරන්න. පියවර 3: Question එකට top-k (k = 4) chunks ගෙනල්ලා, "මේ context එකෙන් විතරක් උත්තර දෙන්න, source එක cite කරන්න, නැත්නම් දන්නේ නෑ කියන්න" කියලා prompt එකකට දාලා LLM එකට යවන්න. Chunking, indexing ගැඹුරින් Phase 13.',
@@ -726,6 +743,7 @@ print("hit@4:", hits / len(eval_set), "correct:", correct / len(eval_set))`,
     // 18
     {
       id: 'gpu-bottlenecks-tradeoffs',
+      si: 'ඔයා training අතරතුර GPU utilization 30%යි CPU utilization 95%යි දැක්කොත් data loading bottleneck එකක් ඇතිද බලන්න. GPU memory හිස්ව තියෙනවා නම් batch size වැඩි කිරීමෙන් throughput වැඩි වෙන්න පුළුවන්. Batch size වැඩි කළාම එක request එකට latency වැඩි වෙන්නත් පුළුවන්, ඒ නිසා p95 SLO එකත් මැනගන්න. Accuracy, latency, throughput, memory සහ cost අතර trade-off එක test කරලා තෝරන්න.',
       title: 'Finding GPU Bottlenecks with Monitoring & Profiling; Accuracy, Latency, Throughput, Memory & Cost Trade-offs',
       body: [
         'Tools: nvidia-smi (GPU-Util %, memory used, power, temperature, processes). nvidia-smi dmon හෝ watch -n 1 nvidia-smi දිගටම බලන්න. nvtop (terminal UI). DCGM (data center / cluster එකේ metrics, Prometheus exporter). PyTorch Profiler (code එකේ කොයි operation එකද කාලය කන්නේ). Nsight Systems (nsys profile python train.py): CPU, GPU, data loading, kernels timeline එකක. Nsight Compute (ncu): එක CUDA kernel එකක් ගැඹුරින්. GPU ops tools ගැන Phase 9.',
@@ -764,6 +782,7 @@ nsys stats train_report.nsys-rep`,
     // 19
     {
       id: 'troubleshooting-oom-slow-deps',
+      si: 'ඔයාට 24 GB GPU එකක 7B model එක train කරද්දී OOM ආවොත් batch size 8 සිට 2ට අඩු කරලා accumulation steps 4 කරන්න. FP16/ BF16, gradient checkpointing හෝ 4-bit QLoRA මඟින් memory අඩු කරන්න පුළුවන්. Slow inference නම් model එක CUDA device එකේද, batching තියෙනවද, prompt එක දිග වැඩිද බලන්න. PyTorch, CUDA driver සහ wheel version එකත් ගැළපෙනවාද පරීක්ෂා කරන්න.',
       title: 'Troubleshooting: CUDA Out-of-Memory, Slow Inference & Incompatible Dependencies',
       body: [
         'CUDA out of memory (OOM) හේතු: batch size ලොකුයි, sequence length දිගයි (activations සහ KV cache), model එක precision එකට ලොකුයි (7B FP32 = 28 GB), inference කරද්දී torch.no_grad() නැති නිසා gradients graph එක save වෙනවා, loss එක .item() නැතුව list එකක එකතු කරන නිසා graph එක memory එකේ ඉතුරු වෙනවා, වෙන process එකක් (පරණ notebook kernel එකක්) GPU memory අල්ලගෙන. Fixes: batch size අඩු කරලා gradient accumulation (effective batch එක එහෙමමයි), gradient checkpointing, BF16 / FP16 mixed precision, QLoRA / quantization, max length අඩු කිරීම, nvidia-smi එකෙන් පරණ process kill කිරීම, fragmentation නම් PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True. vLLM වගේ servers වල gpu_memory_utilization සහ max_model_len අඩු කරන්න. PyTorch OOM ගැන Phase 9 එකේ PyTorch Inference topic එකත් බලන්න.',
@@ -808,6 +827,7 @@ if torch.cuda.is_available():
     // 20
     {
       id: 'aws-practice-checklist',
+      si: 'ඔයා AWS lab එකක NIM හෝ Triton deploy කරනකොට මුලින් GPU instance එක, IAM permissions සහ network access පරීක්ෂා කරන්න. EKS GPU node එකකට model එක දාලා health endpoint එකෙන් service එක ready ද බලන්න. RAG agent එකට tool permission අවශ්‍ය තරමට සීමා කරලා guardrail සහ logs ප 테스트 කරන්න. Lab-යේ AWS resource usage-යත් cost එකත් дуусгත් පසු ресурස් cleanup කරන්න.',
       title: 'Practising NVIDIA Topics on AWS: NIM / Triton on SageMaker or EKS, GPU Instances, EFA, Guardrails, RAG Agent',
       body: [
         'ඔයා AWS-focused නිසා NVIDIA topics AWS එකේම practice කරන්න පුළුවන්. මේ services ගැඹුරින් Phase 18 සහ Phase 19 වල උගන්වනවා. මෙතන තියෙන්නේ කෙටි hands-on checklist එකක් විතරයි. වැඩේ ඉවර වුණාම GPU instances / endpoints delete කරන්න, නැත්නම් bill එක ලොකු වෙනවා. AWS Budgets alert එකක් කලින්ම දාන්න.',
@@ -904,104 +924,104 @@ if torch.cuda.is_available():
   ],
   quiz: [
     {
-      q: 'ඔයාගේ (AWS tech lead → architect) certification පාරට වඩාත්ම ගැළපෙන පිළිවෙල මොකක්ද?',
+      q: 'Which certification order best fits an AWS tech lead moving toward an architect role?',
       options: [
         'NCA-GENL → NCP-AAI → (optional) NCA-AIIO',
         'NCP-GENL → NCA-GENL → NCP-AII',
         'NCA-ADS → NCP-ADS',
-        'NCP-AIO එකෙන් කෙළින්ම පටන් ගන්න',
+        'Start directly with NCP-AIO',
       ],
       answer: 0,
-      why: 'NCA-GENL අඩිතාලම, NCP-AAI තමයි application builders ලාට වැඩියෙන්ම architecture-focused exam එක. GPU infra sizing වැඩ තියෙනවා නම් NCA-AIIO optional. NCP-GENL ML engineer role එකට වඩා ගැළපෙනවා.',
+      why: 'NCA-GENL provides the foundation, and NCP-AAI is the more architecture-focused exam for application builders. NCA-AIIO is optional if GPU infrastructure sizing is part of the role. NCP-GENL may fit an ML engineering role more closely.',
     },
     {
-      q: 'NCA-GENL exam එකේ වැඩිම weight එක තියෙන domain එක මොකක්ද?',
+      q: 'Which domain has the highest weight on the NCA-GENL exam?',
       options: ['Software development (24%)', 'Experimentation (22%)', 'Core machine learning and AI knowledge (30%)', 'Trustworthy AI (10%)'],
       answer: 2,
-      why: 'Core ML & AI knowledge 30% (ප්‍රශ්න 15-18 විතර). ඊළඟට Software development 24%, Experimentation 22%, Data analysis 14%, Trustworthy AI 10%.',
+      why: 'Core ML and AI Knowledge is 30% (about 15–18 questions). It is followed by Software Development at 24%, Experimentation at 22%, Data Analysis at 14%, and Trustworthy AI at 10%.',
     },
     {
-      q: 'Model එකක R² = 0 නම් ඒකේ තේරුම මොකක්ද?',
+      q: 'What does R² = 0 mean for a model?',
       options: [
-        'Model එක පරිපූර්ණයි',
-        'Model එක හැම වෙලේම average අගය කියනවා තරම්ම හොඳයි, ඊට වඩා හොඳ නෑ',
-        'Model එකේ loss එක 0යි',
-        'Model එක classification model එකක්',
+        'The model is perfect',
+        'The model is no better than always predicting the mean',
+        'The model has zero loss',
+        'The model is a classification model',
       ],
       answer: 1,
-      why: 'R² මනින්නේ average එක කියන baseline එකට වඩා model එක variance එක කොච්චර පැහැදිලි කරනවද කියලා. 0 = baseline එක වගේමයි, 1 = පරිපූර්ණයි, 0ට අඩු = baseline එකටත් වඩා නරකයි.',
+      why: 'R² compares the model with the mean-prediction baseline. A score of 0 matches that baseline, 1 is perfect, and a negative score is worse than the baseline.',
     },
     {
-      q: 'RLHF සඳහා human feedback එකතු කරද්දී "1-10 ලකුණු" වෙනුවට pairwise comparison (A vs B) බොහෝ විට පාවිච්චි කරන්නේ ඇයි?',
+      q: 'Why are pairwise comparisons (A vs B) often used instead of 1–10 ratings when collecting human feedback for RLHF?',
       options: [
-        'Pairwise ලේසියෙන් code කරන්න පුළුවන් නිසා විතරයි',
-        'Annotators අතර ලකුණු scale එක වෙනස් වුණත් "කොයි එකද හොඳ" කියන එකට එකඟතාවය වැඩි නිසා',
-        'Pairwise වලට annotators ඕනේ නැති නිසා',
-        'Reward model එකට ලකුණු තේරෙන්නේ නැති නිසා',
+        'Only because pairwise comparisons are easier to code',
+        'Annotators may use rating scales differently but can agree more consistently on which answer is better',
+        'Because pairwise comparisons do not require annotators',
+        'Because a reward model cannot use ratings',
       ],
       answer: 1,
-      why: 'Absolute scores මිනිසුන්ගෙන් මිනිසුන්ට වෙනස් (එක්කෙනෙක් 7, අනිකා 5). Relative comparison එක වඩා consistent. Reward model එක (Bradley-Terry) train වෙන්නෙත් chosen/rejected pairs වලින්.',
+      why: 'Absolute scores can vary between people (one annotator may give 7, another 5), while relative comparisons can be more consistent. A reward model such as Bradley–Terry can also be trained from chosen/rejected pairs.',
     },
     {
-      q: 'Developer කෙනෙක් API key එකක් public GitHub repo එකකට commit කළා. වැදගත්ම පළමු පියවර මොකක්ද?',
+      q: 'A developer committed an API key to a public GitHub repository. What is the most important first step?',
       options: [
-        'Commit එක delete කරලා repo එක private කරන එක විතරක්',
-        'README එකේ warning එකක් දාන එක',
-        'කිසිම දෙයක් කරන්න ඕනේ නෑ, කවුරුත් දකින්නේ නෑ',
-        'Key එක වහාම revoke / rotate කරන එක',
+        'Only delete the commit and make the repository private',
+        'Add a warning to the README',
+        'Do nothing; nobody will see it',
+        'Revoke or rotate the key immediately',
       ],
       answer: 3,
-      why: 'Public repos bots මිනිත්තු කිහිපයකින් scan කරනවා. History එකෙන් අයින් කළත් key එක දැනටමත් copy වෙලා තියෙන්න පුළුවන්. Rotate කිරීම තමයි ඇත්ත fix එක. ඊට පස්සේ secrets manager සහ secret scanning.',
+      why: 'Bots scan public repositories within minutes. Even if the key is removed from history, it may already have been copied. Rotation is the effective fix; then use a secrets manager and secret scanning.',
     },
     {
-      q: 'Training කරද්දී nvidia-smi එකේ GPU-Util 30%යි, CPU core එකක් 100%යි. වැඩියෙන්ම ඉඩ තියෙන bottleneck එක මොකක්ද?',
+      q: 'During training, nvidia-smi shows GPU utilization at 30% and one CPU core at 100%. What is the most likely bottleneck?',
       options: [
-        'GPU එක ගොඩක් slow',
-        'Data loading / preprocessing (CPU) bottleneck',
-        'Model එකේ parameters මදි',
-        'Learning rate එක ගොඩක් ලොකුයි',
+        'The GPU is very slow',
+        'A CPU data-loading or preprocessing bottleneck',
+        'The model has too few parameters',
+        'The learning rate is too high',
       ],
       answer: 1,
-      why: 'GPU එක data එනකම් බලාගෙන ඉන්නවා. DataLoader num_workers වැඩි කරන්න, pin_memory, data කලින් tokenize කරන්න. Nsight Systems timeline එකේ GPU row එකේ හිස් තැන් වලින් මේක පේනවා.',
+      why: 'The GPU may be waiting for input data. Check DataLoader workers, pinned memory, and whether data can be tokenized in advance. Nsight Systems can reveal gaps in the GPU timeline.',
     },
     {
-      q: 'torch.cuda.is_available() False දෙනවා, ඒත් nvidia-smi GPU එක පෙන්නනවා. වැඩියෙන්ම ඉඩ තියෙන හේතුව?',
+      q: 'torch.cuda.is_available() returns False, but nvidia-smi lists a GPU. What is the most likely cause?',
       options: [
-        'CPU-only PyTorch wheel එකක් install වෙලා, හෝ driver එක PyTorch build කරපු CUDA version එකට පරණයි',
-        'GPU එක කැඩිලා',
-        'Python version එක ගොඩක් අලුත් නිසා',
-        'Model එක download කරලා නැති නිසා',
+        'A CPU-only PyTorch wheel is installed, or the driver is too old for the CUDA version used to build PyTorch',
+        'The GPU is broken',
+        'The Python version is too new',
+        'The model has not been downloaded',
       ],
       answer: 0,
-      why: 'nvidia-smi වැඩ නම් GPU සහ driver ඉන්නවා. torch.version.cuda None නම් CPU-only wheel. නැත්නම් wheel එකේ CUDA version එකට driver එක support නෑ. ගැළපෙන wheel එකක් හෝ NGC container එකක් පාවිච්චි කරන්න.',
+      why: 'If nvidia-smi works, the GPU and driver are present. torch.version.cuda being None indicates a CPU-only wheel; otherwise, the driver may not support the wheel’s CUDA version. Use a compatible wheel or an NGC container.',
     },
     {
-      q: 'රෑට documents 1 million summarize කරන්න ඕනේ, user කෙනෙක් බලාගෙන නෑ. හොඳම inference pattern එක?',
+      q: 'You need to summarize 1 million documents overnight, and no user is waiting. What is the best inference pattern?',
       options: [
         'Online real-time endpoint, batch size 1',
-        'හැම document එකක්ම user කෙනෙක් request කරනකම් බලාගෙන ඉන්න',
-        'Offline / batch inference, ලොකු batches, throughput සහ cost මත optimize කරලා',
-        'Laptop CPU එකේ එකින් එක',
+        'Wait for a user to request each document',
+        'Offline or batch inference with larger batches, optimized for throughput and cost',
+        'Process them one at a time on a laptop CPU',
       ],
       answer: 2,
-      why: 'Latency වැදගත් නැති ලොකු jobs වලට batch inference: ලොකු batches, spot instances, SageMaker Batch Transform වගේ. Online inference latency SLO එකක් තියෙන user requests වලට.',
+      why: 'Batch inference suits large jobs where latency is not critical; use larger batches and consider options such as spot instances or SageMaker Batch Transform. Online inference is for user requests with a latency SLO.',
     },
     {
-      q: 'Docs 10,000ක් තියෙනවා. ඒවා වලින් company නම්, ස්ථාන, දින extract කරන්න ඕනේ. NCA-GENL study guide එකේ Python tools අතරින් හොඳම තේරීම?',
+      q: 'You have 10,000 documents and need to extract company names, places, and dates. Which Python tool from the NCA-GENL study guide is the best choice?',
       options: ['NumPy', 'Keras', 'spaCy (NER)', 'Matplotlib'],
       answer: 2,
-      why: 'spaCy pipeline එකේ named-entity recognition (NER) එක ORG, GPE, DATE වගේ entities අඳුනගන්නවා. NumPy ගණිතයට, Keras neural nets හදන්න, Matplotlib charts වලට.',
+      why: 'spaCy includes named-entity recognition (NER) for entities such as organizations, places, and dates. NumPy is for numerical work, Keras for neural networks, and Matplotlib for charts.',
     },
     {
-      q: 'අලුත් fine-tuned model version එකක් production එකට දාන්න හොඳම ක්‍රමය මොකක්ද?',
+      q: 'What is the best way to release a new fine-tuned model version to production?',
       options: [
-        'පරණ version එක delete කරලා අලුත් එක 100% traffic එකට එකපාරටම දාන එක',
-        'Regression eval suite එක pass වුණාට පස්සේ canary (traffic පොඩි %) එකකින් දාලා, metrics බලලා, අවශ්‍ය නම් rollback කරන එක',
-        'Users ලාට කියලා ඔවුන්ටම test කරන්න දෙන එක',
-        'Hosted API එකේ "latest" alias එක පාවිච්චි කරන එක',
+        'Delete the old version and immediately send 100% of traffic to the new one',
+        'Pass a regression evaluation suite, release to a small canary share of traffic, monitor metrics, and roll back if needed',
+        'Ask users to test it themselves',
+        'Use the hosted API’s "latest" alias',
       ],
       answer: 1,
-      why: 'Eval gate + canary / shadow / blue-green + monitoring + ඉක්මන් rollback. Rollback කරන්න පරණ version එක ලෑස්තියෙන් තියෙන්න ඕනේ. "latest" alias එක version pinning නැති නිසා අනතුරුදායකයි.',
+      why: 'Use an evaluation gate, a canary/shadow/blue-green release, monitoring, and a quick rollback path. Keep the prior version ready for rollback. A "latest" alias is risky because it does not pin a version.',
     },
   ],
 }

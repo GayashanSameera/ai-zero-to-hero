@@ -1,776 +1,1299 @@
 export default {
-  id: 'ml-deep-dive',
-  number: 17,
-  title: 'ML & Deep Learning Fundamentals: Deep Dive',
-  titleSi: 'ML සහ Deep Learning මූලික කරුණු: ගැඹුරටම, exam ගණන් එක්කම',
-  summary: 'Phase 2 සහ 3 වල ඔයා ඉගෙන ගත්තු ML / Deep Learning මූලික අදහස් මෙතනදී ගැඹුරටම හාරලා බලනවා. Exam එකේ එන හැම ගණනක්ම (precision, F1, softmax, cross-entropy, KL, label smoothing, clipping, warmup, Adam bias correction) පියවරෙන් පියවර, පොඩි අංක වලින් කරලා පෙන්නනවා. අන්තිමට ලංකාවේ customer churn project එකක් raw CSV එකේ ඉඳන් evaluate කරපු model එක දක්වා කරලා බලනවා.',
-  duration: 'සති 3-4',
-  topics: [
+  "id": "ml-deep-dive",
+  "number": 17,
+  "title": "ML & Deep Learning Fundamentals: Deep Dive",
+  "titleSi": "A deeper look at machine learning and deep learning, with worked exam calculations",
+  "summary": "Build a deeper understanding of machine learning and deep learning, with step-by-step calculations for precision, F1, softmax, cross-entropy, KL divergence, label smoothing, gradient clipping, warmup, and Adam bias correction. Finish with a Sri Lankan customer-churn project, from raw CSV data through model evaluation.",
+  "duration": "3–4 weeks",
+  "topics": [
     {
-      id: 'ml-big-picture',
-      title: 'The Big Picture: AI vs ML vs DL, Learning Paradigms, Parameters vs Hyperparameters',
-      examRefs: ['FUN-001', 'FUN-002', 'FUN-003', 'FUN-004', 'FUN-005', 'FUN-049', 'FUN-052', 'FUN-110'],
-      body: [
-        'මුලින්ම සිතියම හරියට ඔළුවට දාගමු. AI කියන්නේ ලොකුම රවුම: බුද්ධිය ඕනේ වැඩ කරන ඕනෑම system එකක්. ඒක ඇතුළේ ML තියෙනවා: rules අතින් ලියන්නේ නැතුව data වලින් ඉගෙන ගන්න කොටස. ML ඇතුළේ DL තියෙනවා: layers ගොඩක් තියෙන neural networks පාවිච්චි කරන කොටස. ඉතින් DL ⊂ ML ⊂ AI. හැම DL එකක්ම ML, ඒත් හැම ML එකක්ම DL නෙවෙයි. Decision tree එකක් ML, ඒත් DL නෙවෙයි.',
-        'Learning paradigms හතරක් exam එකේ නිතරම එනවා. Supervised = labels තියෙනවා (ගෙදර මිල, spam ද නැද්ද). Unsupervised = labels නෑ, data එකේම තියෙන රටා හොයනවා (customer segments 2 million කට clustering). Reinforcement learning = agent කෙනෙක් environment එකක actions කරලා, reward එක උපරිම කරන policy එකක් ඉගෙන ගන්නවා. ඒකට "හරි action එක" කියලා label එකක් කවදාවත් ලැබෙන්නේ නෑ, reward විතරයි, ඒකත් සමහර වෙලාවට පරක්කු වෙලා. Self-supervised = labels data එකෙන්ම ස්වයංක්‍රීයව හදාගන්නවා. ඊළඟ වචනය predict කරන LLM pretraining එක හොඳම උදාහරණය. Mechanically supervised වගේ, ඒත් මිනිස්සු label කරන්නේ නැති නිසා web එක තරම් data වලට scale වෙනවා.',
-        'Task වර්ගය හඳුනාගන්න සරල ප්‍රශ්නයක් අහන්න: "Output එක අංකයක්ද, නැත්නම් කාණ්ඩයක්ද?" Parcel එකක් එන්න යන මිනිත්තු ගණන = අංකයක් = regression. "වෙලාවට එනවද / පරක්කුද" = කාණ්ඩ = classification. Labels නැතුව කණ්ඩායම් හොයනවා නම් = clustering.',
-        'Parameters සහ hyperparameters පටලවගන්න එපා. Parameters = training එකේදී data වලින් model එක තනියම ඉගෙන ගන්න දේවල්: weights, biases, decision tree එකේ split thresholds. Hyperparameters = training එකට කලින් ඔයා තෝරන settings: learning rate, batch size, layers ගණන, trees ගණන, k. Deep learning ගේ ලොකුම වාසිය: images, audio, text වගේ unstructured data වලින් features තනියම ඉගෙන ගන්නවා (edges → shapes → objects). ඒත් ඒකට data සහ compute (GPU) වැඩියෙන් ඕනේ. Data අඩු නම් (උදා: images 800යි) transfer learning තමයි හොඳම විසඳුම: ලොකු dataset එකක pretrain කරපු model එකක් අරන් අලුත් task එකට adapt කරනවා.',
+      "id": "ml-big-picture",
+      "title": "The Big Picture: AI vs ML vs DL, Learning Paradigms, Parameters vs Hyperparameters",
+      "examRefs": [
+        "FUN-001",
+        "FUN-002",
+        "FUN-003",
+        "FUN-004",
+        "FUN-005",
+        "FUN-049",
+        "FUN-052",
+        "FUN-110"
       ],
-      analogy: 'ලංකාව (AI) ඇතුළේ බස්නාහිර පළාත (ML) තියෙනවා, ඒක ඇතුළේ කොළඹ දිස්ත්‍රික්කය (DL) තියෙනවා. කොළඹ ඉන්න හැමෝම බස්නාහිර පළාතේ, ඒත් බස්නාහිර පළාතේ ඉන්න හැමෝම කොළඹ නෙවෙයි (ගම්පහ ඉන්න අයත් ඉන්නවා = decision trees). Learning paradigms: ගුරුවරයා උත්තර දීලා උගන්නනවා = supervised. උත්තර නැතුව ළමයි තනියම කණ්ඩායම් හොයනවා = unsupervised. Cricket batsman කෙනෙක් පිටියේ ගහලා බලලා runs (reward) වලින් ඉගෙන ගන්නවා = RL. පොතක වාක්‍යයක අන්තිම වචනය වහලා අනුමාන කරනවා = self-supervised.',
-      example: 'Exam ප්‍රශ්නයක් හඳුනාගන්න හැටි: (1) "Customers 2 million, labels නෑ, segments හොයන්න" → unsupervised clustering (k-means). (2) "Delivery time මිනිත්තු වලින්" → regression. (3) "Agent, actions, cumulative reward" → RL. (4) "Raw web text එකේ ඊළඟ වචනය" → self-supervised. (5) "Learning rate එක parameter එකක්ද?" → නෑ, hyperparameter එකක්. (6) "Defect images 800යි" → pretrained CNN එකකින් transfer learning. Scratch එකෙන් epochs 1,000ක් train කළොත් images 800 කටපාඩම් කරනවා විතරයි.',
-      keyPoints: [
-        'DL ⊂ ML ⊂ AI. Decision trees ML, ඒත් DL නෙවෙයි.',
-        'Labels නෑ → unsupervised. Reward විතරයි → RL. Labels data එකෙන්ම → self-supervised.',
-        'අංකයක් predict කරනවා → regression. කාණ්ඩයක් → classification.',
-        'Parameters ඉගෙන ගන්නවා (weights, thresholds). Hyperparameters ඔයා තෝරනවා (learning rate).',
-        'DL = raw data වලින් features තනියම ඉගෙන ගන්නවා, ඒත් data සහ GPU වැඩියෙන් ඕනේ. Data අඩු නම් transfer learning.',
+      "body": [
+        "AI is the broad field of systems that perform tasks requiring intelligence. Machine learning (ML) is a subset that learns patterns from data rather than relying only on hand-written rules; deep learning (DL) is a subset of ML based on neural networks with many layers. Thus DL ⊂ ML ⊂ AI: a decision tree is ML but not DL.",
+        "Supervised learning uses labelled examples; unsupervised learning finds structure without labels; reinforcement learning learns actions from rewards, which may arrive late; self-supervised learning creates its training targets from the data itself, as next-token prediction does during language-model pretraining. Self-supervised targets can be generated at scale without people labelling every example.",
+        "Choose a task by its output: predicting a number such as delivery minutes is regression; predicting a category such as on-time or late is classification; finding groups without labels is clustering. Model parameters (weights, biases, split thresholds) are learned from training data; hyperparameters (learning rate, batch size, layer count, k) are chosen before or around training.",
+        "Deep networks can learn features from unstructured images, audio, and text, but usually need more data and compute. With only 800 defect images, adapting a pretrained model through transfer learning is generally more suitable than training a large model from scratch, which can memorize the small dataset."
       ],
-      terms: [
-        { en: 'Self-Supervised Learning', si: 'Labels මිනිස්සු දාන්නේ නැතුව data එකෙන්ම හදාගන්න ක්‍රමය. උදා: ඊළඟ වචනය predict කිරීම.' },
-        { en: 'Reinforcement Learning', si: 'Agent කෙනෙක් actions කරලා cumulative reward එක උපරිම කරන policy එකක් ඉගෙන ගන්න ක්‍රමය.' },
-        { en: 'Policy', si: 'RL වලදී "මේ තත්ත්වයේදී මොන action එකද කරන්නේ" කියලා තීරණය කරන rule එක.' },
-        { en: 'Hyperparameter', si: 'Training එකට කලින් තෝරන setting එකක්. Data වලින් ඉගෙන ගන්නේ නෑ.' },
-        { en: 'Transfer Learning', si: 'ලොකු data එකක pretrain කරපු model එකක දැනුම අලුත්, පොඩි task එකකට ගෙනියන එක.' },
-        { en: 'Representation Learning', si: 'Raw data වලින් ප්‍රයෝජනවත් features model එකම ඉගෙන ගන්න එක. DL ගේ ප්‍රධාන ශක්තිය.' },
+      "analogy": "Think of Sri Lanka as AI, the Western Province as ML, and Colombo District as DL: every Colombo resident is in the Western Province, but not every Western Province resident is in Colombo. A teacher giving answers resembles supervised learning; grouping classmates without answers resembles unsupervised learning; a batter learning from runs resembles reinforcement learning.",
+      "example": "A dataset of 2 million unlabelled customers grouped into segments suggests clustering. Delivery time in minutes is regression; late/on-time is classification. Next-word prediction is self-supervised learning. Learning rate is a hyperparameter, not a learned parameter. For 800 defect images, start from a pretrained image model and adapt it.",
+      "keyPoints": [
+        "DL ⊂ ML ⊂ AI; decision trees are ML but not DL.",
+        "Labels → supervised; no labels → unsupervised; rewards → reinforcement; data-generated targets → self-supervised.",
+        "Numbers → regression; categories → classification.",
+        "Parameters are learned; hyperparameters are selected.",
+        "Deep learning learns representations but needs compute and data; transfer learning helps when data is limited."
       ],
+      "terms": [
+        {
+          "en": "Self-Supervised Learning",
+          "si": "Learning by creating training targets from the input data itself, such as predicting a hidden word."
+        },
+        {
+          "en": "Reinforcement Learning",
+          "si": "Learning a policy by taking actions and maximizing rewards from an environment."
+        },
+        {
+          "en": "Policy",
+          "si": "A rule mapping a state to an action in reinforcement learning."
+        },
+        {
+          "en": "Hyperparameter",
+          "si": "A setting selected for training rather than learned as a model weight."
+        },
+        {
+          "en": "Transfer Learning",
+          "si": "Adapting a model pretrained on one task or dataset to a new task."
+        },
+        {
+          "en": "Representation Learning",
+          "si": "Learning useful features or representations from raw data."
+        }
+      ],
+      "si": "ඔයා AI කියන ලොකු කුඩය යට MLත්, ML යට deep learningත් තියෙනවා කියලා හිතන්න. A/L පන්තියක උත්තර දීලා උගන්වන එක supervised, උත්තර නැතුව ළමයි කණ්ඩායම් හදාගන්න එක unsupervised වගේ. Cricket batsman කෙනෙක් runs බලලා හොඳ shot ඉගෙන ගන්න එක reinforcement learning. ඔයාට defect photos 800ක් විතරක් තියෙනවා නම්, කලින් ඉගෙනගත් model එකක් අලුත් වැඩේට හුරු කරන transfer learning එක ප්‍රයෝජනවත්."
     },
     {
-      id: 'splits-leakage-cv',
-      title: 'Honest Evaluation: Splits, Leakage, Stratified / Group / Time Splits, Nested CV',
-      examRefs: ['FUN-006', 'FUN-007', 'FUN-016', 'FUN-050', 'FUN-053', 'FUN-054', 'FUN-055', 'FUN-093', 'FUN-094', 'FUN-095', 'FUN-136', 'FUN-137'],
-      body: [
-        'Data තුන් කොටසකට බෙදනවා. Training set = model එක ඉගෙන ගන්නවා. Validation set = hyperparameters තෝරන්න, models අතරින් හොඳම එක තෝරන්න, කවදා නවත්තන්නද කියලා තීරණය කරන්න. Test set = අන්තිමට, එක පාරක් විතරක්, "ඇත්ත ලෝකයේ කොච්චර හොඳද" කියලා අපක්ෂපාතීව මනින්න. Validation set එකට අපි තීරණ fit කරන නිසා ඒක තවදුරටත් අපක්ෂපාතී නෑ. Test set එක හැම hyperparameter වෙනසකටම බලලා හොඳම එක තෝරනවා නම්, test set එකත් selection loop එකේ කොටසක් වෙනවා. එතකොට ඒ ලකුණ optimistic (බොරු ලෙස හොඳ). Weights වෙනස් වෙන්නේ නෑ, leakage වෙන්නේ මිනිස් තේරීම හරහා.',
-        'Leakage කියන්නේ prediction වෙලාවේ තියෙන්න බැරි තොරතුරු training එකට රිංගන එක. වර්ග: (1) Preprocessing leakage: මුළු dataset එකේම mean / std අරන් standardize කරලා ඊට පස්සේ split කරනවා. හරි ක්‍රමය: train එකේ විතරක් fit කරලා, val / test වලට apply කරනවා. (2) Target leakage: "account_closed_date" වගේ churn වුණාට පස්සේ විතරක් පිරෙන feature එකක්. Validation accuracy 99% වගේ සැක හිතෙන තරම් හොඳ ලකුණක් leakage ගේ සලකුණක්. (3) Target encoding leakage: merchant_id එක ඒ merchant ගේ fraud rate එකෙන් replace කරනවා, ඒත් row එකේම label එක ඒ average එකට ඇතුළත් වෙනවා. Transactions 1යි තියෙන merchant කෙනෙක් නම් encoded අගය = label එකමයි! විසඳුම: out-of-fold encoding + global mean එක දිහාට smoothing.',
-        'Split ක්‍රමය data එකේ හැඩයට ගැළපෙන්න ඕනේ. Stratified split: positives 3%යි නම්, හැම split එකකම (සහ CV fold එකකම) 3% ක් තියෙන්න බලාගන්නවා. නැත්නම් validation එකේ positives නැතුව යන්න පුළුවන්. Time-based split: forecasting නම් පරණ කාලෙන් train කරලා අලුත් කාලෙන් validate කරනවා. Random shuffle කළොත් model එක "අනාගතය" දැකලා train වෙනවා. Group split: එක patient කෙනෙක්ගේ X-rays කීපයක් තියෙනවා නම්, ඒ patient ගේ ඔක්කොම images එකම පැත්තට (GroupKFold). නැත්නම් model එක ලෙඩේ නෙවෙයි, patient ව අඳුනගන්නවා.',
-        'k-fold CV: data k කොටසකට කඩලා, k පාරක් train කරනවා. හැම පාරම එක fold එකක් validate කරලා අනිත් ඒවායින් train කරනවා, අන්තිමට සාමාන්‍යය. LOOCV = k = n (examples ගණන). පොඩි data වලට හොඳයි, ඒත් training runs n ක්. Nested CV: inner loop එක tuning කරනවා, outer loop එක ඒ මුළු tuning ක්‍රියාවලියම කවදාවත් නොදැකපු data වලින් evaluate කරනවා. Configs 50ක හොඳම CV ලකුණ report කළොත්, ඒක ඒ folds වල වාසනාවන්ත noise එකත් අහුලගන්නවා, ඒ නිසා optimistic. Random search vs grid search: වැදගත් hyperparameters ටිකයි නම්, 5×5 grid එකක් වැදගත් එකේ අගයන් 5ක් විතරයි බලන්නේ. Random trials 25ක් ඒකේම වෙනස් අගයන් 25ක් දක්වා බලනවා.',
+      "id": "splits-leakage-cv",
+      "title": "Honest Evaluation: Splits, Leakage, Stratified / Group / Time Splits, Nested CV",
+      "examRefs": [
+        "FUN-006",
+        "FUN-007",
+        "FUN-016",
+        "FUN-050",
+        "FUN-053",
+        "FUN-054",
+        "FUN-055",
+        "FUN-093",
+        "FUN-094",
+        "FUN-095",
+        "FUN-136",
+        "FUN-137"
       ],
-      analogy: 'A/L විභාගය හිතන්න. Past papers = training set. ගුරුතුමා දෙන model papers = validation set (ඔයා ඒවා බලලා පාඩම් කරන විදිහ වෙනස් කරනවා). ඇත්ත A/L paper එක = test set, එක පාරයි. Paper එක leak වෙලා කලින් බැලුවොත් (leakage) ලකුණු හොඳයි, ඒත් ඔයාට ඇත්තටම විෂය තේරෙනවා කියලා ඒකෙන් කියවෙන්නේ නෑ. Group leakage = එකම ගුරුවරයාගේ paper එකේ ප්‍රශ්න tutory එකේදීත් exam එකේදීත් එනවා. ඔයා ඉගෙන ගත්තේ විෂය නෙවෙයි, ගුරුවරයාගේ style එක.',
-      example: 'Medical dataset: rows 1,000, positives 30 (3%). Random 80/20 split එකකින් validation rows 200 ට positives 6ක් එන්න ඕනේ, ඒත් වාසනාව අනුව 1ක් හෝ 2ක් විතරක් එන්න පුළුවන්. Stratified split එක හරියටම 6ක් දානවා. Nested CV: outer folds 5 × inner folds 5 = tuning runs 25ක් × configs ගණන. ගොඩක් වැඩ, ඒත් report කරන ලකුණ අවංකයි. Target encoding: merchant "Kandy Spices" ට transactions 1යි, ඒක fraud. සාමාන්‍ය encoding = 1.0 (label එකමයි!). Smoothing (global fraud rate 2%, weight 10): (1 + 10 × 0.02) / (1 + 10) = 1.2 / 11 ≈ 0.11.',
-      code: {
-        lang: 'python',
-        src: `from sklearn.model_selection import (train_test_split, StratifiedKFold,
-    GroupKFold, TimeSeriesSplit, GridSearchCV, cross_val_score)
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
-
-# stratify=y: හැම කොටසකම class ratio එක එකයි
-X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, stratify=y)
-# Pipeline: scaler එක fit වෙන්නේ හැම fold එකකම train කොටසට විතරයි (leakage නෑ)
-pipe = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
-inner = GridSearchCV(pipe, {"logisticregression__C": [0.1, 1, 10]}, cv=StratifiedKFold(5))
-outer = cross_val_score(inner, X_tr, y_tr, cv=StratifiedKFold(5))  # nested CV
-print(outer.mean())
-# Patients නම්: GroupKFold(5) + groups=patient_id. Time series නම්: TimeSeriesSplit(5)`,
+      "body": [
+        "Split data before fitting preprocessing or model choices. Train data fits the model, validation data selects settings and thresholds, and a final test set estimates performance on unseen data; do not repeatedly tune against the test set. For independent examples, a common split is 70/15/15. Stratify classification splits when class proportions should be preserved.",
+        "Leakage happens when training receives information unavailable at prediction time, including target-derived columns, future data, or preprocessing statistics computed using validation/test data. Fit imputers, scalers, encoders, and feature selection inside each training fold using a pipeline. For repeated records per person, split by person; for forecasting, split chronologically.",
+        "K-fold cross-validation rotates the held-out fold: with five folds, train on four and validate on the fifth, repeat five times, and average the scores. Grouped and time-based splits must respect the real deployment setting. Test performance is a final report, not a tuning signal."
+      ],
+      "analogy": "Do not let a student see the answer key before a practice test. A pipeline is like preparing each practice paper using only the study material available at that point; a future month must not leak into a past-month prediction.",
+      "example": "If a customer has records from January through June, do not put January in training and June for that same customer in test when the intended task is new-customer prediction; use customer groups. For future prediction, train on earlier months and test on later months. Fit a scaler on training rows only.",
+      "code": {
+        "lang": "python",
+        "src": "from sklearn.model_selection import (train_test_split, StratifiedKFold,\n    GroupKFold, TimeSeriesSplit, GridSearchCV, cross_val_score)\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.linear_model import LogisticRegression\n\n\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, stratify=y)  # Preserve class proportions in each split.\n\npipe = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))  # The scaler fits only on each fold’s training rows, preventing leakage.\ninner = GridSearchCV(pipe, {\"logisticregression__C\": [0.1, 1, 10]}, cv=StratifiedKFold(5))\nouter = cross_val_score(inner, X_tr, y_tr, cv=StratifiedKFold(5))  # Nested cross-validation estimates the full model-selection procedure.\nprint(outer.mean())\n# For patients, use GroupKFold with patient_id; for time series, use TimeSeriesSplit.\n"
       },
-      keyPoints: [
-        'Validation = tuning සහ තේරීම. Test = අන්තිමට එක පාරයි. Test එකෙන් tune කළොත් ලකුණ optimistic.',
-        'Preprocessing statistics train එකෙන් විතරයි. Pipeline එකක් පාවිච්චි කරන්න.',
-        'සැක හිතෙන තරම් හොඳ ලකුණක් = leakage ගැන හොයන්න.',
-        'දුර්ලභ class → stratified. කාලය → time split. එකම කෙනාගේ rows කීපයක් → group split.',
-        'Best CV score එක report කරනවා නම් optimistic. Nested CV හෝ අල්ලපු නැති test set එකක් පාවිච්චි කරන්න.',
+      "keyPoints": [
+        "Train fits; validation selects; test is reserved for final evaluation.",
+        "Leakage inflates scores by exposing information unavailable in production.",
+        "Fit preprocessing within each training fold.",
+        "Use group splits for repeated entities and time splits for future prediction.",
+        "Cross-validation averages held-out-fold results."
       ],
-      terms: [
-        { en: 'Data Leakage', si: 'Prediction වෙලාවේ නොලැබෙන තොරතුරු training එකට රිංගලා ලකුණු බොරුවට වැඩි කරන එක.' },
-        { en: 'Target Leakage', si: 'Label එක ආපහු කියවෙන, outcome එකට පස්සේ විතරක් පිරෙන feature එකක්.' },
-        { en: 'Stratified Split', si: 'හැම split / fold එකකම class ratio එක මුල් data එකේ වගේම තියාගන්නා split එක.' },
-        { en: 'GroupKFold', si: 'එකම group එකේ (patient, customer) rows ඔක්කොම එකම fold එකට දාන CV ක්‍රමය.' },
-        { en: 'LOOCV', si: 'Leave-One-Out CV. k = n වෙන k-fold. Example එකක් බැගින් validate කරනවා.' },
-        { en: 'Nested Cross-Validation', si: 'Inner loop එක tune කරනවා, outer loop එක ඒ මුළු tuning ක්‍රියාවලියම evaluate කරනවා.' },
-        { en: 'Target Encoding', si: 'Category එකක් ඒකේ target සාමාන්‍යයෙන් replace කරන එක. Out-of-fold සහ smoothing එක්ක කරන්න ඕනේ.' },
+      "terms": [
+        {
+          "en": "Data Leakage",
+          "si": "Using information during training that would not be available at prediction time."
+        },
+        {
+          "en": "Target Leakage",
+          "si": "A feature that reveals the target directly or indirectly, often because it is recorded after the outcome."
+        },
+        {
+          "en": "Stratified Split",
+          "si": "A split that preserves class proportions in each subset."
+        },
+        {
+          "en": "GroupKFold",
+          "si": "Cross-validation that keeps all examples from a group in one fold."
+        },
+        {
+          "en": "LOOCV",
+          "si": "Leave-one-out cross-validation: hold out one example at a time."
+        },
+        {
+          "en": "Nested Cross-Validation",
+          "si": "An outer validation loop estimates performance while an inner loop selects hyperparameters."
+        },
+        {
+          "en": "Target Encoding",
+          "si": "Representing categories using statistics of the target, computed without leakage."
+        }
       ],
+      "si": "ඔයා exam එකකට practice කරනවා නම් answer key එක කලින් බලන්න හොඳ නෑ; ඒක data leakage වගේ. Customers කෙනෙක්ගේ මාස කිහිපයක records තියෙනවා නම් ඒවා train සහ test දෙකට බෙදලා දැම්මොත් model එකට ඒ customerව කලින්ම හඳුනාගන්න පුළුවන්. අනාගත මාසයක් predict කරනවා නම් පරණ මාස වලින් train කරලා පස්සේ එන මාසය test කරන්න. Scaler එකත් train data එකෙන් විතරක් fit කරන්න."
     },
     {
-      id: 'preprocessing-deep-dive',
-      title: 'Preprocessing Deep Dive: Scaling Maths, Encoding, Imputation, Curse of Dimensionality',
-      examRefs: ['FUN-021', 'FUN-022', 'FUN-079', 'FUN-080', 'FUN-081', 'FUN-082'],
-      body: [
-        'Scaling ක්‍රම දෙකක් මතක තියාගන්න. Standardization (z-score) = (x − mean) ÷ std. ප්‍රතිඵලය: mean 0, standard deviation 1. Min-max normalization = (x − min) ÷ (max − min). ප්‍රතිඵලය: 0 සිට 1 දක්වා. Exam trap එක: min-max වලදී උඩ කොටසෙන් (numerator) min එක අඩු කරන්න අමතක කරන එක.',
-        'Scaling වැදගත් වෙන්නේ කොයි algorithms වලටද? Distance එකක් හරි gradient descent එකක් හරි පාවිච්චි කරන ඒවාට: kNN, k-means, RBF kernel SVM, PCA, neural networks. "Salary (රුපියල් 50,000)" සහ "වයස (30)" එකට දැම්මොත් distance එක salary එකෙන්ම තීරණය වෙනවා. Random forest, decision trees වලට scaling වැඩක් නෑ. Tree split එකක් කියන්නේ "එක feature එකක් threshold එකකට වඩා ලොකුද?" කියන ප්‍රශ්නයක් විතරයි. Feature එක 1000න් ගුණ කළත් ඒ split එකම කරන්න පුළුවන් (threshold එකත් 1000න් ගුණ වෙනවා).',
-        'Categorical features: පිළිවෙළක් නැති ඒවා (card, cash, transfer) one-hot encode කරන්න. Label encoding (0, 1, 2) කළොත් linear model එක හිතනවා transfer = 2 × cash කියලා. ඒක බොරු පිළිවෙළක්. පිළිවෙළක් තියෙන ඒවාට (S, M, L) ordinal encoding හරි. Missing values: ලොකු outliers තියෙන income වගේ feature එකකට median imputation එක ආරක්ෂිතයි. Mean එක කෝටිපතියෝ කීපදෙනෙක් නිසා උඩට ඇදෙනවා. 0 දැම්මොත් බොරු cluster එකක් හැදෙනවා.',
-        'Curse of dimensionality: features ගණන ගොඩක් වැඩි වුණාම (උදා: 10 → 2,000) points ඔක්කොම එකිනෙකට "දුරින්" වගේ වෙනවා. ළඟම අසල්වැසියා සහ දුරම අසල්වැසියා අතර වෙනස අඩු වෙනවා. ඉතින් kNN වගේ distance-based ක්‍රමවලට "nearest" කියන එකේ තේරුම නැති වෙනවා. විසඳුම: PCA වගේ dimensionality reduction, නැත්නම් feature selection. kNN ට learning rate එකක් නෑ, ඉතින් ඒ ගැන උත්තර බොරු.',
+      "id": "preprocessing-deep-dive",
+      "title": "Preprocessing Deep Dive: Scaling Maths, Encoding, Imputation, Curse of Dimensionality",
+      "examRefs": [
+        "FUN-021",
+        "FUN-022",
+        "FUN-079",
+        "FUN-080",
+        "FUN-081",
+        "FUN-082"
       ],
-      analogy: 'Kottu කඩේක ලකුණු දෙන්න හිතන්න: මිල රුපියල් 800, රස ලකුණු 1-10. "සමාන කඩ" හොයන්න distance ගත්තොත් රුපියල් 50ක මිල වෙනස රස ලකුණු 5ක වෙනසට වඩා ලොකු වෙනවා. ඒක අසාධාරණයි. Scaling කියන්නේ දෙකම එකම මිනුම් පරිමාණයට ගේන එක. Median imputation: ගමක ගෙවල් 5ක ආදායම් දන්නවා, එක ගෙදරක ඉන්නේ ව්‍යාපාරිකයෙක්. "සාමාන්‍ය ආදායම" mean එකෙන් ගත්තොත් ගමම පොහොසත් වගේ පේනවා. Median එක ඇත්ත තත්ත්වය කියනවා.',
-      example: 'Min-max: feature එක 10 සිට 60 දක්වා. 30 → (30 − 10) ÷ (60 − 10) = 20 ÷ 50 = 0.40. (Trap: 30 ÷ 50 = 0.60.) Z-score: mean 50, std 10 නම් 70 → (70 − 50) ÷ 10 = 2. ඒ කියන්නේ "mean එකට වඩා std 2ක් උඩින්". Median: ආදායම් Rs. 50,000, 60,000, 70,000, 80,000, 10,000,000. Mean = 10,260,000 ÷ 5 = Rs. 2,052,000 (කිසිම සාමාන්‍ය ගෙදරකට ගැළපෙන්නේ නෑ). Median = Rs. 70,000 (මැද අගය).',
-      keyPoints: [
-        'Z-score → mean 0, std 1. Min-max → 0 සිට 1. Min එක අඩු කරන්න අමතක කරන්න එපා.',
-        'Distance / gradient පාවිච්චි කරන algorithms වලට scaling ඕනේ. Trees වලට ඕනේ නෑ.',
-        'පිළිවෙළක් නැති categories → one-hot. Label encoding බොරු පිළිවෙළක් දානවා.',
-        'Outliers තියෙන feature එකකට median imputation.',
-        'Dimensions ගොඩක් වැඩි වුණාම distances අර්ථය නැති වෙනවා → PCA / feature selection.',
+      "body": [
+        "Scale numerical features when the model depends on distances, dot products, or gradient sizes. Standardization subtracts the training mean and divides by its standard deviation; min-max scaling maps a feature using its training minimum and maximum. Fit either transformation on training data only. Trees generally do not need feature scaling because threshold splits depend on order, not units.",
+        "One-hot encoding represents categories with separate indicator columns, without inventing an order. Impute missing numeric values using a statistic such as the training median, which is less affected by outliers than the mean. Put imputation, encoding, and scaling in a pipeline so cross-validation does not leak information.",
+        "High-dimensional spaces make data sparse and distances less informative, a problem known as the curse of dimensionality. Scaling is important for kNN, SVMs, and many neural networks; it is usually unnecessary for decision trees and tree ensembles."
       ],
-      terms: [
-        { en: 'Standardization (Z-score)', si: '(x − mean) ÷ std. Mean 0, std 1 කරනවා.' },
-        { en: 'Min-Max Normalization', si: '(x − min) ÷ (max − min). 0 සිට 1 පරාසයට ගේනවා.' },
-        { en: 'One-Hot Encoding', si: 'හැම category එකකටම වෙනම 0/1 column එකක්. පිළිවෙළක් උපකල්පනය කරන්නේ නෑ.' },
-        { en: 'Median Imputation', si: 'නැති අගයන් median එකෙන් පුරවන එක. Outliers වලට ඔරොත්තු දෙනවා.' },
-        { en: 'Curse of Dimensionality', si: 'Dimensions වැඩි වුණාම data විසිරිලා, distances හැමතැනම සමාන වගේ වෙන ප්‍රශ්නය.' },
-        { en: 'Scale Invariance', si: 'Feature එකක ඒකකය වෙනස් කළත් ප්‍රතිඵලය වෙනස් නොවීම. Trees වල තියෙනවා.' },
+      "analogy": "Comparing a person’s height in centimetres with their bank balance in rupees is like comparing distances on a Colombo map drawn with mismatched units. Scaling puts measurements on comparable scales; one-hot encoding gives each bus route its own yes/no marker.",
+      "example": "For x = 70, mean = 50, standard deviation = 10, z = (70−50)/10 = 2. For min 10 and max 110, min-max value = (70−10)/(110−10) = 0.6. If a training-fold column has values 2, 4, 100, its median is 4, which is less distorted by 100 than the mean.",
+      "keyPoints": [
+        "Standardization: (x−mean)/standard deviation; min-max: (x−min)/(max−min).",
+        "Fit preprocessing using training data only.",
+        "One-hot encoding avoids false category ordering.",
+        "Median imputation is robust to outliers.",
+        "Distance-based models need scaling more often than trees."
       ],
+      "terms": [
+        {
+          "en": "Standardization (Z-score)",
+          "si": "Subtract the training mean and divide by the training standard deviation."
+        },
+        {
+          "en": "Min-Max Normalization",
+          "si": "Scale a feature to a range, commonly [0,1], using its minimum and maximum."
+        },
+        {
+          "en": "One-Hot Encoding",
+          "si": "Create a binary indicator column for each category."
+        },
+        {
+          "en": "Median Imputation",
+          "si": "Fill missing numeric values with the median estimated from training data."
+        },
+        {
+          "en": "Curse of Dimensionality",
+          "si": "As dimensions grow, data becomes sparse and distances become less informative."
+        },
+        {
+          "en": "Scale Invariance",
+          "si": "A model’s predictions are unchanged by changing a feature’s units; tree splits are generally scale-invariant."
+        }
+      ],
+      "si": "ඔයා Rs. වල bill එකත් centimeters වල උසත් එකට compare කළොත් එකක අංක ලොකු නිසා model එක ඒකට වැඩි අවධානය දෙන්න පුළුවන්. Standardization එකෙන් ඒවා සමාන scale එකකට ගේනවා. Colombo බස් route එක A, B, C කියලා තියෙනවා නම් one-hot encoding එක route එකකටම වෙනම yes/no column එකක් හදනවා. Missing bill එකක් තිබුණොත් training data එකේ median එකෙන් පුරවන්න පුළුවන්."
     },
     {
-      id: 'learning-curves-bias-variance',
-      title: 'Reading Loss Curves: Overfitting, Underfitting, Early Stopping, Bias-Variance, Double Descent',
-      examRefs: ['FUN-008', 'FUN-009', 'FUN-020', 'FUN-051', 'FUN-070', 'FUN-115', 'FUN-150'],
-      body: [
-        'Exam එකේ curves කියවන්න රටා 5ක් ඔළුවේ තියාගන්න. (1) Overfitting: training loss දිගටම අඩු වෙනවා, validation loss යම් epoch එකකින් පස්සේ වැඩි වෙනවා. පරතරය (gap) ලොකු වෙනවා. Model එක training data කටපාඩම් කරනවා. (2) Underfitting: training loss සහ validation loss දෙකම ඉහළ, දෙකම එකට ළඟ. Model එකට රටාව අල්ලගන්න බෑ. (3) Good fit: දෙකම අඩු, දෙකම ළඟ. (4) Learning rate ගොඩක් ලොකු: loss එක පනිනවා, NaN වෙනවා. (5) Model එක ඉගෙන ගන්නේම නෑ: loss එක මුල ඉඳන්ම ln(K) අගයේ හිරවෙලා (exam calculations topic එකේ බලන්න).',
-        'Underfitting (high bias) හදන්නේ capacity වැඩි කරලා: වඩා expressive model එකක් (linear → trees / neural net), හොඳ features එකතු කරලා, regularization අඩු කරලා, වැඩි කාලයක් train කරලා. Regularization වැඩි කිරීම, dropout වැඩි කිරීම, data අඩු කිරීම underfitting තවත් නරක් කරනවා. Overfitting (high variance) හදන්නේ අනිත් පැත්තට: data වැඩි කරලා, regularization, dropout, augmentation, early stopping, සරල model එකක්.',
-        'Early stopping: validation metric එක බලාගෙන ඉන්නවා. Patience = "හොඳ නොවී කොච්චර epochs ඉවසනවද". Validation loss හොඳම වුණේ epoch 8 දී, patience 3 නම්: epochs 9, 10, 11 හොඳ වෙන්නේ නෑ, ඉතින් epoch 11 දී නවත්තනවා. ඒත් තියාගන්නේ epoch 8 checkpoint එක (best weights restore කරනවා). Training loss 0 වෙනකම් ඉන්න එක කටපාඩම් කිරීම දිරිමත් කරනවා.',
-        'Bias-variance decomposition (squared error වලට): Expected test error = Bias² + Variance + Irreducible noise. Bias = ක්‍රමානුකූල වැරැද්ද (model එක ගොඩක් සරලයි). Variance = training set එක පොඩ්ඩක් වෙනස් කළාම predictions කොච්චර වෙනස් වෙනවද. Noise = කිසිම model එකකට අයින් කරන්න බැරි, data එකේම තියෙන අවිනිශ්චිතතාව. High bias + low variance = underfitting: training error ඉහළ, test error එයට සමාන. Double descent: model size එක training data හරියටම fit කරන තැන (interpolation threshold) පහු කරලා තවත් ලොකු කළාම, test error එක ඉහළ ගිහින් ආයෙත් අඩු වෙනවා. ලොකු over-parameterized models (LLMs) වලදී පරණ U-shape curve එක හැමවිටම වලංගු නෑ.',
+      "id": "learning-curves-bias-variance",
+      "title": "Reading Loss Curves: Overfitting, Underfitting, Early Stopping, Bias-Variance, Double Descent",
+      "examRefs": [
+        "FUN-008",
+        "FUN-009",
+        "FUN-020",
+        "FUN-051",
+        "FUN-070",
+        "FUN-115",
+        "FUN-150"
       ],
-      analogy: 'Dartboard එකකට ඊතල ගහනවා හිතන්න. High bias = ඔක්කොම ඊතල එකට එකතු වෙලා, ඒත් මැදට නෙවෙයි, එක පැත්තකට (ක්‍රමානුකූල වැරැද්ද). High variance = ඊතල මැද වටේ, ඒත් හැම පැත්තටම විසිරිලා. Noise = සුළඟ. ඔයා කොච්චර දක්ෂ වුණත් සුළඟ නවත්තන්න බෑ. Overfitting = A/L ළමයෙක් past paper උත්තර කටපාඩම් කරනවා. ඒ papers වලට 100%, අලුත් paper එකට අසමත්.',
-      example: 'Training log එක: epoch 1-8 දී val loss 1.20 → 0.40 දක්වා අඩු වෙනවා. Epoch 9 = 0.42, epoch 10 = 0.45, epoch 11 = 0.47. Training loss දිගටම 0.38 → 0.20. මේ overfitting. Patience 3 → epoch 11 දී නවත්තනවා, epoch 8 weights restore කරනවා. Underfitting උදාහරණය: linear model එකක train error 35%, val error 37%. Gap එක පොඩියි, දෙකම ඉහළ. L2 වැඩි කරන එක වැරදියි. Gradient boosted trees වලට මාරු වෙලා features එකතු කළාම train 8%, val 11%.',
-      keyPoints: [
-        'Train ↓ val ↑ = overfitting. දෙකම ඉහළ, ළඟ = underfitting.',
-        'Underfitting fix = capacity / features වැඩි කරන්න, regularization අඩු කරන්න.',
-        'Early stopping නවත්තන්නේ patience ඉවර වුණාම, තියාගන්නේ best epoch එක.',
-        'Error = Bias² + Variance + Noise. Noise එක අයින් කරන්න බෑ.',
-        'Double descent: interpolation threshold එකෙන් පස්සේ test error ආයෙත් අඩු වෙන්න පුළුවන්.',
+      "body": [
+        "Training loss falling while validation loss rises is a classic overfitting pattern: the model increasingly memorizes training examples. If both losses remain high and close, the model is underfitting. Low, close training and validation losses indicate a better fit. A very large learning rate can cause oscillation, divergence, or NaN values; a classifier stuck near ln(K) cross-entropy may be making uniform guesses across K classes.",
+        "Address underfitting by increasing model capacity, improving features, reducing excessive regularization, or training longer. Address overfitting with more data, regularization, augmentation, dropout, a simpler model, or early stopping. Early stopping monitors validation performance; with patience 3 and the best validation loss at epoch 8, stop after three non-improving epochs and restore the epoch-8 weights.",
+        "For squared error, expected test error can be decomposed into bias squared, variance, and irreducible noise. Bias reflects systematic error from an overly simple model; variance reflects sensitivity to the training sample; noise cannot be removed by choosing a model. In double descent, test error may rise near the interpolation threshold and decrease again for larger overparameterized models."
       ],
-      terms: [
-        { en: 'Overfitting', si: 'Training data කටපාඩම් කරලා අලුත් data වලට අසමත් වෙන එක (high variance).' },
-        { en: 'Underfitting', si: 'Training data වල රටාවත් අල්ලගන්න බැරි තරම් model එක සරල වීම (high bias).' },
-        { en: 'Patience', si: 'Early stopping වලදී හොඳ නොවී ඉවසන epochs ගණන.' },
-        { en: 'Irreducible Error', si: 'Data එකේම තියෙන noise. කිසිම model එකකට අඩු කරන්න බෑ.' },
-        { en: 'Double Descent', si: 'Model size එක interpolation threshold එක පහු කළාම test error එක ආයෙත් අඩු වෙන සංසිද්ධිය.' },
-        { en: 'Interpolation Threshold', si: 'Model එකට training data හරියටම (error 0) fit කරන්න පුළුවන් වෙන size එක.' },
+      "analogy": "A/L students who memorize past-paper answers may score well on the same paper but fail on new questions: that is overfitting. Darts clustered away from the bullseye suggest bias; widely scattered darts suggest variance. Wind is irreducible noise.",
+      "example": "Validation loss falls from 1.20 to 0.40 by epoch 8, then becomes 0.42, 0.45, and 0.47 at epochs 9–11 while training loss keeps falling. With patience 3, stop at epoch 11 and restore epoch 8. Train error 35% and validation error 37% instead suggest underfitting, not a need for more L2 penalty.",
+      "keyPoints": [
+        "Train loss down, validation loss up → overfitting; both high and close → underfitting.",
+        "Fix underfitting with capacity/features; fix overfitting with data or regularization.",
+        "Early stopping restores the best validation checkpoint.",
+        "Error = bias² + variance + irreducible noise.",
+        "Double descent can lower test error again beyond interpolation."
       ],
+      "terms": [
+        {
+          "en": "Overfitting",
+          "si": "Fitting training-specific patterns or noise, causing worse performance on new data."
+        },
+        {
+          "en": "Underfitting",
+          "si": "A model too simple to capture important patterns even in its training data."
+        },
+        {
+          "en": "Patience",
+          "si": "The number of validation epochs without improvement allowed before early stopping."
+        },
+        {
+          "en": "Irreducible Error",
+          "si": "Uncertainty inherent in the data that cannot be eliminated by model choice."
+        },
+        {
+          "en": "Double Descent",
+          "si": "Test error can fall again after rising near the interpolation threshold as model size increases."
+        },
+        {
+          "en": "Interpolation Threshold",
+          "si": "The capacity at which a model can fit its training examples exactly."
+        }
+      ],
+      "si": "ඔයා past papers උත්තර කටපාඩම් කරලා ඒ paper එකටම ලකුණු ගන්නවා, අලුත් ප්‍රශ්නවලට බැරි වෙනවා නම් ඒක overfitting වගේ. Training loss අඩු වෙද්දී validation loss වැඩි වෙනවා නම් model එක training examples මතම රැඳෙනවා. Validation loss හොඳම වුණේ epoch 8දී, ඊළඟ epochs තුනම නරක නම් epoch 8 weights තියාගෙන නවත්තන්න. Dart එක හැමදාම එක පැත්තකට වැදෙන එක bias, හැමතැනම විසිරෙන එක variance."
     },
     {
-      id: 'regularization-deep-dive',
-      title: 'Regularization Deep Dive: L1 Sparsity, L2, Elastic Net, Strength λ, Priors, Ridge',
-      examRefs: ['FUN-017', 'FUN-018', 'FUN-019', 'FUN-091', 'FUN-092', 'FUN-127', 'FUN-128'],
-      body: [
-        'Regularization කියන්නේ loss එකට "weights ලොකු වුණොත් දඬුවමක්" එකතු කරන එක. L2 (Ridge, weight decay): λ × Σw², ඒ කියන්නේ weights වල වර්ග වල එකතුව λ (lambda) කියන අංකයකින් ගුණ කරලා. L1 (Lasso): λ × Σ|w|, weights වල absolute අගයන්ගේ එකතුව. λ = දඬුවම කොච්චර තදද කියන knob එක.',
-        'L1 weights හරියටම 0 කරන්නේ ඇයි? L2 දඬුවමේ "තල්ලුව" (gradient) 2λw. Weight එක පොඩි වෙන්න වෙන්න තල්ලුවත් පොඩි වෙනවා. ඉතින් weight එක 0 ට ළං වෙනවා, ඒත් හරියටම 0 වෙන්නේ කලාතුරකින්. L1 තල්ලුව weight එක කොච්චර පොඩි වුණත් එකම ප්‍රමාණයක් (λ). ඉතින් වැඩක් නැති features වල weights හරියටම 0 ට තල්ලු වෙනවා. ප්‍රතිඵලය sparse model එකක්, ඒ කියන්නේ built-in feature selection. Features 5,000ක් තියෙද්දී වැඩක් නැති ඒවා අයින් කරන්න ඕනේ නම් L1.',
-        'Elastic Net = L1 + L2 එකට. Features එකිනෙකට ගොඩක් correlated නම් Lasso එක group එකෙන් එකක් අහඹු ලෙස තෝරනවා, අස්ථාවරයි. L2 කොටස correlated features අතර බර බෙදනවා, L1 කොටස වැඩක් නැති ඒවා 0 කරනවා. Ridge සහ multicollinearity: features දෙකක් හරියටම collinear නම් XᵀX matrix එක singular (inverse එකක් නෑ), OLS ට unique විසඳුමක් නෑ. Ridge විසඳන්නේ (XᵀX + λI)w = Xᵀy. λI එකතු කළාම හැම eigenvalue එකක්ම λ කින් උඩට යනවා, matrix එක invertible වෙනවා, බර collinear features දෙක අතර බෙදෙනවා. Feature එකක් අයින් කරන්නේ Ridge නෙවෙයි (ඒ Lasso ගේ හැසිරීමට ළඟයි).',
-        'λ වැඩි කළාම: weights තදින් සීමා වෙනවා → model එක සරල වෙනවා → variance අඩු, bias වැඩි, training error වැඩි. Bayesian ඇහැකින් (MAP): L2 = weights වලට Gaussian prior එකක්, L1 = Laplace prior එකක්. Laplace prior එකට 0 ළඟ තියුණු උච්චයක් (sharp peak) තියෙනවා, ඒකයි L1 sparsity දෙන්නේ. Dropout neural networks වල regularization ක්‍රමයක්: training වලදී විතරක් අහඹු activations 0 කරනවා. Training එකෙන් පස්සේ පොඩි weights තියෙන neurons ස්ථිරවම අයින් කරන එක dropout නෙවෙයි, ඒ pruning (compression ක්‍රමයක්).',
+      "id": "regularization-deep-dive",
+      "title": "Regularization Deep Dive: L1 Sparsity, L2, Elastic Net, Strength λ, Priors, Ridge",
+      "examRefs": [
+        "FUN-017",
+        "FUN-018",
+        "FUN-019",
+        "FUN-091",
+        "FUN-092",
+        "FUN-127",
+        "FUN-128"
       ],
-      analogy: 'මාසික budget එකක් හිතන්න. L2 = "හැම වියදමකම වර්ගයට බදු". ලොකු වියදම් ගොඩක් අඩු වෙනවා, ඒත් පොඩි වියදම් සම්පූර්ණයෙන් නවතින්නේ නෑ. L1 = "හැම වියදමකටම, පොඩි වුණත්, ස්ථාවර ගාස්තුවක්". එතකොට වැඩක් නැති පොඩි subscriptions (Netflix, gym එක) ඔක්කොම සම්පූර්ණයෙන්ම cancel කරනවා = weights 0. λ = බදු අනුපාතය. වැඩි කරන්න වැඩි කරන්න ජීවිතය සරල වෙනවා, ඒත් ඕනේ දේවලුත් අහිමි වෙන්න පුළුවන් (bias).',
-      example: 'Weight w = 0.1, λ = 0.01. L2 තල්ලුව = 2 × 0.01 × 0.1 = 0.002 (ගොඩක් පොඩියි, weight එක 0.1 ළඟ හිරවෙනවා). L1 තල්ලුව = 0.01 (weight එකේ ප්‍රමාණයෙන් ස්වාධීනයි, අවශ්‍ය නම් 0 දක්වාම යනවා). Ridge: XᵀX = [[1, 1], [1, 1]] (collinear, determinant = 0). λ = 0.1 එකතු කළාම [[1.1, 1], [1, 1.1]], determinant = 1.21 − 1 = 0.21 > 0, invertible.',
-      code: {
-        lang: 'python',
-        src: `from sklearn.linear_model import Lasso, Ridge, ElasticNet
-import numpy as np
-
-rng = np.random.default_rng(0)
-X = rng.normal(size=(200, 50))                 # features 50
-y = 3 * X[:, 0] - 2 * X[:, 1] + rng.normal(size=200)  # ඇත්තටම වැදගත් 2යි
-
-for m in [Ridge(alpha=1.0), Lasso(alpha=0.1), ElasticNet(alpha=0.1, l1_ratio=0.5)]:
-    m.fit(X, y)
-    print(type(m).__name__, "හරියටම 0 weights:", int(np.sum(m.coef_ == 0)))
-# Ridge: 0ක් වගේ. Lasso: 40+ ක් 0 (sparse). alpha = λ`,
+      "body": [
+        "Regularization adds a penalty to the training objective to discourage overly complex parameter values. L2 (Ridge/weight decay) adds λΣw² and shrinks weights, usually without making them exactly zero. L1 (Lasso) adds λΣ|w| and can set weights exactly to zero, producing sparse models and feature selection. Elastic Net combines L1 and L2, which can be useful when features are correlated.",
+        "Increasing λ strengthens the penalty: variance often falls, bias and training error often rise. This is a trade-off, not a guarantee of better test performance. In a Bayesian interpretation, L2 corresponds to a Gaussian prior and L1 to a Laplace prior; regularized maximum likelihood is a form of maximum a posteriori estimation.",
+        "Ridge regression adds λI to XᵀX, improving conditioning and making inversion possible when the unregularized matrix is singular. Pruning removes selected model weights or structures after training to reduce model size; it is distinct from training-time L1/L2 penalties."
+      ],
+      "analogy": "Regularization is like asking a cricket batter to avoid wildly changing the swing for every ball: a modest constraint can improve consistency, but too much constraint prevents adapting to the pitch.",
+      "example": "With λ = 0.1, L2 adds 0.1Σw² while L1 adds 0.1Σ|w|. If λ is increased, coefficients are penalized more. When many features are correlated and a sparse selection is desired, Elastic Net can combine the shrinkage of L2 with L1 sparsity.",
+      "code": {
+        "lang": "python",
+        "src": "from sklearn.linear_model import Lasso, Ridge, ElasticNet\nimport numpy as np\n\nrng = np.random.default_rng(0)\nX = rng.normal(size=(200, 50))  # 50 input features.\ny = 3 * X[:, 0] - 2 * X[:, 1] + rng.normal(size=200)  # Only two features carry signal, plus noise.\n\nfor m in [Ridge(alpha=1.0), Lasso(alpha=0.1), ElasticNet(alpha=0.1, l1_ratio=0.5)]:\n    m.fit(X, y)\n    print(type(m).__name__, \"exactly zero weights:\", int(np.sum(m.coef_ == 0)))  # Ridge usually keeps weights nonzero; Lasso can set many to zero. alpha is λ.\n"
       },
-      keyPoints: [
-        'L2 = λΣw² (weights පොඩි කරනවා). L1 = λΣ|w| (weights හරියටම 0, sparse).',
-        'Correlated features + sparsity ඕනේ → Elastic Net.',
-        'λ ↑ → bias ↑, variance ↓, training error ↑.',
-        'L2 ↔ Gaussian prior, L1 ↔ Laplace prior.',
-        'Ridge එකේ λI එක singular XᵀX invertible කරනවා.',
+      "keyPoints": [
+        "L1 may make weights zero; L2 shrinks weights toward zero.",
+        "Elastic Net combines L1 and L2.",
+        "Larger λ trades higher bias for lower variance.",
+        "L2 relates to a Gaussian prior; L1 to a Laplace prior.",
+        "Ridge adds λI to stabilize XᵀX; pruning is a separate compression step."
       ],
-      terms: [
-        { en: 'L1 / Lasso', si: 'Absolute weights එකතුවට දඬුවම. Weights හරියටම 0 කරලා feature selection කරනවා.' },
-        { en: 'L2 / Ridge / Weight Decay', si: 'Weights වර්ග එකතුවට දඬුවම. Weights පොඩි කරනවා, 0 කරන්නේ කලාතුරකින්.' },
-        { en: 'Elastic Net', si: 'L1 සහ L2 දෙකම එකට. Correlated features වලට ස්ථාවරයි.' },
-        { en: 'Sparsity', si: 'Weights ගොඩක් හරියටම 0 වීම.' },
-        { en: 'MAP Estimation', si: 'Prior එකක් එක්ක likelihood එක උපරිම කරන එක. Regularization = prior.' },
-        { en: 'Multicollinearity', si: 'Features එකිනෙකට ගොඩක් සම්බන්ධ වීම. OLS අස්ථාවර කරනවා.' },
-        { en: 'Pruning', si: 'Training එකෙන් පස්සේ වැදගත් නැති weights / neurons ස්ථිරවම අයින් කරන compression ක්‍රමය.' },
+      "terms": [
+        {
+          "en": "L1 / Lasso",
+          "si": "A penalty on absolute weights that can set some coefficients exactly to zero."
+        },
+        {
+          "en": "L2 / Ridge / Weight Decay",
+          "si": "A squared-weight penalty that shrinks coefficients toward zero."
+        },
+        {
+          "en": "Elastic Net",
+          "si": "A regularizer combining L1 sparsity with L2 shrinkage."
+        },
+        {
+          "en": "Sparsity",
+          "si": "Having many model weights or coefficients equal to zero."
+        },
+        {
+          "en": "MAP Estimation",
+          "si": "Maximum a posteriori estimation: maximizing likelihood together with a prior."
+        },
+        {
+          "en": "Multicollinearity",
+          "si": "Strong correlation among input features, which can destabilize coefficient estimates."
+        },
+        {
+          "en": "Pruning",
+          "si": "Removing selected model weights or structures to reduce model size."
+        }
       ],
+      "si": "ඔයා cricket team එකේ එකම වගේ batting කරන ක්‍රීඩකයන් ගොඩක් තියෙනවා гэж හිත. L1 penalty එකෙන් model එක සමහර weights හරියටම zero කරලා features цනීපයක් තෝරන්න පුළුවන්. L2 නම් weights පොඩි කරනවා, බොහෝවිට zero කරන්නේ නෑ. λ වැඩි කළොත් model එක සරල වෙන්න පුළුවන්, හැබැයි වැඩියෙන් දැම්මොත් pattern එක ඉගෙනගන්නත් බැරි වෙයි."
     },
     {
-      id: 'classical-supervised-deep-dive',
-      title: 'Classical Models Under the Hood: Linear & Logistic Regression, SVM & Kernels, kNN, Trees',
-      examRefs: ['FUN-036', 'FUN-037', 'FUN-040', 'FUN-041', 'FUN-087', 'FUN-088', 'FUN-089', 'FUN-090'],
-      body: [
-        'Linear regression (OLS) එකට closed-form විසඳුමක් තියෙනවා: w = (XᵀX)⁻¹Xᵀy. Normal equation එක කියලා කියන්නේ. X කියන්නේ data matrix එක (rows = examples, columns = features). ඒක සාමාන්‍යයෙන් square නෑ, ඉතින් X⁻¹ කියලා දෙයක් නෑ. Square වෙන XᵀX තමයි invert කරන්නේ. Logistic regression නමේ "regression" තිබුණත් කරන්නේ classification. ඒක linear විදිහට model කරන්නේ probability එක නෙවෙයි, log-odds: log(p ÷ (1 − p)) = w·x + b. ඊට පස්සේ sigmoid එකෙන් p ආපහු ගන්නවා. Probability එකම linear කළොත් 0-1 පරාසයෙන් එළියට යන්න පුළුවන්. Logit link එක ඒක වළක්වනවා.',
-        'SVM (linear) කරන්නේ classes දෙක වෙන් කරන රේඛාවලින් widest margin එක තියෙන එක තෝරන එක. Boundary එකට ළඟම තියෙන points = support vectors. ඒ ටික විතරයි boundary එක තීරණය කරන්නේ. Kernel trick: RBF, polynomial වගේ kernels, data ඉහළ dimensional අවකාශයකට map කරලා inner products ගණනය කළා වගේ similarity එක ගණනය කරනවා, ඒත් ඒ අවකාශය කවදාවත් හදන්නේ නෑ. ප්‍රතිඵලය non-linear boundary එකක්. SVM ට තාමත් labels සහ C (regularization) parameter එක ඕනේ.',
-        'kNN = "lazy learner". Training වලදී data ගබඩා කරනවා විතරයි. Predict කරද්දී ළඟම k points හොයලා majority vote එකක්. Weight vector එකක් ඉගෙන ගන්නේ නෑ, ඒ නිසා dataset එක ලොකු වෙන්න inference slow වෙනවා. k = 1: හැම prediction එකක්ම එක neighbor කෙනෙක්ව copy කරනවා, noisy, jagged boundary (high variance, training accuracy 100%). k වැඩි කළාම boundary එක smooth වෙනවා, variance අඩු, bias ටිකක් වැඩි. ගොඩක් ලොකු k → underfitting. ඉතින් k validation එකෙන් tune කරනවා.',
-        'Decision tree classification split තෝරන්නේ child nodes "pure" කරන split එක. Purity මනින්නේ Gini impurity හෝ entropy (information gain). Gini = 1 − Σp². Regression trees වලට variance / MSE අඩු වීම පාවිච්චි කරනවා (target අගය මත, class index එකක් මත නෙවෙයි).',
+      "id": "classical-supervised-deep-dive",
+      "title": "Classical Models Under the Hood: Linear & Logistic Regression, SVM & Kernels, kNN, Trees",
+      "examRefs": [
+        "FUN-036",
+        "FUN-037",
+        "FUN-040",
+        "FUN-041",
+        "FUN-087",
+        "FUN-088",
+        "FUN-089",
+        "FUN-090"
       ],
-      analogy: 'SVM = පාරක් මැද ඉරක් අඳිනවා වගේ. බස් (class A) එක පැත්තක, tuk-tuks (class B) අනිත් පැත්තේ. හොඳම ඉර = දෙපැත්තටම ලොකුම ඉඩ තියෙන එක. පාර අයිනට ළඟම තියෙන වාහන ටික (support vectors) තමයි ඉර කොහෙද කියලා තීරණය කරන්නේ. kNN = අලුත් කෙනෙක් කොයි cricket team එකට support කරනවද අනුමාන කරන්න, ඒ කෙනාට ළඟම ගෙවල් k ක අය අහනවා. k = 1 නම් එක අසල්වැසියෙක්ගේ අදහස (අහඹු). k = 7 නම් වඩා විශ්වාසදායකයි.',
-      example: 'Log-odds: w·x + b = 0 → odds = e⁰ = 1 → p = 0.5. w·x + b = ln 3 ≈ 1.1 → odds = 3 → p = 3 ÷ (1 + 3) = 0.75. Gini: node එකක 50 spam, 50 ham → 1 − (0.5² + 0.5²) = 0.5 (ගොඩක් අපිරිසිදුයි). 90 / 10 → 1 − (0.81 + 0.01) = 0.18. 100 / 0 → 0 (pure). Tree එක තෝරන්නේ children වල weighted Gini එක ලොකුවටම අඩු කරන split එක.',
-      keyPoints: [
-        'OLS: w = (XᵀX)⁻¹Xᵀy. X invert කරන්නේ නෑ, XᵀX invert කරනවා.',
-        'Logistic regression = classification. Linear වෙන්නේ log-odds.',
-        'SVM = maximum margin. Kernel trick = non-linear boundary, අවකාශය හදන්නේ නැතුව.',
-        'kNN: k ↑ → smooth, variance ↓, bias ↑. Weights නෑ (lazy).',
-        'Classification tree = Gini / entropy. Regression tree = variance / MSE අඩු වීම.',
+      "body": [
+        "Ordinary least squares linear regression has the normal-equation solution w=(XᵀX)⁻¹Xᵀy when the inverse exists. X is generally rectangular, so the expression inverts XᵀX, not X. Logistic regression is a classifier: it models log-odds linearly, log(p/(1−p))=w·x+b, then uses the sigmoid to obtain a probability between zero and one.",
+        "A linear SVM selects a separating boundary with the widest margin; the closest training points are support vectors. Kernel methods such as RBF compute similarities equivalent to an implicit higher-dimensional representation, allowing nonlinear boundaries without explicitly building that space. kNN stores examples and predicts from nearby points; larger k smooths the boundary, usually lowering variance while raising bias.",
+        "Classification trees choose splits that reduce impurity, often Gini (1−Σp²) or entropy. Regression trees reduce target variance or mean squared error. A split is evaluated by the weighted impurity of its child nodes."
       ],
-      terms: [
-        { en: 'Normal Equation', si: 'OLS linear regression එකේ closed-form විසඳුම: w = (XᵀX)⁻¹Xᵀy.' },
-        { en: 'Log-Odds (Logit)', si: 'log(p ÷ (1 − p)). Logistic regression linear ලෙස model කරන අගය.' },
-        { en: 'Support Vectors', si: 'Boundary එකට ළඟම තියෙන, margin එක තීරණය කරන training points.' },
-        { en: 'Kernel Trick', si: 'ඉහළ dimensional අවකාශයක inner products, ඒ අවකාශය හදන්නේ නැතුව ගණනය කරන උපක්‍රමය.' },
-        { en: 'Lazy Learner', si: 'Training වලදී ගබඩා කරනවා විතරයි, වැඩේ කරන්නේ prediction වෙලාවේ (kNN).' },
-        { en: 'Gini Impurity', si: '1 − Σp². Node එකක classes කොච්චර මිශ්‍රද කියන මිනුම. 0 = pure.' },
-        { en: 'Information Gain', si: 'Split එකකින් entropy එක කොච්චර අඩු වුණාද කියන එක.' },
+      "analogy": "An SVM draws a road line with the widest possible buffer between buses and tuk-tuks; the vehicles nearest the line determine its position. kNN predicts a new neighbour’s cricket team from the nearby homes, and asking more neighbours smooths the vote.",
+      "example": "At logit 0, odds=e⁰=1 and p=0.5. At logit ln 3, odds=3 and p=3/(1+3)=0.75. A tree node with 50 spam and 50 ham has Gini 1−(0.5²+0.5²)=0.5; a pure 100/0 node has Gini 0.",
+      "keyPoints": [
+        "OLS uses XᵀX, not an inverse of rectangular X.",
+        "Logistic regression models log-odds for classification.",
+        "SVM maximizes margin; kernels enable nonlinear boundaries.",
+        "kNN is a lazy learner; larger k smooths predictions.",
+        "Classification trees use impurity; regression trees reduce target variance/MSE."
       ],
+      "terms": [
+        {
+          "en": "Normal Equation",
+          "si": "The closed-form OLS solution w=(XᵀX)⁻¹Xᵀy when the inverse exists."
+        },
+        {
+          "en": "Log-Odds (Logit)",
+          "si": "The value log(p/(1−p)) modeled linearly by logistic regression."
+        },
+        {
+          "en": "Support Vectors",
+          "si": "Training points nearest the SVM boundary that determine its margin."
+        },
+        {
+          "en": "Kernel Trick",
+          "si": "Computing implicit high-dimensional similarities without building that space."
+        },
+        {
+          "en": "Lazy Learner",
+          "si": "A method such as kNN that stores examples and delays most computation until prediction."
+        },
+        {
+          "en": "Gini Impurity",
+          "si": "1−Σp², a measure of class mixing in a tree node; zero is pure."
+        },
+        {
+          "en": "Information Gain",
+          "si": "The reduction in entropy produced by a split."
+        }
+      ],
+      "si": "ඔයා Colombo පාරක buses එක පැත්තකත් tuk-tuks අනිත් පැත්තකත් තියෙනවා කියලා හිතන්න; SVM එක ඒ දෙක අතර වැඩිම ඉඩ තියෙන ඉර හොයනවා. ඉරට ළඟම වාහන තමයි support vectors. අලුත් ගෙදරක cricket team එක guess කරනකොට ළඟම ගෙවල් 5ක අයගෙන් අහන එක kNN වගේ. Tree එකේ 50 spam, 50 ham තියෙන node එකේ Gini 0.5යි; හැමෝම එකම class නම් 0යි."
     },
     {
-      id: 'unsupervised-and-embeddings-plots',
-      title: 'Unsupervised Deep Dive: k-means & Elbow, PCA Maths, Reading t-SNE / UMAP Plots',
-      examRefs: ['FUN-034', 'FUN-035', 'FUN-083', 'FUN-084', 'FUN-131', 'FUN-132'],
-      body: [
-        'k-means: k (clusters ගණන) කලින්ම ඔයා තෝරන්න ඕනේ. පියවර දෙකක් මාරුවෙන් මාරුවට: (1) හැම point එකක්ම ළඟම centroid එකට assign කරනවා, (2) centroids ඒ cluster එකේ points වල මැදට ගෙනියනවා. Labels ඕනේ නෑ. ඒත් ඒක global optimum එකම හොයනවා කියලා සහතිකයක් නෑ. ආරම්භක centroids අනුව local optimum එකකට යන්න පුළුවන් (ඒ නිසා k-means++ init සහ restarts කීපයක්). Clusters ගසක් වගේ nested ව හදන්නේ hierarchical clustering.',
-        'k තෝරන්නේ කොහොමද? Elbow method: k = 1, 2, 3 ... සඳහා within-cluster sum of squares (inertia) අඳිනවා. Inertia එක k වැඩි වෙන්න හැමවිටම අඩු වෙනවා (k = points ගණන නම් 0). ඉතින් "අඩුම" එක නෙවෙයි, වැඩිදියුණුව හදිසියේම පැතලි වෙන "වැලමිට" (elbow) එක තෝරනවා. Silhouette score එකත් තවත් ක්‍රමයක්. k-means ට learning rate එකක් නෑ.',
-        'PCA = unsupervised, linear dimensionality reduction. Variance උපරිම තියෙන, එකිනෙකට ලම්බක (orthogonal) දිශාවන් හොයලා data ඒවා මතට project කරනවා. හැම principal component එකක්ම මුල් features ඔක්කොගෙම එකතුවක් (combination). ඉතින් "top 20 components = original features 20" කියන එක වැරදියි. Labels පාවිච්චි කරන්නේ නෑ, ඉතින් "label එක features 20කින් විතරයි රඳා පවතින්නේ" කියන්නත් බෑ. SVD එකෙන් PCA කරන්න කලින් හැම feature එකක්ම center කරන්න ඕනේ (mean එක අඩු කරනවා). නැත්නම් පළමු component එක mean එක දිහාට point කරනවා. ඒකක වෙනස් නම් standardize කරන එකත් හොඳයි.',
-        't-SNE සහ UMAP = non-linear, visualization සඳහා 2D/3D embeddings. ඒවා ප්‍රධාන වශයෙන් ආරක්ෂා කරන්නේ local neighborhoods: ළඟ points ළඟින්ම තියෙනවා. ඒත් clusters අතර දුර සහ clusters වල ප්‍රමාණය (size) විශ්වාස කරන්න බෑ. Plot එකේ clusters දෙකක් ගොඩක් දුරින් තිබුණත් "ඒ දෙක තමයි වැඩියෙන්ම වෙනස්" කියලා අනුපාතිකව කියන්න බෑ. PCA වගේ linear projection එකක් විදිහටත් පාවිච්චි කරන්න බෑ. cuML එකේ GPU-accelerated t-SNE / UMAP තියෙනවා, ලොකු data වල නැවත නැවත run කරනකොට වේගවත්.',
+      "id": "unsupervised-and-embeddings-plots",
+      "title": "Unsupervised Deep Dive: k-means & Elbow, PCA Maths, Reading t-SNE / UMAP Plots",
+      "examRefs": [
+        "FUN-034",
+        "FUN-035",
+        "FUN-083",
+        "FUN-084",
+        "FUN-131",
+        "FUN-132"
       ],
-      analogy: 'k-means = Colombo නගරයේ කඩ k ගණනක් දාන්න තැන් හොයනවා. හැම ගෙදරක්ම ළඟම කඩේට යනවා, ඊට පස්සේ කඩේ තමන්ගේ customers ලගේ මැදට ගෙනියනවා. Elbow = කඩ 4 ඉඳන් 5 ට වැඩි කළාම customers ගමන් කරන දුර ගොඩක් අඩු වෙනවා, 5 සිට 6 ට වැඩි කළාම පොඩ්ඩයි. ඉතින් 5. UMAP plot = ලංකාවේ සිතියමක් කඩදාසියක පැතලි කරලා අඳිනවා වගේ: ගම් ඇතුළේ ගෙවල් ළඟින් තියෙනවා, ඒත් දිස්ත්‍රික්ක අතර දුර සහ ප්‍රමාණ අඹරලා. "කඩදාසියේ මේ දෙක දුරයි" කියලා කිලෝමීටර් කියන්න බෑ.',
-      example: 'Inertia: k=1 → 1000, k=2 → 520, k=3 → 260, k=4 → 230, k=5 → 215. 1→2→3 දී ලොකු අඩුවීම්, 3→4 දී පොඩ්ඩයි. Elbow = k = 3. PCA: features 200, පළමු components 20 variance 95% පැහැදිලි කරනවා. ඉතින් components 20 තියාගෙන data 10 ගුණයකින් compress කරනවා, තොරතුරු 95% ක් තියාගෙන. (Components 20 අයින් කරලා 180 තියාගන්න එක හරි අනිත් පැත්ත.)',
-      keyPoints: [
-        'k-means: k කලින් තෝරනවා, local optimum, labels නෑ.',
-        'Elbow = inertia curve එක පැතලි වෙන තැන. Inertia හැමවිටම k එක්ක අඩු වෙනවා.',
-        'PCA: center කරලා, max variance orthogonal දිශා. Components = features ඔක්කොගෙම මිශ්‍රණ. Labels නෑ.',
-        't-SNE / UMAP: local structure විශ්වාස කරන්න. Cluster අතර දුර සහ size නෑ.',
+      "body": [
+        "k-means alternates between assigning each point to its nearest centroid and moving each centroid to its cluster mean. Choose k in advance; initial centroids can lead to local optima, so k-means++ initialization and multiple restarts help. Inertia (within-cluster sum of squares) never increases as k grows, so the elbow method looks for where improvement becomes small rather than simply choosing the minimum.",
+        "PCA is an unsupervised linear dimensionality-reduction method. It finds orthogonal directions of high variance, and each component is a combination of original features. Center features before PCA; standardize too when their units differ. Components do not use labels, so they do not guarantee retention of label-relevant information.",
+        "t-SNE and UMAP produce nonlinear low-dimensional visualizations, primarily preserving local neighbourhoods. Do not interpret distances between separated clusters or their sizes as faithful global distances. They are not substitutes for a linear projection such as PCA."
       ],
-      terms: [
-        { en: 'Inertia (WCSS)', si: 'Points තමන්ගේ centroid එකට තියෙන දුරවල වර්ග එකතුව.' },
-        { en: 'Elbow Method', si: 'Inertia vs k plot එකේ වැඩිදියුණුව පැතලි වෙන තැනින් k තෝරන ක්‍රමය.' },
-        { en: 'Silhouette Score', si: 'Point එකක් තමන්ගේ cluster එකට කොච්චර ගැළපෙනවද, අනිත් ඒවාට සාපේක්ෂව. -1 සිට 1.' },
-        { en: 'Explained Variance Ratio', si: 'එක principal component එකකින් පැහැදිලි කරන මුළු variance කොටස.' },
-        { en: 'Centering', si: 'හැම feature එකකින්ම ඒකේ mean එක අඩු කරන එක. PCA ට අත්‍යවශ්‍යයි.' },
-        { en: 't-SNE / UMAP', si: 'Local neighborhoods ආරක්ෂා කරන non-linear 2D/3D visualization ක්‍රම.' },
+      "analogy": "Imagine locating k shops around Colombo: households use the nearest shop, then each shop moves toward the middle of its customers. A UMAP plot is like flattening a Sri Lankan map onto paper: nearby houses may stay nearby, but district sizes and distances can be distorted.",
+      "example": "If inertia for k=1..5 is 1000, 520, 260, 230, 215, improvement slows after k=3, suggesting an elbow near 3. If 20 PCA components retain 95% of variance from 200 features, keep 20 components—not the other 180—to represent the data compactly.",
+      "keyPoints": [
+        "k-means requires k and can reach a local optimum.",
+        "Elbow selects where added clusters give diminishing inertia improvement.",
+        "PCA centers data; components mix original features and ignore labels.",
+        "t-SNE/UMAP are mainly for local visual structure.",
+        "Cluster distances and sizes in nonlinear plots may mislead."
       ],
+      "terms": [
+        {
+          "en": "Inertia (WCSS)",
+          "si": "The sum of squared distances from points to their assigned centroids."
+        },
+        {
+          "en": "Elbow Method",
+          "si": "Choosing k where additional clusters yield diminishing inertia improvement."
+        },
+        {
+          "en": "Silhouette Score",
+          "si": "A measure comparing a point’s fit to its own cluster and other clusters."
+        },
+        {
+          "en": "Explained Variance Ratio",
+          "si": "The fraction of total variance represented by a principal component."
+        },
+        {
+          "en": "Centering",
+          "si": "Subtracting each feature’s mean; required before PCA."
+        },
+        {
+          "en": "t-SNE / UMAP",
+          "si": "Nonlinear methods for visualizing local structure in two or three dimensions."
+        }
+      ],
+      "si": "ඔයා Colombo වල කඩ 4ක් තෝරලා හැම ගෙදරකටම ළඟම කඩේ assign කරනවා, පස්සේ කඩේ customers මැදට ගෙනියනවා කියලා k-means හිතන්න. k වැඩි කළාම inertia අඩුවෙනවා, ඒ නිසා elbow එකේ වැඩිදියුණුව අඩුවෙන තැන බලන්න. PCA එක features ගොඩක් එකතු කරලා variance වැඩි දිශා හොයනවා. UMAP map එකේ ළඟ points ළඟින් පෙනුණත් දුරින් තියෙන clusters දෙකේ සැබෑ දුර කියන්න බෑ."
     },
     {
-      id: 'tree-ensembles-deep-dive',
-      title: 'Tree Ensembles Deep Dive: Why Random Forests Work, OOB 36.8%, Boosting & Shrinkage',
-      examRefs: ['FUN-038', 'FUN-039', 'FUN-085', 'FUN-086', 'FUN-129', 'FUN-130'],
-      body: [
-        'තනි ගැඹුරු decision tree එකක් = low bias, high variance. Training accuracy 100%, ඒත් training data පොඩ්ඩක් වෙනස් කළොත් tree එකම වෙනස් වෙනවා, validation අස්ථාවරයි. Random forest = bagging (bootstrap samples) + හැම split එකකදීම features වලින් අහඹු subset එකක් විතරක් බලනවා. ඒකෙන් trees එකිනෙකට වෙනස් (decorrelated) වෙනවා. ඒවායේ votes / average ගත්තම variance එක ගොඩක් අඩු වෙනවා. Bias එක තනි tree එකක තරමටම වගේ තියෙනවා. ඉතින් forest එක උදව් කරන්නේ bias අඩු කරලා නෙවෙයි, variance අඩු කරලා.',
-        'Bootstrap sample = rows n ක් replacement එක්ක n පාරක් අහඹු ලෙස තෝරනවා. එක row එකක් කවදාවත් නොතේරෙන්න සම්භාවිතාව (1 − 1/n)ⁿ. n ලොකු වෙන්න වෙන්න ඒක e⁻¹ ≈ 0.368 ට ළං වෙනවා. ඉතින් හැම tree එකකටම rows 36.8% ක් වගේ නොපෙනී යනවා = out-of-bag (OOB) samples. ඒවායින් වෙනම validation set එකක් නැතුවම evaluate කරන්න පුළුවන්. 63.2% = bootstrap එකේ ඇත්තටම තියෙන unique rows.',
-        'Gradient boosting (XGBoost, LightGBM, CatBoost) trees එකින් එක, අනුපිළිවෙළට එකතු කරනවා. හැම අලුත් පොඩි tree එකක්ම දැනට තියෙන ensemble එකේ වැරදි (loss එකේ negative gradient, MSE නම් residuals) fit කරනවා. Random forest = trees සමාන්තරව, ස්වාධීනව. Boosting = අනුපිළිවෙළට, කලින් එකේ වැරදි හදනවා. Shrinkage = learning rate (eta): හැම tree එකකම දායකත්වය eta වලින් ගුණ කරනවා. Eta 0.3 → 0.03 කළොත් එකම fit එකට trees ගොඩක් වැඩියෙන් ඕනේ (සාමාන්‍යයෙන් 10 ගුණයක් වගේ), validation early stopping එක්ක. ඒත් සාමාන්‍යයෙන් generalize වෙන්නේ හොඳට. Max depth 50 කරන එක overfitting වැඩි කරනවා.',
-        'Structured tabular data (rows 500,000, numeric + categorical) වලට strongest first baseline එක gradient-boosted trees. Mixed features, missing values, non-linear interactions හොඳට handle කරනවා, tabular benchmarks නිතරම දිනනවා. XGBoost GPU එකේත් train කරන්න පුළුවන් (GPU topic එක බලන්න). k-means unsupervised නිසා labeled prediction task එකකට කෙලින්ම බෑ.',
+      "id": "tree-ensembles-deep-dive",
+      "title": "Tree Ensembles Deep Dive: Why Random Forests Work, OOB 36.8%, Boosting & Shrinkage",
+      "examRefs": [
+        "FUN-038",
+        "FUN-039",
+        "FUN-085",
+        "FUN-086",
+        "FUN-129",
+        "FUN-130"
       ],
-      analogy: 'Random forest = පොල් ගෙඩියක බර අනුමාන කරන්න එක විශේෂඥයෙක් වෙනුවට ගමේ 100 දෙනෙක්ගෙන් අහලා සාමාන්‍යය ගන්නවා. හැම කෙනාම පොඩ්ඩක් වරදිනවා, ඒත් වැරදි වෙනස් වෙනස් පැතිවලට නිසා average එකේදී කැපිලා යනවා (variance ↓). ඒ අය එකම දේ දැකලා නම් (correlated) වැරදි කැපෙන්නේ නෑ, ඒකයි random features. Boosting = cricket coach කෙනෙක් හැම session එකකම කලින් session එකේ වැරදි (පිටට යන shots) විතරක් හදනවා. Shrinkage = එක session එකකින් සම්පූර්ණ වෙනසක් නෙවෙයි, පොඩි වෙනසක් විතරයි, ඒත් sessions වැඩියෙන්.',
-      example: 'OOB: n = 3 නම් (2/3)³ = 8/27 ≈ 0.30. n = 1,000,000 නම් ≈ 0.368. Boosting: ගෙදරක ඇත්ත මිල ලක්ෂ 100. Tree 1 → 80. Residual = 20. Tree 2 residual එක 20 කියලා predict කරනවා, ඒත් eta = 0.1 නිසා එකතු කරන්නේ 2 විතරයි → 82. ඊළඟ residual 18 → +1.8 → 83.8. පොඩි පියවර, ගොඩක් trees. Eta 0.3 සමඟ trees 300කදී val loss හොඳම නම්, eta 0.03 සමඟ trees 3,000ක් වගේ ඕනේ වෙයි.',
-      keyPoints: [
-        'Random forest = bagging + random features → decorrelated trees → variance ↓ (bias එහෙමමයි).',
-        'OOB ≈ 36.8% (e⁻¹). Unique rows in bootstrap ≈ 63.2%.',
-        'Boosting = අනුපිළිවෙළට, gradients / residuals fit කරනවා.',
-        'Eta ↓ → trees ↑ + early stopping. සාමාන්‍යයෙන් generalization ↑.',
-        'Tabular data baseline = XGBoost / LightGBM.',
+      "body": [
+        "A deep decision tree can fit training data closely and have high variance. A random forest trains trees on bootstrap samples and considers random feature subsets at splits. Averaging many sufficiently decorrelated trees reduces variance; for a bootstrap sample, an example is omitted with probability approximately (1−1/n)^n≈e⁻¹≈36.8%, so those out-of-bag examples can estimate performance.",
+        "Boosting builds trees sequentially, with later trees correcting errors made by earlier ones. Gradient boosting follows gradients of a loss; shrinkage (a smaller learning rate) limits each tree’s contribution, often requiring more trees. Random forests primarily reduce variance by averaging; boosting can reduce bias by sequentially fitting residual structure.",
+        "Ensembles are powerful tabular baselines, but depth, number of trees, learning rate, and validation strategy still matter. Avoid fitting hyperparameters against the test set."
       ],
-      terms: [
-        { en: 'Bagging', si: 'Bootstrap samples වල models කීපයක් train කරලා average / vote ගන්න එක.' },
-        { en: 'Bootstrap Sample', si: 'Replacement එක්ක n පාරක් අහඹු ලෙස rows තෝරලා හදන sample එක.' },
-        { en: 'Out-of-Bag (OOB)', si: 'එක tree එකක bootstrap එකට නොවැටුණු rows (~36.8%). Free validation.' },
-        { en: 'Shrinkage (eta)', si: 'Boosting වලදී හැම tree එකකම දායකත්වය අඩු කරන learning rate එක.' },
-        { en: 'Residual', si: 'ඇත්ත අගය − දැනට තියෙන prediction එක.' },
-        { en: 'Decorrelation', si: 'Models එකිනෙකට සමාන නොවී වෙනස් වැරදි කරන්න සැලැස්වීම.' },
+      "analogy": "A random forest is like asking many cricket umpires who saw slightly different views and averaging their decisions. Boosting is like a coach reviewing the previous over’s mistakes and adjusting the next practice step by step.",
+      "example": "For n=1000 training rows, bootstrap omission probability is approximately (1−1/1000)^1000≈0.368, so about 368 rows are out-of-bag for a given tree. Lowering a boosting learning rate to 0.05 makes each tree contribute less than at 0.1.",
+      "keyPoints": [
+        "Random forests bootstrap rows and randomize features to decorrelate trees.",
+        "Averaging decorrelated trees reduces variance.",
+        "OOB rows provide an internal estimate for each bootstrap tree.",
+        "Boosting adds trees sequentially to correct prior errors.",
+        "Shrinkage reduces each boosting step and usually calls for more trees."
       ],
+      "terms": [
+        {
+          "en": "Bagging",
+          "si": "Training models on bootstrap samples and combining their predictions."
+        },
+        {
+          "en": "Bootstrap Sample",
+          "si": "A sample drawn with replacement from the original dataset."
+        },
+        {
+          "en": "Out-of-Bag (OOB)",
+          "si": "Examples omitted from a tree’s bootstrap sample, usable for an internal evaluation."
+        },
+        {
+          "en": "Shrinkage (eta)",
+          "si": "A boosting learning rate that scales down each added tree’s contribution."
+        },
+        {
+          "en": "Residual",
+          "si": "The difference between an observed target and a model prediction."
+        },
+        {
+          "en": "Decorrelation",
+          "si": "Reducing similarity between model errors so averaging can reduce variance."
+        }
+      ],
+      "si": "ඔයා cricket match එකක් ගැන එකම commentatorගෙන් විතරක් නොඅහලා වෙනස් අයගෙන් අහලා average කරනවා නම් random forest වගේ අදහසක්. හැම tree එකකටම data sample එකක් සහ feature ටිකක් වෙනස් නිසා trees ටික එකිනෙකින් වෙනස් වෙනවා. Bootstrap sample එකක rows 1000ක් තිබුණොත් row එකක් මඟහැරෙන්න සම්භාවිතාව ආසන්නව 36.8%යි. Boosting නම් කලින් වැරදි හදාගෙන ඊළඟ tree එක හදනවා."
     },
     {
-      id: 'metrics-decisions-deep-dive',
-      title: 'Metrics That Drive Decisions: Imbalance, Recall vs Precision, Threshold, ROC-AUC, PR, Calibration, Macro F1',
-      examRefs: ['FUN-031', 'FUN-033', 'FUN-056', 'FUN-057', 'FUN-058', 'FUN-059', 'FUN-133', 'FUN-134'],
-      body: [
-        'Accuracy imbalanced data වලදී බොරු කියනවා. Transactions 99% legitimate නම් "හැමදේම legitimate" කියන model එකට 99% accuracy, ඒත් fraud එකක්වත් අල්ලන්නේ නෑ. ඒ model එක minority class එක නොසලකා හරිනවා (minority එකට overfit වෙනවා නෙවෙයි). විසඳුම් දෙකක් තියෙනවා. Metric එක: recall, precision, F1, PR-AUC බලන්න. Training එක: class weights (fraud වැරැද්දකට loss එකේ වැඩි බරක්), oversampling / SMOTE, majority undersampling. Hidden layers එකතු කිරීම ප්‍රශ්නය විසඳන්නේ නෑ, loss එක තාමත් majority class එකෙන් පාලනය වෙනවා.',
-        'කොයි වැරැද්ද වඩා මිලද? Cancer screening, positive එකකට පස්සේ ලාභ confirm test එකක් තියෙනවා: ඇත්ත ලෙඩෙක් මඟ හැරීම (false negative) ගොඩක් භයානකයි → recall උපරිම කරන්න. Positive එකකින් මිල අධික හෝ හානිකර ක්‍රියාවක් වෙනවා නම් (උදා: account එක block කිරීම, ශල්‍යකර්මයක්) → false positives අඩු කරන්න, precision. Threshold එක 0.5 සිට 0.3 ට අඩු කළොත්: වැඩි දේවල් positive කියනවා → recall ↑, precision ↓. ROC-AUC වෙනස් වෙන්නේ නෑ, මොකද ඒක හැම threshold එකක්ම සාරාංශ කරනවා.',
-        'ROC-AUC = 0.85 කියන්නේ: අහඹු positive එකක් සහ අහඹු negative එකක් ගත්තොත්, positive එකට වැඩි score එකක් දෙන්නේ 85% ක් වෙලාවට. ඒක ranking ගුණාත්මකභාවය. 0.5 = අහඹු, 1.0 = පරිපූර්ණ. "85% accuracy" හෝ "precision 0.85" නෙවෙයි. Positives ගොඩක් දුර්ලභ නම් (0.1%) ROC curve එක optimistic වෙන්න පුළුවන්: negatives මිලියනයක් නිසා false positives දහස් ගණනක් ආවත් FPR එක පොඩියි. Precision එක ඒ false positives ගංවතුර කෙලින්ම පෙන්නනවා. ඉතින් PR curve එක වඩා තොරතුරු දෙනවා.',
-        'Calibration: AUC 0.95 (ranking හොඳයි), ඒත් model එක "0.9" කියන cases වලින් 60% ක් විතරයි ඇත්තටම positive. ඒ කියන්නේ overconfident. Retrain නොකර හදන්න held-out set එකක calibration mapping එකක් fit කරනවා: temperature scaling (logits T වලින් බෙදනවා), Platt scaling (scores මත logistic regression), isotonic regression. මේවා monotonic, ඉතින් ranking (AUC) වෙනස් වෙන්නේ නෑ. Threshold එක වෙනස් කිරීම තීරණ වෙනස් කරනවා, ඒත් "0.9 = 90%" කරන්නේ නෑ. Multi-class F1 averaging: macro = හැම class එකකම F1 ගණනය කරලා බර නැති සාමාන්‍යය (දුර්ලභ class එකකටත් ලොකු class එකක තරම්ම බරයි). Micro = TP, FP, FN ඔක්කොම එකතු කරලා එක F1 (ලොකු classes පාලනය කරනවා). Weighted = support අනුව බර. දුර්ලභ classes වල දුර්වලකම පෙන්නන්න macro-F1.',
+      "id": "metrics-decisions-deep-dive",
+      "title": "Metrics That Drive Decisions: Imbalance, Recall vs Precision, Threshold, ROC-AUC, PR, Calibration, Macro F1",
+      "examRefs": [
+        "FUN-031",
+        "FUN-033",
+        "FUN-056",
+        "FUN-057",
+        "FUN-058",
+        "FUN-059",
+        "FUN-133",
+        "FUN-134"
       ],
-      analogy: 'කොළඹ ගංවතුර alarm system එකක්. Recall = ඇත්ත ගංවතුර වලින් alarm එක ගැහුවේ කීයටද. Precision = alarm ගැහුව වාර වලින් ඇත්තටම ගංවතුර ආවේ කීයටද. මිනිස්සුන්ට ඉවත් වෙන්න ලාභයි, ගිලෙන එක භයානකයි → recall. Calibration = කාලගුණ වාර්තාව "වැස්ස 90%" කියන දවස් වලින් ඇත්තටම වැස්සේ 60% දවස් වල නම් ඒ වාර්තාව overconfident. ලොකු වැස්සද පොඩිද කියලා පිළිවෙළට කියනවා නම් (ranking හොඳ), ඒත් අංකය විශ්වාස කරන්න බෑ.',
-      example: 'ROC-AUC අතින්: positives 4, negatives 5 → pairs 4 × 5 = 20. ඒ pairs 17 ක positive එකට වැඩි score එක තියෙනවා නම් AUC = 17 ÷ 20 = 0.85. PR vs ROC: transactions 1,000,000, fraud 1,000. Model එක fraud 900ක් අල්ලනවා (recall 0.9), ඒත් false positives 9,000. FPR = 9,000 ÷ 999,000 ≈ 0.009 (ROC එකේ ලස්සනයි). Precision = 900 ÷ 9,900 ≈ 0.09 (alarm 11න් 10ක්ම බොරු!). Class weights ("balanced"): rows 1,000, fraud 10 → fraud weight = 1,000 ÷ (2 × 10) = 50, legit weight = 1,000 ÷ (2 × 990) ≈ 0.505.',
-      code: {
-        lang: 'python',
-        src: `from sklearn.metrics import roc_auc_score, average_precision_score, f1_score
-from sklearn.calibration import CalibratedClassifierCV
-from sklearn.linear_model import LogisticRegression
-
-clf = LogisticRegression(class_weight="balanced", max_iter=1000).fit(X_tr, y_tr)
-p = clf.predict_proba(X_val)[:, 1]
-print("ROC-AUC", roc_auc_score(y_val, p), "PR-AUC", average_precision_score(y_val, p))
-pred = (p >= 0.3).astype(int)          # threshold අඩු කළා: recall ↑, precision ↓
-# Multi-class: f1_score(y, yhat, average="macro")  vs  average="micro"
-cal = CalibratedClassifierCV(clf, method="isotonic", cv=5).fit(X_tr, y_tr)  # calibration`,
+      "body": [
+        "Accuracy is correct predictions divided by all predictions and can be misleading with imbalanced classes. Precision=TP/(TP+FP) answers how many predicted positives were truly positive; recall=TP/(TP+FN) measures how many actual positives were found. F1=2PR/(P+R) balances them. Choose a threshold based on the relative cost of false positives and false negatives.",
+        "ROC-AUC measures ranking across thresholds; PR curves show precision versus recall and are often more informative when positives are rare. Macro averages weight classes equally, while micro aggregates counts and is dominated more by common classes; weighted averages weight each class by its support. Calibration asks whether predicted probabilities match observed frequencies.",
+        "For decisions, a high-recall threshold may be appropriate when missing a positive is costly; a high-precision threshold may be appropriate when false alarms are costly. Calibration methods include temperature scaling, Platt scaling, and isotonic regression; fit calibration on held-out data."
+      ],
+      "analogy": "For a Colombo bus delay alert, recall asks how many real delays were caught; precision asks how many alerts were truly delays. A very wide net catches more fish but also more plastic, so the useful threshold depends on the cost of each mistake.",
+      "example": "With TP=40, FP=10, FN=20, precision=40/50=0.80 and recall=40/60≈0.67; TN does not enter either formula. A calibrated forecast of 0.9 should be correct about 90% of the time over comparable cases.",
+      "code": {
+        "lang": "python",
+        "src": "from sklearn.metrics import roc_auc_score, average_precision_score, f1_score\nfrom sklearn.calibration import CalibratedClassifierCV\nfrom sklearn.linear_model import LogisticRegression\n\nclf = LogisticRegression(class_weight=\"balanced\", max_iter=1000).fit(X_tr, y_tr)\np = clf.predict_proba(X_val)[:, 1]\nprint(\"ROC-AUC\", roc_auc_score(y_val, p), \"PR-AUC\", average_precision_score(y_val, p))\npred = (p >= 0.3).astype(int)  # Lower threshold: recall rises, precision may fall.\n\ncal = CalibratedClassifierCV(clf, method=\"isotonic\", cv=5).fit(X_tr, y_tr)  # Fit calibration using held-out folds."
       },
-      keyPoints: [
-        'Imbalanced data → accuracy බලන්න එපා. Class weights / resampling + recall, F1, PR-AUC.',
-        'FN මිලද (ලෙඩ මඟ හැරීම) → recall. FP මිලද → precision.',
-        'Threshold ↓ → recall ↑, precision ↓. AUC වෙනස් වෙන්නේ නෑ.',
-        'AUC = positive එකක් negative එකකට උඩින් rank වෙන සම්භාවිතාව.',
-        'Overconfident probabilities → temperature / Platt / isotonic calibration. Rare classes → macro-F1.',
+      "keyPoints": [
+        "Accuracy can hide poor rare-class performance.",
+        "Precision uses TP and FP; recall uses TP and FN.",
+        "F1 is the harmonic mean of precision and recall.",
+        "Macro gives equal class weight; micro aggregates counts.",
+        "ROC/PR curves assess rankings across thresholds; calibration assesses probability quality."
       ],
-      terms: [
-        { en: 'Class Weights', si: 'දුර්ලභ class එකේ වැරදි වලට loss එකේ වැඩි බරක් දෙන එක.' },
-        { en: 'ROC-AUC', si: 'අහඹු positive එකක් අහඹු negative එකකට වඩා ඉහළින් rank වෙන සම්භාවිතාව.' },
-        { en: 'PR Curve', si: 'Thresholds හරහා precision vs recall. දුර්ලභ positives වලට වඩා අවංකයි.' },
-        { en: 'Calibration', si: 'Model එක කියන probability එක ඇත්ත සංඛ්‍යාතයට ගැළපීම ("0.9" = 90%).' },
-        { en: 'Temperature Scaling', si: 'Logits එකම අංකයකින් (T) බෙදලා probabilities මෘදු / තියුණු කරන calibration ක්‍රමය.' },
-        { en: 'Platt Scaling / Isotonic Regression', si: 'Scores, probabilities වලට map කරන post-hoc calibration ක්‍රම දෙකක්.' },
-        { en: 'Macro vs Micro F1', si: 'Macro = class වලට සමාන බර. Micro = ඔක්කොම counts එකතු කරලා, ලොකු classes පාලනය කරනවා.' },
+      "terms": [
+        {
+          "en": "Class Weights",
+          "si": "Weights that change the contribution of classes to a training loss."
+        },
+        {
+          "en": "ROC-AUC",
+          "si": "Area under the ROC curve, measuring positive-versus-negative ranking across thresholds."
+        },
+        {
+          "en": "PR Curve",
+          "si": "Precision plotted against recall across decision thresholds."
+        },
+        {
+          "en": "Calibration",
+          "si": "Agreement between predicted probabilities and observed event frequencies."
+        },
+        {
+          "en": "Temperature Scaling",
+          "si": "Calibration by dividing logits by a learned scalar temperature before softmax."
+        },
+        {
+          "en": "Platt Scaling / Isotonic Regression",
+          "si": "Post-hoc methods mapping model scores to probabilities, using a sigmoid or a monotonic fit."
+        },
+        {
+          "en": "Macro vs Micro F1",
+          "si": "Macro averages per-class F1 equally; micro computes F1 from pooled counts."
+        }
       ],
+      "si": "ඔයා Colombo traffic app එකක delay alert එකක් බලනවා නම් recall කියන්නේ ඇත්ත delay වලින් කීයක් අල්ලගත්තද කියන එක. Precision කියන්නේ alert 10ක් දුන්නොත් කීයක් ඇත්තටම delay ද කියන එක. වැරදි alert එකක් මිල අධික නම් precision වැදගත්, delay එකක් මඟහැරීම නරක නම් recall වැදගත්. Model එක 0.9 probability කියන අවස්ථා 100කින් 90ක් විතර හරි නම් calibration හොඳයි."
     },
     {
-      id: 'exam-calculations-counting',
-      title: 'Exam Calculations Made Easy (Part 1): Precision, Recall, F1, Macro vs Micro, Bayes, Shapes & Counts',
-      examRefs: ['FUN-011', 'FUN-028', 'FUN-029', 'FUN-030', 'FUN-032', 'FUN-074', 'FUN-075', 'FUN-097', 'FUN-109', 'FUN-134', 'FUN-135', 'FUN-139'],
-      body: [
-        'බය වෙන්න එපා. Exam ගණන් ඔක්කොම වගේ "එකතු කිරීම, බෙදීම, ගුණ කිරීම" විතරයි. උපක්‍රමය: formula එක වචන වලින් මතක තියාගන්න. Precision = "මම positive කිව්ව ඒවායින් කීයක් හරිද?" = TP ÷ (TP + FP). Recall = "ඇත්ත positives වලින් කීයක් අල්ලගත්තද?" = TP ÷ (TP + FN). දෙකේම උඩ TP. වෙනස යට: precision ට FP (මගේ බොරු alarms), recall ට FN (මඟ හැරුණු ඒවා). TN දෙකටම ඕනේ නෑ. Exam trap: ප්‍රශ්නයේ TN දීලා ඔයාව පටලවනවා.',
-        'F1 = 2 × P × R ÷ (P + R). මේ harmonic mean එක. Arithmetic mean එකට වඩා පොඩි අගය දිහාට ඇදෙනවා. ඉතින් එකක් විතරක් හොඳ කරලා ලොකු F1 එකක් ගන්න බෑ. P = 0.6, R = 0.9: උඩ 2 × 0.6 × 0.9 = 1.08. යට 0.6 + 0.9 = 1.5. F1 = 1.08 ÷ 1.5 = 0.72. (Trap: arithmetic mean 0.75.) Macro vs micro: classes 3ක් (A rows 90, B 5, C 5). Per-class F1: A = 0.95, B = 0.30, C = 0.40. Macro = (0.95 + 0.30 + 0.40) ÷ 3 = 0.55 (දුර්වලකම පේනවා). Weighted = 0.9 × 0.95 + 0.05 × 0.30 + 0.05 × 0.40 ≈ 0.89. Micro එක (single-label multi-class වලදී accuracy එකට සමානයි) A ගේ ලකුණු වලින් පාලනය වෙලා 0.9 වගේ ලොකු අගයක් පෙන්නනවා.',
-        'Counting ගණන්: Steps per epoch = dataset size ÷ batch size. Effective batch = micro-batch × gradient accumulation steps × GPUs ගණන. Linear layer parameters = (inputs × outputs) + outputs (bias එකක් හැම output එකකටම). Matrix multiply (m, n) @ (n, p) = (m, p): ඇතුළේ අංක දෙක සමාන වෙන්න ඕනේ, ඒවා "කැපිලා" යනවා. Dot product = එකම තැන්වල අංක ගුණ කරලා එකතු කරනවා, ඍණ ලකුණු අමතක කරන්න එපා. Training memory (FP32 + Adam, activations නැතුව) = parameter එකකට bytes 16: weight 4 + gradient 4 + Adam moments දෙක 8.',
-        'Bayes ගණන (base rate trap): "Test එක positive නම් ලෙඩ තියෙන්න සම්භාවිතාව" = ඇත්ත positives ÷ මුළු positives. මිනිස්සු 10,000ක් හිතලා ගණන් කරන්න, ප්‍රතිශත වලට වඩා ලේසියි.',
+      "id": "exam-calculations-counting",
+      "title": "Exam Calculations Made Easy (Part 1): Precision, Recall, F1, Macro vs Micro, Bayes, Shapes & Counts",
+      "examRefs": [
+        "FUN-011",
+        "FUN-028",
+        "FUN-029",
+        "FUN-030",
+        "FUN-032",
+        "FUN-074",
+        "FUN-075",
+        "FUN-097",
+        "FUN-109",
+        "FUN-134",
+        "FUN-135",
+        "FUN-139"
       ],
-      analogy: 'Precision vs recall = මාළු අල්ලන දැල. Precision = දැලට ආපු දේවල් වලින් මාළු කීයද (බෝතල්, පොලිතීන් නෙවෙයි). Recall = වැවේ තිබුණු මාළු වලින් දැලට ආවේ කීයද. ලොකු දැලක් දැම්මොත් මාළු ඔක්කොම වගේ එනවා (recall ↑), ඒත් කුණුත් එනවා (precision ↓). F1 = මේ දෙකම හොඳ නම් විතරයි ලකුණු. එක subject එකකට A, අනිත් එකට F නම් average එක "C" කියලා පෙන්නන්නේ නැතුව ඇත්ත තත්ත්වය කියනවා.',
-      example: 'ගණන් 8ක් පියවරෙන් පියවර: (1) TP 40, FP 10, FN 20, TN 130 → precision = 40 ÷ 50 = 0.80 (TN 130 trap එකක්). (2) TP 45, FN 15, FP 5 → recall = 45 ÷ 60 = 0.75 (45 ÷ 50 = 0.90 precision). (3) Rows 10,000, batch 250 → steps 40. (4) nn.Linear(512, 256) → 512 × 256 = 131,072 + bias 256 = 131,328. (5) [1, 2, 3] · [4, −1, 2] = 4 − 2 + 6 = 8. (6) (32, 128) @ (128, 64) → (32, 64). (7) GPUs 2, micro-batch 8, accumulation 4 → 8 × 4 × 2 = 64. (8) Bayes: මිනිස්සු 10,000. ලෙඩ 1% = 100. ඒ අයගෙන් 90% positive = 90. නීරෝගී 9,900 න් 9% බොරු positive = 891. මුළු positives = 981. P(ලෙඩ | +) = 90 ÷ 981 ≈ 9%. 90% නෙවෙයි! Memory: parameters 1B × 16 bytes = 16 GB (weights විතරක් 4 GB, inference ට ඇති, Adam training ට නෑ).',
-      keyPoints: [
-        'Precision = TP ÷ (TP + FP). Recall = TP ÷ (TP + FN). TN ගණන් වලට එපා.',
-        'F1 = 2PR ÷ (P + R), arithmetic mean එකට වඩා පොඩියි.',
-        'Macro = classes වලට සමාන බර (rare දුර්වලකම පේනවා). Micro / weighted = ලොකු classes පාලනය.',
-        'Steps = rows ÷ batch. Effective batch = micro × accumulation × GPUs. Linear params = in × out + out.',
-        'Bayes: මිනිස්සු 10,000ක් හිතලා ගණන් කරන්න. FP32 + Adam = bytes 16 / param.',
+      "body": [
+        "Precision=TP/(TP+FP); recall=TP/(TP+FN). True negatives do not appear in either denominator. F1=2PR/(P+R), the harmonic mean, which is pulled toward the smaller score. Macro F1 averages class F1 scores equally; weighted F1 weights by class support; micro F1 aggregates TP/FP/FN and in single-label multiclass classification equals accuracy.",
+        "Steps per epoch are dataset rows divided by batch size (round up when the final batch is retained). Effective batch size is micro-batch × accumulation steps × number of data-parallel GPUs. A linear layer with in inputs and out outputs has in×out+out parameters when it has a bias. Matrix dimensions (m,n)@(n,p) produce (m,p); dot products multiply matching entries and sum them.",
+        "For Bayes base-rate questions, count people rather than percentages. In FP32 Adam training, parameters, gradients, and two Adam moments use roughly 16 bytes per parameter before activations and other overhead."
       ],
-      terms: [
-        { en: 'Harmonic Mean', si: 'පොඩි අගය දිහාට ඇදෙන සාමාන්‍යය. F1 = P සහ R වල harmonic mean.' },
-        { en: 'Gradient Accumulation', si: 'Micro-batches කීපයක gradients එකතු කරලා එක optimizer step එකක් ගන්න එක.' },
-        { en: 'Effective Batch Size', si: 'එක optimizer step එකකට ඇත්තටම දායක වෙන examples ගණන.' },
-        { en: 'Base Rate', si: 'ජනගහනයේ කොන්දේසිය තියෙන ප්‍රතිශතය (prevalence). Bayes වලට අත්‍යවශ්‍යයි.' },
-        { en: 'Sensitivity / Specificity', si: 'Sensitivity = recall. Specificity = ඇත්ත negatives වලින් හරියට negative කිව්ව ප්‍රතිශතය.' },
-        { en: 'Optimizer States', si: 'Adam වගේ optimizers parameter එකකට තියාගන්න අමතර අගයන් (m සහ v).' },
+      "analogy": "Precision and recall are like a fishing net: precision is the share of the catch that is fish, and recall is the share of all fish caught. A large net improves recall but also catches rubbish. For Bayes, imagine a crowd of 10,000 instead of juggling percentages.",
+      "example": "TP=40, FP=10 gives precision=40/50=0.80; TP=45, FN=15 gives recall=45/60=0.75. Then F1=2×0.8×0.75/(0.8+0.75)≈0.774. For 10,000 people, 1% prevalence means 100 cases; with 90% sensitivity there are 90 true positives. A 9% false-positive rate among 9,900 others gives 891 false positives, so P(disease|positive)=90/981≈9.2%, not 90%.",
+      "keyPoints": [
+        "Precision=TP/(TP+FP); recall=TP/(TP+FN).",
+        "F1=2PR/(P+R); macro, micro, and weighted averages differ.",
+        "Steps=rows/batch; effective batch=micro×accumulation×GPUs.",
+        "Linear parameters=in×out+out; (m,n)@(n,p)=(m,p).",
+        "Bayes requires prevalence; FP32 plus Adam is about 16 bytes per parameter."
       ],
+      "terms": [
+        {
+          "en": "Harmonic Mean",
+          "si": "A mean pulled toward smaller values; F1 is the harmonic mean of precision and recall."
+        },
+        {
+          "en": "Gradient Accumulation",
+          "si": "Adding gradients across micro-batches before one optimizer update."
+        },
+        {
+          "en": "Effective Batch Size",
+          "si": "The examples contributing to one optimizer step."
+        },
+        {
+          "en": "Base Rate",
+          "si": "The prevalence of a condition in the population."
+        },
+        {
+          "en": "Sensitivity / Specificity",
+          "si": "Sensitivity is recall; specificity is the fraction of true negatives correctly identified."
+        },
+        {
+          "en": "Optimizer States",
+          "si": "Additional values maintained by an optimizer, such as Adam moments m and v."
+        }
+      ],
+      "si": "ඔයා මාළු දැලක් දානවා කියලා හිතන්න: අල්ලපු දේවල් අතර මාළු කොච්චරද කියන්නේ precision, වැවේ මාළු අතරින් කීයක් අල්ලගත්තද කියන්නේ recall. TP 40, FP 10 නම් precision 40÷50=0.8. TP 45, FN 15 නම් recall 45÷60=0.75. ලෙඩ prevalence 1% නම් මිනිස්සු 10,000කින් ලෙඩ 100ක් විතරයි, ඒ නිසා positive test එකක් ලැබුණා කියලා 90% ලෙඩ කියලා හිතන්න එපා."
     },
     {
-      id: 'exam-calculations-softmax-ce',
-      title: 'Exam Calculations Made Easy (Part 2): Softmax, Stable Softmax, Cross-Entropy, ln(K), Entropy, KL, Label Smoothing',
-      examRefs: ['FUN-071', 'FUN-072', 'FUN-073', 'FUN-076', 'FUN-077', 'FUN-116', 'FUN-118'],
-      body: [
-        'Softmax පියවර 3යි: (1) හැම logit එකකම e^logit ගන්නවා (ඔක්කොම positive වෙනවා). (2) ඒ ඔක්කොම එකතු කරනවා. (3) හැම එකක්ම එකතුවෙන් බෙදනවා. ප්‍රතිඵලය: ඔක්කොම positive, එකතුව 1. මතක තියාගන්න උපක්‍රම දෙකක්: e^(ln 3) = 3, e⁰ = 1. ඉතින් logits [0, ln 3] → [1, 3] → එකතුව 4 → [0.25, 0.75]. Logits දෙකක වෙනස ln 3 නම් probabilities අනුපාතය 3 : 1. Logits සමාන නම් විතරයි 0.5 : 0.5.',
-        'Numerically stable softmax: logits [1000, 1001, 1002] නම් e^1000 FP32 එකේ overflow වෙලා inf, ඊට පස්සේ inf ÷ inf = NaN. උපක්‍රමය: හැම logit එකකින්ම උපරිම අගය (max) අඩු කරනවා → [−2, −1, 0]. Softmax එකට හැම logit එකටම එකම constant එකක් එකතු කළත් අඩු කළත් ප්‍රතිඵලය වෙනස් වෙන්නේ නෑ (උඩත් යටත් එකම ගුණකයකින් කැපෙනවා). Logits වලින් බෙදීම, [0, 1] ට clip කිරීම, absolute value ගැනීම ඒ වෙනස්කම් (gaps) වෙනස් කරනවා, ඉතින් වැරදි උත්තර.',
-        'Cross-entropy (එක example එකකට) = −ln(හරි class එකට දුන්න probability). හරි class එකට 1 නම් loss 0. 0.25 නම් −ln(0.25) ≈ 1.386 (nats, natural log). log₂ ගත්තොත් 2 bits (trap option). Loss stuck at ln(K): classes K ට හැම එකටම 1/K දුන්නොත් loss = −ln(1/K) = ln(K). K = 10 → ln 10 ≈ 2.30. ඉතින් 10-class model එකක loss එක මුල ඉඳන්ම 2.30 ළඟ හිරවෙලා නම්, model එක uniform guess කරනවා, ඉගෙන ගන්නේ නෑ (learning rate, labels, gradient flow check කරන්න). Confidently wrong නම් loss 2.30 ට වඩා ගොඩක් ඉහළ. මතක තියාගන්න: ln 2 ≈ 0.69, ln 10 ≈ 2.30, ln 100 ≈ 4.61.',
-        'Entropy (bits) = −Σ p log₂ p. සාධාරණ කාසියක් = 1 bit (outcomes 2කට උපරිමය). හැමවිටම heads වැටෙන කාසියක් = 0. KL(P‖Q) ගුණ තුනක්: (1) හැමවිටම ≥ 0 (Gibbs inequality), (2) 0 වෙන්නේ P සහ Q සමාන නම් විතරයි, (3) symmetric නෑ: KL(P‖Q) ≠ KL(Q‖P), triangle inequality එකත් නෑ. ඉතින් ඒක "distance metric" එකක් නෙවෙයි, divergence එකක්. Label smoothing: target = (1 − ε) × one_hot + ε ÷ K. ε = 0.1, K = 5: හැම class එකකටම ε ÷ K = 0.02. හරි class එකට තවත් 1 − ε = 0.90 → 0.92. අනිත් ඒවා 0.02. Check: 0.92 + 4 × 0.02 = 1. (ε එක K − 1 වැරදි classes අතර විතරක් බෙදන variant එකෙන් 0.90 / 0.025 එනවා, ඒත් දීපු formula එක ඒක නෙවෙයි.)',
+      "id": "exam-calculations-softmax-ce",
+      "title": "Exam Calculations Made Easy (Part 2): Softmax, Stable Softmax, Cross-Entropy, ln(K), Entropy, KL, Label Smoothing",
+      "examRefs": [
+        "FUN-071",
+        "FUN-072",
+        "FUN-073",
+        "FUN-076",
+        "FUN-077",
+        "FUN-116",
+        "FUN-118"
       ],
-      analogy: 'Softmax = තරඟයක ලකුණු (logits) "ජයග්‍රහණ සම්භාවිතා" වලට හරවනවා. e^ කියන එක ලකුණු වල වෙනස විශාල කරනවා. Stable softmax = ලොකු සල්ලි ගණන් කරනකොට "ලක්ෂ 1000, 1001, 1002" වෙනුවට "හොඳම එකට වඩා −2, −1, 0" කියලා ලියනවා. අනුපාත එකමයි, calculator එක පිපිරෙන්නේ නෑ. KL asymmetry = කොළඹ සිට මහනුවර බස් ගාස්තුව සහ මහනුවර සිට කොළඹ ගාස්තුව එකම වෙන්න ඕනේ නෑ වගේ, "P වලින් Q ට" සහ "Q වලින් P ට" වෙනස්.',
-      example: 'Softmax [2, 1, 0]: e² ≈ 7.39, e¹ ≈ 2.72, e⁰ = 1. එකතුව ≈ 11.11. Probabilities ≈ [0.665, 0.245, 0.090]. Stable: [1000, 1001, 1002] − 1002 = [−2, −1, 0] → e: [0.135, 0.368, 1] → එකතුව 1.503 → [0.090, 0.245, 0.665]. Cross-entropy: p = 0.9 → 0.105, p = 0.5 → 0.693, p = 0.25 → 1.386, p = 0.01 → 4.61. KL: P = [0.5, 0.5], Q = [0.9, 0.1]. KL(P‖Q) = 0.5 × ln(0.5/0.9) + 0.5 × ln(0.5/0.1) ≈ −0.294 + 0.805 = 0.51. KL(Q‖P) = 0.9 × ln(0.9/0.5) + 0.1 × ln(0.1/0.5) ≈ 0.529 − 0.161 = 0.37. 0.51 ≠ 0.37, ඉතින් symmetric නෑ. Label smoothing ε = 0.1, K = 10 → හරි class 0.91, අනිත් ඒවා 0.01.',
-      code: {
-        lang: 'python',
-        src: `import numpy as np
-
-def stable_softmax(z):
-    z = np.asarray(z, dtype=np.float32)
-    e = np.exp(z - z.max())          # max එක අඩු කරනවා: overflow නෑ
-    return e / e.sum()
-
-print(stable_softmax([1000, 1001, 1002]))   # [0.090 0.245 0.665]
-print(stable_softmax([0, np.log(3)]))       # [0.25 0.75]
-print(-np.log(0.25), np.log(10))            # 1.386 (CE), 2.303 (ln K, K=10)
-eps, K = 0.1, 5
-target = (1 - eps) * np.eye(K)[0] + eps / K  # label smoothing
-print(target)                                # [0.92 0.02 0.02 0.02 0.02]`,
+      "body": [
+        "Softmax exponentiates each logit, sums the exponentials, and divides each by that sum; probabilities are positive and total 1. Since exponentials of very large logits can overflow, subtract the maximum logit first. Adding or subtracting the same constant from every logit leaves softmax unchanged.",
+        "For a correct-class probability p, cross-entropy is −ln(p). A uniform K-class prediction has loss ln(K); for K=10 this is about 2.30, which can indicate the model is still guessing uniformly. Entropy in bits uses log₂; a fair coin has one bit of entropy. KL divergence is nonnegative, zero only for equal distributions, and asymmetric, so it is not a distance metric.",
+        "With target=(1−ε)one_hot+ε/K, the correct class receives 1−ε+ε/K and each other class receives ε/K. Keep this formula distinct from variants that distribute ε only across incorrect classes."
+      ],
+      "analogy": "Softmax turns cricket scores into shares of a probability total. Stable softmax is like subtracting the top score from every score before calculating: the gaps remain the same but huge exponentials are avoided. KL(P‖Q) and KL(Q‖P) can differ, just as a trip fare need not be symmetric in practice.",
+      "example": "For logits [0, ln3], exponentials are [1,3], sum 4, probabilities [0.25,0.75]. For [1000,1001,1002], subtract 1002 to get [−2,−1,0]. Cross-entropy for p=0.25 is −ln(0.25)≈1.386. With ε=0.1 and K=5, correct target=0.92 and each other target=0.02; total=0.92+4×0.02=1.",
+      "code": {
+        "lang": "python",
+        "src": "import numpy as np\n\ndef stable_softmax(z):\n    z = np.asarray(z, dtype=np.float32)\n    e = np.exp(z - z.max())  # Subtracting the maximum prevents overflow.\n    return e / e.sum()\n\nprint(stable_softmax([1000, 1001, 1002]))  # [0.090 0.245 0.665]\nprint(stable_softmax([0, np.log(3)]))  # [0.25 0.75]\nprint(-np.log(0.25), np.log(10))  # 1.386 (cross-entropy), 2.303 (ln K for K=10)\neps, K = 0.1, 5\ntarget = (1 - eps) * np.eye(K)[0] + eps / K  # Apply label smoothing.\nprint(target)  # [0.92 0.02 0.02 0.02 0.02]"
       },
-      keyPoints: [
-        'Softmax: e^ → එකතුව → බෙදන්න. e^(ln 3) = 3.',
-        'Stable softmax = max එක අඩු කරන්න. ප්‍රතිඵලය වෙනස් වෙන්නේ නෑ.',
-        'CE = −ln(p හරි). Loss ≈ ln(K) = uniform guess = ඉගෙන ගන්නේ නෑ.',
-        'Fair coin = 1 bit. KL ≥ 0, P = Q නම් විතරක් 0, symmetric නෑ.',
-        'Label smoothing: හරි = 1 − ε + ε/K, අනිත් = ε/K.',
+      "keyPoints": [
+        "Softmax: exponentiate, sum, divide; equal logit shifts do not change output.",
+        "Subtract max(logits) for numerical stability.",
+        "Cross-entropy=−ln(correct-class probability); uniform K-way loss=ln(K).",
+        "Entropy uses log base; fair coin entropy is 1 bit.",
+        "KL is nonnegative but asymmetric; label smoothing depends on the stated formula."
       ],
-      terms: [
-        { en: 'Logits', si: 'Softmax එකට කලින් තියෙන raw scores. ඕනෑම real number එකක්.' },
-        { en: 'Overflow / Underflow', si: 'අංකය float format එකට ලොකු වැඩි (inf) හෝ පොඩි වැඩි (0) වීම.' },
-        { en: 'Nats vs Bits', si: 'Natural log (ln) එකෙන් = nats. log₂ එකෙන් = bits.' },
-        { en: 'Shannon Entropy', si: 'Distribution එකක සාමාන්‍ය අවිනිශ්චිතතාව. −Σ p log p.' },
-        { en: 'KL Divergence', si: 'P වෙනුවට Q පාවිච්චි කරාම නැති වෙන තොරතුරු. ≥ 0, asymmetric.' },
-        { en: 'Label Smoothing', si: 'One-hot target එක මෘදු කරලා overconfidence අඩු කරන regularization ක්‍රමය.' },
+      "terms": [
+        {
+          "en": "Logits",
+          "si": "Raw model scores before a probability transformation such as softmax."
+        },
+        {
+          "en": "Overflow / Underflow",
+          "si": "Numerical values exceeding the representable range or becoming too small to represent."
+        },
+        {
+          "en": "Nats vs Bits",
+          "si": "Units of information: natural logarithms give nats; base-2 logarithms give bits."
+        },
+        {
+          "en": "Shannon Entropy",
+          "si": "Uncertainty of a distribution, −Σp log p, with units determined by the log base."
+        },
+        {
+          "en": "KL Divergence",
+          "si": "A nonnegative, generally asymmetric measure of how one probability distribution differs from another."
+        },
+        {
+          "en": "Label Smoothing",
+          "si": "Replace a one-hot target with a softer distribution to avoid assigning all target mass to one class."
+        }
       ],
+      "si": "ඔයා cricket තරග ලකුණු probability වලට හරවනවා කියලා softmax හිතන්න; logits [0, ln 3] නම් e අගයන් 1 සහ 3, එකතුව 4, probabilities 0.25 සහ 0.75. ලොකු අගයන් 1000, 1001, 1002 නම් හැම එකෙන්ම 1002 අඩු කරලා ගණන් කළොත් overflow වෙන්නේ නෑ. හරි class probability 0.25 නම් loss −ln(0.25) ආසන්නව 1.386. ε 0.1 සහ classes 5 නම් target එක 0.92, අනෙක් ඒවා 0.02යි."
     },
     {
-      id: 'exam-calculations-training-tricks',
-      title: 'Exam Calculations Made Easy (Part 3): Gradient Clipping, Warmup, Inverted Dropout, Adam Bias Correction',
-      examRefs: ['FUN-113', 'FUN-121', 'FUN-123', 'FUN-147'],
-      body: [
-        'Gradient clipping (global norm): පියවර 3යි. (1) Norm එක ගණනය කරනවා = √(හැම component එකකම වර්ග එකතුව). (2) Norm එක max_norm ට වඩා පොඩි නම් කිසිම වෙනසක් නෑ. (3) ලොකු නම් හැම component එකක්ම (max_norm ÷ norm) වලින් ගුණ කරනවා. දිශාව එහෙමමයි, දිග විතරක් කපනවා. Per-value clipping (හැම element එකක්ම 1 ට clamp කිරීම) වෙනස්: ඒක දිශාව වෙනස් කරනවා.',
-        'Linear warmup: lr = peak × (step ÷ warmup_steps). Step 0 දී 0, warmup අන්තිමට peak. ඊට පස්සේ සාමාන්‍යයෙන් cosine හෝ linear decay. Warmup ඕනේ ඇයි? මුලදී weights අහඹුයි, Adam ගේ statistics තාම හරියට හැදිලා නෑ. එවෙලේ ලොකු පියවර ගත්තොත් training එක අස්ථාවර වෙනවා.',
-        'Inverted dropout (PyTorch කරන්නේ මේක): drop probability p. Training වලදී ඉතුරු වෙන activations 1 ÷ (1 − p) වලින් ගුණ කරනවා. එතකොට සාමාන්‍ය (expected) activation එක වෙනස් වෙන්නේ නෑ, ඉතින් inference වලදී කිසිම rescaling එකක් ඕනේ නෑ. p = 0.2 → 1 ÷ 0.8 = 1.25. p = 0.5 → 2. (Training වලදී වෙනසක් නැතුව inference වලදී 0.8 න් ගුණ කරන එක පරණ, non-inverted ක්‍රමය.)',
-        'Adam bias correction: Adam ගේ moving averages m (gradient average) සහ v (squared gradient average) 0 න් පටන් ගන්නවා. β₁ = 0.9 නම් පළමු step එකේ m₁ = 0.9 × 0 + 0.1 × g₁ = 0.1 g₁. ඒක ඇත්ත gradient එකට වඩා 10 ගුණයක් පොඩියි, 0 දිහාට bias වෙලා. Correction: m̂ = m ÷ (1 − β₁ᵗ). t = 1: 0.1 g₁ ÷ (1 − 0.9) = 0.1 g₁ ÷ 0.1 = g₁. හරියටම. t ලොකු වෙන්න β₁ᵗ → 0, ඉතින් correction එකේ බලපෑම නැති වෙනවා. Adam මේ correction එක ඇත්තටම කරන නිසා "මුල් පොඩි steps = warmup" කියලා විශ්වාස කරන්න බෑ. ඒකයි explicit warmup තාමත් පාවිච්චි කරන්නේ.',
+      "id": "exam-calculations-training-tricks",
+      "title": "Exam Calculations Made Easy (Part 3): Gradient Clipping, Warmup, Inverted Dropout, Adam Bias Correction",
+      "examRefs": [
+        "FUN-113",
+        "FUN-121",
+        "FUN-123",
+        "FUN-147"
       ],
-      analogy: 'Gradient clipping = tuk-tuk එකකට speed limit එකක්. ඔයා යන දිශාව (Kandy road) එහෙමමයි, වේගය 80 ට වඩා නම් 80 ට අඩු කරනවා. Warmup = උදේ cricket match එකකට කලින් warm-up: මුලින්ම හෙමින් දුවනවා, ඊට පස්සේ full speed. Inverted dropout = team එකේ 20% ක් අද practice වලට නෑ, ඉතින් ඉන්න අය 1.25 ගුණයක් වැඩ කරනවා, මුළු වැඩ ප්‍රමාණය එකමයි. Adam bias correction = අලුත් කඩේක පළමු දවසේ විකුණුම් "මාසික සාමාන්‍යය" විදිහට ගත්තොත් (දවස් 29ක් 0 කියලා) බොරු ලෙස පොඩියි. ඒ නිසා ගත වුණ දවස් ගණනට සකස් කරනවා.',
-      example: 'Clipping: gradient [6, 8], max_norm 1.0. Norm = √(36 + 64) = √100 = 10. 10 > 1 → ගුණකය 1 ÷ 10 = 0.1 → [0.6, 0.8]. (Trap [1.0, 1.0] = per-value clipping.) Gradient [3, 4], max_norm 10 → norm 5 < 10 → වෙනසක් නෑ. Warmup: peak 3 × 10⁻⁴, warmup steps 1,000, step 250 → 3 × 10⁻⁴ × 250 ÷ 1,000 = 3 × 10⁻⁴ × 0.25 = 7.5 × 10⁻⁵. Adam step 2 (g₁ = g₂ = g): m₂ = 0.9 × 0.1g + 0.1g = 0.19g. 1 − 0.9² = 0.19. m̂₂ = 0.19g ÷ 0.19 = g. v එකටත් එහෙමමයි (β₂ = 0.999 → v₁ = 0.001 g², ÷ 0.001 = g²).',
-      code: {
-        lang: 'python',
-        src: `import torch
-
-g = torch.tensor([6.0, 8.0])
-norm = g.norm()                                  # 10
-clipped = g * min(1.0, 1.0 / norm.item())        # [0.6, 0.8]
-print(clipped)
-# ඇත්ත training එකේදී: torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-
-peak, warm = 3e-4, 1000
-print(peak * 250 / warm)                         # 7.5e-05 (warmup)
-
-drop = torch.nn.Dropout(p=0.2).train()
-print(drop(torch.ones(8)))                       # ඉතුරු ඒවා 1.25, අනිත් ඒවා 0
-m1 = 0.1 * 5.0; print(m1 / (1 - 0.9 ** 1))       # g=5 → bias correction → 5.0`,
+      "body": [
+        "Global-norm clipping limits the length of the full gradient vector. If its norm exceeds the maximum, multiply every component by max_norm/norm; this preserves direction. Linear warmup increases learning rate from zero to a peak: lr=peak×step/warmup_steps.",
+        "Inverted dropout randomly zeros activations during training and scales surviving activations by 1/(1−p), so no dropout scaling is needed at inference. Adam uses moving averages m and v; because these start at zero, bias correction divides by (1−βᵗ) to counter early underestimation."
+      ],
+      "analogy": "Gradient clipping is like reducing the volume of every instrument equally when the whole band is too loud; the balance and direction stay the same. Warmup starts the learning rate gently before reaching its full pace.",
+      "example": "For gradient [6,8], norm=√(36+64)=10. With max_norm=1, scale by 1/10 to get [0.6,0.8]. With dropout p=0.2, surviving values are multiplied by 1/0.8=1.25. For Adam β₁=0.9 at step 1, m₁=0.1g₁ and m̂₁=m₁/(1−0.9)=g₁.",
+      "code": {
+        "lang": "python",
+        "src": "import torch\n\ng = torch.tensor([6.0, 8.0])\nnorm = g.norm()  # 10\nclipped = g * min(1.0, 1.0 / norm.item())  # [0.6, 0.8]\nprint(clipped)\n\n\npeak, warm = 3e-4, 1000\nprint(peak * 250 / warm)  # 7.5e-05 after warmup.\n\ndrop = torch.nn.Dropout(p=0.2).train()\nprint(drop(torch.ones(8)))  # Retained values are 1.25; the rest are zero.\nm1 = 0.1 * 5.0; print(m1 / (1 - 0.9 ** 1))  # g=5; bias correction returns 5.0."
       },
-      keyPoints: [
-        'Clipping: norm = √Σg². Norm > max නම් × (max ÷ norm). දිශාව එහෙමමයි.',
-        'Warmup: lr = peak × step ÷ warmup_steps.',
-        'Inverted dropout: ඉතුරු ඒවා × 1 ÷ (1 − p). Inference වලදී කිසිම scaling එකක් නෑ.',
-        'Adam: m̂ = m ÷ (1 − βᵗ). Zero init නිසා ඇති වෙන 0-bias එක අයින් කරනවා.',
+      "keyPoints": [
+        "Global clipping scales all gradients by max_norm/norm when necessary.",
+        "Warmup lr=peak×step/warmup_steps.",
+        "Inverted dropout scales survivors by 1/(1−p) during training.",
+        "Adam bias correction divides moments by 1−βᵗ."
       ],
-      terms: [
-        { en: 'Global Norm Clipping', si: 'මුළු gradient vector එකේම දිග සීමා කරන එක. දිශාව ආරක්ෂා වෙනවා.' },
-        { en: 'L2 Norm', si: 'Vector එකක දිග: හැම component එකකම වර්ග එකතුවේ වර්ගමූලය.' },
-        { en: 'Linear Warmup', si: 'Learning rate එක 0 සිට peak දක්වා රේඛීයව වැඩි කරන training ආරම්භය.' },
-        { en: 'Inverted Dropout', si: 'Training වලදී ඉතුරු activations 1/(1−p) න් scale කරන dropout ක්‍රමය.' },
-        { en: 'Bias Correction', si: 'Adam ගේ zero-init moving averages, (1 − βᵗ) වලින් බෙදලා නිවැරදි කරන එක.' },
-        { en: 'β₁, β₂', si: 'Adam ගේ gradient සහ squared-gradient averages වල decay rates (සාමාන්‍යයෙන් 0.9, 0.999).' },
+      "terms": [
+        {
+          "en": "Global Norm Clipping",
+          "si": "Scale the full gradient vector when its L2 norm exceeds a chosen maximum."
+        },
+        {
+          "en": "L2 Norm",
+          "si": "The square root of the sum of squared vector components."
+        },
+        {
+          "en": "Linear Warmup",
+          "si": "Increase the learning rate linearly from a low value to a target value at training start."
+        },
+        {
+          "en": "Inverted Dropout",
+          "si": "Drop activations during training and scale survivors by 1/(1−p), requiring no inference scaling."
+        },
+        {
+          "en": "Bias Correction",
+          "si": "Correct Adam’s zero-initialized moment averages by dividing by 1−βᵗ."
+        },
+        {
+          "en": "β₁, β₂",
+          "si": "Adam decay coefficients for the first- and second-moment averages."
+        }
       ],
+      "si": "ඔයා cricket team එකේ හැමෝම එකවර අධික හයියෙන් කෑගහනවා නම් හැමෝගෙම volume එක සමානව අඩු කරනවා වගේ gradient clipping වැඩ කරනවා. [6,8] vector එකේ norm 10යි, max 1 නම් 0.1කින් scale කරලා [0.6,0.8] ලැබнэ. Dropout p=0.2 නම් ඉතුරු activation 1.25කින් ගුණ කරනවා. Adam මුල් පියවරේ average එක අඩුවෙන් පෙනෙන නිසා bias correction එක යොදනවා."
     },
     {
-      id: 'loss-functions-deep-dive',
-      title: 'Choosing the Right Loss: MSE vs CE, Multi-Label, Huber, Focal Loss, Log-Probs, Likelihood View, KL Directions',
-      examRefs: ['FUN-014', 'FUN-015', 'FUN-078', 'FUN-111', 'FUN-112', 'FUN-117', 'FUN-119', 'FUN-124', 'FUN-125', 'FUN-126'],
-      body: [
-        'Loss එක තෝරන්න output එක දිහා බලන්න. Regression (ගෙදර මිල) → MSE. Mutually exclusive classes 12ක් (ticket එකට category එකයි) → softmax + categorical cross-entropy. Class index එකට (0-11) MSE දාන්න එපා: ඒකෙන් කියවෙන්නේ category 11, category 1 ට වඩා 12 ට "ළඟයි" කියලා. Multi-label (article එකකට "politics" සහ "economy" දෙකම) → හැම tag එකකටම වෙනම sigmoid + binary cross-entropy. Softmax දැම්මොත් probabilities එකතුව 1 වෙන්න බල කරනවා, tags එකිනෙකා එක්ක තරඟ කරනවා.',
-        'Outliers තියෙන regression (sensor glitches) → MAE හෝ Huber loss. MSE වැරැද්ද වර්ග කරන නිසා එක ලොකු outlier එකක් gradient එකම පාලනය කරනවා. MAE රේඛීයව වැඩි වෙනවා. Huber = පොඩි වැරදි වලට වර්ග (MSE වගේ smooth), ලොකු වැරදි වලට රේඛීය (MAE වගේ robust). RMSE තාමත් squared error මත පදනම් නිසා sensitive. Focal loss: object detector එකක easy background examples ගොඩාක්. Focal loss = cross-entropy × (1 − p_t)^γ. p_t = හරි class එකට දුන්න probability එක. Model එක දැනටමත් හොඳට හරි නම් (p_t ළඟ 1) ගුණකය 0 ට ළං වෙනවා, ඉතින් training අවධානය අමාරු examples වලට යනවා. Negatives ඔක්කොම අයින් කළොත් background එක කොහොමද කියලා ඉගෙන ගන්න බෑ.',
-        'Log-probabilities පාවිච්චි කරන්නේ ඇයි? 1 ට අඩු probabilities සිය ගණනක් ගුණ කළොත් float එකේ 0 වෙලා යනවා (underflow). Log එකෙන් ගුණ කිරීම එකතු කිරීමක් වෙනවා, අංකය නිරූපණය කරන්න පුළුවන් පරාසයේ තියෙනවා. Log-probs ≤ 0 (positive නෙවෙයි). Double softmax bug: PyTorch CrossEntropyLoss එක ඇතුළේම log-softmax කරනවා. ඉතින් ඒකට දෙන්න ඕනේ raw logits. Softmax කරපු probs දුන්නොත් softmax දෙපාරක් වෙලා loss surface එක පැතලි වෙනවා, gradients දුර්වලයි, training slow, calibration නරකයි. y එකට integer class indices දෙන්න පුළුවන් (one-hot ඕනේ නෑ).',
-        'Likelihood ඇහැකින්: MSE අවම කිරීම = constant variance තියෙන Gaussian noise උපකල්පනය යටතේ maximum likelihood. Laplace noise → MAE. Bernoulli targets → binary cross-entropy. Cross-entropy සහ KL: H(p, q) = H(p) + KL(p‖q). H(p) (data entropy) model එක මත රඳා පවතින්නේ නෑ, ඉතින් cross-entropy අඩු කිරීම = KL අඩු කිරීම = model distribution එක data distribution එකට ගැළපීම. KL දිශා: bimodal P එකකට එක Gaussian Q එකක් fit කරනවා නම්, forward KL(P‖Q) අවම කිරීම mode-covering (Q මුදුන් දෙකම වහන්න පැතිරෙනවා). Reverse KL(Q‖P) mode-seeking (එක මුදුනකට හිර වෙනවා). Exam එකේ මේ දෙක මාරු කරලා දෙනවා, පරිස්සමින්.',
+      "id": "loss-functions-deep-dive",
+      "title": "Choosing the Right Loss: MSE vs CE, Multi-Label, Huber, Focal Loss, Log-Probs, Likelihood View, KL Directions",
+      "examRefs": [
+        "FUN-014",
+        "FUN-015",
+        "FUN-078",
+        "FUN-111",
+        "FUN-112",
+        "FUN-117",
+        "FUN-119",
+        "FUN-124",
+        "FUN-125",
+        "FUN-126"
       ],
-      analogy: 'Huber loss = පන්ති ගුරුවරයෙක් ලකුණු දානවා. පොඩි වැරදි වලට වැරැද්දේ වර්ගයට දඬුවම් (සියුම්ව හදනවා). ඒත් එක ළමයෙක් paper එකම හිස්ව දුන්නොත් (outlier) මුළු පන්තියේම ඉගැන්වීම ඒ එක්කෙනා වටේට හරවන්නේ නෑ, රේඛීය දඬුවමක් විතරයි. Focal loss = A/L tuition පන්තියක, හැමෝටම දැනටමත් තේරෙන පාඩම් (easy) ට අඩු කාලයක්, අමාරු ප්‍රශ්න වලට වැඩි කාලයක්. Forward vs reverse KL = Q එක එක torch light එකක්. Forward = කාමර දෙකම පොඩ්ඩ පොඩ්ඩ එළිය වෙන්න පළල්ව එල්ලනවා. Reverse = එක කාමරයක් හොඳට එළිය කරනවා, අනික අඳුරේ.',
-      example: 'Huber (δ = 1): වැරැද්ද 0.5 → 0.5 × 0.5² = 0.125 (MSE වගේ). වැරැද්ද 10 → 1 × (10 − 0.5) = 9.5. MSE නම් 10² = 100. Outlier එකේ බලපෑම 10 ගුණයකින් වගේ අඩුයි. Focal loss (γ = 2): p_t = 0.9 → (0.1)² = 0.01, CE 0.105 → focal 0.00105 (ගොඩක් අඩු කළා). p_t = 0.5 → (0.5)² = 0.25 → CE 0.693 → 0.173 (බර ටිකක් විතරක් අඩු කළා). Underflow: 0.1 ගුණ කිරීම් 400ක් = 10⁻⁴⁰⁰. FP32 එකට ඒක 0. Log එකෙන්: 400 × ln(0.1) ≈ −921. ලේසියෙන්ම තියාගන්න පුළුවන්.',
-      code: {
-        lang: 'python',
-        src: `import torch, torch.nn as nn
-
-logits = torch.tensor([[2.0, 0.5, -1.0]])
-y = torch.tensor([0])                        # integer class index, one-hot නෑ
-good = nn.CrossEntropyLoss()(logits, y)      # හරි: raw logits
-bad = nn.CrossEntropyLoss()(torch.softmax(logits, -1), y)  # BUG: double softmax
-print(good.item(), bad.item())
-
-multi = nn.BCEWithLogitsLoss()               # multi-label: tag එකකට sigmoid එකක්
-print(multi(torch.tensor([[1.2, -0.3]]), torch.tensor([[1.0, 1.0]])))
-print(nn.HuberLoss(delta=1.0)(torch.tensor([10.0]), torch.tensor([0.0])))  # 9.5`,
+      "body": [
+        "Choose a loss that matches the target. Regression commonly uses MSE; mutually exclusive classes use softmax with categorical cross-entropy; multi-label tasks use an independent sigmoid and binary cross-entropy for each label. Using MSE on class indices falsely treats category numbers as ordered distances.",
+        "MSE strongly penalizes large residuals; MAE grows linearly; Huber is quadratic for small errors and linear for large ones. Focal loss multiplies cross-entropy by (1−p_t)^γ to reduce the contribution of easy examples, useful in heavily imbalanced detection tasks. Log probabilities avoid underflow when multiplying many small probabilities.",
+        "PyTorch CrossEntropyLoss expects raw logits and performs log-softmax internally; passing already-softmaxed values applies the operation twice and can weaken learning. MSE corresponds to Gaussian-noise maximum likelihood, MAE to Laplace-noise likelihood, and binary cross-entropy to Bernoulli targets. H(p,q)=H(p)+KL(p‖q); forward KL tends to cover modes while reverse KL tends to select a mode."
+      ],
+      "analogy": "Huber loss is like a teacher who corrects small mistakes carefully but does not let one extreme outlier dominate the whole class. Focal loss spends less effort on easy questions and more on difficult ones.",
+      "example": "With Huber δ=1, error 0.5 gives 0.5×0.5²=0.125; error 10 gives 10−0.5=9.5 instead of MSE’s 100. For p_t=0.9 and γ=2, focal multiplier=(0.1)²=0.01. In PyTorch, pass logits such as [2.0,0.5,−1.0] directly to CrossEntropyLoss, not softmax(logits).",
+      "code": {
+        "lang": "python",
+        "src": "import torch, torch.nn as nn\n\nlogits = torch.tensor([[2.0, 0.5, -1.0]])\ny = torch.tensor([0])  # Integer class index; no one-hot encoding required.\ngood = nn.CrossEntropyLoss()(logits, y)  # Correct: pass raw logits.\nbad = nn.CrossEntropyLoss()(torch.softmax(logits, -1), y)  # Bug: applying softmax twice.\nprint(good.item(), bad.item())\n\nmulti = nn.BCEWithLogitsLoss()  # Multi-label: independent sigmoid per tag.\nprint(multi(torch.tensor([[1.2, -0.3]]), torch.tensor([[1.0, 1.0]])))\nprint(nn.HuberLoss(delta=1.0)(torch.tensor([10.0]), torch.tensor([0.0])))  # The result is 9.5."
       },
-      keyPoints: [
-        'Regression → MSE. Exclusive classes → softmax + CE. Multi-label → sigmoid + BCE.',
-        'Outliers → MAE / Huber. Easy examples ගොඩයි → focal loss (1 − p_t)^γ.',
-        'Log-probs = underflow නැති කරනවා. CrossEntropyLoss එකට raw logits.',
-        'MSE ↔ Gaussian, MAE ↔ Laplace, BCE ↔ Bernoulli. H(p,q) = H(p) + KL(p‖q).',
-        'Forward KL(P‖Q) = mode-covering. Reverse KL(Q‖P) = mode-seeking.',
+      "keyPoints": [
+        "Regression→MSE/MAE/Huber; exclusive classes→softmax CE; multi-label→sigmoid BCE.",
+        "Huber limits outlier influence; focal loss downweights easy examples.",
+        "Use log probabilities to prevent underflow.",
+        "PyTorch CrossEntropyLoss takes raw logits.",
+        "Cross-entropy=entropy+KL; forward and reverse KL behave differently."
       ],
-      terms: [
-        { en: 'Huber Loss', si: 'පොඩි වැරදි වලට quadratic, ලොකු වැරදි වලට linear. Outliers වලට robust.' },
-        { en: 'Focal Loss', si: 'Cross-entropy × (1 − p_t)^γ. පහසු examples වල බර අඩු කරනවා.' },
-        { en: 'Multi-Label Classification', si: 'එක example එකකට labels කීපයක් එකවර තියෙන්න පුළුවන් task එක.' },
-        { en: 'BCEWithLogitsLoss', si: 'Sigmoid + binary cross-entropy එකට, numerically stable විදිහට.' },
-        { en: 'Maximum Likelihood', si: 'Data එක දකින්න සම්භාවිතාව උපරිම කරන parameters හොයන එක.' },
-        { en: 'Mode-Covering / Mode-Seeking', si: 'Forward KL මුදුන් ඔක්කොම වහනවා. Reverse KL එක මුදුනකට හිර වෙනවා.' },
+      "terms": [
+        {
+          "en": "Huber Loss",
+          "si": "A regression loss that is quadratic for small residuals and linear for large residuals."
+        },
+        {
+          "en": "Focal Loss",
+          "si": "Cross-entropy weighted to reduce contributions from easy examples."
+        },
+        {
+          "en": "Multi-Label Classification",
+          "si": "Predicting multiple independently applicable labels for each example."
+        },
+        {
+          "en": "BCEWithLogitsLoss",
+          "si": "Binary cross-entropy combined with sigmoid in a numerically stable operation."
+        },
+        {
+          "en": "Maximum Likelihood",
+          "si": "Choose parameters that make the observed data most probable under the model."
+        },
+        {
+          "en": "Mode-Covering / Mode-Seeking",
+          "si": "Forward KL tends to cover modes; reverse KL tends to concentrate on a mode."
+        }
       ],
+      "si": "ඔයාට එක ticket එකකට category එකක් විතරක් නම් softmax සහ cross-entropy ගන්න, article එකකට politicsත් economyත් දෙකම තිබුණොත් එක් label එකකට sigmoid ගන්න. Sensor එකක අසාමාන්‍ය 10ක error එකක් තිබුණොත් MSE 100 දක්වා දඬුවම් කරනවා, Huber δ=1 නම් 9.5යි. PyTorch CrossEntropyLoss එකට raw logits දෙන්න; softmax කලින් දාන්න එපා. Focal loss එක ලේසි examples වල බර අඩු කරලා අමාරු ඒවාට අවධානය දෙනවා."
     },
     {
-      id: 'nn-training-mechanics',
-      title: 'Neural Network Mechanics: Epochs & Steps, Gradient Descent, Backprop, Activations, Initialization, Vanishing / Exploding Gradients, Universal Approximation',
-      examRefs: ['FUN-010', 'FUN-012', 'FUN-013', 'FUN-023', 'FUN-024', 'FUN-025', 'FUN-026', 'FUN-027', 'FUN-064', 'FUN-065', 'FUN-100', 'FUN-122', 'FUN-149'],
-      body: [
-        'වචන තුනක්: Epoch = මුළු training set එකම එක පාරක් බලලා ඉවර වීම. Step / iteration = එක mini-batch එකකින් එක weight update එකක්. Epoch එකක steps ගොඩක් තියෙනවා. Mini-batch gradient descent = පොඩි subset එකක gradients සාමාන්‍යය අරන් update කරනවා. Full-batch (මුළු dataset එකම) ස්ථාවර ඒත් මිලයි. එක example එකකින් (pure SGD) ලාභ ඒත් noisy. Mini-batch මැද, සහ GPU එකට batch එකක් සමාන්තරව process කරන්න ගැළපෙනවා.',
-        'Gradient descent: θ ← θ − η∇L. Gradient (∇L) එක loss එක වේගයෙන්ම වැඩි වෙන දිශාව පෙන්නනවා. ඉතින් අපි යන්නේ ඒකට විරුද්ධ පැත්තට. η = learning rate. ලොකු වැඩි නම් minimum එක පැනලා යනවා, loss එක පනිනවා, NaN වෙනවා. Epochs අඩු නම් loss ඉහළයි ඒත් ස්ථාවරයි, පනින්නේ නෑ. Backpropagation කරන්නේ chain rule එකෙන් හැම parameter එකකටම loss එකේ gradient එක ගණනය කරන එක විතරයි. Weights update කරන්නේ optimizer එක (SGD, Adam).',
-        'Activations: non-linearity නැත්නම් linear layers ගොඩක් එකට ගැහුවත් ඒක එක linear transformation එකක්ම වෙනවා. Depth එකෙන් බලයක් නෑ. Sigmoid → (0, 1), binary probability. Tanh → (−1, 1). ReLU = max(0, x) → [0, ∞), උඩට සීමාවක් නෑ. Softmax → ඔක්කොම positive, එකතුව 1. Argmax → one-hot (එකක් 1, අනිත් ඒවා 0). Universal approximation theorem: එක hidden layer එකක් සහ සුදුසු non-linearity එකක් තියෙන network එකකට, hidden units ඇති තරම් තියෙනවා නම්, compact domain එකක ඕනෑම continuous function එකක් ඕනෑම නිරවද්‍යතාවයකින් approximate කරන්න පුළුවන්. ඒත් ඒක representational capacity ගැන විතරයි: units කීයක් ඕනෙද, gradient descent එක ඒ weights හොයයිද, generalize වෙයිද කියලා කිසිවක් කියන්නේ නෑ. ප්‍රායෝගිකව deep networks වඩා කාර්යක්ෂමයි.',
-        'Initialization: weights ඔක්කොම 0 නම් එකම layer එකේ neurons එකම output, එකම gradient, එකම update. Symmetry එක කවදාවත් කැඩෙන්නේ නෑ, layer එක එක neuron එකක් වගේ. ඉතින් random init (Xavier / He) ඕනේ. ReLU networks වලට He (Kaiming) init: variance = 2 ÷ fan_in. ReLU inputs වලින් බාගයක් වගේ 0 කරන නිසා variance බාගයක් වෙනවා, 2 කින් ඒක වන්දි ගෙවනවා. Xavier tanh වගේ symmetric activations වලට හදපු එකක්. Vanishing gradients: sigmoid derivative එකේ උපරිමය 0.25. Layers 30ක් හරහා ගුණ කළාම early layers වලට gradient එකක්ම එන්නේ නෑ. විසඳුම: ReLU-family (positive inputs වලට derivative 1) + residual connections (gradients වලට කෙලින්ම පාරක්). Batch size වැඩි කිරීම මේ ගුණ කිරීමේ බලපෑම වෙනස් කරන්නේ නෑ. Exploding gradients (RNN වල gradient norms හදිසියේ ලොකු වෙලා NaN) → gradient clipping. Early stopping ඒකට උදව් කරන්නේ නෑ.',
+      "id": "nn-training-mechanics",
+      "title": "Neural Network Mechanics: Epochs & Steps, Gradient Descent, Backprop, Activations, Initialization, Vanishing / Exploding Gradients, Universal Approximation",
+      "examRefs": [
+        "FUN-010",
+        "FUN-012",
+        "FUN-013",
+        "FUN-023",
+        "FUN-024",
+        "FUN-025",
+        "FUN-026",
+        "FUN-027",
+        "FUN-064",
+        "FUN-065",
+        "FUN-100",
+        "FUN-122",
+        "FUN-149"
       ],
-      analogy: 'Vanishing gradient = "කටකතා game" එක. පන්තියේ 30 දෙනෙක් හරහා පණිවිඩයක් කනට කනට කියනකොට, හැම කෙනාම 25% ක් විතරක් ඇහෙන විදිහට කිව්වොත් අන්තිම කෙනාට කිසිවක් ඇහෙන්නේ නෑ. Residual connection = පණිවිඩය WhatsApp එකෙන් අන්තිම කෙනාටත් කෙලින්ම යවනවා. Zero init = cricket team එකේ 11 දෙනාටම එකම training, එකම position. කවදාවත් bowler, keeper, batsman කියලා වෙනස් වෙන්නේ නෑ.',
-      example: 'Sigmoid derivative ≤ 0.25. Layers 10ක් → 0.25¹⁰ ≈ 0.00000095 (මිලියනයෙන් එකක් වගේ). ReLU (positive) → 1¹⁰ = 1. He init: fan_in = 512 → variance = 2 ÷ 512 ≈ 0.0039 → std ≈ 0.0625. Activation check: (x = −3) → ReLU 0, sigmoid ≈ 0.047, tanh ≈ −0.995. GD step: w = 2.0, gradient = 4, η = 0.1 → w = 2.0 − 0.1 × 4 = 1.6. η = 1.0 නම් → 2.0 − 4 = −2.0 (පැනලා අනිත් පැත්තට, overshoot).',
-      keyPoints: [
-        'Epoch = මුළු data එක එක පාරක්. Step = එක mini-batch update එකක්.',
-        'θ ← θ − η∇L (gradient එකට විරුද්ධව). LR ලොකු → පනිනවා / NaN.',
-        'Backprop = gradients ගණනය. Optimizer = update.',
-        'Non-linearity නැත්නම් depth වැඩක් නෑ. Sigmoid (0,1), tanh (−1,1), ReLU [0,∞).',
-        'Zero init = symmetry. ReLU → He init. Vanishing → ReLU + residuals. Exploding → clipping. UAT = capacity විතරයි.',
+      "body": [
+        "A neural network composes linear transformations and nonlinear activations. Without nonlinearities, multiple layers collapse into one linear transformation, so depth adds no expressive power. Backpropagation applies the chain rule to compute gradients; the optimizer then updates parameters. A training step commonly uses one mini-batch.",
+        "Zero-initializing all units gives them identical gradients and preserves symmetry, preventing them from learning different features. Random initialization breaks symmetry. He initialization is suited to ReLU networks; Xavier/Glorot is commonly used for tanh-like activations. ReLU outputs [0,∞), sigmoid (0,1), and tanh (−1,1).",
+        "Vanishing gradients impede early layers; ReLU activations and residual connections can help. Exploding gradients can be controlled with clipping. The universal approximation theorem describes representational capacity under assumptions, but does not guarantee efficient training or generalization."
       ],
-      terms: [
-        { en: 'Iteration / Step', si: 'එක mini-batch එකකින් කරන එක weight update එකක්.' },
-        { en: 'Chain Rule', si: 'Function chain එකක derivative එක, කොටස් වල derivatives ගුණ කරලා ගන්න නීතිය. Backprop ගේ පදනම.' },
-        { en: 'Symmetry Breaking', si: 'Random init එකෙන් neurons වෙනස් features ඉගෙන ගන්න සැලැස්වීම.' },
-        { en: 'He (Kaiming) Initialization', si: 'ReLU සඳහා variance 2/fan_in සහිත weight init එක.' },
-        { en: 'Xavier (Glorot) Initialization', si: 'tanh වගේ symmetric activations සඳහා fan_in සහ fan_out සාමාන්‍යය මත init එක.' },
-        { en: 'Residual Connection', si: 'Layer එකක input එක output එකට කෙලින්ම එකතු කරන shortcut එක. Gradients වලට කෙටි පාරක්.' },
-        { en: 'Universal Approximation Theorem', si: 'Hidden units ඇති නම් එක hidden layer එකකට ඕනෑම continuous function එකක් approximate කරන්න පුළුවන් කියන theorem එක.' },
+      "analogy": "A relay team needs each runner to contribute a distinct leg: identical starting weights can make neural units learn the same role. Random initialization gives units different starting points, while residual connections provide a shortcut for the learning signal.",
+      "example": "For ReLU with fan_in=100, He initialization uses weight variance 2/100=0.02. If a network has only linear layers, multiplying their matrices still produces one linear map; adding a nonlinear activation is what makes the composition nonlinear.",
+      "keyPoints": [
+        "Backprop computes gradients; an optimizer applies updates.",
+        "Nonlinear activation is necessary for deep nonlinear functions.",
+        "Random initialization breaks symmetry; use He for ReLU, Xavier often for tanh.",
+        "Residual connections can improve gradient flow; clipping controls exploding gradients.",
+        "Universal approximation is about capacity, not guaranteed learning."
       ],
+      "terms": [
+        {
+          "en": "Iteration / Step",
+          "si": "One parameter update, commonly computed from a mini-batch."
+        },
+        {
+          "en": "Chain Rule",
+          "si": "The derivative rule for a composition of functions, used by backpropagation."
+        },
+        {
+          "en": "Symmetry Breaking",
+          "si": "Different initial weights let otherwise identical neurons learn different features."
+        },
+        {
+          "en": "He (Kaiming) Initialization",
+          "si": "A weight initialization scaled for ReLU activations, commonly with variance 2/fan_in."
+        },
+        {
+          "en": "Xavier (Glorot) Initialization",
+          "si": "An initialization scaled using fan-in and fan-out, often used with tanh-like activations."
+        },
+        {
+          "en": "Residual Connection",
+          "si": "A shortcut that adds a layer’s input to its output, helping information and gradients flow."
+        },
+        {
+          "en": "Universal Approximation Theorem",
+          "si": "Under conditions, a sufficiently wide network can approximate continuous functions; it does not ensure easy training."
+        }
+      ],
+      "si": "ඔයා පාසල් relay team එකක හැම runnerම එකම leg එක දුවනවා නම් කණ්ඩායමට වෙනස් දක්ෂතා ලැබෙන්නේ නෑ; neural network එකේ හැම weight එකම zero දැම්මොත් units එකම දේ ඉගෙන ගන්නවා. Random initialization එකෙන් ඒවා වෙනස් වෙන්න පටන් ගන්නවා. ReLUට He initialization ප්‍රයෝජනවත්. Layer අතර nonlinear activation නැත්නම් layers ගොඩක් තිබුණත් එක linear map එකක් වගේමයි."
     },
     {
-      id: 'optimizers-batch-size-deep-dive',
-      title: 'Optimizers & Batch Size Deep Dive: Momentum, Adam, AdamW vs L2, Schedules, Large-Batch Generalization, Memory',
-      examRefs: ['FUN-060', 'FUN-061', 'FUN-062', 'FUN-063', 'FUN-096', 'FUN-114', 'FUN-139', 'FUN-140'],
-      body: [
-        'Momentum: past gradients වල exponentially decaying සාමාන්‍යයක් (velocity) තියාගන්නවා. ලකුණ මාරු වෙන (oscillate වෙන) components එකිනෙකා කපාගෙන යනවා, එකම දිශාවට තියෙන ඒවා එකතු වෙලා වේගය වැඩි වෙනවා. Learning rate එකක් තාමත් ඕනේ. ඒක regularizer එකක් නෙවෙයි, optimization උදව්වක්. Adam = momentum (පළමු moment, m) + RMSProp-style scaling (දෙවන moment, v = squared gradients සාමාන්‍යය). හැම parameter එකකටම තමන්ගේම effective learning rate එකක්. v කියන්නේ Hessian එකේ ලාභ diagonal approximation එකක් වගේ, full Hessian (second derivatives) ගණනය කරන්නේ නෑ.',
-        'AdamW: Adam එකට L2 penalty එක loss එකට එකතු කළොත්, ඒ penalty එකේ gradient එකත් Adam ගේ √v එකෙන් බෙදෙනවා. ඉතින් ලොකු gradient ඉතිහාසයක් තියෙන weights අඩුවෙන් decay වෙනවා, regularization අසමානයි. AdamW weight decay එක adaptive update එකෙන් වෙන් කරලා (decoupled) කෙලින්ම weights වලට යොදනවා: θ ← θ − ηλθ. Plain SGD වලදී L2 සහ weight decay එකයි (λ scale එකක් දක්වා). Adaptive optimizers වලදී ඒ සමානකම කැඩෙනවා. AdamW = වෙනස් update rule එකක්, defaults වෙනස් කරපු එකක් නෙවෙයි. Transformers වල default එක.',
-        'Schedules: ලොකු networks scratch එකෙන් train කරනකොට සම්මත ක්‍රමය = කෙටි linear warmup එකක් + cosine හෝ linear decay. Warmup = මුල් අස්ථාවර ලොකු updates වළක්වනවා. Decay = අන්තිමට minimum එකට පදිංචි වෙන්න. Constant high LR = අන්තිම දක්වා minimum එක වටේ පනිනවා.',
-        'Batch size 64 → 1,024 (16×), epochs එකමයි: epoch එකකට steps 16 ගුණයක් අඩුයි, gradients noise අඩුයි, activations වලට memory වැඩියි (අඩු නෙවෙයි). ඉතින් learning rate එක වැඩි කරන්න ඕනේ වෙනවා (warmup එක්ක). Large-batch generalization gap: noise අඩු සහ updates අඩු නිසා sharp minima වලට යන්න නැඹුරුයි, ඒවා generalize වෙන්නේ නරකට. Small-batch noise එක implicit regularizer එකක්. LR scaling + warmup, LAMB වගේ layer-wise adaptive optimizers මේ පරතරය අඩු කරනවා. Memory: FP32 + Adam = parameter එකකට bytes 16 (weight 4, gradient 4, m 4, v 4). Activations මේකට අමතරයි.',
+      "id": "optimizers-batch-size-deep-dive",
+      "title": "Optimizers & Batch Size Deep Dive: Momentum, Adam, AdamW vs L2, Schedules, Large-Batch Generalization, Memory",
+      "examRefs": [
+        "FUN-060",
+        "FUN-061",
+        "FUN-062",
+        "FUN-063",
+        "FUN-096",
+        "FUN-114",
+        "FUN-139",
+        "FUN-140"
       ],
-      analogy: 'Momentum = බෑවුමක් පහළට පෙරළෙන බෝලයක්. පොඩි ගල් (noise) වලින් දිශාව වෙනස් වෙන්නේ නෑ, ගම්‍යතාවයෙන් දිගටම යනවා. Adam = හැම පාරකටම වෙනම speed limit: කොළඹ ඇතුළේ හෙමින්, highway එකේ වේගයෙන්. Sharp vs flat minimum = ගලක් උඩ තියෙන තියුණු වළක් vs පිට්ටනියක තියෙන පළල් වළක්. Test data කියන්නේ පොඩ්ඩක් පැත්තකට විස්ථාපනය වුණ ලෝකයක්. පළල් වළේ නම් පොඩ්ඩක් පැත්තට ගියත් තාම පහළ. තියුණු වළේ නම් එළියට වැටෙනවා.',
-      example: 'Batch 64, rows 64,000 → steps 1,000 / epoch. Batch 1,024 → steps 62.5 (≈ 63). Linear scaling rule එකට අනුව LR 0.1 → 1.6 (16×), warmup එක්ක. Memory: 7B model, FP32 + Adam → 7 × 16 = 112 GB (activations නැතුව). AdamW: λ = 0.01, η = 0.001 → හැම step එකකම weights × (1 − 0.00001) shrink වෙනවා, gradient history එක මොකක් වුණත්.',
-      keyPoints: [
-        'Momentum = oscillations අඩු, consistent දිශාවට වේගය. LR තාම ඕනේ.',
-        'Adam = m (momentum) + v (per-parameter scaling). Hessian නෑ.',
-        'AdamW = decoupled weight decay. Adam + L2 ≠ weight decay.',
-        'Warmup + cosine decay = සම්මත schedule එක.',
-        'Batch ↑ → steps ↓, LR ↑ ඕනේ, memory ↑, sharp minima අවදානම. FP32 Adam = bytes 16 / param.',
+      "body": [
+        "Momentum maintains an exponentially decaying average of gradients, reducing oscillation and reinforcing consistent directions; it still needs a learning rate and is not itself regularization. Adam combines a first-moment average m with a second-moment average v to adapt updates per parameter, without computing the full Hessian.",
+        "With adaptive optimizers, adding L2 to the loss is not generally equivalent to decoupled weight decay. AdamW applies decay separately as θ←θ−ηλθ. Training schedules often use a brief warmup followed by cosine or linear decay; warmup avoids unstable early updates and decay helps settle late in training.",
+        "Increasing batch size from 64 to 1024 reduces steps per epoch by 16 and usually reduces gradient noise while increasing activation memory. Linear learning-rate scaling is a rule of thumb, commonly paired with warmup, not a universal guarantee. FP32 weights, gradients, and Adam m/v use about 16 bytes per parameter before activations. Large-batch training can affect generalization; layer-wise methods such as LAMB are used for some large-batch settings."
       ],
-      terms: [
-        { en: 'Momentum', si: 'Past gradients වල decaying average එකක් (velocity) පාවිච්චි කරන optimization උපක්‍රමය.' },
-        { en: 'Adam', si: 'Gradient සහ squared gradient running averages වලින් per-parameter step sizes හදන optimizer එක.' },
-        { en: 'AdamW', si: 'Weight decay එක adaptive update එකෙන් වෙන් කරපු Adam. Transformers වල default.' },
-        { en: 'Cosine Decay', si: 'Learning rate එක cosine curve එකක් විදිහට ක්‍රමයෙන් අඩු කරන schedule එක.' },
-        { en: 'Sharp vs Flat Minima', si: 'තියුණු වළ (නරක generalization) vs පළල් වළ (හොඳ generalization).' },
-        { en: 'LAMB', si: 'Large-batch training සඳහා layer-wise adaptive learning rates දෙන optimizer එක.' },
-        { en: 'Linear Scaling Rule', si: 'Batch size එක k ගුණයක් කළාම LR එකත් k ගුණයක් කරන rule of thumb එක (warmup එක්ක).' },
+      "analogy": "Momentum is a ball rolling downhill: small bumps do not immediately reverse its direction. Adam gives each parameter an adaptive step size. A broad valley is less sensitive to small changes than a sharp valley, although this analogy does not guarantee generalization.",
+      "example": "For 64,000 rows, batch 64 gives 1,000 steps per epoch; batch 1,024 gives 62.5, about 63. A 16× batch increase would scale LR 0.1 to 1.6 under the linear-scaling rule, usually with warmup. A 7-billion-parameter FP32 Adam model needs roughly 7×16=112 GB for parameters, gradients, and moments, excluding activations.",
+      "keyPoints": [
+        "Momentum averages gradients; Adam uses first and second moments.",
+        "AdamW decouples weight decay from adaptive updates.",
+        "Warmup plus decay is a common schedule, not a guarantee.",
+        "Larger batches mean fewer steps and more activation memory.",
+        "FP32 plus Adam uses roughly 16 bytes/parameter before activations."
       ],
+      "terms": [
+        {
+          "en": "Momentum",
+          "si": "An exponentially decaying average of past gradients used for optimization."
+        },
+        {
+          "en": "Adam",
+          "si": "An optimizer using moving averages of gradients and squared gradients."
+        },
+        {
+          "en": "AdamW",
+          "si": "Adam with weight decay decoupled from its adaptive gradient update."
+        },
+        {
+          "en": "Cosine Decay",
+          "si": "A learning-rate schedule that decreases along a cosine curve."
+        },
+        {
+          "en": "Sharp vs Flat Minima",
+          "si": "Narrow versus broad low-loss regions; their generalization behavior can differ."
+        },
+        {
+          "en": "LAMB",
+          "si": "A layer-wise adaptive optimizer used in some large-batch training settings."
+        },
+        {
+          "en": "Linear Scaling Rule",
+          "si": "A rule of thumb that scales learning rate with batch size, usually with warmup."
+        }
+      ],
+      "si": "ඔයා බෑවුමක පෙරළөх බෝලයක් හිතන්න; පොඩි ගල් байсанත් momentum නිසා දිශාව දිගටම යනවා. Adam හැම parameter එකකටම වෙනස් step size එකක් හදාගන්නවා. Rows 64,000කට batch 64 නම් epoch එකකට steps 1000යි; batch 1024 නම් 62.5ක්. Batch එක 16 ගුණයක් වැඩි කරනකොට memoryත් බලන්න, 7B model එකකට FP32 Adam states විතරක් 112 GB පමණ වෙන්න පුළුවන්."
     },
     {
-      id: 'normalization-and-pytorch-modes',
-      title: 'BatchNorm vs LayerNorm, and PyTorch Gotchas: zero_grad, eval(), no_grad()',
-      examRefs: ['FUN-066', 'FUN-067', 'FUN-068', 'FUN-069', 'FUN-120'],
-      body: [
-        'BatchNorm (training වලදී): layer එකක activations, දැනට තියෙන mini-batch එකේ mean සහ variance වලින් normalize කරලා, ඊට පස්සේ ඉගෙන ගන්න scale (γ) සහ shift (β) එකක් යොදනවා. Training එක ස්ථාවර සහ වේගවත් කරනවා. Inference වලදී batch statistics නෙවෙයි, training වලදී එකතු කරපු running averages පාවිච්චි කරනවා. Raw inputs එක පාරක් normalize කරන එක (preprocessing) BatchNorm නෙවෙයි.',
-        'LayerNorm: statistics ගණනය කරන්නේ එක example එකක් ඇතුළේ, features හරහා. ඉතින් batch size එක මත හෝ batch එකේ අනිත් examples මත රඳා පවතින්නේ නෑ. Batch size 1 හෝ 2 නම් BatchNorm statistics noisy වෙනවා. Variable-length sequences එක්ක BatchNorm අමාරුයි. Train සහ inference හැසිරීමත් වෙනස්. ඒකයි Transformers සහ sequence models LayerNorm පාවිච්චි කරන්නේ. LayerNorm එකටත් ඉගෙන ගන්න scale සහ shift තියෙනවා ("parameters නෑ" කියන option එක වැරදියි). Batch dimension එක හරහා normalize කරන්නේ BatchNorm.',
-        'PyTorch gotchas තුනක්: (1) optimizer.zero_grad() අමතක කළොත්: PyTorch default විදිහට gradients .grad එකේ එකතු (accumulate) කරනවා. හැම step එකකම අලුත් gradient එක පරණ ඒවාට එකතු වෙලා updates ලොකු වෙවී ගිහින් training අස්ථාවර වෙනවා. (2) model.eval() අමතක කළොත්: dropout තාම ක්‍රියාත්මකයි, BatchNorm batch statistics පාවිච්චි කරනවා → එකම input එකට වෙනස් predictions. model.train() තමයි default mode එක. Seed එකක් දැම්මොත් ලක්ෂණය හැංගෙනවා විතරයි. (3) torch.no_grad(): autograd එක operations record කරන්නේ නෑ, ඉතින් backprop සඳහා activations තියාගන්නේ නෑ → memory සහ compute ඉතිරියි. ඒත් ඒක dropout / BatchNorm mode එක වෙනස් කරන්නේ නෑ, ඒක eval() ගේ වැඩේ. FP16 බවටත් හරවන්නේ නෑ.',
+      "id": "normalization-and-pytorch-modes",
+      "title": "BatchNorm vs LayerNorm, and PyTorch Gotchas: zero_grad, eval(), no_grad()",
+      "examRefs": [
+        "FUN-066",
+        "FUN-067",
+        "FUN-068",
+        "FUN-069",
+        "FUN-120"
       ],
-      analogy: 'BatchNorm = පන්තියේ ලකුණු, ඒ දවසේ ආපු ළමයින්ගේ සාමාන්‍යයට සාපේක්ෂව මනිනවා. ළමයි 2යි ආවේ නම් ඒ "සාමාන්‍යය" විශ්වාස කරන්න බෑ. LayerNorm = එක ළමයෙක්ගේ විෂයන් ඔක්කොම අතර සාපේක්ෂව බලනවා, කවුරු ආවත් නැතත් වැඩේ එකයි. zero_grad = calculator එකේ "C" බොත්තම. ඔබන්නේ නැත්නම් හැම අලුත් ගණනක්ම පරණ උත්තරයට එකතු වෙනවා. model.eval() = match දවසේ practice drills නවත්තනවා.',
-      example: 'Bug එකේ ප්‍රතිඵලය: step 1 gradient = 2, step 2 = 2, step 3 = 2. zero_grad නැත්නම් .grad = 2, 4, 6 ... updates දිගටම ලොකු වෙනවා. BatchNorm batch = 2: activations [1, 3] → mean 2, variance 1 → normalized [−1, 1]. ඊළඟ batch [10, 10.2] → [−1, 1] ම වගේ. ඇත්ත අගයන් ගොඩක් වෙනස් වුණත් statistics noisy නිසා තොරතුරු නැති වෙනවා. LayerNorm එකට batch එක ගැන ගාණක් නෑ.',
-      code: {
-        lang: 'python',
-        src: `model.train()
-for x, y in loader:
-    optimizer.zero_grad()            # 1. පරණ gradients මකන්න
-    loss = criterion(model(x), y)    # 2. forward (raw logits)
-    loss.backward()                  # 3. gradients ගණනය (backprop)
-    optimizer.step()                 # 4. weights update
-
-model.eval()                         # dropout off, BatchNorm running stats
-with torch.no_grad():                # gradient tracking නෑ: memory ඉතිරියි
-    preds = model(x_test).argmax(dim=-1)`,
+      "body": [
+        "BatchNorm normalizes activations using mini-batch statistics during training and running averages during inference, then applies learned scale γ and shift β. LayerNorm computes statistics within each example across its features, so it does not depend on other examples in the batch; this is useful for small batches and sequence models. LayerNorm also has learned scale and shift parameters.",
+        "PyTorch accumulates gradients in .grad by default, so call optimizer.zero_grad() before the next update unless accumulation is intentional. Call model.eval() for inference to disable dropout and use BatchNorm running statistics. torch.no_grad() disables gradient recording and saves memory/compute, but does not change train/eval behavior or convert precision."
+      ],
+      "analogy": "BatchNorm is like grading students relative to the current classroom batch; LayerNorm is like normalizing each student’s marks within that student’s subjects. In PyTorch, eval() changes dropout/BatchNorm behavior, while no_grad() only stops gradient recording.",
+      "example": "For batch size 2, BatchNorm statistics may be noisy; LayerNorm uses each example’s feature values. If two batch gradients are accumulated intentionally, skip zero_grad between them; otherwise clear gradients each step. During inference, use both model.eval() and torch.no_grad() for their separate purposes.",
+      "code": {
+        "lang": "python",
+        "src": "model.train()\nfor x, y in loader:\n    optimizer.zero_grad()  # 1. Clear previous gradients.\n    loss = criterion(model(x), y)  # 2. Forward pass using raw logits.\n    loss.backward()  # 3. Compute gradients by backpropagation.\n    optimizer.step()  # 4. Update weights.\n\nmodel.eval()  # Disable dropout; use BatchNorm running statistics.\nwith torch.no_grad():  # Disable gradient tracking to save memory.\n    preds = model(x_test).argmax(dim=-1)"
       },
-      keyPoints: [
-        'BatchNorm = batch එක හරහා, inference වලදී running stats. LayerNorm = එක example එක ඇතුළේ.',
-        'පොඩි batches / sequences → LayerNorm. දෙකටම learnable γ, β තියෙනවා.',
-        'zero_grad() නැත්නම් gradients එකතු වෙවී යනවා.',
-        'eval() = dropout / BatchNorm mode. no_grad() = autograd off (memory). දෙකම inference ට.',
+      "keyPoints": [
+        "BatchNorm uses batch statistics in training and running averages at inference.",
+        "LayerNorm normalizes each example across features and has learnable γ/β.",
+        "zero_grad prevents unintended gradient accumulation.",
+        "eval() changes dropout/BatchNorm behavior.",
+        "no_grad() saves autograd memory; it does not call eval() or change precision."
       ],
-      terms: [
-        { en: 'Running Statistics', si: 'Training අතරතුර BatchNorm එකතු කරන mean / variance averages. Inference වලදී පාවිච්චි කරනවා.' },
-        { en: 'γ (scale), β (shift)', si: 'Normalization එකෙන් පස්සේ යොදන, ඉගෙන ගන්නා scale සහ shift parameters.' },
-        { en: 'Gradient Accumulation (PyTorch default)', si: '.backward() අලුත් gradients .grad එකට එකතු කරනවා. zero_grad() ඕනේ ඒ නිසා.' },
-        { en: 'model.eval()', si: 'Dropout නවත්තලා BatchNorm running stats වලට මාරු කරන mode එක.' },
-        { en: 'torch.no_grad()', si: 'Autograd recording නවත්තන context එක. Inference වේගවත්, memory අඩුයි.' },
+      "terms": [
+        {
+          "en": "Running Statistics",
+          "si": "Moving estimates of activation means and variances used by BatchNorm during inference."
+        },
+        {
+          "en": "γ (scale), β (shift)",
+          "si": "Learned parameters that scale and shift normalized activations."
+        },
+        {
+          "en": "Gradient Accumulation (PyTorch default)",
+          "si": "PyTorch adds new gradients to .grad until they are explicitly cleared."
+        },
+        {
+          "en": "model.eval()",
+          "si": "Set a PyTorch model to evaluation behavior, including disabling dropout and using BatchNorm running statistics."
+        },
+        {
+          "en": "torch.no_grad()",
+          "si": "Disable autograd recording to reduce inference memory and computation."
+        }
       ],
+      "si": "ඔයා පන්තියේ ළමයින්ගේ ලකුණු batch එකට සාපේක්ෂව normalize කරනවා නම් BatchNorm වගේ; එක් ළමයෙකුගේ subjects අතරම normalize කරනවා නම් LayerNorm වගේ. Batch size 2 වගේ පොඩි නම් BatchNorm statistics අස්ථාවර වෙන්න පුළුවන්. PyTorch වල zero_grad() අමතක වුණොත් gradients එකතු වෙනවා. eval() dropout වෙනස් කරනවා, no_grad() gradients ගණන් නොකර memory ඉතිරි කරනවා."
     },
     {
-      id: 'gans-vaes-flows',
-      title: 'Generative Models Deep Dive (1): Generative vs Discriminative, Naive Bayes, GANs, VAEs, Normalizing Flows',
-      examRefs: ['FUN-042', 'FUN-043', 'FUN-044', 'FUN-104', 'FUN-105', 'FUN-108', 'FUN-141', 'FUN-142', 'FUN-145'],
-      body: [
-        'Generative model = data distribution එක P(x) හෝ P(x, y) ඉගෙන ගන්නවා. ඒ නිසා අලුත් samples හදන්න (sample කරන්න) පුළුවන්. Discriminative model = P(y | x) කෙලින්ම ඉගෙන ගන්නවා, decision boundary එක විතරයි. අලුත් data හදන්න බෑ. Classifier එකක් generative ද? Naive Bayes = P(x | y) සහ P(y) model කරලා Bayes rule එකෙන් classify කරනවා → generative. Logistic regression (P(y | x) කෙලින්ම), linear SVM, decision tree → discriminative. Images / text කියන data වර්ගය මේ වෙනස තීරණය කරන්නේ නෑ.',
-        'GAN = networks දෙකක්: generator (noise වලින් fake samples හදනවා) සහ discriminator (real ද fake ද කියලා අඳුනගන්නවා). දෙන්නා එකිනෙකාට විරුද්ධව train වෙනවා. Failure 1, mode collapse: generator එක discriminator රවට්ටන outputs කීපයක් හොයාගෙන ඒවා විතරක් හදනවා (digits ඔක්කොම "1"). Failure 2, vanishing generator gradients: discriminator එක මුලදීම පරිපූර්ණ වුණාම, original minimax loss එකේ log(1 − D(G(z))) saturate වෙලා generator එකට gradient එකක් නෑ. විසඳුම: non-saturating loss (log D(G(z)) උපරිම කරනවා) හෝ Wasserstein loss + gradient penalty (WGAN-GP). Discriminator තවත් ශක්තිමත් කිරීම ප්‍රශ්නය නරක් කරනවා.',
-        'VAE = encoder එකක් සහ decoder එකක්. Encoder එක input එක latent space එකේ distribution එකකට (mean μ සහ variance σ²) හරවනවා. එතනින් sample කරලා decoder එක reconstruct කරනවා. අලුත් data = prior එකෙන් (සාමාන්‍යයෙන් standard Gaussian) sample කරලා decode කරනවා. Loss = reconstruction loss + KL(encoder distribution ‖ prior). KL කොටස latent space එක prior එකට ළඟින් තියාගන්නවා, එතකොට prior එකෙන් sample කළාම තේරුමක් තියෙන output එකක් එනවා. Posterior collapse = decoder එක latent code එක නොසලකා හරින VAE failure එක. Reparameterization trick: z ~ N(μ, σ²) කෙලින්ම sample කිරීම μ, σ වලට differentiable නෑ. ඉතින් z = μ + σ × ε, ε ~ N(0, I). Randomness එක ε එකට ගෙනියනවා, μ සහ σ හරහා encoder එකට gradients ගලනවා. Sample එක තාම random. KL term එක තාම තියෙනවා.',
-        'Normalizing flows: සරල base distribution එකක් (Gaussian) invertible layers පෙළක් හරහා සංකීර්ණ distribution එකකට හරවනවා. හැම layer එකක්ම invertible සහ Jacobian determinant එක ලේසියෙන් ගණනය කරන්න පුළුවන් නිසා, change-of-variables formula එකෙන් exact log-likelihood එක ගන්න පුළුවන්. GANs ට likelihood එකක්ම නෑ. VAEs optimize කරන්නේ lower bound එකක් (ELBO) විතරයි.',
+      "id": "gans-vaes-flows",
+      "title": "Generative Models Deep Dive (1): Generative vs Discriminative, Naive Bayes, GANs, VAEs, Normalizing Flows",
+      "examRefs": [
+        "FUN-042",
+        "FUN-043",
+        "FUN-044",
+        "FUN-104",
+        "FUN-105",
+        "FUN-108",
+        "FUN-141",
+        "FUN-142",
+        "FUN-145"
       ],
-      analogy: 'GAN = බොරු නෝට්ටු හදන්නෙක් (generator) සහ බැංකු පරීක්ෂකයෙක් (discriminator). පරීක්ෂකයා මුල ඉඳන්ම ගොඩක් දක්ෂ නම් "මේක බොරු" කියනවා විතරයි, "මොකක්ද වැරදි" කියලා ඉඟියක් නෑ (vanishing gradient). Mode collapse = බොරුකාරයා රු. 1000 නෝට්ටුව විතරක් හරියට හදන්න ඉගෙන ගෙන ඒක විතරක් හදනවා. VAE reparameterization = "අහඹු ලෙස කඩෙන් කෑම ගන්න" කියනවා වෙනුවට "ඔයාගේ කැමැත්ත (μ) + දාදු කැටයකින් එන වෙනස (ε) × ඔයාගේ නම්‍යශීලීබව (σ)" කියනවා. දාදු කැටය ඔයාගෙන් පිට, ඉතින් ඔයාගේ කැමැත්ත වෙනස් කරන්න feedback ගන්න පුළුවන්.',
-      example: 'Reparameterization: encoder එක μ = 2.0, σ = 0.5 දෙනවා. ε = 1.2 sample වුණා → z = 2.0 + 0.5 × 1.2 = 2.6. ε = −0.4 → z = 1.8. Gradient එක: dz/dμ = 1, dz/dσ = ε. ඉතින් encoder එකට ඉගෙන ගන්න පුළුවන්. Naive Bayes (spam): P(spam) = 0.3, P("free" | spam) = 0.6, P("free" | ham) = 0.05. "free" තියෙන email එකක් → spam ලකුණ = 0.3 × 0.6 = 0.18, ham ලකුණ = 0.7 × 0.05 = 0.035 → spam. මේ class එකකට data "හදන" විදිහ (P(x | y)) model කරලා.',
-      keyPoints: [
-        'Generative = P(x) / P(x, y), sample කරන්න පුළුවන්. Discriminative = P(y | x). Naive Bayes generative, logistic regression discriminative.',
-        'GAN = generator vs discriminator. Mode collapse = diversity නැති වීම.',
-        'Perfect discriminator → vanishing gradients → non-saturating loss / WGAN-GP.',
-        'VAE loss = reconstruction + KL. z = μ + σε (reparameterization) gradients ගලන්න.',
-        'Flows = invertible + exact likelihood. GAN = likelihood නෑ. VAE = ELBO (lower bound).',
+      "body": [
+        "Generative models learn a data distribution so they can produce new samples. A GAN trains a generator to fool a discriminator; their competing objectives can produce sharp samples but training may be unstable and mode collapse can omit parts of the distribution. A VAE uses an encoder distribution and decoder, trained with reconstruction loss plus a KL regularizer on the latent representation.",
+        "A VAE’s latent variable is sampled from a distribution, commonly using the reparameterization trick so gradients can pass through sampling. The KL term encourages a structured latent space and trades off reconstruction fidelity against regularization. Normalizing flows use invertible transformations and account for the Jacobian determinant to compute exact density changes.",
+        "These approaches have different objectives: GANs focus on adversarial sample quality, VAEs on a tractable probabilistic latent model, and flows on exact likelihood through invertible mappings."
       ],
-      terms: [
-        { en: 'Discriminative Model', si: 'P(y | x) කෙලින්ම ඉගෙන ගන්න model එක. Boundary එක විතරයි.' },
-        { en: 'Naive Bayes', si: 'Class එක දන්නකොට features ස්වාධීනයි කියලා උපකල්පනය කරන generative classifier එක.' },
-        { en: 'Mode Collapse', si: 'GAN generator එක data එකේ විවිධත්වයෙන් කොටසක් විතරක් හදන failure එක.' },
-        { en: 'Non-Saturating GAN Loss', si: 'Generator එකට log D(G(z)) උපරිම කරන්න දෙන, ශක්තිමත් gradients දෙන loss එක.' },
-        { en: 'WGAN-GP', si: 'Wasserstein distance + gradient penalty පාවිච්චි කරන ස්ථාවර GAN ක්‍රමය.' },
-        { en: 'Reparameterization Trick', si: 'z = μ + σε. Sampling එක differentiable කරන උපක්‍රමය.' },
-        { en: 'ELBO', si: 'Evidence Lower Bound. VAE optimize කරන log-likelihood lower bound එක.' },
-        { en: 'Posterior Collapse', si: 'VAE decoder එක latent code එක නොසලකා හරින failure එක.' },
-        { en: 'Normalizing Flow', si: 'Invertible transformations වලින් exact likelihood ගණනය කරන generative model එක.' },
+      "analogy": "A GAN is like an art student (generator) trying to fool an examiner (discriminator). A VAE is like compressing a drawing into a small sketch code and reconstructing it. A flow is like a reversible sequence of transformations where each change can be tracked.",
+      "example": "A VAE objective can be written as reconstruction loss plus β·KL(q(z|x)‖p(z)); increasing β strengthens latent regularization but may reduce reconstruction detail. A flow transformation must be invertible so the input density can be adjusted by its Jacobian determinant.",
+      "keyPoints": [
+        "GAN generator and discriminator train adversarially; mode collapse is a risk.",
+        "VAE combines reconstruction and latent KL regularization.",
+        "Reparameterization enables gradients through latent sampling.",
+        "Normalizing flows use invertible maps and Jacobian determinants."
       ],
+      "terms": [
+        {
+          "en": "Discriminative Model",
+          "si": "A model that estimates labels or conditional probabilities from input features."
+        },
+        {
+          "en": "Naive Bayes",
+          "si": "A probabilistic classifier using Bayes’ rule and conditional feature independence."
+        },
+        {
+          "en": "Mode Collapse",
+          "si": "A GAN failure where the generator produces limited varieties of samples."
+        },
+        {
+          "en": "Non-Saturating GAN Loss",
+          "si": "A generator objective that avoids weak gradients from the saturating minimax objective."
+        },
+        {
+          "en": "WGAN-GP",
+          "si": "Wasserstein GAN with a gradient penalty to encourage a 1-Lipschitz critic."
+        },
+        {
+          "en": "Reparameterization Trick",
+          "si": "Express a random sample as a differentiable transform of noise and distribution parameters."
+        },
+        {
+          "en": "ELBO",
+          "si": "Evidence lower bound, optimized in variational inference to balance fit and latent regularization."
+        },
+        {
+          "en": "Posterior Collapse",
+          "si": "A VAE decoder ignores its latent variable and the learned posterior approaches the prior."
+        },
+        {
+          "en": "Normalizing Flow",
+          "si": "An invertible transformation model that computes density changes using Jacobian determinants."
+        }
+      ],
+      "si": "ඔයා චිත්‍රයක් හදдаг ළමයෙක් සහ ඒක හඳුනාගන්න ගුරුවරයෙක් හිතන්න; GAN එකේ generator ගුරුවරයාව රවට්ටන්න උත්සාහ කරනවා. VAE එකක් චිත්‍රය පොඩි code එකකට compress කරලා ආපහු හදනවා, ඒ අතර latent distribution එකට KL penalty එකක් දානවා. Normalizing flow එකේ පියවර ආපස්සටත් හරවන්න පුළුවන්. GAN එකකට සමහර වර්ග අමතක වෙලා mode collapse වෙන්නත් පුළුවන්."
     },
     {
-      id: 'diffusion-and-autoregressive',
-      title: 'Generative Models Deep Dive (2): Diffusion, DDPM Objective, Latent Diffusion, Classifier-Free Guidance, Autoregressive Models, Teacher Forcing',
-      examRefs: ['FUN-045', 'FUN-046', 'FUN-106', 'FUN-107', 'FUN-143', 'FUN-144', 'FUN-146'],
-      body: [
-        'Diffusion models: training වලදී පින්තූර වලට ක්‍රමයෙන් noise එකතු කරලා (forward process), network එකට ඒ noise අයින් කරන්න උගන්නනවා. Generate කරනකොට pure noise එකෙන් පටන් අරන් පියවර ගොඩක් හරහා denoise කරනවා. GANs වගේ discriminator එකක් එක්ක එක forward pass එකකින් නෙවෙයි. DDPM objective: clean image x₀ noise කරන්නේ x_t = √ᾱ_t × x₀ + √(1 − ᾱ_t) × ε. (ᾱ_t = timestep t දී මුල් image එකෙන් කොච්චර ඉතුරුද කියන අංකය, ε = Gaussian noise.) Network එක ε_θ(x_t, t) එකට එකතු කරපු noise ε predict කරනවා, MSE loss එකෙන්: ‖ε − ε_θ‖². Adversary එකක් නෑ.',
-        'Latent diffusion (Stable Diffusion): pixel space එකේ diffusion කරනවා වෙනුවට autoencoder එකකින් image එක පොඩි latent tensor එකකට compress කරනවා. Denoising steps ඔක්කොම ඒ පොඩි අවකාශයේ, ඉතින් step එකකට compute ගොඩක් අඩුයි. අන්තිමට decoder එක pixels වලට හරවනවා. Steps තාමත් කීපයක් ඕනේ, ඒවා ලාභයි විතරයි.',
-        'Classifier-free guidance (CFG): එකම network එක, training වලදී prompt (condition) එක අහඹු ලෙස අතහරිනවා (drop කරනවා). ඉතින් ඒකට conditional සහ unconditional predictions දෙකම කරන්න පුළුවන්. Sampling: ε̂ = ε_uncond + w × (ε_cond − ε_uncond). w = guidance scale. w වැඩි කළාම prompt එකට වඩා හොඳට කීකරුයි, ඒත් විවිධත්වය අඩුයි, ගොඩක් ලොකු w වලදී artifacts (over-saturated colors). වෙනම classifier එකක් ඕනේ නෑ (පරණ "classifier guidance" එකට ඕනේ වුණා). Steps ගණන අඩු කරන්නේ නෑ.',
-        'Autoregressive models (GPT): sequence එකක සම්භාවිතාව chain rule එකෙන් හරියටම කඩනවා: p(x) = Π_t p(x_t | x₁, …, x_{t−1}). ඒ කියන්නේ හැම token එකක්ම කලින් tokens ඔක්කොම දන්නකොට එන සම්භාවිතාවල ගුණිතය. Training objective = ඊළඟ token එක predict කිරීම. Independence (p(x) = Π p(x_t)) උපකල්පනය කළොත් tokens අතර සම්බන්ධය නැති වෙනවා. Teacher forcing: training වලදී input එකට දෙන්නේ ground-truth කලින් tokens (model එකේ outputs නෙවෙයි). ඒකෙන් training ස්ථාවරයි, සහ positions ඔක්කොම සමාන්තරව ගණනය කරන්න පුළුවන්. ප්‍රශ්නය = exposure bias: inference වලදී model එක තමන්ගේම (වැරදි වෙන්න පුළුවන්) outputs මත condition වෙනවා. ඒ distribution එක training වලදී කවදාවත් දැකලා නෑ, ඉතින් මුල් පොඩි වැරදි එකතු වෙනවා. Scheduled sampling සහ sequence-level objectives මේක අඩු කරන්න උත්සාහ කරනවා.',
+      "id": "diffusion-and-autoregressive",
+      "title": "Generative Models Deep Dive (2): Diffusion, DDPM Objective, Latent Diffusion, Classifier-Free Guidance, Autoregressive Models, Teacher Forcing",
+      "examRefs": [
+        "FUN-045",
+        "FUN-046",
+        "FUN-106",
+        "FUN-107",
+        "FUN-143",
+        "FUN-144",
+        "FUN-146"
       ],
-      analogy: 'Diffusion = පරණ, මීදුම් වැදුණු ඡායාරූපයක් ටික ටික පිරිසිදු කරන කලාකරුවෙක්. Training = හොඳ ඡායාරූප වලට මීදුම දාලා, "මීදුම කොච්චරද" කියලා අනුමාන කරන්න පුරුදු කරනවා. CFG = tuk-tuk driver ට "Galle Face" කියනවා. w = කොච්චර තදින් කියනවද. පොඩ්ඩක් කිව්වොත් කැමති පාරක යනවා (විවිධ). ගොඩක් තදින් කිව්වොත් හරියටම යනවා, ඒත් අමුතු shortcuts (artifacts). Teacher forcing = learner driver කෙනෙක්ට instructor සුක්කානම හැම වෙලේම හරි පාරට හරවලා දෙනවා. Test එකේදී තනියම. පොඩි වැරැද්දකින් පාරෙන් අයින් වුණාම ඒ තත්ත්වය කවදාවත් පුරුදු වෙලා නෑ = exposure bias.',
-      example: 'CFG ගණනක් (එක අගයකට): ε_uncond = 0.2, ε_cond = 0.5. w = 1 → 0.2 + 1 × 0.3 = 0.5 (සාමාන්‍ය conditional). w = 7.5 → 0.2 + 7.5 × 0.3 = 2.45 (prompt දිශාවට ගොඩක් extrapolate). Latent diffusion: 512 × 512 × 3 image = values 786,432. Latent 64 × 64 × 4 = 16,384. 48 ගුණයක් පොඩියි, ඉතින් step එකක් ගොඩක් ලාභයි. Autoregressive: "මම ගෙදර යනවා" → p(මම) × p(ගෙදර | මම) × p(යනවා | මම, ගෙදර) = 0.1 × 0.3 × 0.6 = 0.018.',
-      keyPoints: [
-        'Diffusion = noising reverse කරලා, noise එකෙන් පටන් අරන් steps ගොඩකින් denoise.',
-        'DDPM = එකතු කරපු noise ε, MSE එකෙන් predict කරනවා. Discriminator නෑ.',
-        'Latent diffusion = පොඩි latent එකේ denoise, step එකකට compute ↓.',
-        'CFG w ↑ → prompt adherence ↑, diversity ↓, ලොකු w → artifacts. Classifier ඕනේ නෑ.',
-        'AR = chain rule factorization. Teacher forcing → parallel training, ඒත් exposure bias.',
+      "body": [
+        "Diffusion models learn to reverse a gradual noising process. Training commonly predicts the noise ε added to data and minimizes a denoising objective; generation starts from noise and iteratively denoises. Latent diffusion performs this work in a lower-dimensional autoencoder latent space to reduce computation.",
+        "Classifier-free guidance combines conditional and unconditional predictions, ε̂=ε_uncond+w(ε_cond−ε_uncond). Larger w generally increases prompt adherence and can reduce diversity or introduce artifacts at high values; it does not require a separate classifier.",
+        "Autoregressive models factorize a sequence using the chain rule, predicting each token from prior tokens. Teacher forcing trains with ground-truth previous tokens and allows parallel computation across positions, but at inference the model conditions on its own outputs, creating exposure bias."
       ],
-      terms: [
-        { en: 'Forward / Reverse Process', si: 'Forward = data වලට noise එකතු කිරීම. Reverse = noise අයින් කරලා data හැදීම.' },
-        { en: 'DDPM', si: 'Denoising Diffusion Probabilistic Model. Noise ε predict කරන diffusion ක්‍රමය.' },
-        { en: 'Latent Diffusion', si: 'Autoencoder latent space එකේ diffusion කරන ක්‍රමය (Stable Diffusion).' },
-        { en: 'Classifier-Free Guidance', si: 'Conditional සහ unconditional predictions අතර extrapolate කරලා prompt එකට කීකරු කරන ක්‍රමය.' },
-        { en: 'Guidance Scale (w)', si: 'CFG එකේ prompt එකට කොච්චර තදින් කීකරු වෙනවද කියන knob එක.' },
-        { en: 'Teacher Forcing', si: 'Training වලදී ground-truth කලින් tokens input ලෙස දෙන එක.' },
-        { en: 'Exposure Bias', si: 'Inference වලදී තමන්ගේම outputs මත condition වීමෙන් එන training-inference නොගැළපීම.' },
-        { en: 'Scheduled Sampling', si: 'Training අතරතුර ක්‍රමයෙන් model එකේම predictions input ලෙස දෙන ක්‍රමය.' },
+      "analogy": "Diffusion is like gradually cleaning fog from a photo, starting with noise. Guidance is like giving a tuk-tuk driver a clearer destination; too forceful a direction can lead to odd shortcuts. Teacher forcing is an instructor correcting every driving turn during practice, while the learner must drive alone on the road.",
+      "example": "For ε_uncond=0.2 and ε_cond=0.5, w=1 gives 0.2+1×0.3=0.5; w=7.5 gives 0.2+7.5×0.3=2.45. A 512×512×3 image has 786,432 values; a 64×64×4 latent has 16,384, 48 times fewer. For tokens, p(x)=p(x₁)p(x₂|x₁)p(x₃|x₁,x₂).",
+      "keyPoints": [
+        "Diffusion reverses noising through iterative denoising.",
+        "DDPM commonly predicts added noise; it does not need a discriminator.",
+        "Latent diffusion denoises a smaller representation.",
+        "Higher classifier-free guidance can trade diversity for prompt adherence.",
+        "Autoregressive chain rule enables next-token prediction; teacher forcing creates exposure bias."
       ],
+      "terms": [
+        {
+          "en": "Forward / Reverse Process",
+          "si": "Forward diffusion adds noise; reverse diffusion iteratively denoises to generate data."
+        },
+        {
+          "en": "DDPM",
+          "si": "Denoising Diffusion Probabilistic Model, a diffusion approach that learns to predict noise."
+        },
+        {
+          "en": "Latent Diffusion",
+          "si": "Run diffusion in a compressed representation rather than directly in pixel space."
+        },
+        {
+          "en": "Classifier-Free Guidance",
+          "si": "Guide generation by combining conditional and unconditional predictions without a separate classifier."
+        },
+        {
+          "en": "Guidance Scale (w)",
+          "si": "The multiplier controlling the strength of classifier-free guidance."
+        },
+        {
+          "en": "Teacher Forcing",
+          "si": "Train a sequence model using ground-truth previous tokens as context."
+        },
+        {
+          "en": "Exposure Bias",
+          "si": "The mismatch caused when inference uses model-generated histories unlike training histories."
+        },
+        {
+          "en": "Scheduled Sampling",
+          "si": "Gradually mix model-generated tokens with ground-truth tokens during sequence training."
+        }
+      ],
+      "si": "ඔයා පරණ, මීදුම වැදුණු photo එකක් ටික ටික පිරිසිදු කරනවා වගේ diffusion එක noise වලින් image එක හදනවා. Latent diffusion පොඩි 64×64×4 representation එකක වැඩ කරන නිසා 512×512×3 image එකට වඩා 48 ගුණයක් අඩු values තියෙනවා. Guidance වැඩි කළොත් prompt එකට ළඟ වෙන්න පුළුවන්, හැබැයි diversity අඩු වෙන්නත් artifacts එන්නත් පුළුවන්. Language model එක ඊළඟ token එක කලින් tokens මත පදනම්ව predict කරනවා."
     },
     {
-      id: 'gpu-accelerated-ml',
-      title: 'GPU Acceleration for Classic ML & Data: Why GPUs, cuDF / cudf.pandas, cuML, GPU XGBoost, Spark, Dask, DLPack, Mixed Precision',
-      examRefs: ['FUN-047', 'FUN-048', 'FUN-098', 'FUN-099', 'FUN-101', 'FUN-102', 'FUN-103', 'FUN-148'],
-      body: [
-        'GPU එකක් ML වේගවත් කරන්නේ ඇයි? CPU එකකට ගොඩක් බුද්ධිමත් cores ටිකයි. GPU එකකට සරල cores දහස් ගණනක්. ML වල ගොඩක් වැඩ (matrix multiply, column එකක හැම row එකකටම එකම operation එක, tree split candidates ගණනය) එකිනෙකින් ස්වාධීන කුඩා ගණන් ලක්ෂ ගණනක්. ඒවා සමාන්තරව කරන්න GPU එක හොඳම තැන. ඒත් data CPU සිට GPU ට යවන්න සහ kernels launch කරන්න overhead එකක් තියෙනවා. ඉතින් rows 2,000ක CSV එකක් වගේ පොඩි, එක පාරක වැඩකට GPU එකෙන් වාසියක් නෑ, CPU එකේ milliseconds වලින් ඉවරයි. ලොකු data (rows මිලියන 50ක random forest), tuning වලදී නැවත නැවත k-means, multi-GB joins / aggregations = ලොකු speedups.',
-        'RAPIDS = NVIDIA ගේ GPU data science libraries. cuDF = pandas වගේ API එකක් තියෙන GPU DataFrame. cudf.pandas accelerator mode = තියෙන pandas code එක කිසිම වෙනසක් නැතුව GPU එකේ run කරනවා, support නැති operations ස්වයංක්‍රීයව CPU pandas එකට fallback වෙනවා. Jupyter: %load_ext cudf.pandas. Script: python -m cudf.pandas script.py. cuML = scikit-learn වගේ API එකක් තියෙන GPU ML algorithms (random forest, k-means, UMAP, t-SNE ...). cuML DataFrame manipulation සඳහා නෙවෙයි. cuGraph = graph analytics, gradient boosting නෙවෙයි.',
-        'XGBoost GPU: version 2.0 සිට device="cuda" සහ tree_method="hist". (පරණ versions වල tree_method="gpu_hist".) PyTorch වලට rewrite කරන්න ඕනේ නෑ. Spark: RAPIDS Accelerator for Apache Spark = Spark plugin එකක්, supported SQL / DataFrame operations GPU එකේ run කරනවා, job code එක වෙනස් නොකර වගේ. Data එක GPU එකක memory එකට වඩා ලොකු නම්: Dask + dask-cudf. DataFrame එක cuDF partitions ගොඩකට කඩලා GPUs (සහ nodes) කීපයක් පුරා බෙදනවා. Zero-copy interoperability: cuDF එකේ හදපු features PyTorch එකට, GPU → CPU → GPU round trip එකක් නැතුව, DLPack හෝ CUDA Array Interface එකෙන් GPU buffers කෙලින්ම share කරනවා. CSV / pickle / pandas හරහා යන එක host copy එකක්.',
-        'Mixed precision training: ගොඩක් operations FP16 / BF16 වලින් (Tensor Cores මත, memory traffic අඩුයි), ඒත් weights වල FP32 master copy එකක් තියාගන්නවා (පොඩි updates නැති නොවෙන්න). FP16 නම් loss scaling එකෙන් gradient underflow වළක්වනවා. INT8 ප්‍රධාන වශයෙන් inference quantization format එකක්. BF16 vs FP16: BF16 = exponent bits 8 (FP32 වගේම පරාසය), mantissa bits 7. FP16 = exponent 5, mantissa 10 (precision වැඩියි, පරාසය අඩුයි). දෙකම bits 16, memory එකමයි. BF16 එකේ overflow / underflow සහ loss scaling ගැන කරදර අඩුයි, ඒකයි ලොකු models වලට කැමති. GPU hardware, Tensor Cores, RAPIDS ගැන තවත් විස්තර Phase 9 (NVIDIA AI Stack) එකේ තියෙනවා.',
+      "id": "gpu-accelerated-ml",
+      "title": "GPU Acceleration for Classic ML & Data: Why GPUs, cuDF / cudf.pandas, cuML, GPU XGBoost, Spark, Dask, DLPack, Mixed Precision",
+      "examRefs": [
+        "FUN-047",
+        "FUN-048",
+        "FUN-098",
+        "FUN-099",
+        "FUN-101",
+        "FUN-102",
+        "FUN-103",
+        "FUN-148"
       ],
-      analogy: 'CPU = දක්ෂ chef ලා 8 දෙනෙක්. GPU = පොල් ගාන අය 5,000ක්. Biriyani එකක් හදන්න chef ලා හොඳයි. පොල් ගෙඩි ලක්ෂයක් ගාන්න 5,000 දෙනා දිනනවා. ඒත් පොල් ගෙඩි 3ක් ගාන්න 5,000 දෙනාව බස් වල ගෙන්නන වියදම (data transfer overhead) වටින්නේ නෑ. cudf.pandas = එකම recipe පොත (pandas code), ඒත් කුස්සිය මාරු කළා. බැරි දෙයක් ආවොත් පරණ කුස්සියට (CPU) යනවා. DLPack = එකම මේසය උඩ තියෙන කෑම පිඟාන අනිත් කෙනාට තල්ලු කරනවා, ගෙදරට අරන් ගිහින් ආපහු ගේන්නේ නෑ.',
-      example: 'Bank එකක transactions මිලියන 50ක pandas pipeline එකක් CPU එකේ විනාඩි 20ක් ගන්නවා. python -m cudf.pandas pipeline.py කියලා run කළාම code එකේ පේළියක්වත් වෙනස් නොකර GPU එකේ run වෙනවා (speedup එක workload එක මත රඳා පවතිනවා). ඊට පස්සේ XGBoost(device="cuda", tree_method="hist"). BF16: FP32 වගේම ~3.4 × 10³⁸ දක්වා අගයන්. FP16 උපරිමය 65,504 විතරයි, ඒ නිසා FP16 ලොකු activations / gradients වලදී overflow වෙන්න පුළුවන්.',
-      code: {
-        lang: 'python',
-        src: `# Jupyter: %load_ext cudf.pandas   |  Script: python -m cudf.pandas train.py
-import pandas as pd                      # cudf.pandas load කරලා නම් මේක GPU එකේ
-import xgboost as xgb
-
-df = pd.read_parquet("transactions.parquet")
-daily = df.groupby("customer_id")["amount"].agg(["sum", "mean", "count"])
-
-model = xgb.XGBClassifier(device="cuda", tree_method="hist", n_estimators=500)
-model.fit(X_train, y_train)              # GPU එකේ boosting
-
-# cuDF → PyTorch, zero-copy (DLPack): import cudf, torch
-# t = torch.from_dlpack(cudf_df.to_cupy())`,
+      "body": [
+        "GPUs accelerate workloads with many independent operations such as matrix multiplication, column transformations, and candidate split calculations. Data transfer and kernel-launch overhead mean small one-off jobs may run faster on a CPU; large datasets, repeated tuning, and large joins/aggregations can benefit more.",
+        "RAPIDS is NVIDIA’s GPU data-science ecosystem. cuDF provides GPU DataFrames; cudf.pandas can accelerate supported pandas code and fall back for unsupported operations. cuML provides GPU machine-learning algorithms with familiar APIs. XGBoost 2.x GPU configuration uses device=\"cuda\" and tree_method=\"hist\". RAPIDS Accelerator for Apache Spark runs supported Spark operations on GPUs.",
+        "When data exceeds a GPU’s memory, Dask-cuDF can partition work across GPUs and nodes. DLPack and the CUDA Array Interface can share device buffers between compatible libraries without a CPU round trip. Mixed precision uses lower-precision compute such as FP16/BF16; BF16 has a range similar to FP32 but less mantissa precision. FP32 master weights and loss scaling may be used depending on the training setup."
+      ],
+      "analogy": "A GPU is like thousands of workers each doing a small arithmetic task at once; a CPU has fewer workers suited to varied tasks. Moving a small Colombo delivery list to a distant warehouse can cost more than processing it locally, but a very large shipment benefits from parallel workers.",
+      "example": "For only 2,000 CSV rows and one model fit, transfer and launch overhead can outweigh GPU gains. XGBoost 2.x uses device=\"cuda\", tree_method=\"hist\". If an operation runs on GPU memory, DLPack can pass a compatible tensor without copying through CPU memory.",
+      "code": {
+        "lang": "python",
+        "src": "\nimport pandas as pd  # After loading cudf.pandas, supported pandas code can run on GPU.\nimport xgboost as xgb\n\ndf = pd.read_parquet(\"transactions.parquet\")\ndaily = df.groupby(\"customer_id\")[\"amount\"].agg([\"sum\", \"mean\", \"count\"])\n\nmodel = xgb.XGBClassifier(device=\"cuda\", tree_method=\"hist\", n_estimators=500)\nmodel.fit(X_train, y_train)  # GPU-accelerated boosting.\n\n\n"
       },
-      keyPoints: [
-        'GPU = ස්වාධීන ගණන් ලක්ෂ ගණනක් සමාන්තරව. පොඩි data වලට overhead නිසා වාසියක් නෑ.',
-        'cudf.pandas = code වෙනසක් නෑ + CPU fallback. cuML = sklearn-style GPU ML.',
-        'XGBoost 2.x GPU = device="cuda", tree_method="hist". Spark = RAPIDS Accelerator plugin.',
-        'GPU එකකට ලොකුයි → Dask-cuDF. Libraries අතර zero-copy → DLPack / CUDA Array Interface.',
-        'Mixed precision = FP16/BF16 compute + FP32 master weights. BF16 = FP32 range, අඩු precision.',
+      "keyPoints": [
+        "GPUs suit large parallel workloads; overhead can dominate small jobs.",
+        "cuDF/cuML provide GPU dataframes and ML; cudf.pandas can accelerate compatible pandas code.",
+        "XGBoost 2.x GPU uses device=\"cuda\", tree_method=\"hist\".",
+        "Dask-cuDF distributes data; DLPack supports device-buffer interoperability.",
+        "BF16 has FP32-like range and lower precision; mixed precision reduces compute/memory needs."
       ],
-      terms: [
-        { en: 'RAPIDS', si: 'cuDF, cuML, cuGraph වගේ NVIDIA GPU data science libraries එකතුව.' },
-        { en: 'cuDF / cudf.pandas', si: 'GPU DataFrame library එක. cudf.pandas = pandas code වෙනස් නොකර GPU එකේ run කරන mode එක.' },
-        { en: 'cuML', si: 'scikit-learn වගේ API එකක් තියෙන GPU ML algorithms library එක.' },
-        { en: 'RAPIDS Accelerator for Apache Spark', si: 'Spark SQL / DataFrame jobs GPU එකේ run කරන plugin එක.' },
-        { en: 'Dask-cuDF', si: 'cuDF DataFrames GPUs සහ nodes කීපයක් පුරා බෙදන library එක.' },
-        { en: 'DLPack', si: 'Libraries අතර device memory copy නොකර tensors හුවමාරු කරන සම්මත protocol එක.' },
-        { en: 'Loss Scaling', si: 'FP16 training වලදී gradients underflow නොවෙන්න loss එක ලොකු අංකයකින් ගුණ කරන එක.' },
-        { en: 'BF16', si: 'Exponent bits 8, mantissa 7. FP32 වගේම පරාසය, අඩු precision.' },
+      "terms": [
+        {
+          "en": "RAPIDS",
+          "si": "NVIDIA GPU-accelerated data science libraries, including cuDF and cuML."
+        },
+        {
+          "en": "cuDF / cudf.pandas",
+          "si": "GPU DataFrame tools; cudf.pandas can accelerate compatible pandas workloads."
+        },
+        {
+          "en": "cuML",
+          "si": "GPU machine-learning algorithms with APIs familiar to scikit-learn users."
+        },
+        {
+          "en": "RAPIDS Accelerator for Apache Spark",
+          "si": "A Spark plugin that accelerates supported operations on NVIDIA GPUs."
+        },
+        {
+          "en": "Dask-cuDF",
+          "si": "Distributed GPU DataFrame processing across partitions, GPUs, and nodes."
+        },
+        {
+          "en": "DLPack",
+          "si": "A standard for sharing tensor memory between compatible libraries."
+        },
+        {
+          "en": "Loss Scaling",
+          "si": "Multiply a loss to keep small FP16 gradients representable, then unscale gradients before updating."
+        },
+        {
+          "en": "BF16",
+          "si": "A 16-bit format with FP32-like exponent range and fewer mantissa bits."
+        }
       ],
+      "si": "ඔයාට CSV rows 2000ක් විතරක් තියෙනවා නම් GPU එකට data යවන වියදමෙන් CPU එකේම ඉවර කරන්න පුළුවන්. Rows මිලියන ගණනක් එකවර process කරනකොට GPU workers ගොඩක් සමාන්තරව වැඩ කරන නිසා වාසිය වැඩියි. cuDF GPU DataFrame එකක්, cuML GPU machine learning tools. XGBoost 2.x වල device=\"cuda\" සහ tree_method=\"hist\" යොදාගන්නවා. BF16ට FP32 වගේ range එකක් තිබුණත් precision අඩුයි."
     },
     {
-      id: 'end-to-end-churn-project',
-      title: 'Beyond the Exam: End-to-End Mini Project, Sri Lankan Telco Customer Churn (CSV → Evaluated Model → Monitoring)',
-      examRefs: ['FUN-138', 'FUN-053', 'FUN-055', 'FUN-086', 'FUN-133'],
-      body: [
-        'දැන් ඔක්කොම එකට. ලංකාවේ mobile operator කෙනෙක්ට ඕනේ ඊළඟ මාසේ connection එක අතහරින (churn) customers ලා කලින් හොයාගන්න, retention offer එකක් දෙන්න. CSV එකේ columns: customer_id, district, plan_type, monthly_bill_rs, data_gb, call_minutes, complaints_90d, tenure_months, reload_count, last_reload_date, disconnect_reason, churned (0/1). Churn rate 8%. පියවර 1 = ප්‍රශ්නය සහ metric එක: offer එකක් ලාභයි, customer කෙනෙක් නැති වීම මිලයි → recall වැදගත්, ඒත් precision එකත් බලනවා (offers වියදම). Report කරන්නේ PR-AUC + තෝරපු threshold එකේ recall / precision.',
-        'පියවර 2 = Leakage පරීක්ෂාව. disconnect_reason පිරෙන්නේ churn වුණාට පස්සේ විතරයි → target leakage, අයින් කරන්න. last_reload_date එකෙන් "prediction දවසට කලින්" කොටස විතරක් features වලට (උදා: days_since_reload). පියවර 3 = Split: churn 8% නිසා stratified split. Customer කෙනෙක්ට මාස කීපයක rows තියෙනවා නම් GroupKFold (customer_id). Production එකේදී "අනාගතය predict කරනවා" නිසා අන්තිම test එක time-based (පරණ මාස train, අලුත්ම මාසය test).',
-        'පියවර 4 = Pipeline: numeric වලට median imputation + scaling, district / plan_type වලට one-hot. ඔක්කොම scikit-learn Pipeline එකක් ඇතුළේ, එතකොට preprocessing statistics train folds වලින් විතරයි. පියවර 5 = Baselines: (a) "කවුරුත් churn වෙන්නේ නෑ" කියන dummy model එක (accuracy 92%, recall 0, accuracy බොරු කියන හැටි බලන්න). (b) Logistic regression class_weight="balanced". (c) Gradient boosted trees (tabular data වලට හොඳම baseline). පියවර 6 = Threshold සහ calibration: validation එකේ precision-recall curve එකෙන් business එකට ගැළපෙන threshold එක තෝරන්න. Probabilities "churn සම්භාවිතාව 30%" වගේ offers budget කරන්න පාවිච්චි කරනවා නම් calibrate කරන්න.',
-        'පියවර 7 = Monitoring. Operator එක අලුත් පළාතකට (උදා: උතුරු පළාත) ව්‍යාප්ත වුණා. Input distribution එක (P(x)) වෙනස්: district, bill amounts වෙනස්. ඒත් "complaints වැඩි, reloads අඩු customer churn වෙනවා" කියන සම්බන්ධය (P(y | x)) එහෙමමයි → covariate shift. අලුත් inputs එක්ක retrain කිරීම හෝ importance weighting උදව් වෙනවා. ඒත් තරඟකාර operator කෙනෙක් ලාභ data packages දැම්මාම, එකම features තියෙන අයත් කලින්ට වඩා churn වෙනවා නම් P(y | x) ම වෙනස් → concept drift. ඒකට අලුත් labels එක්ක retrain කරන්නම ඕනේ.',
+      "id": "end-to-end-churn-project",
+      "title": "Beyond the Exam: End-to-End Mini Project, Sri Lankan Telco Customer Churn (CSV → Evaluated Model → Monitoring)",
+      "examRefs": [
+        "FUN-138",
+        "FUN-053",
+        "FUN-055",
+        "FUN-086",
+        "FUN-133"
       ],
-      analogy: 'මේ project එක ගෙයක් හදනවා වගේ. Leakage check = අත්තිවාරම (වැරදුණොත් මුළු ගෙදරම කඩාවැටෙනවා, ලකුණු කොච්චර ලස්සන වුණත්). Pipeline = බිත්ති. Baselines = "මේ ගෙදර, ඉඩම හිස්ව තිබ්බාට වඩා හොඳද?" කියලා බලන එක. Threshold = දොර කොච්චර පළලද (වැඩි අයට ඇතුළු වෙන්න දෙනවද). Monitoring = ගෙදර හදලා ඉවරයි කියලා අමතක කරන්නේ නැතුව හැම වැස්සකටම වහලය බලන එක.',
-      example: 'Customers 50,000, churn 4,000 (8%). Dummy model: accuracy 92%, recall 0. Logistic regression (balanced): PR-AUC 0.41, threshold 0.5 දී recall 0.70, precision 0.22. XGBoost: PR-AUC 0.55. Threshold 0.35: recall 0.80, precision 0.30. ඒ කියන්නේ offers 100ක් දුන්නොත් 30ක් ඇත්තටම churn වෙන්න හිටපු අයට යනවා, ඇත්ත churners ලගෙන් 80% ක් අල්ලනවා. Offer එකක් Rs. 300යි, customer කෙනෙක් නැති වීම Rs. 6,000 නම්, ඒක හොඳ ගනුදෙනුවක්. (මේ අංක උදාහරණ විතරයි.)',
-      code: {
-        lang: 'python',
-        src: `import pandas as pd
-from sklearn.compose import make_column_transformer; from sklearn.pipeline import make_pipeline
-from sklearn.impute import SimpleImputer; from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split; from sklearn.metrics import average_precision_score
-from sklearn.ensemble import HistGradientBoostingClassifier
-
-df = pd.read_csv("telco_churn_lk.csv").drop(
-    columns=["customer_id", "disconnect_reason", "last_reload_date"])  # ID, leakage, raw date අයින්
-X, y = df.drop(columns="churned"), df["churned"]
-X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, stratify=y, random_state=0)
-prep = make_column_transformer((OneHotEncoder(handle_unknown="ignore", sparse_output=False), ["district", "plan_type"]),
-                               remainder=SimpleImputer(strategy="median"))
-model = make_pipeline(prep, HistGradientBoostingClassifier()).fit(X_tr, y_tr)
-print("PR-AUC:", average_precision_score(y_te, model.predict_proba(X_te)[:, 1]))`,
+      "body": [
+        "Build a churn model from a Sri Lankan telco CSV containing customer, plan, billing, usage, complaint, tenure, reload, and churn fields. If churn prevalence is 8%, accuracy alone can mislead: a model predicting no churn for everyone scores 92% accuracy but has zero recall. Report PR-AUC and precision/recall at a business-selected threshold.",
+        "Remove post-outcome fields such as disconnect_reason because they leak the target. Derive time-valid features such as days since the last reload. Use stratified splits for imbalanced labels, group by customer when records repeat, and use time-based final tests when predicting future months. Put median imputation, scaling, and one-hot encoding in a training-fold pipeline.",
+        "Compare a dummy baseline, balanced logistic regression, and a boosted-tree baseline. Select a threshold on validation data using the business cost of offers and missed churners; calibrate probabilities if budget decisions rely on them. Monitor inputs and outcomes: a change in P(x) with stable P(y|x) is covariate shift, while a changed relationship P(y|x) is concept drift and may require retraining with new labels."
+      ],
+      "analogy": "Leakage is like building a house on a cracked foundation: later polish cannot fix it. A pipeline is the construction process, a baseline checks that the finished house improves on an empty lot, and monitoring is inspecting the roof after storms.",
+      "example": "For 50,000 customers and 8% churn, there are 4,000 churners. A dummy model has 92% accuracy but zero recall. If an illustrative model at a chosen threshold has recall 0.80 and precision 0.30, 100 offers reach about 30 likely churners while catching 80% of churners. If an offer costs Rs. 300 and a lost customer costs Rs. 6,000, compare those business values; these figures are illustrative, not measured results.",
+      "code": {
+        "lang": "python",
+        "src": "import pandas as pd\nfrom sklearn.compose import make_column_transformer; from sklearn.pipeline import make_pipeline\nfrom sklearn.impute import SimpleImputer; from sklearn.preprocessing import OneHotEncoder\nfrom sklearn.model_selection import train_test_split; from sklearn.metrics import average_precision_score\nfrom sklearn.ensemble import HistGradientBoostingClassifier\n\ndf = pd.read_csv(\"telco_churn_lk.csv\").drop(\n    columns=[\"customer_id\", \"disconnect_reason\", \"last_reload_date\"])  # Remove the ID, a leakage field, and the raw date.\nX, y = df.drop(columns=\"churned\"), df[\"churned\"]\nX_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, stratify=y, random_state=0)\nprep = make_column_transformer((OneHotEncoder(handle_unknown=\"ignore\", sparse_output=False), [\"district\", \"plan_type\"]),\n                               remainder=SimpleImputer(strategy=\"median\"))\nmodel = make_pipeline(prep, HistGradientBoostingClassifier()).fit(X_tr, y_tr)\nprint(\"PR-AUC:\", average_precision_score(y_te, model.predict_proba(X_te)[:, 1]))"
       },
-      keyPoints: [
-        'මුලින්ම: business ප්‍රශ්නය සහ metric එක (recall / precision / PR-AUC).',
-        'Leakage features අයින් කරන්න. Stratified / group / time split.',
-        'Preprocessing Pipeline එකක් ඇතුළේ. Dummy baseline එකකින් පටන් ගන්න.',
-        'Threshold එක business වියදම් අනුව. අවශ්‍ය නම් calibrate කරන්න.',
-        'P(x) වෙනස් = covariate shift. P(y | x) වෙනස් = concept drift.',
+      "keyPoints": [
+        "Define business costs and report PR-AUC plus threshold-specific precision/recall.",
+        "Remove future/post-outcome leakage; make features valid at prediction time.",
+        "Use stratified, grouped, or time-based splits to reflect deployment.",
+        "Fit preprocessing in a pipeline and compare against simple baselines.",
+        "Covariate shift changes P(x); concept drift changes P(y|x)."
       ],
-      terms: [
-        { en: 'Churn', si: 'Customer කෙනෙක් සේවාව අතහැරලා යන එක.' },
-        { en: 'Baseline Model', si: 'සසඳන්න පාවිච්චි කරන සරලම model එක (dummy, logistic regression).' },
-        { en: 'Covariate Shift', si: 'Inputs වල distribution P(x) වෙනස් වෙනවා, P(y | x) එහෙමමයි.' },
-        { en: 'Concept Drift', si: 'Features සහ target අතර සම්බන්ධය P(y | x) ම වෙනස් වෙන එක.' },
-        { en: 'Importance Weighting', si: 'Training examples, අලුත් input distribution එකට ගැළපෙන්න බර කරන covariate shift විසඳුමක්.' },
-        { en: 'ColumnTransformer', si: 'Column වර්ග වලට වෙනස් preprocessing යොදන scikit-learn tool එක.' },
+      "terms": [
+        {
+          "en": "Churn",
+          "si": "A customer ending or leaving a service."
+        },
+        {
+          "en": "Baseline Model",
+          "si": "A simple reference model used to compare more complex approaches."
+        },
+        {
+          "en": "Covariate Shift",
+          "si": "A change in input distribution P(x) while P(y|x) remains stable."
+        },
+        {
+          "en": "Concept Drift",
+          "si": "A change in the relationship between features and target, P(y|x)."
+        },
+        {
+          "en": "Importance Weighting",
+          "si": "Reweighting training examples to account for a changed input distribution."
+        },
+        {
+          "en": "ColumnTransformer",
+          "si": "A scikit-learn utility applying different transformations to selected columns."
+        }
       ],
-    },
+      "si": "ඔයාගේ mobile operator එකේ customers 50,000ක් අතර 8% churn වෙනවා නම් churners 4,000යි. හැමෝම ඉන්නවා කියන dummy model එක 92% accuracy ගත්තත් එක් churnerවත් අල්ලන්නේ නෑ. disconnect_reason එක churn පස්සේ පිරෙන නිසා model එකට දෙන්න එපා; ඒක leakage. Offer එක Rs. 300යි, customer නැතිවීම Rs. 6,000යි කියලා උදාහරණයක් ගෙන threshold එකේ precision හා recall දෙකම බලන්න. Colombo වලින් වෙනත් පළාතකට expand කළාම inputs වෙනස් වෙයිද, customer හැසිරීමම වෙනස් වෙයිද කියලා monitor කරන්න."
+    }
   ],
-  quiz: [
+  "quiz": [
     {
-      q: '10-class classifier එකක cross-entropy loss එක පළමු step එකේ ඉඳන්ම 2.30 ළඟ හිරවෙලා. මේකෙන් කියවෙන්නේ මොකක්ද?',
-      options: ['Model එක පරිපූර්ණයි', 'Model එක classes 10ටම 0.1 බැගින් දෙනවා, ඉගෙන ගන්නේ නෑ', 'Model එක විශ්වාසයෙන් වැරදි class එක කියනවා', 'Dataset එකේ classes 2යි'],
-      answer: 1,
-      why: '−ln(1/10) = ln 10 ≈ 2.30. ඒක uniform guess එකක loss එක. Learning rate, labels, gradient flow check කරන්න. Confidently wrong නම් loss එක 2.30 ට වඩා ගොඩක් ඉහළයි.',
+      "q": "A 10-class classifier has cross-entropy loss near 2.30 from its first step. What does this suggest?",
+      "options": [
+        "The model is perfect",
+        "It assigns about 0.1 to each class and is guessing uniformly",
+        "It is confidently wrong",
+        "The dataset has only two classes"
+      ],
+      "answer": 1,
+      "why": "−ln(1/10)=ln(10)≈2.30, the loss for a uniform guess. Check learning rate, labels, and gradient flow."
     },
     {
-      q: 'Precision 0.6, recall 0.9. F1 කීයද?',
-      options: ['0.75', '0.72', '0.54', '0.80'],
-      answer: 1,
-      why: 'F1 = 2 × 0.6 × 0.9 ÷ (0.6 + 0.9) = 1.08 ÷ 1.5 = 0.72. 0.75 කියන්නේ arithmetic mean එක (trap එක).',
+      "q": "Precision is 0.6 and recall is 0.9. What is F1?",
+      "options": [
+        "0.75",
+        "0.72",
+        "0.54",
+        "0.80"
+      ],
+      "answer": 1,
+      "why": "F1=2×0.6×0.9/(0.6+0.9)=1.08/1.5=0.72; 0.75 is the arithmetic mean."
     },
     {
-      q: 'Gradient [6, 8], max_norm = 1.0 සමඟ global-norm clipping කළාම ලැබෙන්නේ?',
-      options: ['[1.0, 1.0]', '[0.6, 0.8]', '[6, 8]', '[0.75, 1.0]'],
-      answer: 1,
-      why: 'Norm = √(36 + 64) = 10. 10 > 1 නිසා හැම component එකක්ම 1/10 න් ගුණ කරනවා → [0.6, 0.8]. [1, 1] = per-value clipping, ඒක දිශාව වෙනස් කරනවා.',
+      "q": "What is the result of global-norm clipping gradient [6,8] to max_norm=1?",
+      "options": [
+        "[1,1]",
+        "[0.6,0.8]",
+        "[6,8]",
+        "[0.75,1]"
+      ],
+      "answer": 1,
+      "why": "Its norm is √(36+64)=10; scale both components by 1/10 to preserve direction."
     },
     {
-      q: 'Label smoothing ε = 0.1, classes K = 5, target = (1 − ε)·one_hot + ε/K. හරි class එකේ සහ අනිත් class එකක target අගයන්?',
-      options: ['0.90 සහ 0.025', '1.00 සහ 0.02', '0.92 සහ 0.02', '0.90 සහ 0.02'],
-      answer: 2,
-      why: 'හැම class එකකටම ε/K = 0.02. හරි class එකට අමතරව 1 − ε = 0.90 → 0.92. Check: 0.92 + 4 × 0.02 = 1.',
+      "q": "For label smoothing ε=0.1, K=5, target=(1−ε)one_hot+ε/K, what are the correct and other-class targets?",
+      "options": [
+        "0.90 and 0.025",
+        "1.00 and 0.02",
+        "0.92 and 0.02",
+        "0.90 and 0.02"
+      ],
+      "answer": 2,
+      "why": "Each class gets 0.1/5=0.02; the correct class also gets 0.90, for 0.92 total."
     },
     {
-      q: 'PyTorch inverted dropout p = 0.2. Training වලදී ඉතුරු වෙන activations වලට මොකද වෙන්නේ?',
-      options: ['0.8 න් ගුණ වෙනවා', '1.25 න් ගුණ වෙනවා', 'වෙනසක් නෑ, inference වලදී 0.8 න් ගුණ කරනවා', '0.2 න් ගුණ වෙනවා'],
-      answer: 1,
-      why: '1 ÷ (1 − 0.2) = 1.25. Expected activation එක එකම තියාගන්නවා, ඉතින් inference වලදී scaling ඕනේ නෑ. තුන්වෙනි option එක පරණ non-inverted ක්‍රමය.',
+      "q": "With inverted dropout p=0.2, how are retained activations scaled during training?",
+      "options": [
+        "By 0.8",
+        "By 1.25",
+        "Not scaled; multiply by 0.8 at inference",
+        "By 0.2"
+      ],
+      "answer": 1,
+      "why": "1/(1−0.2)=1.25 preserves the expected activation, so no dropout scaling is needed at inference."
     },
     {
-      q: 'Adam β₁ = 0.9, m₀ = 0. පළමු step එකෙන් පස්සේ m₁ = 0.1·g₁. Bias correction එකෙන් ලැබෙන්නේ?',
-      options: ['m̂₁ = 0.9·m₁', 'm̂₁ = m₁ ÷ (1 − 0.9) = g₁', 'm̂₁ = m₁ ÷ 1.9', 'Correction එකක් නෑ'],
-      answer: 1,
-      why: 'Zero init නිසා m එක 0 දිහාට bias වෙලා. (1 − β₁ᵗ) = 0.1 න් බෙදුවාම හරියටම g₁. t ලොකු වෙන්න මේ බලපෑම නැති වෙනවා.',
+      "q": "Adam has β₁=0.9, m₀=0, and m₁=0.1g₁. What is the corrected first moment?",
+      "options": [
+        "0.9m₁",
+        "m₁/(1−0.9)=g₁",
+        "m₁/1.9",
+        "No correction"
+      ],
+      "answer": 1,
+      "why": "At t=1, divide by 1−β₁=0.1, giving m̂₁=g₁."
     },
     {
-      q: 'Single deep decision tree එකකට training accuracy 100%, ඒත් validation අස්ථාවරයි. Random forest එකක් උදව් කරන්නේ ඇයි?',
-      options: ['හැම tree එකක්ම ගැඹුරු කරලා bias අඩු කරනවා', 'Decorrelated trees ගොඩක average එකෙන් variance අඩු කරනවා', 'ප්‍රශ්නය regression එකකට හරවනවා', 'Training data ඕනේ නෑ'],
-      answer: 1,
-      why: 'Bootstrap samples + random feature subsets → එකිනෙකට වෙනස් trees. ඒවායේ වැරදි average එකේදී කැපෙනවා. Bias තනි tree එකක තරමටම වගේ.',
+      "q": "Why can a random forest improve on a deep tree with unstable validation results?",
+      "options": [
+        "It makes every tree deeper",
+        "It averages decorrelated trees to reduce variance",
+        "It changes classification to regression",
+        "It needs no training data"
+      ],
+      "answer": 1,
+      "why": "Bootstrap rows and random feature subsets produce diverse trees whose errors can average out."
     },
     {
-      q: 'ROC-AUC = 0.85 කියන්නේ මොකක්ද?',
-      options: ['Predictions වලින් 85% ක් හරි', 'Default threshold එකේ precision 0.85', 'අහඹු positive එකක් අහඹු negative එකකට වඩා ඉහළින් rank වෙන්නේ 85% ක් වෙලාවට', 'Positives වලින් 15% ක් වැරදියි'],
-      answer: 2,
-      why: 'AUC = ranking ගුණාත්මකභාවය, හැම threshold එකක්ම හරහා. Accuracy, precision එක threshold එකක් මත රඳා පවතිනවා.',
+      "q": "What does ROC-AUC=0.85 mean?",
+      "options": [
+        "85% of predictions are correct",
+        "Precision is 0.85 at the default threshold",
+        "A random positive ranks above a random negative about 85% of the time",
+        "15% of positives are wrong"
+      ],
+      "answer": 2,
+      "why": "ROC-AUC measures ranking across thresholds, not accuracy or precision at one threshold."
     },
     {
-      q: 'Text-to-image diffusion model එකක classifier-free guidance scale එක වැඩි කළාම සාමාන්‍යයෙන් වෙන්නේ?',
-      options: ['විවිධත්වය වැඩි, prompt adherence අඩු', 'Denoising steps අඩුවෙන් ඕනේ', 'Prompt adherence වැඩි, විවිධත්වය අඩු, ගොඩක් ලොකු scale වලදී artifacts', 'වෙනම classifier එකක් train කරන්නේ නැත්නම් වෙනසක් නෑ'],
-      answer: 2,
-      why: 'ε̂ = ε_uncond + w(ε_cond − ε_uncond). w වැඩි කළාම prompt දිශාවට extrapolate වෙනවා. එකම network එක condition drop කරලා train කරන නිසා classifier එකක් ඕනේ නෑ.',
+      "q": "What usually happens when classifier-free guidance is increased?",
+      "options": [
+        "Diversity rises and prompt adherence falls",
+        "Fewer denoising steps are needed",
+        "Prompt adherence rises, diversity can fall, and very high values can add artifacts",
+        "A separate classifier becomes necessary"
+      ],
+      "answer": 2,
+      "why": "Larger guidance extrapolates further toward the conditional prediction; classifier-free guidance does not require a separate classifier."
     },
     {
-      q: 'Rows 2,000ක CSV එකක එක පාරක model එකක් train කරනවා. RAPIDS / GPU වලට මාරු කිරීම ගැන හරි කතාව මොකක්ද?',
-      options: ['GPU එක හැමවිටම 50× වේගවත්', 'Data transfer සහ kernel launch overhead නිසා වාසියක් වෙන්න ඉඩ අඩුයි, CPU එකේ milliseconds වලින් ඉවරයි', 'cuML ට rows 10,000 ට අඩු data දාන්න බෑ', 'cudf.pandas පාවිච්චි කරන්න code එක සම්පූර්ණයෙන් rewrite කරන්න ඕනේ'],
-      answer: 1,
-      why: 'GPU acceleration එකට overhead එක වහගන්න තරම් සමාන්තර වැඩ ඕනේ. ලොකු data, නැවත නැවත tuning, ලොකු joins තමයි ලොකු speedups දෙන්නේ. cudf.pandas වලට code වෙනසක් ඕනේ නෑ.',
-    },
-  ],
-}
+      "q": "For a one-off model fit on 2,000 CSV rows, what is a reasonable GPU expectation?",
+      "options": [
+        "GPU is always 50 times faster",
+        "Transfer and launch overhead may outweigh GPU gains",
+        "cuML cannot use fewer than 10,000 rows",
+        "cudf.pandas requires rewriting all code"
+      ],
+      "answer": 1,
+      "why": "Small workloads may finish faster on a CPU; larger parallel workloads and repeated operations can benefit more from GPUs."
+    }
+  ]
+};
