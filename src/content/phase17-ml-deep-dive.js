@@ -9,6 +9,8 @@ export default {
     {
       "id": "ml-big-picture",
       "title": "The Big Picture: AI vs ML vs DL, Learning Paradigms, Parameters vs Hyperparameters",
+      "plain": "Start by learning the map: AI is the broad field, ML is AI that learns patterns from data, and deep learning is ML built with multi-layer neural networks. This topic also separates the main ways models learn and the values a model learns from the settings an engineer chooses.",
+      "internGuide": ["AI contains ML, and ML contains deep learning; they are not three unrelated technologies.", "Supervised learning uses labeled targets, unsupervised learning finds structure without labels, self-supervised learning creates targets from raw data, and reinforcement learning learns from rewards.", "Parameters such as weights are learned during training. Hyperparameters such as learning rate and tree depth are chosen or tuned outside the training update.", "Exam focus: identify the learning paradigm from the available data and goal, then distinguish learned parameters from configured hyperparameters."],
       "examRefs": [
         "FUN-001",
         "FUN-002",
@@ -65,6 +67,8 @@ export default {
     {
       "id": "splits-leakage-cv",
       "title": "Honest Evaluation: Splits, Leakage, Stratified / Group / Time Splits, Nested CV",
+      "plain": "Evaluation is honest only when the model is tested on information that played no part in training or model selection. The correct split depends on how future production data will arrive.",
+      "internGuide": ["Use training data to fit weights, validation data to choose settings, and an untouched test set for the final estimate.", "Fit preprocessing only on training data. Computing scaling, imputation, feature selection, or target encoding before the split leaks information.", "Use stratified splits for class balance, group splits when related rows must stay together, and time splits when the future must be predicted from the past.", "Exam focus: repeated tuning on the test set makes it a validation set. Nested cross-validation separates tuning from evaluation when data is limited."],
       "examRefs": [
         "FUN-006",
         "FUN-007",
@@ -132,6 +136,8 @@ export default {
     {
       "id": "preprocessing-deep-dive",
       "title": "Preprocessing Deep Dive: Scaling Maths, Encoding, Imputation, Curse of Dimensionality",
+      "plain": "Preprocessing converts raw columns into values a model can use without leaking future information or creating false relationships. Different model families need different preprocessing choices.",
+      "internGuide": ["Standardization centers a numeric feature and scales it by its standard deviation; min-max scaling maps it to a chosen range.", "One-hot encoding is suitable for unordered categories. Giving categories arbitrary numbers can incorrectly suggest an order to linear and distance-based models.", "Imputation fills missing values using rules learned from training data. Add a missing-value indicator when the fact that a value is absent may carry information.", "Exam focus: scaling matters strongly for distance and gradient-based models, while decision trees usually do not require it. High-dimensional sparse data can make distances less useful."],
       "examRefs": [
         "FUN-021",
         "FUN-022",
@@ -185,6 +191,8 @@ export default {
     {
       "id": "learning-curves-bias-variance",
       "title": "Reading Loss Curves: Overfitting, Underfitting, Early Stopping, Bias-Variance, Double Descent",
+      "plain": "Training and validation curves tell you whether a model is learning useful patterns, failing to learn, or memorizing its training data. Diagnose the curve before changing random hyperparameters.",
+      "internGuide": ["Underfitting means both training and validation performance are poor; the model or features are not expressive enough.", "Overfitting means training performance improves while validation performance stops improving or worsens.", "Early stopping keeps the checkpoint with the best validation result rather than the final training step.", "Exam focus: high bias points to underfitting; high variance points to sensitivity and overfitting. More regularization does not fix an already underfit model."],
       "examRefs": [
         "FUN-008",
         "FUN-009",
@@ -239,6 +247,8 @@ export default {
     {
       "id": "regularization-deep-dive",
       "title": "Regularization Deep Dive: L1 Sparsity, L2, Elastic Net, Strength λ, Priors, Ridge",
+      "plain": "Regularization discourages a model from depending too strongly on particular weights. It trades a little training fit for better behavior on unseen data.",
+      "internGuide": ["L2 adds a squared-weight penalty and smoothly shrinks weights; it is also called ridge regularization in linear models.", "L1 adds an absolute-weight penalty and can drive some coefficients exactly to zero, producing sparsity.", "Elastic Net combines L1 and L2. Increasing the strength lambda increases the penalty and can eventually cause underfitting.", "Exam focus: L1 corresponds to a Laplace prior and promotes sparsity; L2 corresponds to a Gaussian prior and stabilizes solutions with correlated features."],
       "examRefs": [
         "FUN-017",
         "FUN-018",
@@ -301,6 +311,8 @@ export default {
     {
       "id": "classical-supervised-deep-dive",
       "title": "Classical Models Under the Hood: Linear & Logistic Regression, SVM & Kernels, kNN, Trees",
+      "plain": "Classical models solve different kinds of decision boundaries. Learn the assumption each model makes instead of memorizing a list of algorithm names.",
+      "internGuide": ["Linear regression predicts a number from a weighted sum. Logistic regression applies a sigmoid to a weighted sum to estimate a binary-class probability.", "kNN predicts from nearby training examples and therefore depends on meaningful feature scales and a useful distance metric.", "Decision trees split features into regions; SVMs maximize a separating margin and kernels allow nonlinear boundaries without explicitly creating every transformed feature.", "Exam focus: choose regression for continuous targets and classification for categories. Trees usually do not need scaling; kNN and SVM usually benefit from it."],
       "examRefs": [
         "FUN-036",
         "FUN-037",
@@ -360,6 +372,8 @@ export default {
     {
       "id": "unsupervised-and-embeddings-plots",
       "title": "Unsupervised Deep Dive: k-means & Elbow, PCA Maths, Reading t-SNE / UMAP Plots",
+      "plain": "Unsupervised methods explore data without target labels. Clustering groups examples, while dimensionality reduction creates smaller representations for compression, modeling, or visualization.",
+      "internGuide": ["k-means alternates between assigning points to the closest centroid and moving each centroid to its assigned mean. You must choose k.", "PCA finds orthogonal directions that explain the most variance after the data is centered; standardize first when feature units are very different.", "t-SNE and UMAP are mainly neighborhood visualizations. The apparent distance and size of separated clusters may be distorted.", "Exam focus: inertia always falls as k increases, so choose an elbow rather than the smallest inertia. Do not interpret a 2D nonlinear plot as exact global geometry."],
       "examRefs": [
         "FUN-034",
         "FUN-035",
@@ -413,6 +427,8 @@ export default {
     {
       "id": "tree-ensembles-deep-dive",
       "title": "Tree Ensembles Deep Dive: Why Random Forests Work, OOB 36.8%, Boosting & Shrinkage",
+      "plain": "Tree ensembles combine many imperfect trees. Random forests reduce variance by averaging diverse trees, while boosting builds trees sequentially to correct earlier errors.",
+      "internGuide": ["A random forest trains trees on bootstrap samples and random feature subsets so their errors are less correlated.", "For a large bootstrap sample, about 63.2% of rows appear at least once and about 36.8% are out-of-bag for that tree.", "Gradient boosting adds small trees that follow the current loss gradient. A smaller learning rate usually requires more trees and should be paired with validation-based early stopping.", "Exam focus: bagging trains trees independently and averages them; boosting is sequential. OOB rows provide an internal validation estimate for random forests."],
       "examRefs": [
         "FUN-038",
         "FUN-039",
@@ -466,6 +482,8 @@ export default {
     {
       "id": "metrics-decisions-deep-dive",
       "title": "Metrics That Drive Decisions: Imbalance, Recall vs Precision, Threshold, ROC-AUC, PR, Calibration, Macro F1",
+      "plain": "A metric is useful only when it matches the cost of mistakes. Accuracy can hide failure when one class is rare, so choose metrics and thresholds from the real decision problem.",
+      "internGuide": ["Precision asks how many predicted positives were correct; recall asks how many actual positives were found.", "Changing the decision threshold trades false positives against false negatives. It does not retrain the model.", "ROC-AUC measures ranking across thresholds, while precision-recall curves are often more informative for rare positive classes.", "Exam focus: macro F1 weights every class equally; micro F1 pools decisions and is dominated by common classes. Calibration asks whether predicted probabilities match observed frequencies."],
       "examRefs": [
         "FUN-031",
         "FUN-033",
@@ -529,6 +547,8 @@ export default {
     {
       "id": "exam-calculations-counting",
       "title": "Exam Calculations Made Easy (Part 1): Precision, Recall, F1, Macro vs Micro, Bayes, Shapes & Counts",
+      "plain": "This topic turns common exam formulas into a repeatable process: write the quantities, substitute the numbers, and check what the result means before choosing an answer.",
+      "internGuide": ["Precision = TP/(TP+FP), recall = TP/(TP+FN), and F1 = 2PR/(P+R). Label the confusion-matrix cells before calculating.", "Macro averaging calculates a metric per class and averages the classes. Micro averaging first totals the decisions across classes.", "Bayes' rule updates a prior probability using how likely the evidence is under each case.", "Exam focus: track tensor dimensions and bias terms carefully. Many distractors use the correct formula with the wrong denominator or forget a bias vector."],
       "examRefs": [
         "FUN-011",
         "FUN-028",
@@ -588,6 +608,8 @@ export default {
     {
       "id": "exam-calculations-softmax-ce",
       "title": "Exam Calculations Made Easy (Part 2): Softmax, Stable Softmax, Cross-Entropy, ln(K), Entropy, KL, Label Smoothing",
+      "plain": "These calculations describe how class scores become probabilities and how training penalizes confident mistakes. The safest method is to calculate one step at a time.",
+      "internGuide": ["Softmax exponentiates logits and divides by their sum. Subtract the largest logit first to avoid numerical overflow without changing the probabilities.", "For a one-hot target, cross-entropy is the negative natural log of the probability assigned to the correct class.", "Entropy measures uncertainty in one distribution; KL divergence measures how one distribution differs from another and is not symmetric.", "Exam focus: uniform prediction over K classes has cross-entropy ln(K). Label smoothing moves a small amount of target mass away from the correct class."],
       "examRefs": [
         "FUN-071",
         "FUN-072",
@@ -646,6 +668,8 @@ export default {
     {
       "id": "exam-calculations-training-tricks",
       "title": "Exam Calculations Made Easy (Part 3): Gradient Clipping, Warmup, Inverted Dropout, Adam Bias Correction",
+      "plain": "These training calculations are small but easy to confuse. Each technique solves a different problem: unstable gradients, risky early updates, regularization, or biased optimizer statistics.",
+      "internGuide": ["Global-norm clipping rescales the entire gradient vector only when its norm exceeds the limit, preserving its direction.", "Linear warmup increases the learning rate from a small value to its target during early steps.", "Inverted dropout scales surviving activations during training by 1/(1-p), so no extra scaling is needed at inference.", "Exam focus: Adam's moving averages start near zero and need bias correction early in training. Do not confuse norm clipping with clamping each gradient element."],
       "examRefs": [
         "FUN-113",
         "FUN-121",
@@ -699,6 +723,8 @@ export default {
     {
       "id": "loss-functions-deep-dive",
       "title": "Choosing the Right Loss: MSE vs CE, Multi-Label, Huber, Focal Loss, Log-Probs, Likelihood View, KL Directions",
+      "plain": "The loss function defines what kind of mistake the model should reduce. Choose it from the target type and error cost, not from the model name alone.",
+      "internGuide": ["Use MSE or related regression losses for continuous targets. Huber is less sensitive than MSE to large outliers.", "Use categorical cross-entropy for one mutually exclusive class and binary cross-entropy per class for independent multi-label targets.", "Focal loss reduces the weight of easy examples so training can focus on difficult or rare cases.", "Exam focus: forward KL is generally mode-covering and reverse KL mode-seeking. Many loss APIs expect logits and apply sigmoid, softmax, or log-softmax internally."],
       "examRefs": [
         "FUN-014",
         "FUN-015",
@@ -760,6 +786,8 @@ export default {
     {
       "id": "nn-training-mechanics",
       "title": "Neural Network Mechanics: Epochs & Steps, Gradient Descent, Backprop, Activations, Initialization, Vanishing / Exploding Gradients, Universal Approximation",
+      "plain": "A neural network learns by making a prediction, measuring its error, calculating how each parameter affected that error, and updating the parameters repeatedly.",
+      "internGuide": ["One epoch processes the full training set; one optimizer step normally processes one mini-batch. Steps per epoch are approximately dataset size divided by batch size.", "The forward pass creates predictions and loss. Backpropagation uses the chain rule to calculate gradients; the optimizer applies the update.", "Nonlinear activations let stacked layers represent nonlinear functions. Initialization and residual connections help signals and gradients remain usable in deep networks.", "Exam focus: the universal approximation theorem describes representational capacity, not whether gradient descent will find a good solution or whether it will generalize."],
       "examRefs": [
         "FUN-010",
         "FUN-012",
@@ -824,6 +852,8 @@ export default {
     {
       "id": "optimizers-batch-size-deep-dive",
       "title": "Optimizers & Batch Size Deep Dive: Momentum, Adam, AdamW vs L2, Schedules, Large-Batch Generalization, Memory",
+      "plain": "Optimizers decide how gradients change parameters. Batch size and learning-rate schedules change both the noise of those gradients and the hardware efficiency of training.",
+      "internGuide": ["Momentum smooths updates using a running direction. Adam also adapts the step size using running first and second moments.", "AdamW applies decoupled weight decay rather than adding L2 directly to Adam's gradient; the two are not generally equivalent for adaptive optimizers.", "Larger batches reduce gradient noise and use more activation memory. After a critical size, adding samples gives diminishing reductions in training steps.", "Exam focus: warmup protects early large-batch updates, while decay lowers the learning rate later. Training memory includes weights, gradients, optimizer states, and activations."],
       "examRefs": [
         "FUN-060",
         "FUN-061",
@@ -883,6 +913,8 @@ export default {
     {
       "id": "normalization-and-pytorch-modes",
       "title": "BatchNorm vs LayerNorm, and PyTorch Gotchas: zero_grad, eval(), no_grad()",
+      "plain": "Normalization layers and PyTorch modes solve different problems. Understanding exactly what each switch changes prevents silent training and inference bugs.",
+      "internGuide": ["BatchNorm uses batch statistics during training and stored running statistics during evaluation; its behavior depends on train or eval mode.", "LayerNorm normalizes features within each example and behaves the same way during training and inference, apart from learned parameters.", "optimizer.zero_grad() clears accumulated gradients. model.eval() changes layer behavior. no_grad() or inference_mode() disables gradient recording.", "Exam focus: eval() does not disable autograd, and no_grad() does not disable dropout by itself. Inference commonly needs both behaviors."],
       "examRefs": [
         "FUN-066",
         "FUN-067",
@@ -934,6 +966,8 @@ export default {
     {
       "id": "gans-vaes-flows",
       "title": "Generative Models Deep Dive (1): Generative vs Discriminative, Naive Bayes, GANs, VAEs, Normalizing Flows",
+      "plain": "Generative models learn enough about a data distribution to create or score examples, while discriminative models focus on predicting targets from inputs. Different generative families trade likelihood, sample quality, and training stability.",
+      "internGuide": ["Naive Bayes models class-conditional feature probabilities with a conditional-independence assumption and uses Bayes' rule for classification.", "A GAN trains a generator against a discriminator. It can produce sharp samples but may be unstable or collapse to limited modes.", "A VAE optimizes reconstruction plus a KL regularizer and samples through the reparameterization trick. Its likelihood is a lower bound rather than exact.", "Exam focus: normalizing flows use invertible transformations and tractable Jacobians for exact likelihood; GANs do not provide explicit likelihoods."],
       "examRefs": [
         "FUN-042",
         "FUN-043",
@@ -1001,6 +1035,8 @@ export default {
     {
       "id": "diffusion-and-autoregressive",
       "title": "Generative Models Deep Dive (2): Diffusion, DDPM Objective, Latent Diffusion, Classifier-Free Guidance, Autoregressive Models, Teacher Forcing",
+      "plain": "Diffusion and autoregressive models generate data in repeated steps. Diffusion removes noise gradually; autoregressive models predict the next item from earlier items.",
+      "internGuide": ["A DDPM training example adds a known amount of noise at a selected timestep, and the network commonly learns to predict that noise.", "Latent diffusion performs denoising in a compressed latent space, reducing computation compared with operating on full-resolution pixels.", "Classifier-free guidance combines conditional and unconditional predictions to strengthen prompt adherence, usually at a cost to diversity when made too strong.", "Exam focus: teacher forcing uses true previous tokens during training, but generation uses the model's own outputs; this mismatch can create exposure bias."],
       "examRefs": [
         "FUN-045",
         "FUN-046",
@@ -1063,6 +1099,8 @@ export default {
     {
       "id": "gpu-accelerated-ml",
       "title": "GPU Acceleration for Classic ML & Data: Why GPUs, cuDF / cudf.pandas, cuML, GPU XGBoost, Spark, Dask, DLPack, Mixed Precision",
+      "plain": "GPU acceleration helps when a workload contains enough parallel numerical work to offset data-transfer and startup costs. Choose the tool that matches the data-processing or modeling layer.",
+      "internGuide": ["cuDF provides GPU dataframes and cudf.pandas can accelerate supported pandas operations. cuML provides GPU versions of many familiar ML algorithms.", "Current XGBoost uses device='cuda' with tree_method='hist' for GPU training. RAPIDS Accelerator can move supported Spark SQL and dataframe work to GPUs.", "Dask distributes larger workflows across workers. DLPack and the CUDA Array Interface can share device buffers between compatible libraries without a CPU round trip.", "Exam focus: a GPU is not automatically faster for tiny, serial, unsupported, or transfer-heavy workloads. Benchmark the full pipeline rather than one kernel."],
       "examRefs": [
         "FUN-047",
         "FUN-048",
@@ -1130,6 +1168,8 @@ export default {
     {
       "id": "end-to-end-churn-project",
       "title": "Beyond the Exam: End-to-End Mini Project, Sri Lankan Telco Customer Churn (CSV → Evaluated Model → Monitoring)",
+      "plain": "This project connects the separate ML concepts into one reproducible workflow. The goal is not merely to train a classifier but to build an honest, deployable decision system.",
+      "internGuide": ["Define churn, the prediction time, available features, and the business cost of false positives and false negatives before opening the CSV.", "Split data before fitting preprocessing. Build a pipeline, establish a simple baseline, tune on validation data, and evaluate once on the untouched test set.", "Choose a threshold from business costs and capacity, not automatically 0.5. Check calibration and subgroup performance before deployment.", "Production work includes versioning data and code, monitoring drift and outcomes, and deciding when to retrain or roll back."],
       "examRefs": [
         "FUN-138",
         "FUN-053",

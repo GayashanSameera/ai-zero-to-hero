@@ -9,6 +9,8 @@ export default {
   topics: [
     {
       id: 'agentic-loop-stop-reason',
+      plain: "An agent loop sends messages to a model, inspects the response, executes requested client tools, returns matching tool results, and repeats until a terminal condition.",
+      internGuide: ["An agent loop sends messages to a model, inspects the response, executes requested client tools, returns matching tool results, and repeats until a terminal condition.","For the Messages API, `stop_reason: tool_use` means your application must handle one or more tool-use blocks; `end_turn` normally means Claude finished that turn. Other reasons need explicit handling.","Match every tool result to its tool-use ID, preserve the assistant response in history, and do not assume the last content block is plain text. Server tools may be executed by Anthropic instead.","Set maximum turns, tokens, elapsed time, cost, and tool retries. Log stop reasons and fail safely on unknown values so an API addition does not create an infinite loop."],
       examRefs: ['CCAR-001'],
       title: 'Agentic Loop: stop_reason (Task 1.1)',
       si: 'ඔයාගේ agent එක Claude එක්ක කතා කරන්නේ වටෙන් වටේ යන loop එකකින්. Colombo වල order එකක් බලන්න Claude tool එකක් ඉල්ලුවොත්, ඔයාගේ code එක ඒ tool එක run කරලා result එක ආපහු යවනවා. stop_reason එක end_turn වුණාම Claude ඉවරයි කියලා loop එක නවත්වන්න. Request දෙකකින් order එකේ තත්ත්වය දැනගන්න පුළුවන්.',
@@ -56,6 +58,8 @@ while True:
     },
     {
       id: 'coordinator-subagent-hub-spoke',
+      plain: "In hub-and-spoke, a coordinator owns the user goal and delegates bounded tasks to specialists. Specialists report evidence/results back; they should not silently redefine the goal.",
+      internGuide: ["In hub-and-spoke, a coordinator owns the user goal and delegates bounded tasks to specialists. Specialists report evidence/results back; they should not silently redefine the goal.","Use this pattern for separable expertise, parallel research, or permission isolation. A single agent is simpler when tasks share heavy context or require tight sequential reasoning.","Give each subagent a contract: objective, inputs, allowed tools, output schema, budget, deadline, and what to do when uncertain. The coordinator resolves conflicts and synthesizes.","Guard against duplicated work, excessive fan-out, lost provenance, conflicting edits, and coordinator overload. Evaluate final task success, not the number of agents used."],
       title: 'Coordinator–Subagent: Hub-and-Spoke (Task 1.2)',
       si: 'ලොකු research වැඩක් කොටස් කරලා subagents කිහිපයකට දෙන්න coordinator කෙනෙක් යොදාගන්නවා. ක්‍රිකට් කණ්ඩායමක නායකයා වගේ coordinator එක ප්‍රතිඵල එකතු කරලා සාරාංශ කරනවා. හැම subagent එකක්ම coordinator හරහාම කතා කරන නිසා වැඩේ බලන්න ලේසියි. Subagent කෙනෙක්ට අනිත් කෙනාගේ කතාබහ ඉබේම පේන්නේ නැහැ.',
       body: [
@@ -82,6 +86,8 @@ while True:
     },
     {
       id: 'subagent-spawning-context-passing',
+      plain: "A subagent needs only the context required for its assignment: goal, relevant facts/files, constraints, and expected output. More context increases cost and may introduce irrelevant instructions.",
+      internGuide: ["A subagent needs only the context required for its assignment: goal, relevant facts/files, constraints, and expected output. More context increases cost and may introduce irrelevant instructions.","Agent definitions or SDK APIs are version-specific. Treat agent name, description, tools/permissions, model, and prompt as configuration that must be validated against current docs.","Pass references and provenance, not unverified summaries as fact. Decide whether the child shares state, receives a snapshot, or works independently, and make write ownership explicit.","On return, verify completion and evidence, merge deterministically, and surface uncertainty. Never assume a spawned agent succeeded merely because it stopped."],
       examRefs: ['CCAR-002', 'CCAR-003', 'CCAR-024'],
       title: 'Creating Subagents, AgentDefinition and Context Passing (Task 1.3)',
       si: 'Agent එකකට වැඩ බෙදන්න Task හෝ Agent tool එකෙන් subagent හදන්න පුළුවන්. කොළඹ ගමනකට කෙනෙක්ට බස් මාර්ග බලන්නත් තව කෙනෙක්ට කාලසටහන් බලන්නත් වෙනම වැඩ දෙන්න. ඒ අයට අවශ්‍ය තොරතුරු prompt එකේම දෙන්න, මොකද parent කතාබහ එයාලට ඉබේ ලැබෙන්නේ නැහැ. එක response එකක calls කිහිපයක් දුන්නොත් ඒ වැඩ parallel යනවා.',
@@ -125,6 +131,8 @@ options = ClaudeAgentOptions(
     },
     {
       id: 'workflow-enforcement-handoff',
+      plain: "Enforce deterministic requirements in application code or a workflow graph: required approvals, order constraints, schemas, permissions, and terminal conditions should not rely only on prompting.",
+      internGuide: ["Enforce deterministic requirements in application code or a workflow graph: required approvals, order constraints, schemas, permissions, and terminal conditions should not rely only on prompting.","A handoff transfers responsibility to another agent or a human. Include a concise case summary, evidence, actions already taken, open questions, and the requested decision.","Pause before consequential side effects. Persist state so a delayed human response can resume, then revalidate permissions and external facts because the world may have changed.","Provide cancellation, timeout, fallback, and escalation routes. Measure handoff rate, wait time, rework, and whether users can tell who currently owns the task."],
       title: 'Workflow Enforcement and Human Handoff (Task 1.4)',
       si: 'Customer කෙනෙක්ගේ identity එක තහවුරු නොකර refund දෙන්න එපා කියන නීතිය prompt එකට විතරක් බාර දෙන්න එපා. Rs. 50,000 refund එකකට manager අනුමැතිය ඕනේ නම් code එකෙන් gate එකක් දාන්න. Agent එකට විසඳන්න බැරි වුණොත් සිද්ධිය සහ හේතුව කෙටියෙන් human කෙනෙකුට යවන්න. ගැටලු දෙකක් ආවොත් ඒවා වෙන වෙනම බලලා එකට පිළිතුරු දෙන්න.',
       body: [
@@ -151,13 +159,15 @@ options = ClaudeAgentOptions(
     },
     {
       id: 'hooks-pretooluse-posttooluse',
+      plain: "Hooks observe or influence lifecycle events around tool calls, but exact hook names, inputs, and return behavior depend on the Claude Agent SDK version. Verify the reference before coding.",
+      internGuide: ["Hooks observe or influence lifecycle events around tool calls, but exact hook names, inputs, and return behavior depend on the Claude Agent SDK version. Verify the reference before coding.","A pre-tool hook can enforce policy, validate/modify input where supported, request approval, or deny execution. Authorization must still exist in the actual tool/service.","A post-tool hook can redact/normalize output, emit audit data, attach context, or flag errors. It cannot undo an irreversible side effect that already happened.","Keep hooks deterministic, fast, and fail-closed for sensitive operations; avoid secrets in logs and test allow, deny, error, timeout, and concurrent calls."],
       examRefs: ['CCAR-004'],
       title: 'Agent SDK Hooks: PreToolUse and PostToolUse (Task 1.5)',
       si: 'PreToolUse hook එක tool එක වැඩ කරන්න කලින් පරීක්ෂා කරන දොරටු ආරක්ෂකයෙක් වගේ. Rs. 500 ට වැඩි refund එකක් නම් ඒක නවත්තලා manager කෙනෙක්ට යවන්න කියන්න පුළුවන්. PostToolUse hook එක result එක ලැබුණාට පස්සේ දින සහ අංක එකම format එකකට හදනවා. අනිවාර්ය නීති code එකේ දාන්න, නම්‍යශීලී උපදෙස් prompt එකේ දෙන්න.',
       body: [
         'A hook is a callback that runs your code at a defined point in the agent loop. Because it is your code, it can enforce deterministic checks—the way to put mandatory rules in code.',
-        'PreToolUse intercepts a call before its tool runs. It can allow, deny, ask, or defer. If hooks conflict, deny takes precedence. For example, deny a refund over $500 and give Claude a reason to call escalate_to_human.',
-        'PostToolUse can change a tool result before it is sent to Claude. For example, normalize Unix timestamps, ISO 8601 dates, and numeric status codes to a consistent format. Claude sees the cleaned result when updatedToolOutput is provided; additionalContext can also add information.',
+        'A PreToolUse hook runs before a tool and can be used to evaluate policy, reject or redirect a call, or request approval when supported by the installed Claude Agent SDK version. The exact callback input and decision fields have changed across SDK releases, so use the versioned hook reference instead of copying an old return object. For example, block a refund over $500 in trusted code and direct the workflow to human review.',
+        'A PostToolUse hook runs after execution and can normalize a result, add audit/context information, or report a policy issue before the next model step. Exact result-replacement fields are SDK-version-specific. A post hook cannot undo an external side effect, so a refund limit belongs before execution and in the refund service’s own authorization logic.',
         'An MCP tool name has the form mcp__<server>__<tool>; use that name in a hook matcher. Use hooks for guaranteed enforcement and prompts for flexible guidance.',
       ],
       analogy:
@@ -181,8 +191,8 @@ options = ClaudeAgentOptions(hooks={"PreToolUse": [
                 hooks=[block_large_refunds])]})`,
       },
       keyPoints: [
-        'PreToolUse checks or blocks a call before execution (allow, deny, ask, or defer); deny takes precedence.',
-        'PostToolUse changes a result before Claude receives it (for example, with updatedToolOutput).',
+        'PreToolUse applies checks before execution; verify the decision fields supported by the installed SDK version.',
+        'PostToolUse observes or normalizes a result after execution; it cannot undo a side effect.',
         'A hook is deterministic code; a prompt is probabilistic.',
         'MCP tool names use the form mcp__<server>__<tool>.',
       ],
@@ -194,6 +204,8 @@ options = ClaudeAgentOptions(hooks={"PreToolUse": [
     },
     {
       id: 'task-decomposition-chaining-dynamic',
+      plain: "Prompt chaining uses a predefined sequence whose intermediate outputs feed later steps. It is understandable and testable when the task structure is stable.",
+      internGuide: ["Prompt chaining uses a predefined sequence whose intermediate outputs feed later steps. It is understandable and testable when the task structure is stable.","Dynamic decomposition lets the model choose subtasks as it learns more. It handles uncertainty but adds nondeterminism, cost, duplicate work, and termination risk.","Use code for known dependencies and the model for genuinely ambiguous decisions. Define typed intermediate artifacts so one weak step does not silently contaminate the rest.","Cap depth/fan-out, deduplicate subtasks, record provenance, and test partial failure and replanning. Compare the dynamic design with a simpler fixed baseline."],
       examRefs: ['CCAR-021'],
       title: 'Task Decomposition: Prompt Chaining vs Dynamic (Task 1.6)',
       si: 'වැඩේ පියවර කලින්ම දන්නවා නම් ස්ථාවර prompt chain එකක් යොදාගන්න. PR එකේ files 14ක් බලනවා නම් file එකින් එක පරීක්ෂා කරලා අන්තිමේ එකට බලන්න. පරණ system එකක් ගැන මුලින්ම දන්නේ නැත්නම්, සොයාගන්නා දේ අනුව plan එක වෙනස් කරන dynamic ක්‍රමය තෝරන්න. එක prompt එකකට වැඩියෙන්ම පටවන්න එපා.',
@@ -220,6 +232,8 @@ options = ClaudeAgentOptions(hooks={"PreToolUse": [
     },
     {
       id: 'sessions-resume-fork-fresh',
+      plain: "Resume continues an existing session/history; fork copies history into a new branch while preserving the source; fresh start creates a separate context. Exact SDK helpers are version-specific.",
+      internGuide: ["Resume continues an existing session/history; fork copies history into a new branch while preserving the source; fresh start creates a separate context. Exact SDK helpers are version-specific.","Resume when prior decisions and state remain valid. Fork to explore an alternative without altering the original. Start fresh when context is contaminated, unrelated, or must not cross users/tasks.","A transcript and a sandbox/filesystem are different state layers; confirm what the selected product persists, checkpoints, retains, and deletes.","Store session IDs with tenant authorization, prevent cross-user access, revalidate stale facts on resume, and test deletion/retention plus behavior after upgrades."],
       examRefs: ['CCAR-005', 'CCAR-022', 'CCAR-023'],
       title: 'Sessions: Resume, Fork and Fresh Start (Task 1.7)',
       si: 'Session එකක් කියන්නේ agent එකේ කලින් කතාබහ සුරැකුණු සටහනක්. ඊයේ වැඩේ අද කරගෙන යන්න resume කරන්න, නැත්නම් එකම තැනින් වෙනස් විසඳුම් දෙකක් බලන්න fork කරන්න. කණ්ඩායම files 10ක් වෙනස් කරලා නම් පරණ results මත විශ්වාස නොකර ඒවා නැවත කියවන්න කියන්න. බොහෝ දේ වෙනස් නම් සාරාංශයක් එක්ක අලුත් session එකක් පටන්ගන්න.',
@@ -250,6 +264,8 @@ claude --resume refund-investigation --fork-session  # Create a branch`,
     },
     {
       id: 'tool-descriptions-naming-splitting',
+      plain: "A tool description should state what the tool does, when to use it, important exclusions, side effects, and what each parameter means. Use distinct action-oriented names.",
+      internGuide: ["A tool description should state what the tool does, when to use it, important exclusions, side effects, and what each parameter means. Use distinct action-oriented names.","Schemas should make invalid calls difficult: required fields, enums, formats, limits, and separate identifiers from free text. Strict schema support is product/model dependent.","Split a broad tool when operations have different permissions, side effects, failure modes, or inputs. Do not split so finely that simple work needs excessive round trips.","Evaluate tool selection and argument accuracy with realistic and confusing requests. Fix overlapping descriptions and expose idempotency/confirmation requirements clearly."],
       examRefs: ['CCAR-006'],
       title: 'Tool Descriptions, Naming and Splitting (Task 2.1)',
       si: 'Tool description එක රාක්කයේ ලේබලයක් වගේ; පැහැදිලි නැත්නම් agent වැ गलत tool එක තෝруулж болно. Order ID A12345 වගේ input, юу ලැබෙනවද, උදාහරණයක් සහ කවදා භාවිතා නොකළ යුතුද කියලා ලියන්න. මුලින් description එක හදන්න, ඉන්පස්සේ අවශ්‍ය නම් නම වෙනස් කරන්න. තවමත් වැඩ නොබෙදෙන්නේ නම් විශේෂිත tools කිහිපයකට කඩන්න.',
@@ -293,13 +309,15 @@ claude --resume refund-investigation --fork-session  # Create a branch`,
     },
     {
       id: 'structured-error-responses',
+      plain: "A successful tool call returns structured data; a recoverable tool failure should be explicitly marked as an error rather than returning error text that looks like success.",
+      internGuide: ["A successful tool call returns structured data; a recoverable tool failure should be explicitly marked as an error rather than returning error text that looks like success.","In the Claude API, a `tool_result` can use `is_error`; in MCP, a tool result can use `isError`. These names belong to different wire formats.","`isRetryable` is not a universal standard field. If your application defines retry metadata, document its schema and keep the actual retry policy in trusted code.","Return a safe error code, human/model-readable message, retry guidance, and relevant field—not stack traces or secrets. Distinguish validation, authorization, not-found, conflict, rate-limit, transient, and internal failures."],
       examRefs: ['CCAR-028'],
       title: 'Structured Error Responses: isError and isRetryable (Task 2.2)',
       si: 'ATM එක “Error” කියනවා වෙනුවට PIN එක වැරදිද, ජාලය නැද්ද කියලා පැහැදිලි කරනවා වගේ tool එකත් error එකේ හේතුව කියන්න ඕනේ. Timeout එකක් නම් ටිකක් ඉඳලා නැවත උත්සාහ කරන්න පුළුවන්. Rs. 500 ට වැඩි refund එකකට manager ඕනේ නම් ආයෙත් උත්සාහ කරලා වැඩක් නැහැ. isRetryable සහ පැහැදිලි message එකෙන් agent එකට ඊළඟ පියවර තෝරන්න උදව් වෙනවා.',
       body: [
-        'A generic "Operation failed" message gives an agent little guidance. Return structured errors: MCP’s isError: true indicates failure, with an errorCategory, isRetryable flag, and clear message.',
+        'A generic "Operation failed" message gives an agent little guidance. MCP’s standard `isError: true` marks a tool result as failed. Fields such as `errorCategory` and `isRetryable` are useful application-defined metadata, not standard MCP fields; if you put them in structured content or JSON text, document their schema.',
         'There are four useful error categories: (1) Transient, such as a timeout or unavailable service: retry with backoff. (2) Validation, such as invalid input: correct the input and retry. (3) Business, such as a refund limit: do not retry; explain or escalate. (4) Permission: do not retry; escalate.',
-        'Use isRetryable to guide recovery. Retry transient errors, and correct validation errors before retrying. Do not retry business or permission errors; explain or escalate instead.',
+        'Trusted application code should classify retry behavior. Retry transient failures with a bounded backoff; correct validation input before a new attempt; do not automatically retry permission or business-policy failures. The model may receive safe guidance, but it should not be the only component enforcing retry limits.',
       ],
       analogy:
         'An ATM that says only "Error" leaves you confused. It is more useful to know whether the card is blocked (permission), the PIN is wrong (validation), a daily limit was reached (business), or the network is down and you should retry (transient).',
@@ -317,7 +335,7 @@ claude --resume refund-investigation --fork-session  # Create a branch`,
       },
       keyPoints: [
         'Use four error categories: transient, validation, business, and permission.',
-        'Return isError: true together with errorCategory, isRetryable, and a clear message.',
+        '`isError: true` is the MCP failure signal; `errorCategory` and `isRetryable` are optional application-defined fields, not universal protocol fields.',
         'Retry transient failures; correct validation failures before retrying. Do not retry business or permission failures.',
         'A generic "Operation failed" message gives the agent no useful recovery guidance.',
       ],
@@ -329,6 +347,8 @@ claude --resume refund-investigation --fork-session  # Create a branch`,
     },
     {
       id: 'access-failure-vs-empty-result',
+      plain: "An empty result means the authorized query succeeded and found no items. An access failure means the system could not verify or permit the request; treating it as empty hides a security or availability problem.",
+      internGuide: ["An empty result means the authorized query succeeded and found no items. An access failure means the system could not verify or permit the request; treating it as empty hides a security or availability problem.","Use distinct statuses such as OK_EMPTY, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, RATE_LIMITED, and UPSTREAM_UNAVAILABLE with carefully chosen user-facing messages.","The agent may recover locally from safe cases by correcting input, asking for missing identity, narrowing a query, or trying an approved alternate source. It must not bypass policy.","Test that denial cannot become “no data,” that absence does not leak resource existence, and that audit logs retain the real cause even when user messages are intentionally vague."],
       examRefs: ['CCAR-007'],
       title: 'Access Failure ≠ Empty Result and Local Recovery (Task 2.2)',
       si: 'කඩේට ගිහින් අල ඉවරයි කියන එකයි කඩේ වහලා නිසා දැනගන්න බැරි එකයි වෙනස්. Database timeout එකක් හිස් list එකක් කරලා යැව්වොත් agent එක orders නැහැ කියලා වැරදියට කියයි. Timeout එක error එකක් ලෙසත්, හොයාගත්තේ නැති එක සාමාන්‍ය result එකක් ලෙසත් යවන්න. Subagent එකට retry කරන්න ඉඩ දෙන්න; බැරි නම් උත්සාහ කළ දේවල් එක්ක coordinator ට කියන්න.',
@@ -356,6 +376,8 @@ claude --resume refund-investigation --fork-session  # Create a branch`,
     },
     {
       id: 'tool-distribution-least-privilege',
+      plain: "Give each agent only the tools and scopes required for its role. Tool visibility, tool-call permission, and backend authorization are separate controls.",
+      internGuide: ["Give each agent only the tools and scopes required for its role. Tool visibility, tool-call permission, and backend authorization are separate controls.","Prefer read-only lookup tools for research agents and isolate write/payment/deployment tools behind stronger identity, validation, approval, and audit requirements.","Use the end user’s delegated identity where possible; avoid shared superuser credentials. Restrict resource, action, tenant, environment, amount, and time.","Review permissions as tools and roles change, revoke unused access, and test confused-deputy, prompt-injection, cross-tenant, and indirect-tool-call attacks."],
       examRefs: ['CCAR-008'],
       title: 'Tool Distribution and Least Privilege (Task 2.3)',
       si: 'Agent එකකට අවශ්‍ය tools විතරක් දෙන්න; synthesis agent ට සම්පූර්ණ web search එක අවශ්‍ය නැහැ. Tuk-tuk රියදුරාට ගාස්තු පෙට්ටියේ යතුර දෙනවා මිස බැංකුවේ සේප්පුවේ යතුර දෙන්නේ නැහැ වගේ. සරල fact-check සඳහා සීමිත verify_fact tool එකක් දෙන්න. සංකීර්ණ ප්‍රශ්න coordinator හරහා යවන්න.',
@@ -383,6 +405,8 @@ claude --resume refund-investigation --fork-session  # Create a branch`,
     },
     {
       id: 'tool-choice-auto-any-forced',
+      plain: "`auto` lets Claude decide whether to answer or use a tool. `any` requires some offered tool. A forced choice selects one named tool; use the exact current API structure.",
+      internGuide: ["`auto` lets Claude decide whether to answer or use a tool. `any` requires some offered tool. A forced choice selects one named tool; use the exact current API structure.","Requiring a call can improve structured extraction or ensure a lookup, but forcing the wrong tool produces fabricated arguments or unnecessary side effects.","Tool choice controls model selection behavior, not authorization. The application must still validate schemas, permissions, state, and confirmations.","Use normal language plus `auto` by default; require/force only for a tested contract. Handle missing required parameters and multiple/parallel calls explicitly."],
       title: 'tool_choice: auto, any, forced (Task 2.3)',
       si: 'ඔයාට tool එකක් අනිවාර්ය කරන්නේද කියලා tool_choice තීරණය කරනවා. auto නම් Claude text එකක් දෙන්නත් tool එකක් අමතන්නත් තෝරනවා. any නම් යම් tool එකක් අනිවාර්යයි, නමුත් කුමන එකද කියලා Claude තෝරනවා. නිශ්චිත tool එකක් බලෙන් තෝරන එක නොදන්නා document වර්ගයකට වැරදි schema එකක් යොදන්න පුළුවන්.',
       body: [
@@ -416,6 +440,8 @@ tool_choice={"type": "none"}   # No tools for this turn`,
     },
     {
       id: 'mcp-servers-scopes-env',
+      plain: "An MCP host connects clients to servers that expose capabilities. Configuration scope may be project, user, or managed/product-specific; names and precedence are implementation details, not core MCP semantics.",
+      internGuide: ["An MCP host connects clients to servers that expose capabilities. Configuration scope may be project, user, or managed/product-specific; names and precedence are implementation details, not core MCP semantics.","Environment variables can inject non-secret configuration or secret references, but expansion syntax differs by launcher. Never place resolved secrets into prompts, logs, or committed configuration.","Pin or review server code, command, package/version, transport, working directory, environment allowlist, and permissions. A community server executes with the authority you give it.","Test startup failure, capability discovery, auth expiry, cancellation, and cleanup. Use the narrowest scope so one project or user cannot unexpectedly affect another."],
       examRefs: ['CCAR-009', 'CCAR-025', 'CCAR-027'],
       title: 'MCP Servers: Scopes and Environment Expansion (Task 2.4)',
       si: 'Project එකටම ඕනේ MCP server එක repo එකේ .mcp.json තුළ දාන්න, එතකොට කණ්ඩායමට එකම සැකසුම ලැබෙනවා. පුද්ගලික අත්හදාබැලීම් ~/.claude.json තුළ තියාගන්න. GitHub token එක ගොනුවට කෙලින්ම ලියන්න එපා; GITHUB_TOKEN වගේ environment variable එකකින් ගන්න. Colombo office එකේ කණ්ඩායමට එකම server එක share කරද්දී රහස් token එක තමන්ගේ machine එකේ තියාගන්න.',
@@ -454,6 +480,8 @@ tool_choice={"type": "none"}   # No tools for this turn`,
     },
     {
       id: 'mcp-resources-community-custom',
+      plain: "MCP resources are application-controlled contextual data addressed by URIs; tools are model-invoked actions. Prompts are reusable templates. Choose the primitive by who initiates and whether side effects occur.",
+      internGuide: ["MCP resources are application-controlled contextual data addressed by URIs; tools are model-invoked actions. Prompts are reusable templates. Choose the primitive by who initiates and whether side effects occur.","A resource read is not a substitute for an action tool, and a read-only tool is still a tool. Errors for tool calls versus resource reads use different protocol paths.","Community servers speed integration but require provenance, maintenance, license, dependency, permission, and security review. Custom servers offer control but create ownership and support work.","Expose minimal data and actions, validate URIs/inputs, enforce backend authorization, sanitize untrusted content, and version schemas so clients can evolve safely."],
       title: 'MCP Resources vs Tools, Community vs Custom Servers (Task 2.4)',
       si: 'MCP Resource එකක් කියන්නේ කියවන්න පුළුවන් ලේඛනයක් වගේ, Tool එකක් කියන්නේ ක්‍රියාවක් කරන උපකරණයක් වගේ. උදාහරණයට policy එකක් කියවීම resource එකක්, refund එකක් ඉල්ලීම tool එකක්. Community server එකක් තෝරද්දී කවුද හදලා තියෙන්නේ සහ එය කරන දේ පරීක්ෂා කරන්න. අවශ්‍ය කාර්යය නොමැති නම් තමන්ට ගැළපෙන server එකක් හදන්න පුළුවන්.',
       body: [
@@ -498,6 +526,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'builtin-tools-exploration',
+      plain: "Built-in or Anthropic-defined tools vary by product and model. Confirm whether a tool runs on Anthropic infrastructure, in your client, or in an agent sandbox before designing controls.",
+      internGuide: ["Built-in or Anthropic-defined tools vary by product and model. Confirm whether a tool runs on Anthropic infrastructure, in your client, or in an agent sandbox before designing controls.","Explore a codebase by reading project instructions, listing/searching files, inspecting entry points and tests, then forming a hypothesis before editing. Search is cheaper and safer than opening everything.","Shell and file tools can have powerful side effects. Use permission policies, sandboxing, path restrictions, command validation, and human approval for consequential operations.","Require evidence: cited files/lines, test output, diffs, and unresolved risks. Tool activity is not proof that the task was correctly completed."],
       examRefs: ['CCAR-010', 'CCAR-026'],
       title: 'Built-in Tools and Codebase Exploration (Task 2.5)',
       si: 'Project එකක test files හොයන්න Glob භාවිතා කරන්න, code ඇතුළේ function එකක් හොයන්න Grep භාවිතා කරන්න. Read එකෙන් ගොනුව බලන්න, Edit එකෙන් තෝරාගත් කොටස වෙනස් කරන්න. ලොකු repo එකක මුලින්ම සියලු ගොනු කියවන්න එපා; entry point එක හොයාගෙන අදාළ imports ටික බලන්න. Edit එක අසාර්ථක වුණොත් නැවත Read කරලා ඉලක්කගත Write එකක් කරන්න.',
@@ -526,6 +556,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'scenario-customer-support-agent',
+      plain: "Start with supported intents, identity requirements, knowledge sources, allowed actions, SLA, escalation, and success metrics. Keep account data isolated by customer.",
+      internGuide: ["Start with supported intents, identity requirements, knowledge sources, allowed actions, SLA, escalation, and success metrics. Keep account data isolated by customer.","Use retrieval for policy answers and narrow tools for account lookup, ticket creation, or changes. Separate read from write and require confirmation/approval for sensitive actions.","Represent case state explicitly, make write calls idempotent, distinguish empty data from access failure, cite evidence, and hand off with a useful summary.","Evaluate task resolution, policy correctness, tool arguments, containment, re-contact, latency, cost, injection resistance, and human override before expanding autonomy."],
       title: 'Scenario: Customer Support Resolution Agent',
       si: 'Support agent එකට get_customer, lookup_order, process_refund සහ escalate_to_human tools තියෙනවා කියලා හිතන්න. Customer ID එක තහවුරු නොකර refund දෙන්න බැරි gate එක code එකෙන් දාන්න. Order ගැන ප්‍රශ්නයකට වැරදි tool එක යනවා නම් descriptions පැහැදිලි කරන්න. Customer මනුස්සයෙක් ඉල්ලුවොත් හෝ match කිහිපයක් තිබුණොත් ඒ තොරතුරු ඉල්ලා human කෙනෙකුට යොමු කරන්න.',
       body: [
@@ -552,6 +584,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'scenario-multi-agent-research',
+      plain: "A coordinator should decompose a question into non-overlapping evidence tasks, assign source constraints, and define the final synthesis schema.",
+      internGuide: ["A coordinator should decompose a question into non-overlapping evidence tasks, assign source constraints, and define the final synthesis schema.","Researchers return claims with source, date, quote/paraphrase boundaries, and uncertainty. A verifier checks primary evidence and conflicts rather than merely rewriting.","Parallelize independent branches, but cap agents and searches. Deduplicate sources, distinguish publication date from event date, and never treat consensus among copied sources as independent confirmation.","The final report maps claims to evidence, states inference, includes disagreements/limitations, and passes citation checks. Evaluate factual precision and coverage, not prose fluency alone."],
       title: 'Scenario: Multi-Agent Research System',
       si: 'Research report එකේ මාතෘකා හතරෙන් එකක් විතරක් තිබුණොත්, subagents හොඳට වැඩ කළත් coordinator ගේ සැලැස්ම පටු වෙන්න පුළුවන්. එක subagent එක timeout වුණා කියලා මුළු report එක නවත්වන්න එපා; ලැබුණු කරුණු සහ අඩුපාඩු සටහන් කරන්න. සරල කරුණු පරීක්ෂාවට synthesis agent ට සීමිත tool එකක් දෙන්න. Subagent එකට අවශ්‍ය background එක prompt එකේ දාන්න.',
       body: [
@@ -579,6 +613,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'scenario-developer-productivity',
+      plain: "Define the coding agent’s boundary: repository paths, commands, network, secrets, branch/write permissions, and whether it may commit or open changes.",
+      internGuide: ["Define the coding agent’s boundary: repository paths, commands, network, secrets, branch/write permissions, and whether it may commit or open changes.","Require it to inspect instructions and current tests first, make focused changes, preserve unrelated work, and explain the evidence for the diagnosis.","Run formatting, static checks, targeted tests, and an appropriate broader suite. Review the diff for generated junk, dependency changes, security issues, and hidden behavior.","Use approval for destructive commands, deployments, credential access, or external messages. Track acceptance, regressions, time saved, and incidents rather than lines generated."],
       title: 'Scenario: Developer Productivity with Claude',
       si: 'නොදන්නා codebase එකක test files හොයද්දී Glob යොදාගන්න; function එකක් භාවිතා කරන තැන් හොයද්දී Grep යොදාගන්න. Files 14ක් review කරනවා නම් එක විශාල prompt එකකට දාන්නේ නැතුව file එකින් එක බලලා අන්තිමේ එකට සසඳන්න. Tool එකක් හරියට වැඩ නොකළොත් එහි output සහ error එක පරීක්ෂා කරලා ඉදිරියට යන්න. ඔයාට අවශ්‍ය tool එකට විතරක් agent එකට අවසර දෙන්න.',
       body: [
@@ -605,6 +641,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'six-answer-rules-fake-features',
+      plain: "Anchor answers to the named product and current official documentation. Similar concepts across Messages API, Agent SDK, Managed Agents, Claude Code, and MCP may use different fields.",
+      internGuide: ["Anchor answers to the named product and current official documentation. Similar concepts across Messages API, Agent SDK, Managed Agents, Claude Code, and MCP may use different fields.","Prefer the option that preserves error semantics, least privilege, explicit state, human approval, and verifiable evidence over one relying on prompt obedience.","Reject invented universal fields or hooks. `isRetryable`, configuration scopes, session behavior, and tool names may be application- or version-specific even when plausible.","For exam scenarios, identify actor, authority, state, side effect, failure type, and recovery. If two answers sound reasonable, select the one enforcing the requirement in trusted code."],
       title: 'Six Answer-Selection Rules and Warnings About Unsupported Features',
       si: 'Exam ප්‍රශ්නයක මුලින්ම ඇහුවේ මොකක්ද කියලා හොඳට බලන්න. මුදල් හෝ identity නීතියක් නම් code එකෙන් enforce කරන්න; tool තේරීම වැරදි නම් description එක හදන්න. Subagent එකට context නැත්නම් prompt එකට දාන්න, timeout එකක් නම් error විස්තර කරන්න. Docs වල නැති feature එකක් හිතලා උත්තරයට දාන්න එපා.',
       body: [
@@ -635,6 +673,8 @@ def lookup_order(order_id: str) -> CallToolResult:
     },
     {
       id: 'aws-architect-mapping',
+      plain: "Map concepts by responsibility: API Gateway/ALB for ingress, Cognito/IAM for identity, Lambda/ECS/EKS for orchestration, Step Functions for explicit workflows, and SQS/EventBridge for asynchronous work.",
+      internGuide: ["Map concepts by responsibility: API Gateway/ALB for ingress, Cognito/IAM for identity, Lambda/ECS/EKS for orchestration, Step Functions for explicit workflows, and SQS/EventBridge for asynchronous work.","Use Bedrock or an external Claude API for models as required; MCP servers and tools can run behind private services. Secrets Manager and KMS protect credentials/data, but applications still enforce tenant permissions.","Store durable state in DynamoDB/Aurora/S3 as appropriate, make side effects idempotent, and trace model/tool/workflow calls with CloudWatch/OpenTelemetry while redacting sensitive content.","Choose managed services from workload and governance needs, not name matching. Design private networking, egress controls, retries/DLQs, approval, budgets, multi-AZ recovery, and teardown from the start."],
       title: 'An AWS Architect’s View: Mapping These Ideas to an AWS Design',
       si: 'Agent loop එක ඔයාගේ application code එකේ ධාවනය වෙනවා; Lambda, ECS/Fargate හෝ EKS එකක host කරන්න පුළුවන්. Hook එක tool එකට කලින් හෝ පස්සේ පරීක්ෂා කරන code එකක්. MCP server එක tools ලබාදෙන service boundary එකක්. Secrets ගොනුවට දාන්නේ නැතුව environment හෝ secret store එකෙන් ලබාගන්න.',
       body: [

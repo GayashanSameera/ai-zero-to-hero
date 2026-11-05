@@ -10,6 +10,8 @@ export default {
     {
       id: 'perplexity',
       title: 'Perplexity: How Surprised Is the Model?',
+      plain: "Perplexity measures how much probability a language model assigns to a token sequence. Lower is better only when the tokenizer, data, and scoring procedure are comparable.",
+      internGuide: ["Average token negative log-likelihood measures surprise; perplexity is its exponential.","A model with perplexity P behaves as if it had roughly P equally likely choices at each step, but this is only an intuition.","Perplexity evaluates probability prediction under teacher forcing, not factuality, usefulness, safety, or generation quality.","Exam focus: compare perplexity only on the same tokenization and corpus; different vocabularies change the token units."],
       si: 'ඔයා Colombo යන බස් එකක ඊළඟ නැවතුම අනුමාන කරනවා කියලා හිතන්න. Model එක ඊළඟ token එකට වැඩි probability දුන්නොත් ඒක අඩුවෙන් පුදුම වෙනවා. Perplexity කියන්නේ ඒ පුදුම වීමේ සාමාන්‍ය මට්ටම අංකයකින් පෙන්වන එකයි. එකම text සහ tokenizer එකේදී අඩු perplexity එකක් හොඳ fit එකක් පෙන්වනවා, ඒත් උත්තරය ප්‍රයෝජනවත්ද කියලා ඒකෙන්ම කියන්න බෑ.',
       examRefs: ['EVAL-001', 'EVAL-002', 'EVAL-003', 'EVAL-004', 'EVAL-005', 'EVAL-109'],
       body: [
@@ -38,6 +40,8 @@ export default {
     {
       id: 'perplexity-in-practice',
       title: 'Computing Perplexity Correctly: Bits per Byte, Sliding Windows, Padding, Aggregation',
+      plain: "Correct perplexity requires counting only predicted, non-padding targets and aggregating total loss by token count rather than averaging unequal batches.",
+      internGuide: ["Shift logits and labels so each position predicts the next token; mask padding and non-target positions from the loss.","For sequences longer than context, use overlapping sliding windows and score each token once with as much left context as practical.","Sum negative log-likelihood over valid tokens, divide by the total valid-token count, then exponentiate.","Exam focus: bits per byte supports comparisons across tokenizers by normalizing log-loss by original bytes; batch-mean averaging can bias results."],
       si: 'වෙනස් tokenizers තියෙන models සසඳද්දී byte එකකට loss ගණන් කළොත් සාධාරණයි. Colombo ඉඳන් Kandy යන ගමනේ හැම කොටසටම පසුපස context එක මතක තියාගන්න sliding window එකක් වගේ. Padding token-ийг loss එකෙන් ඉවත් කරන්න labels дээр -100 දා, attention mask එකෙන් විතරක් ඒක болохේ නෑ. Batch бүрийн perplexity එක සාමාන්‍ය කරනවා වෙනුවට මුළු NLL එක මුළු tokens ගණනින් බෙදලා අන්තිමට exp කරන්න.',
       examRefs: ['EVAL-115', 'EVAL-116', 'EVAL-117', 'EVAL-118'],
       body: [
@@ -78,6 +82,8 @@ print(nats / math.log(2) / 4000)          # ~0.32`,
     {
       id: 'bleu-and-translation-metrics',
       title: 'BLEU, Brevity Penalty, SacreBLEU, METEOR, chrF and BERTScore',
+      plain: "Translation and text-generation metrics compare a candidate with references in different ways. No single overlap metric fully measures meaning or quality.",
+      internGuide: ["BLEU uses modified n-gram precision, a geometric mean, and a brevity penalty; corpus BLEU is more stable than sentence BLEU.","SacreBLEU standardizes tokenization and reports a signature, making published scores easier to reproduce.","METEOR adds stemming and alignment ideas, chrF uses character n-grams, and BERTScore matches contextual embeddings.","Exam focus: BLEU precision can reward fluent overlap while missing adequacy; report the metric implementation and language-appropriate preprocessing."],
       si: 'Colombo ඉඳන් Galle යන එකම අදහස වචන වෙනස් කරලා කියන්න පුළුවන්. BLEU එක reference එකේ වචන කොටස් එක්ක කොච්චර ගැළපෙනවද බලන නිසා හොඳ වෙනත් පරිවර්තනයක් අඩු ලකුණු ගන්න පුළුවන්. හරිම කෙටි උත්තරයකට වැඩි ලකුණු නොඑන්න brevity penalty එක දානවා. SacreBLEU, METEOR, chrF සහ BERTScore වෙන වෙනම ආකාරයෙන් ගැළපීම මනිනවා.',
       examRefs: ['EVAL-006', 'EVAL-047', 'EVAL-048', 'EVAL-049', 'EVAL-055', 'EVAL-056', 'EVAL-057'],
       body: [
@@ -108,6 +114,8 @@ print(nats / math.log(2) / 4000)          # ~0.32`,
     {
       id: 'qa-rouge-diversity',
       title: 'Exact Match, Token F1, ROUGE, Diversity and Reference-Free Metrics',
+      plain: "Question answering and summarization need metrics that match the output format. Exact strings, token overlap, semantic relevance, and diversity answer different questions.",
+      internGuide: ["Exact match is strict after defined normalization; token F1 gives partial credit from shared answer tokens.","ROUGE-N measures n-gram overlap and ROUGE-L uses longest common subsequence, commonly emphasizing recall in summarization.","Distinct-n and self-BLEU measure output diversity but can reward random or low-quality variation.","Exam focus: reference-free metrics still need validation against human judgments; high overlap does not guarantee factuality."],
       si: 'ඔයාගේ උත්තරය gold answer එකට සමාන වචන කොච්චර තියෙනවද කියලා Token F1 අර්ධ ලකුණු දෙනවා. ROUGE එක සාරාංශයේ තිබුණු වැදගත් වචන කොටස් candidate එකේ තියෙනවද බලනවා. එකම වචන නැවත නැවත කියන chatbot එකකට Distinct-n අඩු වෙනවා, Self-BLEU ද ඉහළ යනවා. විවෘත ප්‍රශ්නවලට overlap එක පමණක් නොව human හෝ LLM judge ඇගයීමත් ඕනේ.',
       examRefs: ['EVAL-007', 'EVAL-008', 'EVAL-009', 'EVAL-010', 'EVAL-011', 'EVAL-101', 'EVAL-110', 'EVAL-111'],
       body: [
@@ -139,6 +147,8 @@ print(nats / math.log(2) / 4000)          # ~0.32`,
     {
       id: 'pass-at-k',
       title: 'Code Evaluation: HumanEval, pass@k and the Unbiased Estimator',
+      plain: "Code evaluation runs generated programs against tests and asks whether at least one of k samples solves the task. It measures both model capability and sampling strategy.",
+      internGuide: ["pass@1 is the chance one generated solution passes all hidden tests; pass@k increases when several independent candidates are allowed.","Estimating pass@k from n sampled programs and c correct programs uses a combinatorial unbiased estimator rather than simply c/n multiplied by k.","Tests must cover edge cases, time limits, and security expectations; weak tests can accept wrong programs.","Exam focus: pass@k cannot be compared fairly when sample count, temperature, prompt, tests, or allowed k differ."],
       si: 'Cricket practice එකේ balls 10කින් 2ක් හොඳට bat කළා නම්, ඒවායින් balls 5ක් තෝරද්දී එකක්වත් හරි යන ඉඩ pass@5 වගේ. Code එකකටත් hidden unit tests ඔක්කොම pass වුණොත් විතරයි ඒ sample එක සාර්ථක වෙන්නේ. pass@k සඳහා unbiased formula එක 1 − C(n−c,k)/C(n,k) යි. එකම greedy output එක නැවත නැවත ගන්නවාට වඩා විවිධ samples ගත්තොත් ලොකු k එකකට හොඳ chance එකක් ලැබෙනවා.',
       examRefs: ['EVAL-012', 'EVAL-013', 'EVAL-017', 'EVAL-053', 'EVAL-054', 'EVAL-096', 'EVAL-113', 'EVAL-114'],
       body: [
@@ -182,6 +192,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'standard-benchmarks',
       title: 'Standard Benchmarks: MMLU, HellaSwag, ARC, GSM8K, TruthfulQA, IFEval, BIG-bench, Long Context',
+      plain: "Benchmarks sample particular skills through fixed prompts, datasets, and scoring rules. A leaderboard number is evidence about that setup, not a complete model description.",
+      internGuide: ["MMLU covers academic multiple choice, HellaSwag commonsense completion, ARC science questions, and GSM8K grade-school math reasoning.","TruthfulQA probes imitation of common misconceptions; IFEval checks verifiable instruction following; long-context tests vary from retrieval to multi-hop reasoning.","Benchmark versions, few-shot examples, chat templates, and answer extraction can materially change scores.","Exam focus: know what a benchmark tests and its limitations; do not average unrelated scores without explaining weighting and task meaning."],
       si: 'A/L විෂයයන් වගේ benchmarks එකිනෙකට වෙනස් හැකියාවන් පරීක්ෂා කරනවා. MMLU විෂය 57ක ප්‍රශ්න අහන අතර options 4ක් නිසා අහඹු අනුමානය 25%යි. GSM8K එකේ ගණිත ප්‍රශ්නයකට answers 16ක් අරගෙන majority vote කළොත් compute එකත් 16 ගුණ වෙනවා. දිග document එකක එක වචනයක් හොයාගැනීමෙන් model එකට දිග context එක හොඳට reason කරන්න පුළුවන් කියලා තහවුරු වෙන්නේ නෑ.',
       examRefs: ['EVAL-014', 'EVAL-015', 'EVAL-016', 'EVAL-018', 'EVAL-023', 'EVAL-066', 'EVAL-067', 'EVAL-068', 'EVAL-095', 'EVAL-148'],
       body: [
@@ -212,6 +224,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'harness-scoring',
       title: 'How Harnesses Score: lm-evaluation-harness, Log-Likelihood, acc_norm, Prompt Sensitivity, NeMo Evaluator',
+      plain: "An evaluation harness makes prompts, model calls, answer extraction, and scoring repeatable. Small implementation choices can change the final score.",
+      internGuide: ["Multiple-choice harnesses may compare continuation log-likelihoods rather than ask the model to generate a letter.","Length-normalized accuracy divides or adjusts likelihood by completion length so short options do not receive an unfair advantage.","Prompt wording, whitespace, token boundaries, few-shot order, and chat templates affect likelihood and generated answers.","Exam focus: record harness version, task configuration, model revision, tokenizer, precision, and prompt template; a score without configuration is not reproducible."],
       si: 'එකම ප්‍රශ්නයට ලකුණු දෙන ක්‍රමය වෙනස් නම් model එකේ score එකත් වෙනස් වෙන්න පුළුවන්. Multiple-choice එකකදී harness එක හැම option එකේම log-likelihood එක සසඳනවා. දිග උත්තරවලට අසාධාරණයක් නොවෙන්න acc_norm දිගෙන් normalize කරනවා. Colombo පාසල් දෙකක් සසඳනවා වගේ models හැම එකටම එකම prompt template සහ shots ගණන පාවිච්චි කරන්න.',
       examRefs: ['EVAL-052', 'EVAL-092', 'EVAL-093', 'EVAL-094', 'EVAL-097', 'EVAL-141', 'EVAL-142', 'EVAL-143'],
       body: [
@@ -242,6 +256,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'arena-elo-pairwise',
       title: 'Pairwise Evaluation: Chatbot Arena, MT-Bench, Win Rate, Elo and Bradley–Terry',
+      plain: "Pairwise evaluation asks which of two responses is better, often with randomized display order and hidden model identity. Aggregated preferences produce win rates or ranking models.",
+      internGuide: ["A win rate is wins divided by judged comparisons, with a stated treatment of ties.","Elo updates ratings sequentially from expected versus observed outcomes; Bradley–Terry fits latent strengths to pairwise outcomes statistically.","Arena traffic reflects its user population and prompts, while judge or presentation biases can affect preferences.","Exam focus: Elo is relative, depends on the comparison graph and update method, and is not a percentage quality score."],
       si: 'පාසල් cricket තරගයක teams දෙකෙන් හොඳ එක තෝරන එක, එක එක team එකට ලකුණු 1-10 දෙනවට වඩා ලේසි වෙන්න පුළුවන්. Chatbot Arena එකේ users anonymous models දෙකක උත්තර සසඳලා vote කරනවා. Elo එකේ ලකුණු තරගයෙන් තරගයට update වෙන අතර Bradley–Terry එක සියලු තරග එකට බලනවා. A, B ට වඩා Elo points 400ක් ඉහළ නම් A දිනන බලාපොරොත්තු ඉඩ ආසන්නයෙන් 0.91යි.',
       examRefs: ['EVAL-019', 'EVAL-020', 'EVAL-040', 'EVAL-061', 'EVAL-069', 'EVAL-121'],
       body: [
@@ -271,6 +287,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'llm-as-a-judge',
       title: 'LLM-as-a-Judge: Biases, Rubrics, G-Eval, Reference Guidance, Panels and Validation',
+      plain: "An LLM judge scales evaluation but can introduce position, verbosity, style, self-preference, and reference biases. It must be treated as a measured instrument.",
+      internGuide: ["A clear rubric defines dimensions, evidence, score anchors, and what to do when information is insufficient.","Randomize answer order, use pairwise and pointwise checks where appropriate, and separate reference answers from untrusted candidate instructions.","Validate judge scores against expert human labels using agreement, correlation, and slice-specific error analysis.","Exam focus: panels or repeated judgments reduce variance but do not remove shared bias; never use an unvalidated judge as ground truth."],
       si: 'පාසල් නාට්‍ය තරගයක විනිසුරුවෙක් වගේ LLM judge එකත් output එකකට ලකුණු දෙනවා. ඒත් පළමුවෙන් පෙන්වූ එකට, දිග උත්තරයට, තමන්ගේම model family එකට කැමති වෙන්න පුළුවන්. උත්තර දෙකේ පිළිවෙළ මාරු කරලා දෙවරක් බලන්න, පැහැදිලි rubric එකක් දෙන්න, අවශ්‍ය නම් judges තුන්දෙනෙක්ගෙන් panel එකක් ගන්න. Release කරන්න කලින් judge එක human labels එක්ක කොච්චර එකඟද කියලා පරීක්ෂා කරන්න.',
       examRefs: ['EVAL-022', 'EVAL-024', 'EVAL-025', 'EVAL-060', 'EVAL-062', 'EVAL-063', 'EVAL-122', 'EVAL-123', 'EVAL-124', 'EVAL-126', 'EVAL-150'],
       body: [
@@ -302,6 +320,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'hallucination-faithfulness',
       title: 'Faithfulness and Hallucination Evaluation: NLI, SelfCheckGPT, FActScore',
+      plain: "Faithfulness asks whether response claims are supported by the supplied source, while factual correctness asks whether claims are true in the world. The two can disagree.",
+      internGuide: ["Split an answer into atomic claims, retrieve or identify evidence for each, and label supported, contradicted, or not established.","NLI models can estimate entailment but inherit domain and length limitations; SelfCheckGPT looks for inconsistency across samples without an external source.","FActScore-style methods decompose biographies or long answers into facts and verify them against a knowledge source.","Exam focus: a response can faithfully repeat an incorrect document, or state a true fact unsupported by the provided context."],
       si: 'ඔයාට බැංකුවේ FAQ document එකකින් උත්තර දෙන bot එකක් තියෙනවා කියලා හිතන්න. උත්තරය ඇත්ත වුණත් ඒ document එකෙන් සහාය නොලැබේ නම් faithfulness අඩුයි. NLI, SelfCheckGPT, FActScore වගේ ක්‍රම claims සහ evidence අතර සම්බන්ධය පරීක්ෂා කරනවා. නිවැරදි බව, source එකට faithful වීම, සහ ප්‍රශ්නයට පිළිතුරු දීම වෙන වෙනම මනින්න.',
       examRefs: ['EVAL-046', 'EVAL-091', 'EVAL-098', 'EVAL-099', 'EVAL-100'],
       body: [
@@ -331,6 +351,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'human-eval-agreement',
       title: 'Human Evaluation and Agreement: Cohen’s Kappa, Krippendorff’s Alpha, Kappa Paradox, Metric Validation',
+      plain: "Human evaluation requires a precise rubric, trained annotators, blinded examples, and agreement measurement. A single subjective score is not reliable evidence.",
+      internGuide: ["Cohen’s kappa measures agreement beyond chance for two raters; Krippendorff’s alpha supports more raters, missing labels, and different measurement levels.","High raw agreement can coexist with low kappa when one label dominates, called the kappa prevalence paradox.","Adjudicate disagreements, track rater drift, and inspect agreement by task slice rather than only one overall statistic.","Exam focus: agreement does not prove correctness; validate the rubric and compare human judgments with external outcomes where possible."],
       si: 'දෙන්නෙක් උත්තර 10කින් 8කට එකඟ නම් raw agreement 80%යි. ඒත් අහම්බෙන්ම එකඟ වෙන ප්‍රමාණයත් ඉවත් කරලා Cohen’s kappa ගණන් කරනවා. pₒ = 0.80 සහ pₑ = 0.50 නම් κ = (0.80−0.50)/(1−0.50) = 0.60. Labels බොහොමයක් “safe” වගේ එක පැත්තකට නම් 95% agreement තිබුණත් kappa අඩු වෙන්න පුළුවන්.',
       examRefs: ['EVAL-026', 'EVAL-027', 'EVAL-028', 'EVAL-038', 'EVAL-058', 'EVAL-059', 'EVAL-125'],
       body: [
@@ -361,6 +383,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'contamination-goodhart',
       title: 'Benchmark Contamination, Canary Strings, Saturation and Goodhart’s Law',
+      plain: "A benchmark stops measuring generalization when its questions or near-duplicates appear in training, tuning, or prompt development. Optimizing one public score can also distort real quality.",
+      internGuide: ["Detect contamination with exact and fuzzy matching, n-gram overlap, metadata, canary strings, and suspicious item-level performance.","Benchmark saturation means top systems cluster near the ceiling, so small score changes carry little information.","Goodhart’s law warns that when a measure becomes the target, systems learn shortcuts that raise the measure without improving the real goal.","Exam focus: keep private rotating tests, audit data lineage, and evaluate multiple representative slices rather than repeatedly tuning on one leaderboard."],
       si: 'පන්තියේ විභාග ප්‍රශ්න කලින්ම දැකලා පිළිතුරු මතක තියාගත්ත ළමයෙක්ගේ ලකුණ සැබෑ දැනුම පෙන්වන්නේ නෑ. Benchmark ප්‍රශ්න training data එකේ තිබුණොත් model එකටත් ඒ වගේ contamination එකක් වෙන්න පුළුවන්. Canary string එක unique GUID එකක් දාලා data leak එක හඳුනාගන්න උදව් කරනවා, encryption එකක් නෙවෙයි. හැමෝම එකම ලකුණට optimize කළාම measure එකේ වටිනාකම අඩුවෙන එක Goodhart’s Law එකයි.',
       examRefs: ['EVAL-021', 'EVAL-064', 'EVAL-065', 'EVAL-081', 'EVAL-108', 'EVAL-119', 'EVAL-120', 'EVAL-149'],
       body: [
@@ -391,6 +415,8 @@ print(pass_at_k(10, 7, 5))   # 1.0`,
     {
       id: 'calibration',
       title: 'Calibration: ECE, Temperature Scaling and the Effect of Alignment',
+      plain: "A calibrated model’s stated probability matches observed frequency: among predictions near 0.8, about 80% should be correct. Ranking quality and calibration are different.",
+      internGuide: ["Reliability diagrams group predictions by confidence and compare average confidence with empirical accuracy.","Expected calibration error weights the absolute gap in each bin, but the result depends on binning and can hide class-specific errors.","Temperature scaling learns one logit scale on held-out calibration data and preserves class ranking while changing confidence.","Exam focus: calibration data must be separate from training and final testing; alignment or fine-tuning can change confidence even when accuracy improves."],
       si: 'කාලගුණ වාර්තාව 80% වැස්ස කියන දවස් 10කින් 8ක වැස්සොත් ඒක calibrated. Bin එකක confidence 0.9 සහ accuracy 0.7 නම් gap එක 0.2යි. ECE එකේ gaps samples ගණනෙන් weight කරනවා. Temperature T=2 දාලා logits [4,2,1] → [2,1,0.5] වුණත් ලොකුම logit එක පළවෙනි එකම නිසා prediction එක වෙනස් වෙන්නේ නෑ.',
       examRefs: ['EVAL-043', 'EVAL-044', 'EVAL-132', 'EVAL-133', 'EVAL-134'],
       body: [
@@ -431,6 +457,8 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'test-data-design',
       title: 'Test Data Design: Splits, Leakage, Golden Sets, Regression Suites and Slice-Based Evaluation',
+      plain: "An evaluation set should represent real decisions, risks, users, and failure modes while remaining isolated from development. Dataset design matters more than a large unexamined row count.",
+      internGuide: ["Split by the unit that can leak—user, document, organization, time, or template—not automatically by random row.","A golden set contains carefully reviewed cases; a regression suite preserves previously fixed failures and critical invariants.","Slice evaluation reports performance for languages, domains, difficulty, demographics, prompt types, and rare safety cases.","Exam focus: test data must not guide prompt or hyperparameter tuning. Refresh production samples while keeping versioned stable tests for trend comparison."],
       si: 'විභාගයකදී පාඩම් කරපු ප්‍රශ්න train set එක, පුහුණුවට පාවිච්චි කරන ප්‍රශ්න validation set එක, අන්තිමට පමණක් බලන paper එක test set එක වගේ. එක customer කෙනෙකුගේ tickets train සහ test දෙකටම ගියොත් model එකට පිළිතුර මතක තියාගන්න පුළුවන්. Colombo සහ Kandy customers වෙන වෙනම slices කරලා බලද්දී overall score එක සඟවන දුර්වලතාවක් පේන්න පුළුවන්. Golden set එක version කරලා production failures වලින් අලුත් cases එකතු කරන්න.',
       examRefs: ['EVAL-029', 'EVAL-030', 'EVAL-041', 'EVAL-042', 'EVAL-045', 'EVAL-050', 'EVAL-051', 'EVAL-102', 'EVAL-103', 'EVAL-104', 'EVAL-112', 'EVAL-146', 'EVAL-147'],
       body: [
@@ -463,6 +491,8 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'statistics-for-evals',
       title: 'Statistics for Evals: p-values, Confidence Intervals, Paired Tests, Bootstrap, Multiple Comparisons, Sample Size',
+      plain: "Evaluation differences contain sampling uncertainty. Statistical methods quantify plausible effect sizes instead of treating every score change as real.",
+      internGuide: ["A confidence interval gives a range compatible with the sample and method; a p-value is not the probability that the null hypothesis is true.","Use paired tests when both systems answer the same examples because per-example differences remove much item variability.","Bootstrap resamples evaluation units to estimate uncertainty for metrics with difficult formulas; preserve clusters when observations are not independent.","Exam focus: correct for multiple comparisons, report effect size with uncertainty, and plan sample size from the smallest meaningful improvement."],
       si: 'Model දෙකක score වෙනසක් දුටු පමණින් එකක් හොඳයි කියලා තීරණය කරන්න බෑ; ඒ වෙනස random noise එකක්ද බලන්න ඕනේ. Confidence interval එක 100 වතාවක් වගේ නැවත sample කළාම ඇත්ත අගය කොහේ තියෙන්න පුළුවන්ද කියලා uncertainty පෙන්වනවා. එකම questions දෙකම models දෙකට දීලා paired test එකක් කළොත් ප්‍රශ්නවල අමාරුකම පාලනය වෙනවා. Comparisons ගොඩක් කරනවා නම් false positive අවදානමත් පාලනය කරන්න.',
       examRefs: ['EVAL-032', 'EVAL-070', 'EVAL-071', 'EVAL-073', 'EVAL-105', 'EVAL-106', 'EVAL-107', 'EVAL-129', 'EVAL-131'],
       body: [
@@ -495,6 +525,8 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'ab-testing',
       title: 'A/B Testing LLM Features: Peeking, Sequential Tests, SRM, Novelty, Randomization Unit, CUPED, Guardrails',
+      plain: "An A/B test estimates the causal effect of a product change by randomly assigning comparable units to variants and measuring predefined outcomes.",
+      internGuide: ["Choose the randomization unit to prevent spillover—often user or conversation rather than individual message.","Sample-ratio mismatch signals assignment or logging failure; stop and investigate before trusting treatment results.","Repeated peeking inflates false positives unless a sequential-testing method or alpha-spending plan is used.","Exam focus: define primary and guardrail metrics before launch, account for novelty and seasonality, and use CUPED only with valid pre-treatment covariates."],
       si: 'කඩේ අලුත් kottu recipe එකක් control recipe එකත් එක්ක random ලෙස බෙදා බලන එක A/B test එකක් වගේ. හැමදාම p-value බලලා 0.05ට අඩු වුණ ගමන් නතර කළොත් false positive වැඩි වෙනවා. 50/50 test එකක users 52,000 සහ 48,000 වුණොත් SRM එකක් සැක කරලා logging එක හොයන්න. Primary metric එක හොඳ වුණත් latency, cost, safety guardrails නරක වෙන්න ඉඩ දෙන්න එපා.',
       examRefs: ['EVAL-031', 'EVAL-072', 'EVAL-074', 'EVAL-075', 'EVAL-076', 'EVAL-077', 'EVAL-127', 'EVAL-128', 'EVAL-130'],
       body: [
@@ -527,6 +559,8 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'reproducibility',
       title: 'Reproducibility: Seeds, GPU Nondeterminism, Temperature-0 Drift, Versioning and Tracking',
+      plain: "Reproducibility means another run can identify and, within known limits, recreate the evaluated system. A random seed alone is insufficient.",
+      internGuide: ["Version model weights, tokenizer, prompt, code, dependencies, dataset, harness, decoding settings, and hardware/software environment.","GPU reductions and kernels can be nondeterministic; deterministic modes may reduce speed and still not cover external APIs.","Provider model updates, routing, batching, and floating-point ties can change output even at temperature zero.","Exam focus: store raw outputs and per-example scores, not just averages, so regressions can be traced when exact reproduction is impossible."],
       si: 'එකම recipe එකට බත් උයද්දීත් වතුර, ගින්දර, වෙලාව වෙනස් වුණොත් ප්‍රතිඵලය ටිකක් වෙනස්. ML experiment එකේ seed, data version, prompt, model checkpoint, library සහ hardware සටහන් කරන්න. Seed එකක් දාපු පමණින් GPU nondeterminism හෝ remote model update නවතින්නේ නෑ. Temperature 0 වුණත් backend වෙනස් වීමෙන් output වෙනස් වෙන්න පුළුවන්.',
       examRefs: ['EVAL-033', 'EVAL-034', 'EVAL-083', 'EVAL-084', 'EVAL-085', 'EVAL-086', 'EVAL-087', 'EVAL-144', 'EVAL-145'],
       body: [
@@ -557,6 +591,8 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'experiments-and-tuning',
       title: 'Experiments: Ablations, Hyperparameter Search (Grid, Random, Bayesian/TPE, ASHA, PBT, μP) and Training Curves',
+      plain: "A good experiment changes one interpretable factor or uses a planned search, measures held-out outcomes, and records enough context to explain the result.",
+      internGuide: ["An ablation removes or replaces one component to estimate its contribution; interactions require factorial or additional experiments.","Grid search scales poorly with dimensions; random search explores more distinct values, while Bayesian/TPE methods use prior trials to choose promising settings.","ASHA stops weak trials early; population-based training mutates configurations during training; both need fair resource accounting.","Exam focus: training curves diagnose underfitting, overfitting, and unstable schedules. Repeated tuning overfits the validation set, so preserve a final test set."],
       si: 'කෑමක ලුණු අඩු කළාම රස වෙනස්ද බලන්න එක වරකට එක ingredient එකක් වෙනස් කරනවා වගේ ablation එකක්. Grid search එක හැම combination එකම බලනවා, random search එක අහඹු සැකසුම් බලනවා, Bayesian/TPE කලින් ලැබුණු ප්‍රතිඵල වලින් ඊළඟ අත්හදාබැලීම තෝරනවා. ASHA දුර්වල runs ඉක්මනින් නවත්වනවා, PBT හොඳ runs අතරින් settings හුවමාරු කරනවා. Training curves වලට loss සහ validation performance කාලයත් එක්ක බලන්න.',
       examRefs: ['EVAL-035', 'EVAL-036', 'EVAL-037', 'EVAL-039', 'EVAL-082', 'EVAL-088', 'EVAL-089', 'EVAL-090', 'EVAL-137', 'EVAL-138', 'EVAL-139', 'EVAL-140'],
       body: [
@@ -589,6 +625,8 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'serving-performance-eval',
       title: 'Evaluating Serving Performance: Latency, Throughput, Tail Percentiles, Little’s Law, Cost per Token',
+      plain: "Serving evaluation measures whether a system meets user latency, capacity, reliability, and cost targets under realistic traffic—not merely its fastest isolated request.",
+      internGuide: ["Report TTFT, TPOT, end-to-end latency, throughput, error rate, and p50/p95/p99 under stated prompt/output lengths and concurrency.","Little’s Law estimates average in-flight work as arrival rate multiplied by average time in system.","Load-test until latency or errors violate the service objective, including warmup, cold starts, queueing, and sustained thermal behavior.","Exam focus: compare cost per successful request or token at achieved utilization; peak GPU FLOPs and maximum throughput without an SLO are misleading."],
       si: 'බස් එකක් පැයකට මගීන් 100ක් ගෙනියන එක throughput වගේ, එක මගියෙක්ට බස් එක එනකම් විනාඩි 20ක් ඉන්න එක latency වගේ. සාමාන්‍ය latency එක හොඳ වුණත් p95 හෝ p99 දිගු ප්‍රමාදය පෙන්වන්න පුළුවන්. Little’s Law අනුව concurrency = throughput × latency. Request එකකට හෝ token එකකට වැය වන Rs. ගණනත් quality එකත් එක්ක මනින්න.',
       examRefs: ['EVAL-078', 'EVAL-079', 'EVAL-080', 'EVAL-135', 'EVAL-136'],
       body: [
@@ -618,6 +656,8 @@ print(round(ece, 3))   # 0.12`,
     {
       id: 'build-rag-eval-pipeline',
       title: 'Beyond the Exam: Building an Eval Pipeline for Your Own RAG Chatbot',
+      plain: "A useful RAG evaluation pipeline keeps a versioned query set with evidence labels, runs retrieval and generation separately, and turns production failures into regression tests.",
+      internGuide: ["Create real and adversarial queries with relevant document or chunk judgments, answer references where appropriate, and important metadata slices.","Measure retrieval recall/ranking first, then faithfulness, answer relevance, citation correctness, refusal behavior, latency, and cost.","Store every configuration and raw output so component changes can be compared on identical examples with paired statistics.","Production focus: review low-confidence and disagreement cases, add confirmed failures to a regression suite, and require thresholds before deployment."],
       si: 'Colombo බැංකුවක FAQ bot එකක් හදනවා කියලා හිතන්න. ප්‍රශ්න 150ක version කරපු golden set එකක් හදලා Sinhala, English, Singlish ප්‍රශ්න සහ document එකේ උත්තර නැති ප්‍රශ්නත් දාන්න. Retrieval එකේ හරි document එක top 5 ඇතුළේද, generation එකේ උත්තරය source එකට faithful ද කියලා වෙන වෙනම මනින්න. Production එකේ වැරදි හමු වුණාම ඒවා triage කරලා ඊළඟ golden set version එකට එකතු කරන්න.',
       examRefs: [],
       body: [

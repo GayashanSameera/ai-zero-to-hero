@@ -11,6 +11,8 @@ export default {
     // 1
     {
       id: 'what-is-multimodal',
+      plain: "A modality is a form of information such as text, image, audio, video, sensor readings, or tables. A multimodal system consumes or produces more than one form.",
+      internGuide: ["A modality is a form of information such as text, image, audio, video, sensor readings, or tables. A multimodal system consumes or produces more than one form.","Separate input and output: image captioning is image-to-text; text-to-image generation crosses the other direction; a vision-language assistant consumes both image and text.","Modalities differ in structure and scale. Images have spatial pixels, audio has time samples, and text has discrete tokens, so each needs suitable preprocessing and an encoder or tokenizer.","Design from the task: list available inputs, required output, alignment between them, latency, missing-modality behavior, privacy, and how success will be evaluated."],
       title: 'Multimodal කියන්නේ මොකක්ද? Modality වර්ග',
       body: [
         'Modality කියන්නේ තොරතුරු එන "වර්ගය" හෝ "channel" එක. Text එක modality එකක්. Image එක තව එකක්. Audio, video, 3D, sensor data කියන්නේත් modalities. Multimodal AI කියන්නේ මේ වර්ග දෙකක් හෝ වැඩි ගණනක් එකට තේරුම් ගන්න, නැත්නම් එකකින් අනිකක් හදන්න පුළුවන් AI එකක්.',
@@ -38,6 +40,8 @@ export default {
     // 2
     {
       id: 'modality-to-tokens',
+      plain: "Models turn raw inputs into vectors. Text tokenizers map text pieces to IDs; image encoders divide or convolve pixels into features; audio encoders process waveform or spectrogram segments.",
+      internGuide: ["Models turn raw inputs into vectors. Text tokenizers map text pieces to IDs; image encoders divide or convolve pixels into features; audio encoders process waveform or spectrogram segments.","A token is a position the model processes; an embedding is its numeric vector. Image patches and audio frames are often called tokens by analogy, but they are not text-tokenizer units.","Projection layers map different encoder outputs to the dimension expected by a shared model. Positional and modality/type information helps retain order and source.","Shape check: track batch, sequence/patch/frame count, and embedding dimension at every boundary. Long video or audio can dominate context and compute."],
       title: 'හැම Modality එකක්ම Tokens සහ Embeddings වලට හරවන හැටි',
       body: [
         'Transformer එකකට තේරෙන්නේ vectors පෙළක් (tokens) විතරයි. ඉතින් හැම modality එකක්ම මුලින්ම tokens පෙළක් කරන්න ඕනේ. Text වලට tokenizer එකක් තියෙනවා (Phase 4/5). Images වලට Phase 16 එකේ ඉගෙන ගත්ත ViT ක්‍රමය: image එක 16×16 patches වලට කපලා, හැම patch එකක්ම flatten කරලා linear projection එකකින් vector එකක් කරනවා, position embeddings එකතු කරනවා. 224×224 image එකකට patch tokens 196යි.',
@@ -65,6 +69,8 @@ export default {
     // 3
     {
       id: 'multimodal-architectures',
+      plain: "A dual encoder processes two modalities separately and compares their embeddings. It is efficient for retrieval because items can be pre-encoded.",
+      internGuide: ["A dual encoder processes two modalities separately and compares their embeddings. It is efficient for retrieval because items can be pre-encoded.","Fusion models combine features early, late, or through cross-attention. Cross-attention lets queries from one stream select information from another.","Many vision-language models use a pretrained vision encoder, a projector or resampler, and a language model; others use a more unified transformer. Architecture names do not guarantee grounding.","Choose from the task: dual encoders for large-scale search, cross-encoders/fusion for richer pair reasoning, and generative VLMs for conversational or structured outputs."],
       title: 'Multimodal Architectures: Dual Encoders, Fusion සහ VLMs',
       body: [
         'Dual encoder (two-tower) architecture එකේ image එකට encoder එකක්, text එකට වෙනම encoder එකක් තියෙනවා. දෙකේම output එකම embedding space එකේ vectors. CLIP මේ වර්ගයේ. වාසිය: images සියල්ල කලින්ම embed කරලා vector database එකක තියාගන්න පුළුවන්, search ගොඩක් වේගවත්. අවාසිය: image එකයි text එකයි "ගැඹුරින්" කතා කරන්නේ නෑ, අන්තිමේ cosine similarity එකකින් විතරයි සසඳන්නේ.',
@@ -92,6 +98,8 @@ export default {
     // 4
     {
       id: 'multimodal-loss-functions',
+      plain: "A loss defines the training signal. Contrastive InfoNCE pulls matched pairs closer and pushes other batch pairs apart; its batch negatives and temperature affect learning.",
+      internGuide: ["A loss defines the training signal. Contrastive InfoNCE pulls matched pairs closer and pushes other batch pairs apart; its batch negatives and temperature affect learning.","Image-text matching classifies whether a pair belongs together. Captioning uses next-token cross-entropy to generate text conditioned on visual features.","Reconstruction predicts missing/original inputs; diffusion predicts noise or a related target over timesteps; KL regularization shapes latent distributions in variational models.","Match loss to behavior and validate it with downstream metrics. A lower training loss does not prove faithful captions, useful retrieval, or high-quality images."],
       title: 'Multimodal Loss Functions: InfoNCE, ITM, Captioning, Reconstruction, Diffusion, KL',
       body: [
         'Loss function එක කියන්නේ model එකට "ඔයා කොච්චර වැරදිද" කියලා කියන අංකය. Multimodal models වලට වැඩේ අනුව වෙනස් losses තියෙනවා. Contrastive loss (InfoNCE): CLIP මේක පාවිච්චි කරනවා (Phase 16 බලන්න). Batch එකේ image-text pairs N තියෙනවා නම් N × N similarity table එකක් හදනවා. හරි pair එක (diagonal එක) ඉහළ score එකක් ගන්න ඕනේ, අනිත් N − 1 "negatives" අඩු score. ඇත්තටම මේක classification එකක්: "මේ image එකට N captions අතරින් හරි එක කොයිද?" ඒකට cross-entropy. Image → text සහ text → image දෙපැත්තටම කරලා average කරනවා (symmetric).',
@@ -140,6 +148,8 @@ print({t: round(p, 3) for t, p in zip(texts, probs.tolist())})`,
     // 5
     {
       id: 'training-stability',
+      plain: "Warmup raises the learning rate gradually so early updates do not damage an uncalibrated model. A later schedule controls convergence.",
+      internGuide: ["Warmup raises the learning rate gradually so early updates do not damage an uncalibrated model. A later schedule controls convergence.","Normalization and residual connections improve signal flow; gradient clipping limits unusually large updates. Mixed precision improves speed/memory but needs supported formats and numerical care.","Monitor loss by task/modality, gradient norm, learning rate, overflow/skipped steps, activation statistics, throughput, and validation quality.","When training diverges, reproduce on a small batch, inspect data and masks, lower the learning rate, verify precision/loss scaling, and change one variable at a time."],
       title: 'Training Stability: Warmup, Normalization, Gradient Clipping, Mixed Precision, Residuals',
       body: [
         'ලොකු multimodal models train කරද්දී loss එක හදිසියේම ඉහළ යනවා (spike), නැත්නම් NaN (අංකයක් නොවන අගයක්) වෙනවා. Training stability කියන්නේ මේවා වළක්වන උපක්‍රම. Learning rate warmup: training එකේ මුල් steps කිහිපය (උදා: 1,000-2,000) learning rate එක 0 ඉඳන් ටිකෙන් ටික target අගයට වැඩි කරනවා. මුලදී weights random, Adam optimizer එකේ ඇතුළත statistics තවම විශ්වාස කරන්න බෑ. ඒ වෙලාවේ ලොකු පියවර තිබ්බොත් model එක නරක තැනකට පනිනවා.',
@@ -169,6 +179,8 @@ print({t: round(p, 3) for t, p in zip(texts, probs.tolist())})`,
     // 6
     {
       id: 'transfer-learning-freezing',
+      plain: "Transfer learning starts from pretrained representations rather than learning every feature from scratch. It is useful when labeled multimodal data is limited.",
+      internGuide: ["Transfer learning starts from pretrained representations rather than learning every feature from scratch. It is useful when labeled multimodal data is limited.","Freezing an encoder saves memory and compute and reduces overfitting, but prevents adaptation to a different domain. Unfreezing more layers increases flexibility and risk.","Common progression: train a projection/head, then unfreeze the last encoder blocks, then fine-tune more layers with a smaller learning rate if validation supports it.","Compare against a frozen baseline and watch catastrophic forgetting. Keep a held-out domain-representative set and document which weights and normalization statistics changed."],
       title: 'Transfer Learning සහ Encoders Freeze කරන එක',
       body: [
         'Multimodal model එකක් මුල ඉඳන් train කරන්න images බිලියන ගණන් සහ GPUs දහස් ගණන් ඕනේ. ඒ නිසා අපි කරන්නේ transfer learning: කලින්ම ලොකු data වලින් train කරපු (pretrained) models අරන්, අපේ වැඩේට ගළපන එක. CLIP vision encoder, Whisper encoder, Llama LLM, Stable Diffusion වගේ ඒවා "building blocks" විදිහට ගන්නවා.',
@@ -196,6 +208,8 @@ print({t: round(p, 3) for t, p in zip(texts, probs.tolist())})`,
     // 7
     {
       id: 'unet-deep-dive',
+      plain: "U-Net has a downsampling encoder, a bottleneck, and an upsampling decoder. Skip connections pass high-resolution features across matching levels.",
+      internGuide: ["U-Net has a downsampling encoder, a bottleneck, and an upsampling decoder. Skip connections pass high-resolution features across matching levels.","An autoencoder reconstructs an input through a latent representation. A diffusion U-Net instead predicts noise, velocity, or another denoising target conditioned on timestep and possibly text.","Skip connections preserve detail that would be lost in the bottleneck; they do not mean the model simply copies the final image.","Track spatial resolution and channels at each stage. In latent diffusion the U-Net operates on compressed latent tensors, while a VAE encodes and decodes pixels."],
       title: 'U-Net ගැඹුරින්: Encoder-Decoder, Skip Connections, Autoencoder සහ Diffusion Denoiser',
       body: [
         'U-Net එක මුලින්ම හැදුවේ 2015 දී medical images segment කරන්න (Ronneberger සහ අය). හැඩය "U" අකුර වගේ. වම් පැත්ත encoder (contracting path): convolution layers සහ downsampling වලින් image එක පොඩි කරනවා, channels වැඩි කරනවා. උදා: 64×64 → 32×32 → 16×16 → 8×8. මෙතනදී model එක "මොකක්ද තියෙන්නේ" (what) කියලා ඉගෙන ගන්නවා, ඒත් හරියටම "කොහෙද" (where) කියන විස්තර නැති වෙනවා. පතුලේ bottleneck එක.',
@@ -225,6 +239,8 @@ print({t: round(p, 3) for t, p in zip(texts, probs.tolist())})`,
     // 8
     {
       id: 'text-to-image-pipeline',
+      plain: "A text encoder converts the prompt into conditioning vectors. A random latent is initialized and repeatedly denoised according to a scheduler.",
+      internGuide: ["A text encoder converts the prompt into conditioning vectors. A random latent is initialized and repeatedly denoised according to a scheduler.","At each timestep the denoiser uses the noisy latent, timestep, and text conditioning. Classifier-free guidance combines conditional and unconditional predictions to strengthen prompt adherence.","After the final step, a decoder such as a VAE maps the latent to pixels. Seed, sampler, step count, guidance, resolution, and model version affect the result.","More guidance or steps is not always better. Evaluate prompt adherence, image quality, diversity, latency, safety, and reproducibility on a controlled prompt set."],
       title: 'Text-to-Image Diffusion Pipeline එක මුල සිට අග දක්වා',
       body: [
         'Phase 6 සහ 16 වල diffusion මූලධර්ම ඉගෙන ගත්තා. දැන් සම්පූර්ණ pipeline එක කොටස් වලට ගලවමු. පියවර 1, Text encoder: prompt එක tokenize කරලා CLIP text encoder එකකින් (SD 1.x: CLIP ViT-L/14, tokens 77ක සීමාවක්) embeddings පෙළක් කරනවා. SDXL text encoders දෙකක් පාවිච්චි කරනවා. SD3 සහ FLUX වගේ models CLIP එක්ක T5 text encoder එකත් පාවිච්චි කරනවා, දිගු prompts හොඳට තේරෙනවා.',
@@ -275,6 +291,8 @@ image.save("tuktuk.png")`,
     // 9
     {
       id: 'image-editing-controlnet',
+      plain: "Image-to-image starts from an encoded source plus noise; denoising strength controls how much structure is retained. Inpainting changes a masked area; outpainting extends beyond the border.",
+      internGuide: ["Image-to-image starts from an encoded source plus noise; denoising strength controls how much structure is retained. Inpainting changes a masked area; outpainting extends beyond the border.","A mask defines where editing is allowed, but seams and unintended changes can occur. Preserve the original and inspect both masked and unmasked regions.","ControlNet-style conditioning supplies structure such as edges, depth, or pose to a diffusion model. Control weight balances structural obedience against prompt freedom.","Use images and controls only with suitable rights/consent. Test identity preservation, boundary artifacts, bias, prompt injection in metadata, and safety filters."],
       title: 'Image Editing: Image-to-Image, Inpainting, Outpainting සහ ControlNet',
       body: [
         'Image-to-image (img2img): හිස් noise එකකින් පටන් ගන්නේ නැතුව, තියෙන image එකක latent එකට noise ටිකක් එකතු කරලා එතන ඉඳන් denoise කරනවා. "strength" parameter එක (0 ඉඳන් 1 දක්වා) කොච්චර noise දානවද තීරණය කරනවා. 0.3 නම් මුල් image එකට ගොඩක් සමානයි. 0.9 නම් ගොඩක් වෙනස් වෙනවා. Sketch එකක් photo එකක් කරන්න, style මාරු කරන්න මේක පාවිච්චි කරනවා.',
@@ -302,6 +320,8 @@ image.save("tuktuk.png")`,
     // 10
     {
       id: 'speech-and-audio',
+      plain: "ASR converts speech to text; TTS converts text to speech; audio generation creates sound or music. These are separate tasks with different metrics and risks.",
+      internGuide: ["ASR converts speech to text; TTS converts text to speech; audio generation creates sound or music. These are separate tasks with different metrics and risks.","Audio is sampled over time and often represented as waveform segments or spectrogram features. Sample rate, channels, clipping, silence, and segmentation affect quality.","ASR evaluation commonly uses word or character error rate, but accents, code-switching, names, timestamps, and downstream meaning need targeted tests. TTS needs intelligibility, naturalness, and speaker-similarity review.","For Sinhala/Tamil/English audio, build representative consented data, preserve language labels, handle background noise, and disclose or watermark synthetic voices where appropriate."],
       title: 'Speech සහ Audio: ASR (Whisper), TTS සහ Audio Generation',
       body: [
         'ASR (Automatic Speech Recognition) කියන්නේ කතාව text වලට හරවන එක. Whisper (OpenAI, 2022) encoder-decoder transformer එකක්. Audio එක 16 kHz කරලා, තත්පර 30 කොටස් log-Mel spectrogram කරලා encoder එකට දෙනවා. Decoder එක text tokens එකින් එක generate කරනවා (LLM එකක් වගේ). විශේෂ tokens වලින් භාෂාව, "transcribe" ද "translate" ද (English වලට), timestamps ද කියලා කියනවා. Whisper සිංහලත් support කරනවා, ඒත් English වලට වඩා වැරදි වැඩියි.',
@@ -331,6 +351,8 @@ image.save("tuktuk.png")`,
     // 11
     {
       id: 'video-generation',
+      plain: "Video generation adds a time dimension to image generation. The model must preserve objects, identity, motion, and scene consistency across frames.",
+      internGuide: ["Video generation adds a time dimension to image generation. The model must preserve objects, identity, motion, and scene consistency across frames.","Systems may generate short clips in pixel or latent space, extend keyframes, or combine spatial and temporal attention. Longer, higher-resolution video sharply increases memory and compute.","Evaluate individual-frame quality and temporal behavior: flicker, motion plausibility, identity consistency, camera control, audio synchronization, and prompt adherence.","Production needs shot limits, queueing, content provenance, likeness/consent controls, copyright review, and human inspection; fluent motion can still depict impossible events."],
       title: 'Video Generation: High-Level දළ විශ්ලේෂණය',
       body: [
         'Video generation කියන්නේ image generation + කාලය. අමාරුම කොටස temporal consistency: frame එකෙන් frame එකට චරිතයේ මූණ, ඇඳුම, background එක එකම විදිහට තියාගන්න එක, සහ චලනය ස්වාභාවික වෙන එක. Frame එකින් එක වෙන වෙනම generate කළොත් flicker වෙනවා (දිලිසෙනවා).',
@@ -356,6 +378,8 @@ image.save("tuktuk.png")`,
     // 12
     {
       id: 'multimodal-data-prep',
+      plain: "Quality begins with aligned pairs: the caption must describe the image, the transcript must match the audio, and timestamps must match video events. Misalignment teaches the wrong association.",
+      internGuide: ["Quality begins with aligned pairs: the caption must describe the image, the transcript must match the audio, and timestamps must match video events. Misalignment teaches the wrong association.","Normalize formats, orientation, color, resolution, sample rate, duration, and text encoding while keeping original assets and transformation metadata.","Deduplicate across train and test, detect near-duplicates, filter corruption and unsafe content, balance domains/groups, and verify licenses and consent.","Split by source, person, event, or document where needed—not random fragments—so related frames or recordings do not leak into evaluation."],
       title: 'Multimodal Data Preprocessing සහ Modalities අතර Data Quality',
       body: [
         'NCA-GENM exam එකේ ලොකුම කොටස (25%) experimentation, ඒ කියන්නේ data සකස් කිරීම සහ quality පරීක්ෂා කිරීම. Multimodal data එන්නේ විවිධ තැන් වලින්: web scraping (image + alt-text), phone recordings, CCTV video, scanned documents, sensors. හැම source එකකම format, quality, noise වෙනස්. Model එක හොඳ වෙන්නේ data එක හොඳ නම් විතරයි.',
@@ -385,6 +409,8 @@ image.save("tuktuk.png")`,
     // 13
     {
       id: 'multimodal-rag',
+      plain: "Multimodal RAG retrieves evidence from images, pages, tables, audio, or video as well as text. Ingestion must retain links between derived chunks and original assets.",
+      internGuide: ["Multimodal RAG retrieves evidence from images, pages, tables, audio, or video as well as text. Ingestion must retain links between derived chunks and original assets.","Use modality-specific or shared embeddings for candidate retrieval, metadata filters for scope, and reranking or a VLM for detailed relevance. OCR alone can miss layout and visual evidence.","At answer time provide only relevant evidence within context limits and cite page, region, timestamp, or asset ID. The generator should distinguish observed content from inference.","Evaluate retrieval recall and answer grounding per modality, including scanned pages, charts, code-switched queries, missing OCR, and unauthorized content."],
       title: 'Multimodal RAG, Vector Databases සහ Python NLP Packages',
       body: [
         'Phase 6 සහ 13 වල text RAG ඉගෙන ගත්තා. Multimodal RAG එකේදී knowledge base එකේ images, tables, charts, PDFs scans, audio තියෙනවා. ක්‍රම තුනක් තියෙනවා. (1) Shared embedding space: CLIP වගේ model එකකින් images සහ text query දෙකම එකම space එකට embed කරලා search කරනවා. (2) Captioning-based retrieval: හැම image එකකටම VLM එකකින් විස්තරාත්මක caption එකක් (හෝ OCR text) ලියලා, ඒ text එක සාමාන්‍ය text embedding model එකකින් index කරනවා. Text search ගොඩක් හොඳ නිසා බොහෝ විට මේක හොඳට වැඩ කරනවා. (3) Hybrid: දෙකම index කරලා, retrieve කරපු මුල් image එකම VLM එකට generation වලදී දෙනවා.',
@@ -413,6 +439,8 @@ image.save("tuktuk.png")`,
     // 14
     {
       id: 'attention-maps-data-analysis',
+      plain: "An attention map shows how a model distributed attention weights for a particular layer, head, token, and input. It is conditional diagnostic data, not a universal explanation.",
+      internGuide: ["An attention map shows how a model distributed attention weights for a particular layer, head, token, and input. It is conditional diagnostic data, not a universal explanation.","Cross-attention visualization can suggest which image regions relate to prompt tokens. Results change by layer, head, resolution, normalization, and aggregation choice.","Combine maps with controlled perturbations, occlusion, retrieval evidence, gradients, and task metrics. A visually appealing heatmap can be misleading.","Use analysis to find repeated failure clusters, dataset shortcuts, ignored regions, or tokenization problems; then validate the hypothesis with an intervention."],
       title: 'Data Analysis: Attention Maps, Cross-Attention Visualization සහ Data Mining',
       body: [
         'Attention maps කියන්නේ model එක "කොහෙද බලන්නේ" කියලා පෙන්නන heatmaps. ViT එකක [CLS] token එක patches වලට දෙන attention weights 14×14 grid එකක් කරලා image එක උඩින් overlay කළාම model එක වැදගත් කියලා හිතන කොටස් පේනවා. Layers ගොඩක් හරහා attention එකට එකතු කරන "attention rollout" ක්‍රමයකුත් තියෙනවා. CNNs වලට Grad-CAM (gradients වලින් heatmap) පාවිච්චි කරනවා.',
@@ -440,6 +468,8 @@ image.save("tuktuk.png")`,
     // 15
     {
       id: 'performance-optimization',
+      plain: "Define the target first: quality, latency, throughput, memory, energy, and cost. Optimization without a fixed workload and metric can move the wrong bottleneck.",
+      internGuide: ["Define the target first: quality, latency, throughput, memory, energy, and cost. Optimization without a fixed workload and metric can move the wrong bottleneck.","Tune learning rate, batch size, resolution/sequence length, augmentation, loss weights, and regularization with tracked experiments and a validation set.","Improve systems with mixed precision, efficient attention, gradient accumulation/checkpointing, compiled kernels, caching, batching, and distributed training where communication cost is justified.","Profile before changing hardware. Report end-to-end performance including preprocessing, transfers, decoding, queues, and postprocessing—not only model-kernel speed."],
       title: 'Performance Optimization: Hyperparameter Tuning, Computational Efficiency, Training Optimization',
       body: [
         'Hyperparameter tuning: learning rate, batch size, warmup steps, weight decay, LoRA rank, CFG scale, sampling steps වගේ අපි අතින් තෝරන settings. Grid search (හැම combination එකක්ම), random search (අහඹු combinations, බොහෝ විට grid එකට වඩා කාර්යක්ෂමයි), Bayesian optimization (කලින් results බලලා ඊළඟ හොඳ attempt එක තෝරනවා, Optuna වගේ tools). Learning rate එක තමයි වැදගත්ම එක. මුලින් පොඩි model එකක/data subset එකක ඉක්මන් experiments කරන්න.',
@@ -468,6 +498,8 @@ image.save("tuktuk.png")`,
     // 16
     {
       id: 'frameworks-nemo-triton',
+      plain: "PyTorch and TensorFlow are model-development frameworks. NVIDIA NeMo provides domain/tooling components for building and customizing supported generative, speech, and multimodal systems.",
+      internGuide: ["PyTorch and TensorFlow are model-development frameworks. NVIDIA NeMo provides domain/tooling components for building and customizing supported generative, speech, and multimodal systems.","Triton Inference Server serves models from supported backends and provides batching, model repositories, metrics, and ensemble pipelines. It does not train the model.","A pipeline may preprocess media, run separate encoders or VLMs, then postprocess results. Version each component and define tensor shapes and contracts between them.","Choose tools from model compatibility, team skills, deployment target, observability, and benchmark results. Do not assume every NeMo model automatically deploys through every Triton backend."],
       title: 'PyTorch vs TensorFlow, NVIDIA NeMo සහ Triton (Multimodal Pipelines)',
       body: [
         'PyTorch: Python වගේම ලියන්න පුළුවන් eager (dynamic) execution, debug කරන්න ලේසියි. අද research සහ generative AI වල ප්‍රධාන framework එක. Hugging Face transformers, diffusers, NeMo, LLaVA, Stable Diffusion code හැම එකක්ම වගේ PyTorch. TensorFlow (Google): Keras high-level API එක, TF Serving, TFLite / LiteRT (mobile සහ edge) වගේ deployment tools ශක්තිමත්. TF 2 එකත් default eager, tf.function වලින් graph කරනවා. Exam එකට මතක තියාගන්න: concepts (tensors, autograd, layers, optimizers) දෙකේම එකයි, syntax විතරයි වෙනස්. JAX තව framework එකක්.',
@@ -496,6 +528,8 @@ image.save("tuktuk.png")`,
     // 17
     {
       id: 'multimodal-evaluation',
+      plain: "Use task-specific metrics: retrieval recall, caption quality/faithfulness, ASR error, classification accuracy, or generation quality. No single metric covers a multimodal system.",
+      internGuide: ["Use task-specific metrics: retrieval recall, caption quality/faithfulness, ASR error, classification accuracy, or generation quality. No single metric covers a multimodal system.","FID compares distributions of image features and needs enough comparable samples; it does not judge prompt alignment. CLIP Score estimates image-text similarity but inherits model biases and can be gamed.","Human evaluation needs a rubric, randomized/blinded presentation, representative raters, agreement checks, and separate ratings for quality, adherence, faithfulness, and safety.","Report slices by language, modality quality, demographic/domain group, and difficult condition. Pair offline scores with real task success, latency, and failure review."],
       title: 'Multimodal Evaluation: FID, CLIP Score සහ Human Evaluation',
       body: [
         'Generated images "හොඳද" කියලා මනින එක අමාරුයි, එකම හරි උත්තරයක් නැති නිසා. FID (Fréchet Inception Distance): real images set එකක් සහ generated images set එකක් Inception-v3 network එකකින් features (2048-dim) කරලා, ඒ distributions දෙක අතර දුර මනිනවා (Phase 16). අඩු FID = generated images real ඒවට සමානයි, quality සහ diversity දෙකම. FID එකට images දහස් ගණනක් ඕනේ (බොහෝ විට 10,000-50,000), පොඩි sets වල FID විශ්වාස කරන්න බෑ. FID එක prompt එකට ගැළපෙනවද කියලා බලන්නේ නෑ.',
@@ -521,6 +555,8 @@ image.save("tuktuk.png")`,
     // 18
     {
       id: 'trustworthy-multimodal',
+      plain: "Multimodal data can reveal faces, voices, locations, health information, documents, and bystanders. Obtain a lawful basis/consent, minimize collection, and define retention and access.",
+      internGuide: ["Multimodal data can reveal faces, voices, locations, health information, documents, and bystanders. Obtain a lawful basis/consent, minimize collection, and define retention and access.","Bias can enter through who and what appears, caption language, labeling, sensor quality, and evaluation coverage. Test performance across relevant groups and conditions.","Deepfakes and voice clones create impersonation and fraud risk. Use provenance/credentials where supported, visible disclosure, abuse monitoring, and restrictions on sensitive likenesses.","Defend against hidden instructions in images/documents, malicious files, data poisoning, and exfiltration through tools. Human review remains important for consequential outputs."],
       title: 'Trustworthy Multimodal AI: Ethics, Privacy, Consent, Deepfakes සහ Bias',
       body: [
         'Images, voice සහ video කියන්නේ පුද්ගලික දත්ත. මූණක් හෝ කටහඬක් biometric data, කෙනෙක්ව හඳුනාගන්න පුළුවන්. Training data වලට කෙනෙක්ගේ photos/voice ගන්න කලින් consent (කැමැත්ත) ගන්න, ඇයි පාවිච්චි කරන්නේ කියලා කියන්න, ඉල්ලුවොත් අයින් කරන්න (opt-out). ශ්‍රී ලංකාවේ Personal Data Protection Act (2022 අංක 9) සහ යුරෝපයේ GDPR වගේ නීති තියෙනවා. Datasets වල මූණු, vehicle number plates, NIC numbers blur කරන්න. Copyright තියෙන කලා කෘති ගැනත් සැලකිලිමත් වෙන්න.',
@@ -548,6 +584,8 @@ image.save("tuktuk.png")`,
     // 19 (AND MORE)
     {
       id: 'sinhala-receipt-app',
+      plain: "Define the receipt task precisely: capture an image, detect/correct orientation, extract Sinhala/English fields, normalize totals/dates/merchant, and show evidence for review.",
+      internGuide: ["Define the receipt task precisely: capture an image, detect/correct orientation, extract Sinhala/English fields, normalize totals/dates/merchant, and show evidence for review.","Build a consented dataset covering phones, lighting, blur, handwriting, scripts, currencies, and merchant layouts. Split by merchant/source to avoid memorizing templates.","Pipeline: validate the file, run OCR/layout or a VLM, parse into a strict schema, cross-check arithmetic and currency, attach bounding boxes, and ask a user to confirm low-confidence fields.","Evaluate field-level precision/recall and exact totals, not just OCR text. Encrypt receipts, redact identifiers, log model/version, monitor drift, and never auto-post uncertain financial data."],
       title: 'And More: Sinhala/English Multimodal App එකක් මුල සිට අග දක්වා',
       body: [
         'අදහස: "බිල්පත් සහායකයා". User කෙනෙක් Keells/Cargills receipt එකක, CEB/Water bill එකක, හෝ සිංහල/English ලේඛනයක photo එකක් ගන්නවා. ඊට පස්සේ සිංහලෙන් හෝ English වලින් (type කරලා හෝ කතා කරලා) අහනවා: "මේ මාසේ කරන්ට් බිල කීයද?", "එළවළු වලට කොච්චර වියදම් කළාද?". App එක සිංහලෙන් උත්තර දෙනවා, අවශ්‍ය නම් කටහඬින්.',

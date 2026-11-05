@@ -8,6 +8,8 @@ export default {
   topics: [
     {
       id: 'ads-foundations-cpu-vs-gpu',
+      plain: "NumPy provides CPU arrays, pandas provides tabular DataFrames, and Jupyter is an interactive environment. GPU libraries accelerate suitable operations but do not change the need for correct analysis.",
+      internGuide: ["NumPy provides CPU arrays, pandas provides tabular DataFrames, and Jupyter is an interactive environment. GPU libraries accelerate suitable operations but do not change the need for correct analysis.","GPUs help when a workload has enough parallel numeric work—large joins, group-bys, vector operations, or model training—to repay setup and data-transfer costs.","Small datasets, Python loops, branch-heavy logic, unsupported dtypes, and frequent CPU/GPU switching can make a CPU faster or simpler.","Benchmark the complete workflow on representative data after a warm-up. Compare correctness, elapsed time, memory, transfer time, and development/operations cost."],
       title: 'Foundations: NumPy, pandas, Jupyter, and CPU vs GPU Workloads',
       body: [
         'In Phase 1, you learned NumPy arrays and pandas DataFrames. Accelerated data science runs those same kinds of operations on a GPU. pandas operations are often vectorized: one operation is applied to an entire column. GPUs are well suited to this pattern.',
@@ -48,6 +50,8 @@ df["tax"] = df["amount"] * 0.18   # Write it in this vectorized form`,
     },
     {
       id: 'host-device-data-movement',
+      plain: "Host memory is CPU RAM; device memory is GPU memory. Discrete GPUs usually exchange data with the host across PCIe, which is much slower than on-device memory access.",
+      internGuide: ["Host memory is CPU RAM; device memory is GPU memory. Discrete GPUs usually exchange data with the host across PCIe, which is much slower than on-device memory access.","A conversion from pandas/NumPy to cuDF/CuPy may copy data to the GPU; converting back copies it again. Hidden fallback can create repeated round trips.","Keep related transformations on the GPU, transfer columns in batches, avoid unnecessary format conversions, and return only the final result when practical.","Profile transfers and synchronization, not only kernels. Unified or managed memory simplifies addressing but does not eliminate migration cost or capacity limits."],
       title: 'Host vs Device Memory: The Cost of Moving Data over PCIe',
       body: [
         'A computer has host memory (CPU RAM) and device memory (the GPU’s VRAM, for example 16 GB, 24 GB, or 80 GB). GPU operations work on data in device memory, so a pandas DataFrame must first be copied from host to device over the PCIe bus.',
@@ -90,6 +94,8 @@ print(summary.to_pandas())   # copy only the small result to the CPU
     },
     {
       id: 'cudf-and-cupy',
+      plain: "cuDF provides GPU DataFrames with a pandas-like API; CuPy provides GPU n-dimensional arrays with a NumPy-like API. Similar syntax does not mean complete behavioral identity.",
+      internGuide: ["cuDF provides GPU DataFrames with a pandas-like API; CuPy provides GPU n-dimensional arrays with a NumPy-like API. Similar syntax does not mean complete behavioral identity.","Use cuDF for columnar parsing, filtering, joins, grouping, and strings; use CuPy for dense numerical array operations. Interchange through supported device protocols can avoid host copies.","Check dtypes, null semantics, ordering, random behavior, and unsupported operations. A result can differ slightly because algorithms and floating-point reduction order differ.","Start with a large hot section, keep its data on device, test equivalence, then benchmark. Do not convert every small helper operation merely because a GPU library exists."],
       title: 'cuDF (GPU DataFrames) and CuPy (GPU NumPy)',
       body: [
         'cuDF is the RAPIDS GPU DataFrame library. Its API is designed to resemble pandas: it supports operations such as read_csv, read_parquet, filtering, groupby, merge, sort_values, string methods (.str), and datetime methods (.dt). If you know pandas, replacing import pandas as pd with import cudf lets you reuse much of your code.',
@@ -131,6 +137,8 @@ b = cp.asnumpy(a @ a)                             # copy the result to CPU (NumP
     },
     {
       id: 'cudf-pandas-accelerator',
+      plain: "cudf.pandas intercepts pandas operations, runs supported work with cuDF, and falls back to pandas for unsupported work. It must be enabled before pandas is imported.",
+      internGuide: ["cudf.pandas intercepts pandas operations, runs supported work with cuDF, and falls back to pandas for unsupported work. It must be enabled before pandas is imported.","Fallback preserves broader API coverage but may move data and hide a performance cliff. Zero code change means API convenience, not guaranteed GPU execution or speedup.","Use the cudf.pandas profiler to see GPU versus CPU operations; rewrite costly fallback sections or intentionally keep the workflow on CPU.","Validate outputs and benchmark end to end. Unsupported custom Python functions, small inputs, or frequent fallback may erase acceleration."],
       title: 'cudf.pandas: Zero-Code-Change Acceleration and CPU Fallback',
       body: [
         'A company may have thousands of lines of pandas code that would be difficult to rewrite for cuDF. cudf.pandas addresses this: leave import pandas as pd in your code and load the accelerator before importing pandas. In Jupyter, use %load_ext cudf.pandas; for a script, use python -m cudf.pandas my_script.py.',
@@ -171,6 +179,8 @@ df = pd.read_csv("keells_bills.csv")
             },
     {
       id: 'file-formats-parquet-arrow',
+      plain: "CSV is human-readable text with weak type information and expensive parsing. Parquet and ORC are compressed columnar file formats designed for analytical scans.",
+      internGuide: ["CSV is human-readable text with weak type information and expensive parsing. Parquet and ORC are compressed columnar file formats designed for analytical scans.","Columnar formats support reading selected columns and, with suitable metadata, skipping row groups that cannot match filters. File layout and partitioning determine whether this helps.","Apache Arrow defines an in-memory columnar format and interchange interfaces; it is not simply another disk file format, although Arrow IPC/Feather can persist Arrow data.","Prefer Parquet/ORC for repeated analytics, choose practical file sizes, preserve schema/nulls/timezones, and measure compression, scan speed, and downstream compatibility."],
       title: 'File Formats: CSV vs Parquet, ORC, and Apache Arrow',
       body: [
         'CSV is a simple text file: it is easy to read and supported by many tools. For large datasets, it has drawbacks: numbers are stored as text (which takes space), there are no built-in types (the reader must infer whether a value is a date or string), and the whole file may need to be read even when you need only one column.',
@@ -214,6 +224,8 @@ tbl = gdf.to_arrow()   # Arrow table (may copy data from GPU to CPU)`,
     },
     {
       id: 'dask-multi-gpu-etl',
+      plain: "Dask represents a lazy task graph; dask-cuDF partitions a DataFrame so cuDF work can run across workers. LocalCUDACluster commonly creates one worker per visible GPU.",
+      internGuide: ["Dask represents a lazy task graph; dask-cuDF partitions a DataFrame so cuDF work can run across workers. LocalCUDACluster commonly creates one worker per visible GPU.","Nothing substantial runs until compute or persist is called. Inspect the graph and avoid repeated computation; persist reused intermediate data only when memory allows.","Partitions must be large enough for efficient GPU work but small enough to fit with temporary allocations. Shuffles and skew can dominate joins and group-bys.","Use the dashboard to inspect task time, transfers, spilling, and worker balance. Configure memory limits/spilling deliberately and benchmark against single-GPU cuDF first."],
       title: 'GPU ETL with Dask: dask-cudf, Partitions, Lazy Evaluation, LocalCUDACluster',
       body: [
         'ETL means Extract (get data), Transform (clean, join, and create features), and Load (store the result). Use Dask when the data is larger than one GPU’s memory or when you have multiple GPUs. Dask is a Python library that splits work into tasks and distributes them among workers.',
@@ -259,6 +271,8 @@ result = totals.compute()                            # now it runs`,
     },
     {
       id: 'spark-rapids-accelerator',
+      plain: "The NVIDIA cuDF plugin for Apache Spark can replace supported Spark SQL/DataFrame operators with GPU implementations while keeping Spark’s execution model.",
+      internGuide: ["The NVIDIA cuDF plugin for Apache Spark can replace supported Spark SQL/DataFrame operators with GPU implementations while keeping Spark’s execution model.","Support is operation-, type-, and configuration-specific. Unsupported parts remain on CPU, and transitions can reduce gains. Python UDFs commonly prevent useful acceleration.","Inspect the physical plan and enable the plugin’s explain output to learn which operators run on GPU and why others do not.","Tune partition sizes, shuffle, file format, executor GPU allocation, and concurrent tasks from measurements. Validate result compatibility before using accelerated production plans."],
       title: 'GPU ETL with Apache Spark: RAPIDS Accelerator for Apache Spark',
       body: [
         'Many large banks, telecom companies, and e-commerce businesses already use Apache Spark. Spark runs SQL and DataFrame jobs across clusters of many machines using PySpark, Scala, or SQL, so these teams may not need to switch to Python Dask.',
@@ -299,6 +313,8 @@ daily.write.parquet("s3://bank/daily/")`,
     },
     {
       id: 'gpu-feature-engineering-imbalance',
+      plain: "Feature engineering converts raw columns into signals a model can use: cleaned categories, scaled numbers, time features, aggregates, and domain-specific interactions. Fit transformations only on training data.",
+      internGuide: ["Feature engineering converts raw columns into signals a model can use: cleaned categories, scaled numbers, time features, aggregates, and domain-specific interactions. Fit transformations only on training data.","GPU DataFrames can accelerate large joins, windows, encoders, and aggregations, but high-cardinality expansions may exhaust memory. Use pipelines so training and inference apply identical logic.","For class imbalance, begin with stratified splits and suitable metrics. Options include class/sample weights, resampling, threshold tuning, and anomaly approaches; each changes the learning problem.","Never balance the validation/test set to look artificial. Evaluate calibration and business costs, and inspect performance across meaningful subgroups."],
       title: 'Feature Engineering on GPU and Handling Class Imbalance',
       body: [
         'Feature engineering creates useful columns from raw data that a model can learn from (review encoding and scaling in Phase 1). On a GPU, cuDF can use vectorized operations to extract hour, weekday, or month from datetimes (.dt); calculate customer aggregates such as average bill and transaction count and merge them; create lag features with groupby + shift; one-hot encode with cudf.get_dummies; and clean strings with methods such as .str.lower and .str.contains. cuML also provides preprocessing tools such as scalers, encoders, and TargetEncoder.',
@@ -343,6 +359,8 @@ print("Suggested starting scale_pos_weight:", neg / pos)`,
     },
     {
       id: 'cuml-and-gpu-xgboost',
+      plain: "cuML provides GPU implementations of many familiar estimators; XGBoost has GPU training options. Supported parameters, algorithms, and output details can differ from CPU libraries.",
+      internGuide: ["cuML provides GPU implementations of many familiar estimators; XGBoost has GPU training options. Supported parameters, algorithms, and output details can differ from CPU libraries.","GPU speedups are most useful for sufficiently large data or repeated training. Data preparation and cross-validation may become the bottleneck after training accelerates.","Use device-resident inputs where possible, set reproducible seeds, monitor GPU memory, and compare predictive quality—not bit-for-bit model identity.","cuml.accel can accelerate supported scikit-learn calls and fall back for others. Profile fallback, pin library versions, and test serialization/inference in the target environment."],
       title: 'Machine Learning with RAPIDS: cuML Estimators and XGBoost on GPU',
       body: [
         'cuML is RAPIDS’ GPU machine-learning library, with a scikit-learn-like API: create an estimator, then call .fit(X, y), .predict(X), .predict_proba(X), or .transform(X). Algorithms include LinearRegression, LogisticRegression, Ridge, Lasso, RandomForestClassifier / Regressor, KMeans, DBSCAN, HDBSCAN, NearestNeighbors, PCA, TruncatedSVD, UMAP, t-SNE, and SVC. It accepts cuDF, CuPy, NumPy, and pandas inputs; NumPy and pandas data must be copied to the GPU.',
@@ -387,6 +405,8 @@ xgbm.fit(X_tr, y_tr)                 # cuDF input directly, boosting on GPU`,
     },
     {
       id: 'hpo-cross-validation-metrics',
+      plain: "Hyperparameter optimization repeatedly trains and evaluates configurations. Define the search space, objective, budget, pruning rule, and reproducible split before launching GPU trials.",
+      internGuide: ["Hyperparameter optimization repeatedly trains and evaluates configurations. Define the search space, objective, budget, pruning rule, and reproducible split before launching GPU trials.","Cross-validation estimates variation across folds, but time series, groups, customers, or locations require splitters that respect dependence and prevent leakage.","Parallel trials compete for GPU memory and can be slower than scheduled sequentially. Assign resources per trial and record failures, seeds, versions, and total compute.","Choose metrics from the decision: precision/recall, PR-AUC for rare positives, ROC-AUC for ranking, calibration for probabilities, and cost-weighted thresholds for operations."],
       title: 'Hyperparameter Tuning (Optuna / HPO on GPU), Cross-Validation, and Evaluation Metrics',
       body: [
         'Hyperparameters are settings you choose before training, such as the number of trees, max_depth, and learning_rate. Search options include grid search (try every combination, which can be many), random search (try random combinations and often find good results sooner), and Bayesian / TPE search (learn from earlier trials to choose promising next trials). Optuna is a popular library for this smart search and can prune unpromising trials early.',
@@ -434,6 +454,8 @@ print(study.best_params)   # evaluate on the test set only once at the end`,
     },
     {
       id: 'eda-hypothesis-visualization',
+      plain: "EDA checks schema, missingness, ranges, distributions, duplicates, relationships, time patterns, and suspicious leakage before modeling. Summaries should lead to testable questions.",
+      internGuide: ["EDA checks schema, missingness, ranges, distributions, duplicates, relationships, time patterns, and suspicious leakage before modeling. Summaries should lead to testable questions.","A hypothesis test quantifies compatibility with a null model under assumptions; a p-value is not the probability the hypothesis is true or a measure of practical importance.","Report effect size and uncertainty, account for multiple comparisons, and check independence/distribution assumptions. Large datasets can make trivial effects statistically significant.","Choose plots by question: histogram/ECDF for distributions, scatter/hexbin for two numeric variables, box/violin for grouped distributions, and line plots for ordered time."],
       title: 'Descriptive Analysis: EDA, Hypothesis Testing Basics, and Choosing the Right Plot',
       body: [
         'EDA (Exploratory Data Analysis) is how you get to know data before building a model (see the Phase 1 EDA topic for the basics). Inspect describe() statistics (mean, median, min, max, std), missing and unique values, value_counts, correlations, and outliers. cuDF can calculate these across millions of rows on a GPU in seconds, making it possible to inspect the full dataset rather than only a sample.',
@@ -478,6 +500,8 @@ print(f"p-value = {p:.4f}, difference = Rs. {b.mean() - a.mean():.0f}")`,
     },
     {
       id: 'time-series-on-gpu',
+      plain: "Time-series rows have order. Sort by entity and timestamp, define frequency and timezone, detect gaps/duplicates, and distinguish event time from ingestion time.",
+      internGuide: ["Time-series rows have order. Sort by entity and timestamp, define frequency and timezone, detect gaps/duplicates, and distinguish event time from ingestion time.","Lag, rolling, and expanding features must use only information available at prediction time. Random row splits cause future leakage; use walk-forward or blocked evaluation.","GPU DataFrames can accelerate parsing, grouping, windows, and resampling at scale, but partition boundaries must include the history needed for correct windows.","Evaluate by forecast horizon and time period, compare a simple seasonal/last-value baseline, and monitor drift, missing intervals, and late-arriving data."],
       title: 'Advanced Data Structures I: Time Series on GPU',
       body: [
         'Time-series data is ordered over time (see Phase 1 for trend, seasonality, resampling, rolling, and shift). Real-world workloads often contain thousands of series, not just one. For example, 300 supermarket branches × 5,000 items = 1.5 million series, each needing lag features, rolling averages, and forecasts. This is where a GPU can help.',
@@ -519,6 +543,8 @@ print(len(train), len(test))`,
     },
     {
       id: 'graph-analytics-cugraph',
+      plain: "A graph contains vertices and edges; direction, weight, multiplicity, and identifiers define its meaning. Convert business data carefully before selecting an algorithm.",
+      internGuide: ["A graph contains vertices and edges; direction, weight, multiplicity, and identifiers define its meaning. Convert business data carefully before selecting an algorithm.","PageRank estimates importance from incoming links; community methods find densely connected groups; shortest path minimizes a chosen edge cost. These answer different questions.","cuGraph accelerates supported graph algorithms on GPU; multi-GPU execution adds partitioning and communication concerns. Renumbered internal vertex IDs must be mapped back correctly.","Validate graph assumptions, connected components, negative/invalid weights, and result stability. Fast computation does not make an inappropriate graph model valid."],
       title: 'Advanced Data Structures II: Graph Analytics with cuGraph (PageRank, Communities, Shortest Path)',
       body: [
         'A graph has nodes (vertices) and connections (edges) between them. Examples include people and friendships on Facebook, bank accounts and money transfers, bus stops and routes, or web pages and links. Edges can have weights such as distance or amount. Graph data often arrives as an edge list: a DataFrame with src, dst, and weight columns.',
@@ -563,6 +589,8 @@ dist = cugraph.sssp(G, source=12345)                  # shortest distances from 
     },
     {
       id: 'data-prep-inference-quality',
+      plain: "Data work starts with collection purpose, permissions, sampling, schema, lineage, and quality rules. Labels need clear instructions, adjudication, and agreement checks.",
+      internGuide: ["Data work starts with collection purpose, permissions, sampling, schema, lineage, and quality rules. Labels need clear instructions, adjudication, and agreement checks.","Images need decode/orientation/size handling; text needs encoding/language/PII and tokenization checks; tabular data needs types, units, missingness, categories, and time consistency.","Offline inference processes stored batches and optimizes throughput; online inference handles individual/live requests and prioritizes latency and availability. Both must reuse compatible preprocessing.","Create automated checks for schema, ranges, duplicates, leakage, label balance, corrupt files, drift, and train-serving skew, with quarantine rather than silent repair where appropriate."],
       title: 'Data Workflows: Collection, Labeling, Image / Text / Tabular Prep, Offline vs Online Inference, Quality Checks',
       body: [
         'Every ML project starts by collecting data from databases, logs, APIs, sensors, surveys, or the web, while following applicable law and privacy / consent requirements. Supervised learning needs labels: people (sometimes assisted by models) assign the correct answer to each example. Tools include Label Studio and CVAT. Clear labeling guidelines and measuring whether two labelers agree on the same examples are essential for label quality.',
@@ -606,6 +634,8 @@ print(df["label"].value_counts(normalize=True))        # label distribution`,
     },
     {
       id: 'reproducible-pipelines',
+      plain: "A pipeline turns ingestion, validation, transformation, training, evaluation, and export into explicit versioned steps with declared inputs and outputs.",
+      internGuide: ["A pipeline turns ingestion, validation, transformation, training, evaluation, and export into explicit versioned steps with declared inputs and outputs.","Reproducibility needs code, configuration, data snapshot/lineage, environment, random seeds, hardware/library versions, and recorded artifacts—not only a notebook.","With Dask/RAPIDS, capture cluster settings, partitioning, spill configuration, and nondeterministic algorithm details. Floating-point parallel reductions may not be bitwise identical.","Make steps idempotent, cache only content-addressed/versioned outputs, test small fixtures in CI, and rerun a known experiment before promoting a model."],
       title: 'End-to-End Pipelines and Reproducible Workflows with RAPIDS and Dask',
       body: [
         'An end-to-end pipeline runs every step from raw data to an evaluated model in a repeatable order: load (Parquet) → clean → create features → split → train → evaluate → save artifacts. A good GPU pipeline keeps data on the GPU from start to finish (cuDF → cuML / XGBoost). For larger data, use the same steps with dask-cudf and Dask-enabled XGBoost / cuML.',
@@ -648,6 +678,8 @@ model.save_model("artifacts/model.json")      # save the model artifact
     },
     {
       id: 'intro-mlops-tracking-drift',
+      plain: "Experiment tracking records parameters, metrics, artifacts, code/environment, and dataset identity so results can be compared and reproduced. A registry manages model versions and stages.",
+      internGuide: ["Experiment tracking records parameters, metrics, artifacts, code/environment, and dataset identity so results can be compared and reproduced. A registry manages model versions and stages.","Data drift means input distributions changed; concept drift means the relationship between inputs and target changed. Input drift alone does not prove model quality fell.","Monitor schema, missingness, ranges, categorical frequencies, prediction distribution, latency, and—when labels arrive—performance and calibration by segment.","Define alert thresholds, ownership, investigation playbooks, retraining criteria, approval, and rollback. Logging a dashboard without a response process is not MLOps."],
       title: 'Introductory MLOps: Experiment Tracking (MLflow / W&B), Versioning, Data Drift and Concept Drift',
       body: [
         'A GPU can let you run hundreds of experiments per day, but without records you may forget how the best model was built. Experiment tracking automatically records each run’s parameters, metrics, artifacts, and code version (see Phase 7 for MLOps details). MLflow is open source and can run on your own server, with methods such as mlflow.log_param, log_metric, and log_artifact, a model registry, and autologging for some libraries (for example, mlflow.xgboost.autolog()). Weights & Biases (W&B) is a cloud service with wandb.init(config=...), wandb.log(...), sweeps for HPO, and team dashboards.',
@@ -692,6 +724,8 @@ if p < 0.01:
     },
     {
       id: 'environment-management',
+      plain: "Conda and pip manage packages; containers package user-space dependencies. The host NVIDIA driver provides kernel support and must be compatible with the CUDA runtime used by the application.",
+      internGuide: ["Conda and pip manage packages; containers package user-space dependencies. The host NVIDIA driver provides kernel support and must be compatible with the CUDA runtime used by the application.","nvidia-smi reports driver/GPU state; its displayed CUDA capability is not proof that a matching toolkit compiler or every library is installed.","Use supported RAPIDS installation matrices or NGC containers, pin versions and image digests, keep lock files, and avoid mixing package channels casually.","Record Git commit and environment, scan images, run a GPU smoke test, and verify imports plus a small computation before long jobs. Never “fix” compatibility by random upgrades."],
       title: 'Software and Environment Management: Conda, pip, Docker / NGC, CUDA Driver Compatibility, nvidia-smi, Git',
       body: [
         'RAPIDS requires an NVIDIA GPU, Linux (or WSL2 on Windows), and a compatible NVIDIA driver. Common installation options are (1) Conda, using rapidsai, conda-forge, and nvidia channels; Conda manages Python packages and non-Python dependencies such as CUDA libraries. (2) pip, using wheels that match the CUDA version (for example, packages named cudf-cu12). (3) Docker containers, including preconfigured RAPIDS images in the NGC catalog and Docker Hub. Use the RAPIDS website’s install selector for the exact command because versions change often.',
@@ -737,6 +771,8 @@ echo "data/" >> .gitignore                  # keep large data out of Git`,
     },
     {
       id: 'hands-on-sri-lankan-retail-gpu',
+      plain: "Define a measurable task such as daily store-product demand prediction, then establish a correct pandas/scikit-learn CPU baseline before acceleration.",
+      internGuide: ["Define a measurable task such as daily store-product demand prediction, then establish a correct pandas/scikit-learn CPU baseline before acceleration.","Profile ingestion, joins, features, training, and evaluation. Enable cudf.pandas or explicit cuDF for large tabular stages and use a supported cuML/XGBoost estimator where beneficial.","Split by time and store/product boundaries, prevent future sales or promotion leakage, preserve currency/timezone semantics, and evaluate seasonal and low-volume segments.","Compare end-to-end runtime, peak memory, metric quality, and cost on the same data. Package the pipeline with pinned versions, quality checks, drift monitoring, and a CPU fallback plan."],
       title: 'And More: Hands-on, Accelerating a Sri Lankan Retail Sales Workflow with cudf.pandas and cuML',
       body: [
         'Now combine the ideas. A supermarket chain with 250 branches across Sri Lanka has 150 million bill-line rows over three years: date, branch, district, item, category, qty, unit_price_rs, payment_method, and loyalty_id. Answer two questions: (1) daily sales and monthly trends by branch / category (ETL + EDA); (2) group loyalty customers into segments with k-means and predict who will spend more next month.',

@@ -9,6 +9,8 @@ export default {
     // 1
     {
       id: 'claude-md-hierarchy',
+      plain: "CLAUDE.md files provide project instructions that Claude Code loads according to location and hierarchy. Put stable, repository-relevant guidance near the code it governs.",
+      internGuide: ["CLAUDE.md files provide project instructions that Claude Code loads according to location and hierarchy. Put stable, repository-relevant guidance near the code it governs.","Keep instructions short and testable: build/test commands, architecture constraints, naming rules, generated files, and safety boundaries. Do not store credentials or frequently changing status.","Imports, `.claude/rules/`, and memory commands are Claude Code features whose syntax and precedence can evolve. Verify the installed-version docs and inspect loaded context when behavior surprises you.","Review instruction files like code: avoid contradictions, assign one source of truth, test from repository and subdirectories, and remove stale rules that waste context."],
       examRefs: ['CCAR-011', 'CCAR-029'],
       title: 'CLAUDE.md Hierarchy, @import, .claude/rules/ and /memory (Task 3.1)',
       body: [
@@ -48,6 +50,8 @@ export default {
     // 2
     {
       id: 'path-specific-rules',
+      plain: "Path-specific rules attach instructions to matching files so frontend, infrastructure, tests, or generated code can follow different conventions without loading every rule everywhere.",
+      internGuide: ["Path-specific rules attach instructions to matching files so frontend, infrastructure, tests, or generated code can follow different conventions without loading every rule everywhere.","A `paths` glob describes applicability; glob semantics and frontmatter syntax are product/version details. Test representative matching and non-matching paths, including nested directories.","Keep shared rules global and specialized rules local. Overlapping rules need compatible language because a file may match several patterns.","Add an example and validation command to each important rule. Avoid broad globs that accidentally govern vendor, build, or generated files."],
       examRefs: ['CCAR-030'],
       title: 'Path-Specific Rules with paths Globs (Task 3.3)',
       body: [
@@ -84,6 +88,8 @@ Use fixtures in tests/fixtures/. Do not use sleep.`,
     // 3
     {
       id: 'slash-commands-and-skills',
+      plain: "A slash command is an invocation surface; a skill packages reusable instructions and optional supporting files. Use them for repeatable workflows, not as hidden policy enforcement.",
+      internGuide: ["A slash command is an invocation surface; a skill packages reusable instructions and optional supporting files. Use them for repeatable workflows, not as hidden policy enforcement.","A SKILL.md should state when the skill applies, inputs, steps, safety constraints, expected output, and referenced assets/scripts. Keep instructions scoped and version-controlled.","Fields such as `context: fork`, `allowed-tools`, and `argument-hint` are Claude Code metadata whose availability and exact meaning can change. Verify current docs before relying on them.","Test invocation with normal, missing, and hostile arguments; enforce real permissions outside the prompt; and keep skill context small enough to be understandable and maintainable."],
       examRefs: ['CCAR-012', 'CCAR-031'],
       title: 'Slash Commands & Skills: SKILL.md, context: fork, allowed-tools, argument-hint (Task 3.2)',
       body: [
@@ -124,6 +130,8 @@ list modules, entry points, and key dependencies.`,
     // 4
     {
       id: 'plan-mode-vs-direct',
+      plain: "Use direct execution for small, reversible, well-understood changes. Use plan mode when scope, architecture, dependencies, or risk must be inspected and agreed before edits.",
+      internGuide: ["Use direct execution for small, reversible, well-understood changes. Use plan mode when scope, architecture, dependencies, or risk must be inspected and agreed before edits.","Exploration should gather evidence: repository instructions, relevant files, call paths, tests, and constraints. A plan lists intended changes and validation, not speculative implementation detail.","An Explore subagent or read-only investigation can reduce context pressure, but its findings still require verification and may miss cross-cutting behavior.","Switch from planning to implementation only when the requested outcome and boundaries are clear. Re-plan when evidence contradicts assumptions rather than forcing the original plan."],
       examRefs: ['CCAR-013'],
       title: 'Plan Mode vs Direct Execution and the Explore Subagent (Task 3.4)',
       body: [
@@ -149,6 +157,8 @@ list modules, entry points, and key dependencies.`,
     // 5
     {
       id: 'iterative-refinement',
+      plain: "Give concrete input/output examples to expose ambiguity. Include normal, boundary, invalid, and counterexamples; explain which properties matter rather than inviting superficial copying.",
+      internGuide: ["Give concrete input/output examples to expose ambiguity. Include normal, boundary, invalid, and counterexamples; explain which properties matter rather than inviting superficial copying.","Test-driven iteration defines observable behavior first, implements the smallest change, runs tests, then refactors while keeping behavior green. It is not a substitute for understanding requirements.","The interview pattern asks focused questions when a missing decision would materially change the solution. Do not interrogate users about choices that can be inferred safely from the repository.","After each iteration inspect the diff and failures, update assumptions, and stop when acceptance criteria pass—not when the response merely sounds complete."],
       examRefs: ['CCAR-032'],
       title: 'Iterative Refinement: I/O Examples, Test-Driven, Interview Pattern (Task 3.5)',
       body: [
@@ -174,6 +184,8 @@ list modules, entry points, and key dependencies.`,
     // 6
     {
       id: 'cicd-claude-p',
+      plain: "Non-interactive `claude -p` can support automation, but CLI flags, output schemas, permissions, and authentication are version-specific. Pin and test the CLI used by CI.",
+      internGuide: ["Non-interactive `claude -p` can support automation, but CLI flags, output schemas, permissions, and authentication are version-specific. Pin and test the CLI used by CI.","Provide a narrow task, explicit repository context, machine-readable output where supported, bounded tools/time/cost, and a nonzero exit/failure path. Never give CI an unrestricted production credential.","Treat generated findings as untrusted. Validate JSON/schema, preserve logs and diffs, and require deterministic linters/tests or human approval before merge/deploy.","Independent review should use the original requirements and changed artifacts, not only the first agent’s explanation. Measure false positives, missed defects, runtime, and cost."],
       examRefs: ['CCAR-014', 'CCAR-033'],
       title: 'CI/CD Integration: claude -p, JSON Output, Independent Review (Task 3.6)',
       body: [
@@ -216,6 +228,8 @@ list modules, entry points, and key dependencies.`,
     // 7
     {
       id: 'explicit-criteria-few-shot',
+      plain: "Write criteria as observable checks with severity, scope, examples, and exclusions. “Find bad code” is vague; “report SQL built from untrusted input without parameterization” is testable.",
+      internGuide: ["Write criteria as observable checks with severity, scope, examples, and exclusions. “Find bad code” is vague; “report SQL built from untrusted input without parameterization” is testable.","False positives consume reviewer trust. Require file/line evidence, explain the violated criterion, and permit “uncertain” when context is insufficient.","Few-shot examples teach decision boundaries. Include positive, negative, and near-miss examples; avoid examples whose labels depend on hidden knowledge.","Evaluate on a held-out labeled set by category and repository. Tune criteria/examples against errors, then recheck old cases to prevent regressions."],
       examRefs: ['CCAR-015'],
       title: 'Explicit Criteria, False Positives and Few-Shot Prompting (Tasks 4.1, 4.2)',
       body: [
@@ -242,13 +256,15 @@ list modules, entry points, and key dependencies.`,
     // 8
     {
       id: 'tool-use-json-schema',
+      plain: "Use a JSON Schema to constrain tool inputs: object properties, required fields, types, enums, formats, and `additionalProperties` where supported. Application code still validates business rules and authorization.",
+      internGuide: ["Use a JSON Schema to constrain tool inputs: object properties, required fields, types, enums, formats, and `additionalProperties` where supported. Application code still validates business rules and authorization.","Optional and nullable differ: optional may be absent; nullable may be present with null. In JSON Schema, nullable commonly uses a type union or `anyOf`, subject to the API’s supported subset.","Enums reduce ambiguity but values and casing need careful handling. Current Claude structured-output docs note a possible enum-casing exception, so compare safely and avoid case-only variants.","Strict tool use or structured outputs can improve schema conformance, but refusals, token limits, unsupported schema complexity, or model/tool-choice restrictions still need explicit handling."],
       examRefs: ['CCAR-016', 'CCAR-034', 'CCAR-035'],
       title: 'tool_use + JSON Schema: Nullable Fields, Enums, tool_choice (Task 4.3)',
       body: [
         'The most reliable way to require output that matches a schema is to define a tool with a JSON Schema input_schema and have Claude call it. This prevents JSON syntax errors, but not semantic errors such as a total that does not match line items or a value placed in the wrong field. Validate those separately.',
         'If a field that may be absent from a document is required, the model may fabricate a value. Make it nullable, such as "type": ["string", "null"]. For enums, include "unclear" for ambiguous cases and "other" plus a detail string when new categories may appear. Put date and number normalization rules in the prompt.',
-        'There are three tool_choice options: "auto" lets Claude decide whether to call a tool; "any" requires a tool call but lets Claude choose which one; {"type": "tool", "name": "extract_metadata"} forces a specific tool. Use "any" when several schemas are possible and the document type is unknown.',
-        'Tempting wrong answers include making every field required (which can cause fabrication), assuming valid schema means correct values, or using tool_choice: auto when structured output is mandatory.',
+        'The API defines `tool_choice` modes including `auto`, `none`, `any`, and a named `tool`. Support is model- and thinking-mode-specific: current Claude Opus 5.5, Sonnet 5.5, Fable 5.1, and Mythos 5.1 reject `any` and named forced-tool choices. Where forced choice is unsupported, use `auto` with strict tools for schema-valid calls, or `output_config.format` when the response itself must match a JSON schema. Always check the selected model’s compatibility table.',
+        'Tempting wrong answers include making every field required (which can encourage fabricated values), assuming schema validity means factual correctness, or forcing a tool without checking model compatibility. Structured outputs constrain shape, not evidence or truth.',
       ],
       analogy: 'Application form එකක "NIC අංකය" අනිවාර්‍ය (required) කරලා, NIC නැති කෙනෙකුට දුන්නොත් ඔහු අහවල් අංකයක් ලියනවා. "නැත්නම් හිස්ව තියන්න" කිව්වොත් (nullable) ඇත්ත විතරයි එන්නේ. Dropdown එකේ "Other (විස්තර කරන්න)" තිබුණොත් වෙනස් වර්ග එද්දී form එක කැඩෙන්නේ නෑ.',
       example: 'Invoice එකක due_date එක නැහැ. Required කරපු schema එකේ model එක "2026-12-31" කියලා හදනවා (fabricated). Nullable schema එකේ due_date: null. Category එක "goods"/"services" විතරක් තිබුණාම "ගුවන් ටිකට් ගාස්තුවක්" ට නිවැරදි අගයක් නෑ. "other" + category_detail: "airfare" දැමීමෙන් එය හසුරුවා ගන්න පුළුවන්. Invoice, receipt, contract කියලා schemas 3ක් තියෙන්න, document එක මොකක්ද කියලා නොදන්නවා නම් tool_choice: any.',
@@ -269,14 +285,14 @@ list modules, entry points, and key dependencies.`,
   } }`,
       },
       keyPoints: [
-        'tool_use + JSON schema = schema-compliant output සඳහා වඩාත්ම විශ්වාසනීය; syntax errors නෑ, semantic errors තියෙනවා.',
+        'Strict tool use හෝ structured outputs schema errors අඩු කරයි; refusals, max-token truncation සහ documented exceptions තවම handle කළ යුතු අතර semantic errors තවම ඇති විය හැකියි.',
         'නැති වෙන්න පුළුවන් fields = nullable (["string","null"]); required කළොත් model එක fabricate කරනවා.',
         'Enum: "unclear" + "other" සහ detail string. Date/number normalization rules prompt එකේ.',
-        'tool_choice: auto (ඕනෑ දෙයක්), any (tool එකක් අනිවාර්‍ය, එක කුමක්ද Claude තෝරයි), forced {"type":"tool","name":...} (නිශ්චිත එකක්).',
+        '`tool_choice` support depends on the selected model; current 5.5 models reject `any` and named forced-tool modes, so check compatibility and use strict tools or structured outputs as appropriate.',
       ],
       terms: [
         { en: 'Nullable field', si: 'අගය නැති විට null දෙන්න පුළුවන් field එක; fabrication වළක්වයි.' },
-        { en: 'tool_choice: any', si: 'Tool එකක් අනිවාර්‍යයෙන් call කළ යුතුයි; කුමක්ද කියලා Claude තෝරයි.' },
+        { en: 'tool_choice: any', si: 'Supported model එකක tool call එකක් අනිවාර්‍ය කරලා කුමන tool එකද Claudeට තෝරන්න දෙන mode එක; සමහර current models මෙය reject කරයි.' },
         { en: 'Semantic error', si: 'Syntax හරි, නමුත් අර්ථය වැරදි (totals නොගැලපීම, වැරදි field එක).' },
       ],
       si: 'Form එකේ due date එක නැත්නම් අහඹු දවසක් ලියනවා වෙනුවට null දෙන්න කියන්න. Schema එකේ enum එකට unclear සහ other දාන්න, අලුත් category එකක් ආවොත් විස්තරයත් ගන්න. Line items එකතුව Rs. 5,500 නම් stated total එකත් ඒකට ගැලපෙනවද වෙනම validate කරන්න. Schema එක හැඩය පාලනය කරනවා, අර්ථය හරිද කියලා පරීක්ෂා කරන්න ඕනේ.',
@@ -284,6 +300,8 @@ list modules, entry points, and key dependencies.`,
     // 9
     {
       id: 'validation-retry-loop',
+      plain: "Validate syntax/schema, types, cross-field rules, permissions, external state, and domain invariants before using model output. Return specific safe feedback for correctable failures.",
+      internGuide: ["Validate syntax/schema, types, cross-field rules, permissions, external state, and domain invariants before using model output. Return specific safe feedback for correctable failures.","Retry only when a new attempt can succeed: transient service error, truncated output with a larger limit, or a clearly correctable field. Use bounded attempts and backoff.","Retry cannot fix missing authorization, impossible requirements, unsupported features, absent source evidence, or a deterministic schema contradiction. Escalate or change the workflow.","Track retry reason and success rate. Preserve the original input and validation evidence, prevent duplicate side effects, and stop loops that repeatedly make the same error."],
       examRefs: ['CCAR-017', 'CCAR-037'],
       title: 'Validation, Retry & Feedback Loops: When Retry Cannot Work (Task 4.4)',
       body: [
@@ -328,10 +346,12 @@ list modules, entry points, and key dependencies.`,
     // 10
     {
       id: 'message-batches-api',
+      plain: "The Message Batches API processes independent Messages requests asynchronously at a 50% token-cost discount relative to standard API pricing. It is for work that does not require an immediate response.",
+      internGuide: ["The Message Batches API processes independent Messages requests asynchronously at a 50% token-cost discount relative to standard API pricing. It is for work that does not require an immediate response.","A batch can take up to 24 hours; most may finish sooner, but 24 hours is an expiration window, not a latency SLA for each request. Results can arrive out of order and are matched by custom ID.","As of current documentation, limits include up to 100,000 requests or 256 MB, results available for 29 days, and per-item succeeded/errored/canceled/expired outcomes. Recheck before designing.","Do not use batches for interactive paths. Poll or retrieve robustly, handle partial failures, protect stored input/output, calculate deadline capacity, and compare batch savings with operational delay."],
       examRefs: ['CCAR-018', 'CCAR-036'],
       title: 'Message Batches API: 50% Cost, 24h Window, SLA Math (Task 4.5)',
       body: [
-        'Message Batches API එක requests ගොඩක් එකවර submit කරලා පස්සේ ප්‍රතිඵල ගන්න ක්‍රමය. වාසි: standard මිලෙන් 50% අඩුයි. අවාසි: ප්‍රතිඵල ලැබෙන්න පැය 24 දක්වා ගත වෙන්න පුළුවන් (latency SLA එකක් නෑ), සහ multi-turn tool calling support නෑ (request එක අතරතුර tool run කරලා result එක ආපහු දෙන්න බෑ). Requests සහ responses ගැලපෙන්නේ custom_id එකෙන්; ඒ නිසා results order එක ගැන කරදර වෙන්න ඕනේ නෑ.',
+        'Message Batches API එක requests ගොඩක් එකවර submit කරලා පස්සේ ප්‍රතිඵල ගන්න ක්‍රමය. වාසි: standard මිලෙන් 50% අඩුයි. අවාසි: batch එක පැය 24 දක්වා process විය හැකි අතර interactive client-tool loop එකක් මැද නව request එකක් යවා result දෙන්න බැහැ. Supported server-side features වෙනස් විය හැකි නිසා current compatibility list එක බලන්න. Requests සහ responses `custom_id` එකෙන් ගැලපෙන අතර output order එක මත විශ්වාස නොකරන්න.',
         'හොඳ use cases: overnight reports, weekly audits, nightly test generation (කවුරුත් බලාගෙන නැති වැඩ). නරක use case: blocking pre-merge check (developers බලාගෙන ඉන්න වැඩ); ඒවා synchronous API එකෙන්. Latency ඉවසිය හැකි + වියදම අඩු කරන්න ඕනේ = Batches.',
         'SLA ගණනය: ප්‍රතිඵල පැය 30ක් ඇතුළත ලැබෙන්න ඕනේ නම් සහ batch එකක් පැය 24ක් ගත වෙනවා නම්, submit කිරීමට අතර පරතරය උපරිම පැය 6ක් විය හැකි, ඒත් collection කාලයටත් ඉඩ තියන්න පැය 4න් 4ට submit කරනවා (document එකක් submit window එක මඟහැරියොත් උපරිම 4 + 24 = පැය 28 ≤ 30). පැය 12න් 12ට නම් 36 > 30 වැරදියි.',
         'Failures: custom_id අනුව අසාර්ථක වුණු ඒවා විතරක් resubmit කරන්න (උදා: ලොකු documents chunk කරලා). විශාල batch එකකට කලින් කුඩා sample එකක prompt එක refine කරන්න. Exam උගුල: batch එක pre-merge check එකට පාවිච්චි කරන එක, SLA එකක් තියෙනවා කියන එක, --batch flag (නෑ), හෝ ordering ගැටලු (custom_id නිසා නෑ).',
@@ -357,7 +377,7 @@ for item in client.messages.batches.results(batch.id):
         failed.append(item.custom_id)                # මේවා විතරක් resubmit`,
       },
       keyPoints: [
-        'Batches: 50% ලාභයි, පැය 24 දක්වා, latency SLA නෑ, multi-turn tool calling නෑ, custom_id වලින් ගැලපීම.',
+        'Batches: 50% ලාභයි, පැය 24 expiration window එකක්, interactive client-tool round trips සඳහා නොවේ, සහ `custom_id` වලින් results ගැලපිය යුතුයි.',
         'හොඳ: overnight/weekly/nightly. නරක: blocking pre-merge check.',
         'SLA පැය 30 + batch පැය 24 → පැය 4න් 4ට submit (4 + 24 = 28 ≤ 30).',
         'අසාර්ථක ඒවා විතරක් custom_id වලින් resubmit; කලින් sample එකක prompt refine කරන්න.',
@@ -371,6 +391,8 @@ for item in client.messages.batches.results(batch.id):
     // 11
     {
       id: 'independent-multi-pass-review',
+      plain: "An independent reviewer receives requirements, code/artifact, and evaluation criteria without being anchored to the first reviewer’s conclusions. Independence reduces correlated confirmation bias.",
+      internGuide: ["An independent reviewer receives requirements, code/artifact, and evaluation criteria without being anchored to the first reviewer’s conclusions. Independence reduces correlated confirmation bias.","Multi-pass review can separate correctness, security, tests, performance, and maintainability. Each pass needs a narrow rubric and evidence format.","More model calls do not guarantee truth; agents may share the same blind spots. Use static analysis, tests, primary documentation, and human expertise for high-risk decisions.","Deduplicate findings by root cause, resolve disagreements explicitly, measure precision/recall on labeled cases, and stop when added passes no longer justify cost and latency."],
       title: 'Independent Review Instances and Multi-Pass Review (Task 4.6)',
       body: [
         'Self-review දුර්වලයි, මොකද code එක ලියපු session එකට තමන්ගේ reasoning මතකයි; "මම මේක මෙහෙම කළේ හේතුවක් නිසා" කියලා ඒ තීරණ ප්‍රශ්න කරන්නේ අඩුවෙන්. වෙනම Claude instance එකක් (generator ගේ context නැතිව) review කරන එක self-review වලටත්, extended thinking දාලා ඒ session එකම review කරන එකටත් වඩා හොඳයි.',
@@ -395,6 +417,8 @@ for item in client.messages.batches.results(batch.id):
     // 12
     {
       id: 'case-facts-and-context-management',
+      plain: "Maintain a compact case-facts record containing verified entities, dates, constraints, decisions, sources, and open questions. Separate facts from model inference and user allegations.",
+      internGuide: ["Maintain a compact case-facts record containing verified entities, dates, constraints, decisions, sources, and open questions. Separate facts from model inference and user allegations.","Long contexts can bury relevant information and increase cost. Retrieve relevant evidence, place critical instructions/facts clearly, and trim redundant tool logs or superseded drafts.","Summaries are lossy. Preserve links to original evidence and mark unresolved conflicts; never let a summary silently turn uncertainty into fact.","Before consequential action, re-read the authoritative source and validate current state. Test long conversations for fact retention, cross-user isolation, and stale-context errors."],
       examRefs: ['CCAR-019', 'CCAR-038'],
       title: 'Context in Long Conversations: Case Facts, Lost in the Middle, Trimming (Task 5.1)',
       body: [
@@ -432,6 +456,8 @@ policy_check: damage photo received; within 30-day window
     // 13
     {
       id: 'escalation-triggers',
+      plain: "Escalate on explicit policy conditions: high impact, low/uncalibrated confidence, conflicting evidence, repeated failure, missing authorization, out-of-scope request, or user request for a human.",
+      internGuide: ["Escalate on explicit policy conditions: high impact, low/uncalibrated confidence, conflicting evidence, repeated failure, missing authorization, out-of-scope request, or user request for a human.","Confidence wording, response length, sentiment, or “sounds uncertain” are weak proxies unless calibrated against real outcomes. Do not use model self-confidence alone.","The handoff includes verified facts, sources, attempted actions, failure reason, risk, and requested human decision—without flooding the reviewer with raw context.","Measure escalation precision, missed-risk rate, wait time, reviewer load, and outcomes. Tune thresholds by risk tier and provide a safe default while waiting."],
       examRefs: ['CCAR-020', 'CCAR-039'],
       title: 'Escalation: Triggers and Untrustworthy Proxies (Task 5.2)',
       body: [
@@ -457,6 +483,8 @@ policy_check: damage photo received; within 30-day window
     // 14
     {
       id: 'error-propagation-coverage',
+      plain: "Represent errors with origin, category/code, safe message, retryability policy, affected fields/items, and provenance. Preserve the root cause through layers instead of replacing it with “failed.”",
+      internGuide: ["Represent errors with origin, category/code, safe message, retryability policy, affected fields/items, and provenance. Preserve the root cause through layers instead of replacing it with “failed.”","For partial extraction or analysis, attach coverage: which pages, files, fields, or records were processed, skipped, uncertain, or inaccessible. Success plus missing coverage is not complete success.","Aggregate errors without leaking secrets or duplicating noise. Distinguish empty, not-found, forbidden, corrupt, timeout, and unsupported so downstream logic chooses correctly.","Test failure at each boundary and ensure UI/API/audit views agree. A final response must disclose material gaps and must not calculate conclusions from unprocessed data as though coverage were complete."],
       title: 'Structured Error Propagation and Coverage Annotations (Task 5.3)',
       body: [
         'Multi-agent system එකක subagent කෙනෙකුට fail වෙද්දී ඒ ගැන කියන විදිහ තමයි තීරණාත්මක. හොඳ එක: structured error context: failure type, උත්සාහ කළ query එක, අහුවුණු partial results, සහ විකල්ප. එවිට coordinator ට ඒකෙන් recover වෙන්න (වෙනත් source එකක්, partial result එකෙන් ඉදිරියට) පුළුවන්.',
@@ -481,6 +509,8 @@ policy_check: damage photo received; within 30-day window
     // 15
     {
       id: 'large-codebase-context',
+      plain: "Start with repository instructions and a map: top-level directories, build files, entry points, ownership, tests, and relevant dependency/call paths. Search before opening many files.",
+      internGuide: ["Start with repository instructions and a map: top-level directories, build files, entry points, ownership, tests, and relevant dependency/call paths. Search before opening many files.","Use focused subagents or scratch notes for separate investigations, but require file/line evidence and keep one owner for synthesis and edits. A manifest can track reviewed and pending areas.","Compaction or summaries reduce context size but are lossy. Preserve exact requirements, decisions, failing commands, and authoritative references outside disposable narrative.","Make small diffs, run targeted tests then broader checks, and revisit the map when behavior crosses boundaries. Do not claim whole-codebase coverage from a few sampled files."],
       title: 'Context for Large Codebases: Scratchpads, Subagents, Manifests, /compact (Task 5.4)',
       body: [
         'දිගු exploration session එකක context degradation වෙනවා: Claude කලින් සොයාගත් නිශ්චිත classes වෙනුවට "typical patterns" ගැන සාමාන්‍ය විදිහට කතා කරන්න පටන් ගන්නවා. හේතුව context එක පිරිලා ඇති නිසා පරණ නිශ්චිත විස්තර බොඳ වීම.',
@@ -515,6 +545,8 @@ policy_check: damage photo received; within 30-day window
     // 16
     {
       id: 'calibration-stratified-sampling',
+      plain: "Confidence is calibrated when items assigned probability p are correct about p of the time. Raw model scores or verbal certainty are not automatically calibrated.",
+      internGuide: ["Confidence is calibrated when items assigned probability p are correct about p of the time. Raw model scores or verbal certainty are not automatically calibrated.","Evaluate at field or decision level because a document can have a correct name and an incorrect amount. Record correctness, abstention, and coverage separately.","Stratified sampling deliberately includes languages, document types, risk tiers, rare classes, confidence bands, and known failure modes instead of only random easy cases.","Use human review to build labels and reliability diagrams, choose thresholds from error costs, oversample risky strata, and periodically refresh calibration as data/models change."],
       examRefs: ['CCAR-040'],
       title: 'Human Review, Stratified Sampling & Field-Level Confidence (Task 5.5)',
       body: [
@@ -541,6 +573,8 @@ policy_check: damage photo received; within 30-day window
     // 17
     {
       id: 'provenance-conflicting-sources',
+      plain: "Store provenance per claim or field: source URI/document, location, publication/effective date, retrieval time, extraction method, and transformation/version.",
+      internGuide: ["Store provenance per claim or field: source URI/document, location, publication/effective date, retrieval time, extraction method, and transformation/version.","When sources conflict, do not silently average or choose the most fluent. Compare authority, scope, effective date, directness, and whether they describe different entities or time periods.","Report the conflict and selected resolution rule; preserve both values when unresolved and escalate material decisions. Distinguish publication date from event or effective date.","Use primary/current sources for changing facts, cite near each claim, and test that later summaries retain provenance rather than producing unsupported certainty."],
       examRefs: ['CCAR-024'],
       title: 'Provenance, Conflicting Sources and Dates (Task 5.6)',
       body: [
@@ -576,6 +610,8 @@ policy_check: damage photo received; within 30-day window
     // 18
     {
       id: 'scenario-code-generation',
+      plain: "Define acceptance criteria, repository boundaries, interfaces, security constraints, and tests before generating code. Inspect existing patterns and dependencies first.",
+      internGuide: ["Define acceptance criteria, repository boundaries, interfaces, security constraints, and tests before generating code. Inspect existing patterns and dependencies first.","Ask for a focused implementation, review the diff, and run formatter, type/static checks, unit tests, integration tests, and security checks appropriate to risk.","Use plan/review for cross-cutting changes and independent review for high-risk code. Keep secrets unavailable, sandbox execution, and require approval for destructive or external actions.","Evaluate behavioral correctness and maintainability, not compilation alone. Preserve unrelated changes, document assumptions, and include rollback/migration when state or APIs change."],
       title: 'Scenario Case Study: Code Generation with Claude Code (Domains 3, 5)',
       body: [
         'Scenario: team එකක් Claude Code පාවිච්චි කරලා code generation, refactoring, debugging කරනවා. ඔවුන් CLAUDE.md, slash commands, plan mode පාවිච්චි කරනවා. මේ scenario එකේ ප්‍රශ්න සාමාන්‍යයෙන් "කුමන scope/කුමන file එකද" වගේ configuration තීරණ.',
@@ -599,6 +635,8 @@ policy_check: damage photo received; within 30-day window
     // 19
     {
       id: 'scenario-cicd',
+      plain: "Use Claude in CI for bounded analysis or draft remediation, with pinned CLI/API versions, least-privilege credentials, restricted network/tools, timeouts, and cost limits.",
+      internGuide: ["Use Claude in CI for bounded analysis or draft remediation, with pinned CLI/API versions, least-privilege credentials, restricted network/tools, timeouts, and cost limits.","Inputs include the exact diff, requirements, relevant files, and rubric. Outputs are schema-validated findings with evidence and severity; untrusted output cannot directly deploy.","Deterministic tests and policy gates remain authoritative. Independent review or a human handles high-severity findings, ambiguous changes, and production promotion.","Track false positives/negatives, flaky output, duration, tokens/cost, and accepted findings. Provide failure-open/closed behavior appropriate to risk and an emergency bypass with audit."],
       title: 'Scenario Case Study: Claude Code for CI/CD (Domains 3, 4)',
       body: [
         'Scenario: automated code review, test generation, PR feedback, සහ false positives අඩු කිරීම. Domain 3 (claude -p, CI config) සහ Domain 4 (prompts, batch, multi-pass) දෙකම මෙහි එනවා.',
@@ -622,6 +660,8 @@ policy_check: damage photo received; within 30-day window
     // 20
     {
       id: 'scenario-structured-extraction',
+      plain: "Define a schema with required, optional, and nullable fields plus units/formats and field-level provenance. Include explicit unknown/not-present handling rather than fabricated values.",
+      internGuide: ["Define a schema with required, optional, and nullable fields plus units/formats and field-level provenance. Include explicit unknown/not-present handling rather than fabricated values.","Use OCR/document inputs with page boundaries, strict outputs where supported, and validation for dates, totals, identifiers, cross-field arithmetic, and allowed enums.","Retry malformed/correctable output only; missing pages, unreadable scans, conflicts, or absent evidence require abstention or human review, not repeated guessing.","Evaluate exact/normalized field accuracy, coverage, calibration, and high-cost errors by document type/language. Store source regions and review sensitive data handling."],
       title: 'Scenario Case Study: Structured Data Extraction (Domains 4, 5)',
       body: [
         'Scenario: unstructured documents (invoices, contracts) වලින් data extract කරලා JSON schema validate කරලා downstream systems වලට යවනවා. Domain 4 (schema, retry, batch) සහ Domain 5 (confidence, human review) අමුණනවා.',
@@ -645,6 +685,8 @@ policy_check: damage photo received; within 30-day window
     // 21
     {
       id: 'six-rules-mini-exam',
+      plain: "Rule 1: fix the root cause and assign responsibility to the component that owns it. Rule 2: make criteria, tool descriptions, schemas, and outputs explicit.",
+      internGuide: ["Rule 1: fix the root cause and assign responsibility to the component that owns it. Rule 2: make criteria, tool descriptions, schemas, and outputs explicit.","Rule 3: enforce deterministic or safety-critical constraints in trusted code. Rule 4: keep reviews independent when independence matters.","Rule 5: preserve structured error and coverage information. Rule 6: grant the least privilege that still permits the task.","For every scenario identify owner, evidence, side effect, authority, failure class, and recoverability. Reject attractive answers that invent unsupported features or hide uncertainty."],
       title: 'The 6 Answer-Selection Rules: 6 Mini Exam Questions and Numbers to Remember',
       body: [
         'CCAR-F පිළිතුරු තෝරද්දී නැවත නැවත පෙනෙන නීති 6ක්: (1) Root cause එකට විසඳුම. (2) සරලම, proportionate පළමු පියවර. (3) අනිවාර්‍ය නීති = code (hooks/gates). (4) Explicit criteria + few-shot ("be careful" නෙවෙයි). (5) තොරතුරු අහිමි නොකරන්න (errors, sources, dates, conflicts structured). (6) Least privilege. පහත ප්‍රශ්න 6 තනි තනිව උත්සාහ කරලා, පස්සේ example කොටසේ පිළිතුරු බලන්න.',
@@ -669,11 +711,13 @@ policy_check: damage photo received; within 30-day window
         { en: 'Pass score 720 / 1,000', si: 'Exam එක pass වෙන්න ඕනේ scaled score එක; domain % වලින් නෙවෙයි, මුළු score එකෙන් තීරණය වෙනවා.' },
         { en: 'Distractor', si: 'ඇත්තක් වගේ පෙනුනාට වැරදි පිළිතුර; බොහෝවිට නැති feature එකක් නම් කරයි.' },
       ],
-      si: 'පිළිතුර තෝරද්දී root cause එකට යන්න, සරල පළමු පියවර තෝරන්න, මුදල් වගේ hard rule එකක් code gate එකකින් enforce කරන්න, vague prompt වෙනුවට criteria සහ examples දෙන්න, error/source/date සඟවන්න එපා, සහ අවශ්‍ය tools විතරක් දෙන්න. Batch එක 50% අඩු වියදමක් නමුත් පැය 24ක් ගත විය හැකියි. Exam එකේ 60 ප්‍රශ්න, විනාඩි 120 සහ pass score 720/1,000 ලෙස මතක තබාගන්න.',
+      si: 'පිළිතුර තෝරද්දී root cause එකට යන්න, සරල පළමු පියවර තෝරන්න, මුදල් වගේ hard rule එකක් code gate එකකින් enforce කරන්න, vague prompt වෙනුවට criteria සහ examples දෙන්න, error/source/date සඟවන්න එපා, සහ අවශ්‍ය tools විතරක් දෙන්න. Batch එක 50% අඩු වියදමක් නමුත් පැය 24ක් ගත විය හැකියි. Exam ප්‍රශ්න ගණන, කාලය සහ pass score public page එකෙන් හෝ Partner Academy booking page එකෙන් නැවත තහවුරු කරන්න.',
     },
     // 21b
     {
       id: 'official-sample-question-patterns',
+      plain: "Treat official sample questions as examples of reasoning patterns, not a complete question bank or guarantee of live-exam wording. Verify that the source is actually official and current.",
+      internGuide: ["Treat official sample questions as examples of reasoning patterns, not a complete question bank or guarantee of live-exam wording. Verify that the source is actually official and current.","Extract the tested distinction: prompt versus code enforcement, root cause versus symptom, independent review, structured error, context management, or least privilege.","For each option explain why it succeeds or fails under the stated constraints. Watch for absolute claims, renamed features, plausible-but-unsupported fields, and answers solving a different problem.","Create new scenarios with changed numbers and domains, then answer without memorizing letters. Recheck product-specific facts in current docs because certification content and APIs evolve."],
       title: 'Official Sample Questions: 12 Scenarios and the Patterns Behind Them',
       body: [
         'Exam guide එකේ සාම්පල ප්‍රශ්න 12ක් තියෙනවා. Study PDF එකේ තියෙන්නේ ඒවායේ සාරාංශයක් පමණයි: scenario එක, ගැටලුව, නිවැරදි පිළිතුර, සහ අනෙක් පිළිතුරු වැරදි ඇයි කියන එක. සම්පූර්ණ ප්‍රශ්න සහ විකල්ප කියවන්න official exam guide PDF එක බලන්න. මෙතන තියෙන්නේ ඒවායින් ඉගෙනගන්න පුළුවන් රටා.',
@@ -708,10 +752,12 @@ policy_check: damage photo received; within 30-day window
     // 22
     {
       id: 'ccar-f-study-plan-12-weeks',
+      plain: "Start from the current official blueprint and a diagnostic. A 12-week schedule is a template; allocate time by domain weight, weakness, and hands-on evidence rather than equal chapters.",
+      internGuide: ["Start from the current official blueprint and a diagnostic. A 12-week schedule is a template; allocate time by domain weight, weakness, and hands-on evidence rather than equal chapters.","Cycle each week through learn, implement, break/test, explain, and spaced review. Build small artifacts for instructions/rules, skills, agent loops, tools/MCP, structured extraction, and CI review.","Maintain an error log by misconception, not just question. Revisit official docs and run mixed timed scenarios in later weeks; include unknown-feature and conflicting-source traps.","Finish with two full reviews, weak-area repair, and exam-system preparation. A study plan cannot replace required production experience or guarantee a pass."],
       title: 'AND MORE: 12-Week CCAR-F Study and Practice Plan (for an AWS Tech Lead)',
       body: [
         'ඔයා AWS-focused full-stack tech lead කෙනෙක්, ඒ නිසා Claude වල ඔයාට හුරු AWS සමානකම් තියෙනවා: Hooks/gates = IAM/SCP guardrails (prompt = "කරුණාකර" email එකක් වගේ, guardrail = ඇත්ත permission). Batches API ≈ SQS + batch jobs (ලාභයි, latency ඉවසනවා). User/project scope ≈ IAM user policy vs account-level policy. Validation-retry ≈ schema validation Lambda + DLQ. Escalation ≈ DLQ → human on-call. Least privilege ≈ IAM least privilege. (Bedrock, PrivateLink වගේ AWS දේවල් CCAR-F scope එකෙන් පිටත, optional.)',
-        'සති 1: Exam format (60 ප්‍රශ්න, 120 මිනිත්තු, scenarios 6න් 4ක්), 6 rules, phases 10-12 revision. සති 2-3: Domain 1 (27%): stop_reason loop එක මතකයෙන් ලියන්න, coordinator + subagents 2ක්, PreToolUse hook එකක්. සති 4: Domain 2 (18%): tool descriptions, 4 error types, tool_choice 3, .mcp.json vs ~/.claude.json. සති 5-6: Domain 3 (20%) hands-on: project CLAUDE.md + @import, .claude/rules/ paths, skill (context: fork), GitHub Action එකේ claude -p. සති 7: Domain 4 (20%): nullable schema + validation-retry + Batches job එක කුඩා ලෙස + independent review. සති 8: Domain 5 (15%): case facts block, escalation criteria, structured errors, /compact.',
+        'සති 1: Partner Academy හි current exam format සහ blueprint තහවුරු කරලා 6 reasoning rules සහ phases 10-12 revise කරන්න. සති 2-3: Domain 1: stop_reason loop එක ලියන්න, coordinator + subagents 2ක්, tool-policy gate එකක්. සති 4: Domain 2: tool descriptions, error types, model-compatible tool choice, MCP configuration. සති 5-6: Domain 3 hands-on: project CLAUDE.md + @import, .claude/rules/ paths, skill, GitHub Action එකේ pinned `claude -p`. සති 7: Domain 4: nullable schema + validation/retry + කුඩා Batches job එක + independent review. සති 8: Domain 5: case facts block, escalation criteria, structured errors, context compaction.',
         'සති 9: Scenarios 6 ම; එකක් දිනපතා: ඉලක්කය underline කරලා rule හඳුනාගන්න. සති 10: PDF එකේ practice sets (20 + 12 + 20 ප්‍රශ්න) කාල සීමාවකින් (ප්‍රශ්නයකට මිනිත්තු 2). සති 11: දුර්වල domain එකට ආපහු; වැරදි පිළිතුරු "මොන rule එකද මම කඩ කළේ" කියලා ලොගය තියන්න. සති 12: cheat sheet දිනපතා, scenario ඉලක්ක ගැන, "most effective / first step / root cause" යටි ඉරි, flag-and-move පුරුද්ද. කාල කළමනාකරණය: scenario එකකට ප්‍රශ්න ~15 ක්, මිනිත්තු ~30 ක්; ප්‍රශ්නයකට මිනිත්තු 2කට වැඩි නම් flag කරලා ඉදිරියට; හිස් පිළිතුරක් තියන්න එපා.',
         'දෛනික රිද්මය: දවසකට පැය 1-1.5 (සතියකට ~8-10). සතියකට එක පාර ඇත්ත Claude Code / API එකෙන් ප්‍රායෝගික lab එකක් (අවම වශයෙන් Domain 3-5 සඳහා ඉහත snippets 8 ලියා run කරන්න). Exam එක නොපවතින features distractors ලෙස දාන නිසා ඇත්තටම පාවිච්චි කරලා තියෙන එක විශාල වාසියක්. Exam එක NDA යටතේ, ප්‍රශ්න කිසිවෙකු සමඟ බෙදා ගන්න එපා. Fail වුණොත් retake කරන්න ඉන්න ඕනේ දින 14 / 30 / 90 (verify in current exam guide).',
       ],

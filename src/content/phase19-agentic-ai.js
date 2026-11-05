@@ -9,6 +9,8 @@ export default {
     // 1 ---------------------------------------------------------------- Architecture
     {
       id: 'ncp-aai-map-agent-vs-workflow',
+      plain: "A workflow follows a developer-defined path; an agent lets a model choose some next actions. Both can call models and tools, so the difference is decision freedom, not whether an LLM appears.",
+      internGuide: ["A workflow follows a developer-defined path; an agent lets a model choose some next actions. Both can call models and tools, so the difference is decision freedom, not whether an LLM appears.","Think of autonomy as a spectrum: fixed pipeline, conditional routing, model-selected tools, multi-step planning, and long-running goal pursuit. More autonomy increases flexibility and failure modes.","Use the least autonomy that meets the need. Stable business rules belong in code; uncertain language decisions may benefit from a model; irreversible actions need policy checks or approval.","Exam check: identify who chooses the next step, what state persists, which tools are permitted, and how the run stops or escalates."],
       si: 'ඔයාට කරන්න තියෙන වැඩේ හැම පාරම එකම පියවර නම් workflow එකක් හොඳයි. උදාහරණයක්ට, Colombo බස් ටිකට් එකක් බලන්න එකම පාරක් අනුගමනය කරනවා වගේ. පාර තෝරන්න ඕනේ වෙන්නේ customer ගේ ප්‍රශ්නය අනුව නම් agent එකක් ප්‍රයෝජනවත්. Rs. 100ක සරල වැඩකට Rs. 1,000ක් යන සංකීර්ණ agent එකක් හදන්න එපා.',
       title: 'NCP-AAI Map, Agent vs Workflow and the Autonomy Spectrum',
       body: [
@@ -36,6 +38,8 @@ export default {
     // 2 ---------------------------------------------------------------- Architecture
     {
       id: 'multi-agent-orchestration-patterns',
+      plain: "Start with one capable agent. Split into multiple agents only when specialization, isolation, parallel work, or independent ownership gives a measurable benefit.",
+      internGuide: ["Start with one capable agent. Split into multiple agents only when specialization, isolation, parallel work, or independent ownership gives a measurable benefit.","A router selects one specialist. An orchestrator decomposes work and combines worker results. A supervisor observes workers and can redirect them. Hierarchies repeat these roles at several levels.","Define contracts for each role: allowed inputs, expected output schema, tools, time/cost budget, and failure behavior. Without contracts, extra agents often add latency and ambiguity.","Reliability check: trace delegation, cap fan-out and recursion, detect duplicate work, and evaluate the final task—not just whether agents produced fluent messages."],
       si: 'Single agent එකකට tools 10ක් වගේ තියෙද්දී එක domain එකක වැඩ හොඳට කරන්න පුළුවන්. වැඩේ වෙනස් specialistලාට බෙදන්න හෝ එකවර වැඩ කරන්න ඕනේ වුණොත් multi-agent බලන්න. Hospital එකක reception එක රෝගියා හරි කාමරයට යවනවා වගේ router එක වැඩ බෙදනවා. Supervisor කෙනෙක් test results බලලා ඊළඟ පියවර තීරණය කරනවා; එයාට summary එකක් දෙන්න, මුළු කතාවම නෙවෙයි.',
       title: 'Single vs Multi-Agent: Orchestrator-Worker, Router, Supervisor and Hierarchical Teams',
       body: [
@@ -64,6 +68,8 @@ export default {
     // 3 ---------------------------------------------------------------- Architecture
     {
       id: 'swarm-handoff-blackboard',
+      plain: "In a handoff or swarm pattern, the active agent transfers control and relevant context to another specialist. Ownership must be explicit so two agents do not act at once.",
+      internGuide: ["In a handoff or swarm pattern, the active agent transfers control and relevant context to another specialist. Ownership must be explicit so two agents do not act at once.","A blackboard pattern uses a shared store where agents post facts or partial results. It needs schemas, provenance, concurrency control, and rules for accepting or replacing entries.","Sequential pipelines make dependencies clear; parallel pipelines reduce elapsed time only for independent branches and require a deterministic merge step.","Choose from data dependencies and control needs. Add termination conditions, budgets, idempotent actions, and conflict handling before adding more agents."],
       si: 'Handoff pattern එකේ active agent එකම වැඩේ ඊළඟ specialist ට දෙන්න පුළුවන්. එකම agents දෙන්නා තුන් පාරක් එහාට මෙහාට යනවා නම් loop limit එකක් දාන්න. Blackboard එක කියන්නේ හැම specialist කෙනෙක්ම update දාන පොදු board එකක් වගේ. Colombo, Kandy, Galle weather එක එකවර බලනවා නම් parallel ක්‍රමයේ ගතවෙන්නේ වැඩිම කාලය වන තත්පර 6යි.',
       title: 'Decentralized Patterns: Swarm / Handoff, Blackboard, Sequential and Parallel Pipelines',
       body: [
@@ -91,6 +97,8 @@ export default {
     // 4 ---------------------------------------------------------------- Architecture
     {
       id: 'agent-communication-mcp-a2a',
+      plain: "Ordinary in-process agents can exchange typed messages or shared state. Across systems, protocols provide discovery and interoperability but do not replace authorization or business logic.",
+      internGuide: ["Ordinary in-process agents can exchange typed messages or shared state. Across systems, protocols provide discovery and interoperability but do not replace authorization or business logic.","MCP uses a host-client-server architecture to expose tools, resources, and prompts. It mainly connects an AI application to capabilities and context.","A2A lets independent agents advertise capabilities with an Agent Card and exchange messages, tasks, status, and artifacts. It is aimed at agent-to-agent delegation.","Security check: authenticate peers, authorize each capability, validate content, keep secrets out of messages/cards, log provenance, and treat remote output as untrusted."],
       si: 'Agents එකිනෙකාට message යවන්නත්, එකම shared state එක කියවලා ලියන්නත් පුළුවන්. MCP කියන්නේ agent එකට tools සහ data සම්බන්ධ කරන protocol එකක්. A2A කියන්නේ වෙනස් ආයතනවල agents එකිනෙකාට task දෙන්න භාවිතා කරන protocol එකක්. උදාහරණයක්ට, Colombo telco agent එකක් bank agent එකෙන් Rs. 2,500 bill එකක් ගෙවන්න ඉල්ලනවා; bank agent එකට අවශ්‍ය නම් තමන්ගේ MCP tool එකෙන් payment කරයි.',
       title: 'How Agents Communicate: Messages, Shared State, MCP and the A2A Protocol',
       body: [
@@ -120,6 +128,8 @@ export default {
     // 5 ---------------------------------------------------------------- Development
     {
       id: 'tool-calling-production',
+      plain: "A tool is a controlled application operation described to the model with a clear name, purpose, and strict input schema. The model proposes a call; application code validates and executes it.",
+      internGuide: ["A tool is a controlled application operation described to the model with a clear name, purpose, and strict input schema. The model proposes a call; application code validates and executes it.","Design narrow tools around user intentions. Use enums and required fields, distinguish read from write, return structured errors, and avoid one all-powerful execute-anything tool.","Parallel calls are safe only when independent. State-changing calls need ordering, idempotency keys, timeouts, retries that understand side effects, and confirmation for high-impact actions.","Test argument accuracy, permission enforcement, malformed output, prompt injection, duplicate calls, partial failure, and whether the final response faithfully reflects tool results."],
       si: 'Tool එකකට පැහැදිලි නමක්, කවදා භාවිතා කරන විස්තරයක්, සහ නිවැරදි JSON Schema එකක් දෙන්න. Colombo weather සහ Kandy weather එකටම බලන්න පුළුවන් නම් calls දෙක parallel කරන්න. Schema එකෙන් msisdn අංකයේ හැඩය හරිද බලන්න පුළුවන්, නමුත් අංකය ඇත්තද කියලා server එකෙන් තහවුරු කරන්න ඕනේ. NIM API එකට යන්න base_url එක වෙනස් කළත් tool execution එක තවම ඔයාගේ code එකේ වගකීමයි.',
       title: 'Tool and Function Calling for Production: Schemas, Tool Design, Parallel Calls, NIM and OpenAI-Compatible APIs',
       body: [
@@ -165,6 +175,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 6 ---------------------------------------------------------------- Development
     {
       id: 'agent-frameworks-when-to-use',
+      plain: "Frameworks provide different combinations of graphs, state, tools, memory, multi-agent patterns, evaluation, and deployment helpers. They do not make an unreliable design reliable automatically.",
+      internGuide: ["Frameworks provide different combinations of graphs, state, tools, memory, multi-agent patterns, evaluation, and deployment helpers. They do not make an unreliable design reliable automatically.","Choose from requirements: durable graph execution, team-style collaboration, document/RAG integration, vendor SDK features, observability, supported models, and operating environment.","Build a small representative workflow before committing. Measure debugging clarity, checkpointing, cancellation, version stability, security controls, latency, and ease of testing.","Keep business tools and schemas framework-neutral where practical. This reduces migration cost as APIs and framework names evolve."],
       si: 'LangGraph හොඳට පාලනය කරන්න ඕනේ, දිගටම පවතින agent workflows වලට ගැළපෙනවා. LlamaIndex documents සහ RAG වැඩ වලට විශේෂයෙන් ප්‍රයෝජනවත්. CrewAI role තියෙන කණ්ඩායමක් ඉක්මනට demo කරන්න ලේසියි. NeMo Agent Toolkit එක framework එකක් මාරු නොකර profiling සහ evaluation කරයි; ඔයාගේ අවශ්‍යතාවයට ගැළපෙන tool එක තෝරන්න.',
       title: 'Agent Frameworks Compared: LangGraph, CrewAI, AutoGen, LlamaIndex, NeMo Agent Toolkit, Claude Agent SDK, OpenAI Agents SDK',
       body: [
@@ -193,6 +205,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 7 ---------------------------------------------------------------- Cognition
     {
       id: 'reasoning-planning-strategies',
+      plain: "ReAct alternates model reasoning and tool observations. Plan-and-execute creates a plan then performs steps. Reflection critiques an attempt. Replanning updates the path after new evidence.",
+      internGuide: ["ReAct alternates model reasoning and tool observations. Plan-and-execute creates a plan then performs steps. Reflection critiques an attempt. Replanning updates the path after new evidence.","Use planning when tasks have real dependencies; use direct execution for simple requests. Extra reasoning calls consume time and money and may amplify an incorrect assumption.","Keep hidden model reasoning separate from auditable execution state. Store the plan, chosen actions, evidence, and results without requiring private chain-of-thought.","Set limits on steps, tokens, tools, retries, and elapsed time. Evaluate task success and recovery on difficult cases rather than assuming a reasoning label guarantees quality."],
       si: 'ReAct එකේදී agent එක හැම tool result එකකට පස්සේ ඊළඟ පියවර තීරණය කරනවා; නොදන්නා network fault එකක් හොයද්දී ඒක වටිනවා. Plan-and-execute එකේ මුලින් route එක හදලා, පාර වැහුණොත් විතරක් වෙනස් කරනවා වගේ. A/L paper එකක් marking scheme එකෙන් බලනවා වගේ reflection එකටත් test එකක් හෝ validator එකක් ඕනේ. ලොකු model එක plan කරන්නත්, පොඩි model එක සරල පියවර කරන්නත් යොදාගෙන cost සසඳන්න.',
       title: 'Cognition and Planning in Production: ReAct vs Plan-and-Execute vs Reflection, Replanning and Reasoning Models',
       body: [
@@ -220,6 +234,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 8 ---------------------------------------------------------------- Memory
     {
       id: 'memory-architecture-production',
+      plain: "Thread state is the information needed during one run or conversation. Long-term memory survives across threads and therefore needs stronger consent, access, retention, and deletion controls.",
+      internGuide: ["Thread state is the information needed during one run or conversation. Long-term memory survives across threads and therefore needs stronger consent, access, retention, and deletion controls.","Episodic memory records events, semantic memory stores facts, and procedural memory captures reusable instructions. These labels help design stores but may overlap in real systems.","Do not append everything to the prompt. Retrieve only relevant, authorized items; summarize old context with provenance; resolve contradictions; and expire low-value information.","Test memory for precision, privacy, stale facts, cross-user leakage, prompt injection, deletion, and its effect on task success and token cost."],
       si: 'එක conversation එකේ messages සහ plan එක thread memory එකේ තියන්න; user කැමති භාෂාව වගේ දිගුකාලීන දේ වෙනම store කරන්න. Customer ගේ balance එක memory එකෙන් නෙවෙයි, account system එකෙන් අලුතින්ම බලන්න. Summary එකක් හදද්දී Rs. 2,500 වගේ වැදගත් මුදලක් අහිමි වෙන්න පුළුවන්, ඒ නිසා critical facts වෙනම field එකක තියාගන්න. ඔයාගේ memory එකට TTL, user delete කිරීම, සහ tenant වෙන්කිරීමත් සැලසුම් කරන්න.',
       title: 'Memory Architecture: Thread State vs Long-Term Stores, Episodic / Semantic / Procedural, Summarization and Memory Hygiene',
       body: [
@@ -248,6 +264,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 9 ---------------------------------------------------------------- Knowledge
     {
       id: 'knowledge-integration-agentic-rag-sql',
+      plain: "Agentic RAG lets the system decide whether, where, and how to retrieve, but retrieval still needs query controls, citations, and evidence checks.",
+      internGuide: ["Agentic RAG lets the system decide whether, where, and how to retrieve, but retrieval still needs query controls, citations, and evidence checks.","External APIs require typed adapters, authentication, rate-limit handling, and validation. SQL agents should prefer read-only credentials, approved schemas/views, query limits, and a safe execution layer.","For images, audio, or documents, preserve modality metadata and provenance; extraction errors can become confident downstream answers.","A reliable answer distinguishes retrieved evidence from model inference, cites the supporting source, and abstains or escalates when evidence is missing or conflicting."],
       si: 'සාමාන්‍ය RAG එක නියමිත search එකක් කරලා පිළිතුරු දෙයි; agentic RAG එකට තව සෙවිය යුතුද කියලා තීරණය කළ හැකියි. SQL agent එකකට database එක කියවන්න විතරක් දෙන්න, SELECT සහ LIMIT වගේ නීති පරීක්ෂා කරන්න. Colombo invoice එකක balance වගේ සංවේදී දත්ත ගැන model එකට තනියම විශ්වාස නොකර source tool එකෙන් බලන්න. Sinhala voice notes යොදාගන්නවා නම් ASR එකේ ගුණාත්මකභාවය සැබෑ audio වලින් පරීක්ෂා කරන්න.',
       title: 'Knowledge Integration: Agentic RAG, External APIs, SQL Agents and Multimodal Data',
       body: [
@@ -276,6 +294,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 10 --------------------------------------------------------------- Evaluation
     {
       id: 'agent-evaluation-metrics',
+      plain: "Begin with end-to-end task success on a representative dataset. A correct-looking final answer is insufficient if the agent used an unsafe action or unsupported evidence.",
+      internGuide: ["Begin with end-to-end task success on a representative dataset. A correct-looking final answer is insufficient if the agent used an unsafe action or unsupported evidence.","Evaluate the trajectory too: tool choice, arguments, ordering, recovery, citations, policy compliance, and unnecessary steps. Use deterministic checks where possible.","LLM judges can scale rubric scoring but have bias and variance. Calibrate them against human labels, hide irrelevant identity/order signals, and retain spot checks.","Report quality with latency, tokens, tool/API cost, failure categories, and repeated-run metrics such as pass@k or pass^k—whose meanings differ and must be stated."],
       si: 'Agent එකේ අවසාන පිළිතුර විතරක් නොබලා, database එකේ Rs. 2,500 refund එක ඇත්තටම වුණාද කියලාත් බලන්න. එතනට ගෙනා tool calls සහ arguments පරීක්ෂා කිරීම trajectory evaluation එකයි. 90% success කියලා පමණක් මදි; එක් task එකට Rs. 40 යනවා නම් ඒ වියදමත් මනින්න. p = 0.9 නම් එකම වැඩය හතරම වරක් හරියන pass^4 අගය 0.9⁴ ≈ 66%යි.',
       title: 'Evaluating Agents: Task Success, Trajectory Eval, Tool-Call Accuracy, LLM-as-Judge, Cost and Latency per Task, pass^k',
       body: [
@@ -320,6 +340,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 11 --------------------------------------------------------------- Deployment
     {
       id: 'deployment-state-durability',
+      plain: "A stateless request can be retried independently; a stateful agent carries checkpoints, messages, approvals, and tool results across time. Long tasks need durable state outside one process.",
+      internGuide: ["A stateless request can be retried independently; a stateful agent carries checkpoints, messages, approvals, and tool results across time. Long tasks need durable state outside one process.","Represent a run as explicit states and events. Persist before and after side effects so a worker restart can resume without repeating a payment, email, or ticket creation.","Queues absorb bursts; leases prevent two workers owning one step; timeouts stop hangs; dead-letter handling isolates repeated failures; cancellation must propagate.","Retries require idempotency keys and classified errors. Test crashes at every boundary, delayed approvals, duplicate delivery, version upgrades, and replay."],
       si: 'Agent service එකේ state එක pod memory එකේ නොතියා Redis හෝ Postgres වගේ external store එකක තියාගන්න. දවස් දෙකක් approval එකක් බලා ඉන්න task එක crash වුණත් checkpoint එකෙන් ආයෙත් පටන් ගන්න පුළුවන්. Rs. 1,500 refund එකක් retry වුණත් දෙවරක් නොයන්න idempotency key එකක් භාවිතා කරන්න. දිග වැඩ SQS queue එකකින් workerට දෙන්න; timeout සහ retry limit එකත් සැලසුул.',
       title: 'Deploying Agents: Stateless vs Stateful, Durable Execution, Queues, Timeouts, Retries and Idempotency',
       body: [
@@ -349,6 +371,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 12 --------------------------------------------------------------- Deployment
     {
       id: 'scaling-cost-control',
+      plain: "Measure demand as tasks, model calls, tokens, and tool calls—not merely HTTP requests. One agent task may fan out into many expensive operations.",
+      internGuide: ["Measure demand as tasks, model calls, tokens, and tool calls—not merely HTTP requests. One agent task may fan out into many expensive operations.","Control concurrency per tenant and dependency, honor provider rate limits, apply backoff with jitter, and use queues for bursts. Autoscale on backlog and service latency where useful.","Reduce cost with prompt/context trimming, safe caching, smaller-model routing, batching where supported, and early stopping. Cache keys must include permissions and relevant versions.","Set per-run and per-tenant budgets, expose cost and latency in traces, and degrade gracefully when a model, tool, or quota is unavailable."],
       si: 'Agent task එකකට LLM calls 6ක් නම්, users 100ක් කියන්නේ calls 600ක් විය හැකියි; rate limit සහ queue එකක් දාන්න. Package catalog වගේ ස්ථාවර දත්ත cache කරන්න, නමුත් customer balance එක cache කරලා පරණ තොරතුරු දෙන්න එපා. 50 tasks/sec × calls 6 = 300 calls/sec; replica එකක් 32 calls/sec කළොත් 300 ÷ 32 ≈ 10 replicas, buffer එකක් එක්ක 12ක්. Traffic කඩින් කඩ නම් serverless, නිතර ඉහළ නම් EKS/NIM සසඳන්න.',
       title: 'Scaling and Cost Control: Rate Limits, Concurrency, Caching, Model Routing, Autoscaling on EKS and Serverless',
       body: [
@@ -378,6 +402,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 13 --------------------------------------------------------------- NVIDIA
     {
       id: 'nvidia-agentic-platform',
+      plain: "NIM packages supported model inference behind standard APIs. It is a serving building block, not the agent planner or business workflow itself.",
+      internGuide: ["NIM packages supported model inference behind standard APIs. It is a serving building block, not the agent planner or business workflow itself.","NeMo Agent Toolkit provides composable tools, agents, workflows, profiling, and evaluation integration; NeMo Guardrails applies conversational and action policies.","Nemotron refers to NVIDIA model families, while AI Blueprints are reference workflows/architectures. Product roles can overlap and evolve, so verify the versioned documentation.","Architecture check: label inference, orchestration, retrieval, guardrails, observability, and deployment separately instead of calling the entire application “NIM” or “NeMo.”"],
       si: 'NIM කියන්නේ model එකක් සහ inference engine එකක් API එකක් සමඟ container එකක deploy කරන ක්‍රමයක්. RAG agent එකකට NeMo Retriever embed/rerank, Milvus, සහ LLM NIM එකක් එකට යොදාගන්න පුළුවන්. Guardrails වලින් input, retrieved text, tool calls, output වෙන්ව පරීක්ෂා කරන්න. Blueprint එකක් Keells වගේ ව්‍යාපාරයකට ආරම්භක සැලැස්මක් දෙයි, ඒත් ඔයාගේ data සහ infrastructure අනුව වෙනස් කරලා deploy කරන්න.',
       title: 'NVIDIA Platform for Agents: NIM, NeMo Microservices, NeMo Guardrails, Nemotron and AI Blueprints (RAG, AI-Q)',
       body: [
@@ -407,6 +433,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 14 --------------------------------------------------------------- AWS mapping
     {
       id: 'aws-nvidia-agent-stack',
+      plain: "On AWS, separate choices by layer: model/inference service, agent orchestration, retrieval/data, guardrails, and compute platform. Bedrock and NVIDIA containers are alternatives at some layers, not one inseparable stack.",
+      internGuide: ["On AWS, separate choices by layer: model/inference service, agent orchestration, retrieval/data, guardrails, and compute platform. Bedrock and NVIDIA containers are alternatives at some layers, not one inseparable stack.","NIM or Triton can run on supported SageMaker AI endpoints or GPU nodes in EKS; Bedrock supplies managed model and agent capabilities. Validate Region, model, container, and license availability.","NeMo Guardrails is application policy middleware; Bedrock Guardrails is an AWS-managed guardrail service. Compare supported checks, integration point, latency, logging, and portability.","Production check: use private networking and workload identity, protect secrets, trace cross-service calls, benchmark total task cost, and define fallback behavior."],
       si: 'AWS වල Bedrock යොදාගත්තොත් GPU පාලනය අවශ්‍ය නැහැ; model usage අනුව ගෙවයි. NIM on EKS නම් GPU nodes, drivers, model cache, scaling ඔයා කළමනාකරණය කරනවා, එනිසා steady traffic වල මිල සසඳන්න. Bedrock Guardrails ApplyGuardrail API එකෙන් NIM වගේ වෙනත් model එකක text එකත් පරීක්ෂා කළ හැකියි. Pilot එකට managed සේවාවෙන් පටන් ගෙන, usage වැඩිවුණාම වියදම සහ operations දෙකම ගණනය කරලා hybrid සැලැස්මක් බලන්න.',
       title: 'On AWS: RAG Agent with Tools on NIM or Bedrock, NIM / Triton on SageMaker AI or EKS, NeMo Guardrails vs Bedrock Guardrails',
       body: [
@@ -436,6 +464,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 15 --------------------------------------------------------------- Run/monitor
     {
       id: 'agent-observability-maintenance',
+      plain: "Give every user task a trace ID. Model calls, retrievals, tool calls, handoffs, approvals, and retries become spans with timing and status.",
+      internGuide: ["Give every user task a trace ID. Model calls, retrievals, tool calls, handoffs, approvals, and retries become spans with timing and status.","Record useful metadata—versions, token usage, cost, tool names, error classes, and evidence IDs—while redacting secrets, personal data, and unnecessary prompt content.","Dashboards show aggregates; traces explain individual failures. Alerts should connect technical signals to user impact such as task success, queue delay, or unsafe-action blocks.","Version prompts, tools, models, policies, and datasets together. Use canaries, regression evaluations, drift review, and rollback rather than editing production prompts invisibly."],
       si: 'Customer කෙනෙක් “බිල් වැරදියි” කිව්වොත් trace එකෙන් agent එකේ සම්පූර්ණ ගමන බලන්න; span එකෙන් එක LLM call එක හෝ tool call එක පෙන්වයි. Logs, metrics, traces එකතු කරලා PII වැනි දත්ත mask කරන්න. Colombo package එකක් වෙනස් වුණාම හෝ model version එක update වුණාම input සහ success metrics බලලා drift හඳුනාගන්න. Code, prompt, tools, model සහ retrieval index එක එක release එකකට version කරලා, 5% canary එකකින් පටන් ගන්න.',
       title: 'Run, Monitor and Maintain: Traces and Spans, OpenTelemetry, LangSmith / Langfuse, Drift, Prompt and Version Management',
       body: [
@@ -465,6 +495,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 16 --------------------------------------------------------------- Safety
     {
       id: 'agent-safety-compliance',
+      plain: "Treat model output as untrusted input. Validate tool arguments, restrict permissions and destinations, sandbox risky execution, and separate data from instructions.",
+      internGuide: ["Treat model output as untrusted input. Validate tool arguments, restrict permissions and destinations, sandbox risky execution, and separate data from instructions.","Use layered controls: input screening, retrieval/tool authorization, runtime policy checks, output validation, rate/budget limits, and approval for consequential actions.","Audit logs should capture actor, delegated identity, policy decision, tool action, result, and version without leaking secrets. Preserve evidence needed for incident investigation.","Compliance depends on role, jurisdiction, and use case. Perform risk assessment, data governance, transparency, human oversight, monitoring, and legal review rather than relying on one guardrail product."],
       si: 'Agent එකකට refund හෝ email යවන්න පුළුවන් නම්, “කරන්න එපා” කියලා prompt එකේ ලියන එක පමණක් ආරක්ෂාවක් නොවේ. Rs. 2,000ට වැඩි refund එකකට approval, customer verification, සහ amount validation code එකේ enforce කරන්න. Web page එකකින් ආපු අවිශ්වාසදායක text එකට private data සහ email tool එක එකතු වුණොත් leak අවදානමක් තියෙනවා. Code sandbox කරන්න, audit log තබන්න, userට AI බව දන්වා human escalation දෙන්න.',
       title: 'Safety, Ethics and Compliance for Agents: Tool Guardrails, Permissioning, Sandboxing, Audit Logs, EU AI Act',
       body: [
@@ -494,6 +526,8 @@ print(call.function.name, json.loads(call.function.arguments))`,
     // 17 --------------------------------------------------------------- Human oversight
     {
       id: 'human-in-the-loop-oversight',
+      plain: "Place approval before the consequential side effect, not after it. Show the proposed action, target, evidence, uncertainty, cost, and what approval will authorize.",
+      internGuide: ["Place approval before the consequential side effect, not after it. Show the proposed action, target, evidence, uncertainty, cost, and what approval will authorize.","Use escalation when confidence is low, evidence conflicts, policy requires a person, or the request exceeds permissions. Provide a safe fallback if no reviewer responds.","Interrupt/resume requires a durable checkpoint and protection against stale approvals: revalidate permissions, inputs, prices, and external state before executing.","Measure reviewer workload, override rate, wait time, and caught errors. Too many low-value prompts cause approval fatigue and weaken real oversight."],
       si: 'Read-only bill එකක් බැලීමට human approval අවශ්‍ය නොවෙන්න පුළුවන්; Rs. 4,500 refund එකක් නම් supervisor අනුමැතිය ඉල්ලන්න. Approval request එකේ හේතුව සහ evidence පෙන්නලා, customerට approve, edit, reject කරන්න දෙන්න. Agent එක දවස් දෙකක් pause වුණත් Postgres checkpointer එකෙන් state එක තබාගෙන පසුව resume කරන්න. Userට stop කරන්නත්, අවශ්‍ය නම් human කෙනෙක්ට warm handoff කරන්නත් ඉඩ දෙන්න.',
       title: 'Human-AI Interaction and Oversight: Approval Gates, Escalation, Interrupt / Resume and UX for Trust',
       body: [
@@ -541,6 +575,8 @@ graph.invoke(Command(resume={"approved": True, "amount_rs": 1500}), cfg)  # Supe
     // 18 --------------------------------------------------------------- Case study
     {
       id: 'case-study-telco-support-agent',
+      plain: "Define scope and success first: supported intents, languages, resolution rate, response time, escalation rules, privacy, and prohibited account actions.",
+      internGuide: ["Define scope and success first: supported intents, languages, resolution rate, response time, escalation rules, privacy, and prohibited account actions.","Use a router for simple FAQ/RAG versus authenticated account tools. Give tools narrow scopes, validate customer identity, cite policy sources, and require approval for sensitive changes.","Persist a typed case state, make ticket and plan-change calls idempotent, trace every handoff/tool call, and isolate each customer’s memory and retrieved data.","Launch with offline evaluations and adversarial tests, then a limited pilot. Monitor quality, safety, cost, latency, and agent-to-human escalation; roll back on defined thresholds."],
       si: 'මේ LankaConnect telco එක කල්පිත උදාහරණයක්: දවසකට chats 60,000ක්, භාෂා 4ක්, සහ Rs. 8ට අඩු conversation cost එකක් ඉලක්ක කරයි. Router එක billing, tech, sales වගේ specialistලාට යවනවා; refund Rs. 2,000ට වැඩි නම් supervisor අනුමැතියට යවන්න. දෝෂයක් ආවොත් checkpoint එකෙන් resume කර, duplicate refund වළක්වා, අවශ්‍ය නම් human කෙනෙක්ට දෙන්න. Shadow mode එකෙන් පටන්ගෙන read-only, customer-confirmed changes, approved refunds ලෙස පියවරෙන් පියවර rollout කරන්න.',
       title: 'Beyond the Exam: Designing a Production Customer-Support Agent for a Sri Lankan Telco, End to End',
       body: [

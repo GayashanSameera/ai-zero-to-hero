@@ -318,3 +318,27 @@ tr.active td { background: var(--accent-soft); }
   border-radius: 6px; line-height: 1.85;
 }
 .si-box strong:first-child { color: var(--warn); }
+
+.lesson-details { padding: 0; overflow: hidden; }
+.lesson-details summary {
+  padding: 16px 18px;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--accent);
+}
+.lesson-details[open] summary { border-bottom: 1px solid var(--border); }
+.lesson-details .prose { padding: 4px 18px 18px; }
+.learning-path { margin-top: 12px; }
+.learning-path .box { margin-top: 10px; }
+.learning-path .box p { margin: 6px 0 0; }
+.topic-purpose h2 { margin-bottom: 8px; font-size: 1.15rem; }
+.topic-purpose p { margin: 0; }
+.topic-purpose .topic-warning {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+}
+.intern-guide h2 { margin-bottom: 8px; font-size: 1.15rem; }
+.intern-guide ol { margin: 0; padding-left: 22px; }
+.intern-guide li { margin: 8px 0; line-height: 1.6; }

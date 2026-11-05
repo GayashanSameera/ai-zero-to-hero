@@ -10,6 +10,8 @@ export default {
     // 1
     {
       id: 'nvidia-cert-map',
+      plain: "NCA means Associate and tests foundations; NCP means Professional and expects deeper role experience. The letters after the prefix identify the subject, not a difficulty score.",
+      internGuide: ["NCA means Associate and tests foundations; NCP means Professional and expects deeper role experience. The letters after the prefix identify the subject, not a difficulty score.","Choose from the official role and blueprint, then verify the individual exam page. Prices, question counts, delivery platforms, and available certifications can change.","As of this review, NCA-GENL is listed as 60 minutes and USD 125; NCP-AAI is 120 minutes and USD 200. NVIDIA states certifications are valid for two years.","Booking check: confirm identity/account requirements, current price plus tax, language, system/proctor rules, rescheduling policy, and the exact exam code before paying."],
       si: 'ඔයාට AI certification එකක් තෝරද්දී job එකට ගැළපෙන path එක බලන්න. උදාහරණයක්ට, Associate exam එක පැයක් සහ USD 125ක් වෙද්දී Professional එක පැය 2ක් සහ USD 200–500ක් වෙන්න පුළුවන්. Rs. 300කට USD 1ක් කියලා හිතුවොත් USD 325 කියන්නේ Rs. 97,500ක් වගේ. Book කරන්න කලින් NVIDIA site එකේ අද මිල, විස්තර බලන්න.',
       title: 'NVIDIA Certification Map: Codes, Levels, Time, Prices, Certiverse & 2-Year Validity',
       body: [
@@ -40,6 +42,8 @@ export default {
     // 2
     {
       id: 'cert-path-choice',
+      plain: "Choose a certification for the work you want to demonstrate: application/LLM development, agentic systems, data science, or infrastructure operations.",
+      internGuide: ["Choose a certification for the work you want to demonstrate: application/LLM development, agentic systems, data science, or infrastructure operations.","NCA-GENL is a useful foundation for LLM applications; NCP-AAI targets production agent architecture and governance; NCP-GENL goes deeper into training, optimization, and distributed techniques.","An exam sequence is a suggestion, not a prerequisite chain unless NVIDIA explicitly says so. Hands-on experience should drive the professional exam choice.","Create a gap table from the current blueprint: domain weight, current skill, evidence/lab, and study hours. Re-evaluate the route when roles or blueprints change."],
       si: 'ඔයාගේ job එක developer නම් NCA-GENL එකෙන් පටන් ගන්න පුළුවන්; infrastructure නම් NCA-AIIO ගැළපෙනවා. ඔයාගේ architecture ඉලක්කයට NCA-GENL පස්සේ NCP-AAI යන පාර හොඳයි. උදාහරණයක්ට, EKS එකේ agent එකක් scale කරන තීරණ NCP-AAI එක්ක සම්බන්ධයි. GPU එකට G6 ද P5 ද කියන infrastructure තීරණයට NCA-AIIO දැනුමත් උදව් වෙනවා.',
       title: 'Which Path? Developer, Infrastructure, Data Science, and Your NCA-GENL → NCP-AAI Route',
       body: [
@@ -68,6 +72,8 @@ export default {
     // 3
     {
       id: 'nca-genl-exam-guide',
+      plain: "Use the official five-domain blueprint: Core ML/AI 30%, Software Development 24%, Experimentation 22%, Data Analysis/Visualization 14%, and Trustworthy AI 10%.",
+      internGuide: ["Use the official five-domain blueprint: Core ML/AI 30%, Software Development 24%, Experimentation 22%, Data Analysis/Visualization 14%, and Trustworthy AI 10%.","Weights guide study time but do not guarantee an exact number of questions. NVIDIA currently describes 50 questions in one place and 50–60 multiple-choice in its details, so verify at booking.","Translate each objective into an action: explain a concept, choose an appropriate tool, interpret a metric/chart, diagnose an experiment, or identify a trustworthy-AI control.","Do not memorize product names alone. Practise explaining why NIM, Triton, TensorRT, NeMo, RAPIDS, a vector database, or a Python library fits a scenario."],
       si: 'NCA-GENL එක පැයක් තියෙන English exam එකක්, මිල USD 125. NVIDIA page එකේ question count එක විස්තර අනුව 50–60 අතර වෙන්න පුළුවන්, ඒ නිසා booking එකේදී confirm කරන්න. Domains වලින් Core ML 30%, Software Development 24%, Experimentation 22%, Data Analysis 14%, Trustworthy AI 10% බරයි. ඔයාට කාලය සීමිත නම් ලොකු percentage තියෙන domains වලට වැඩිපුර practice කරන්න.',
       title: 'NCA-GENL Exam Guide: Format, Five Domains, Weights & What Each Really Tests',
       body: [
@@ -165,6 +171,8 @@ export default {
     // 4
     {
       id: 'nca-genl-study-plan',
+      plain: "Plan from a diagnostic quiz, not the calendar alone. Allocate more time to high-weight weak domains and schedule retrieval practice plus hands-on work.",
+      internGuide: ["Plan from a diagnostic quiz, not the calendar alone. Allocate more time to high-weight weak domains and schedule retrieval practice plus hands-on work.","Week 1 can cover ML/Transformers; week 2 prompting/RAG; week 3 customization, inference, and evaluation; week 4 analysis, trust, and mixed revision. Extend when needed.","For every study block, produce evidence: a short explanation, solved calculation, code/lab result, error diagnosis, or corrected quiz answer. Passive reading is insufficient.","Before exam day, recheck official rules, identity, time zone, webcam/microphone, network, room, and power. Do not assume an old course list or proctor rule remains current."],
       si: 'ඔයාට සතියකට පැය 10ක් දාන්න පුළුවන් නම් සති 4කින් පැය 40ක් පාඩම් කරගන්න පුළුවන්. පළමු සතියේ fundamentals, දෙවැනියේ prompting සහ RAG, තුන්වැනියේ fine-tuning සහ inference, හතරවැනියේ analysis සහ revision කරන්න. Maths අමාරු නම් Colombo බස් එකේ ගමන වගේ buffer දවස් 2–3ක් තියාගෙන සති 6කට දිගු කරන්න. Exam දවසට කලින් webcam, internet සහ ID එක test කරලා තියාගන්න.',
       title: 'Your 4-Week NCA-GENL Plan, Official DLI Courses, Reading List & Exam-Day Tips',
       body: [
@@ -201,6 +209,8 @@ export default {
     // 5
     {
       id: 'python-tools-to-recognize',
+      plain: "Recognize the job of each tool: NumPy arrays/numerics, pandas or cuDF tables, scikit-learn classical ML, Keras neural-network APIs, spaCy production NLP pipelines, and Hugging Face model/dataset tooling.",
+      internGuide: ["Recognize the job of each tool: NumPy arrays/numerics, pandas or cuDF tables, scikit-learn classical ML, Keras neural-network APIs, spaCy production NLP pipelines, and Hugging Face model/dataset tooling.","A vector database/client stores and searches embeddings plus metadata; it does not create trustworthy embeddings or guarantee relevant retrieval by itself.","Choose by data type and task. Tokenization, named entities, training a classifier, matrix operations, and vector search require different libraries.","Exam check: distinguish a framework from a model hub, an inference server, and a database. Validate current APIs in documentation rather than memorizing import syntax."],
       si: 'ඔයාට bank complaints 10,000කින් branch නාම සහ දිනයන් ගන්න ඕනේ නම් spaCy NER ගැළපෙනවා. Complaints positive ද negative ද කියලා වෙන් කරලා 5-fold cross-validation කරන්න scikit-learn යොදාගන්න. ඒවායේ embeddings දාලා සමාන complaints හොයන්න Milvus හෝ pgvector වගේ vector database එකක් භාවිතා කරන්න. NumPy ගණිතයට, Keras neural networks හදන්න, Hugging Face pretrained models ගන්න උපකාරී.',
       title: 'Python Tools to Recognize: spaCy, NumPy, Keras, scikit-learn, Hugging Face & Vector DB Clients',
       body: [
@@ -246,6 +256,8 @@ print(round(cos, 3))                          # Near 1 means similar directions`
     // 6
     {
       id: 'numbers-to-know',
+      plain: "Treat formulas as estimates with stated assumptions. A dense Transformer layer is often approximated near 12·d² parameters, but embeddings, biases, gated MLPs, and architecture variants change the total.",
+      internGuide: ["Treat formulas as estimates with stated assumptions. A dense Transformer layer is often approximated near 12·d² parameters, but embeddings, biases, gated MLPs, and architecture variants change the total.","Weight memory is parameters times bytes per stored weight. Training adds gradients, optimizer states, activations, temporary buffers, and sometimes master weights.","KV-cache size depends on layers, retained key/value heads, head dimension, tokens, batch/concurrency, and bytes. Grouped-query attention changes the calculation.","Attention score work grows quadratically with sequence length for standard full attention, but total runtime/memory also includes projections, MLPs, kernels, and optimized attention implementations."],
       si: 'ඔයාට 7B parameter model එක FP16-කින් තියාගන්න නම් 7B × 2 bytes = 14 GB weights ඕනේ. Adam mixed-precision training-ට parameter එකකට දළ වශයෙන් 16 bytes, ඒ නිසා 7B × 16 ≈ 112 GB, activations තවමත් ඇතුළත් නෑ. Sequence length එක 2 ගුණ කළොත් attention වැඩේ n² නිසා දළ වශයෙන් 4 ගුණ වෙනවා. Colombo දවස් ගණනාවක් chat history තියාගන්න KV cache එකත් GPU memory කනවා.',
       title: 'Numbers to Know: 12·d² per Layer, Weight Memory, 16 Bytes per Parameter, KV Cache, n²',
       body: [
@@ -287,6 +299,8 @@ print("KV 4096 tokens ~", kv_per_token * 4096 / 2**30, "GB") # ~2 GB`,
     // 7
     {
       id: 'following-llm-research',
+      plain: "Start with a concrete question and prefer the paper, official code/model card, and versioned documentation over social summaries.",
+      internGuide: ["Start with a concrete question and prefer the paper, official code/model card, and versioned documentation over social summaries.","Read title/abstract, problem, method, experimental setup, baselines, ablations, limitations, and conclusion. Check whether the evaluation supports the headline claim.","Record model/data scale, compute, contamination controls, metrics, confidence/variance, licenses, and reproducibility artifacts. A benchmark gain may not transfer to your task.","Track a small set of trusted venues, arXiv alerts, lab blogs, and release notes; periodically synthesize what changed instead of collecting unread links."],
       si: 'ඔයා අලුත් LLM paper එකක් බලද්දී abstract එකෙන් ප්‍රශ්නය සහ ප්‍රධාන අදහස හඳුනාගන්න. ඊට පස්සේ baseline එක, dataset එක, evaluation metric එක සහ ablation results බලන්න. arXiv එකේ paper එකක් තියෙනවා කියලා ඒක peer review වෙලා හෝ claim එක සත්‍යයි කියලා අදහස් වෙන්නේ නෑ. ක්‍රිකට් scorecard එකක් බලනවා වගේ, headline එකට වඩා actual results සහ සසඳපු baseline එක බලන්න.',
       title: 'Keeping Up with LLM Research Papers & Trends: Where and How',
       body: [
@@ -314,6 +328,8 @@ print("KV 4096 tokens ~", kv_per_token * 4096 / 2**30, "GB") # ~2 GB`,
     // 8
     {
       id: 'llm-app-components',
+      plain: "Separate an LLM application into input validation, prompt/context construction, retrieval, model gateway, tools, output validation, persistence, and observability.",
+      internGuide: ["Separate an LLM application into input validation, prompt/context construction, retrieval, model gateway, tools, output validation, persistence, and observability.","Use typed schemas and narrow interfaces. Keep secrets and authorization in application/tool code, not prompt text, and treat model output as untrusted.","Add timeouts, retry classification, rate limits, idempotency for side effects, citations, error messages, and fallbacks. Log versions without leaking sensitive content.","Test each component with fixtures, then end-to-end scenarios including malformed input, missing evidence, provider failure, injection, duplicated requests, and unsafe actions."],
       si: 'LLM app එක model call එක විතරක් නෙවෙයි; loader, retriever, prompt, client, validator සහ logging එකට වැඩ කරනවා. උදාහරණයක්ට FAQ bot එකක් chunks 4ක් ගෙන model එකට යවලා JSON answer එක validate කරනවා. API එක 429 error දුන්නොත් retries සහ timeout නිසා service එක වහාම අසාර්ථක නොවෙයි. කඩේ kitchen එකක එක් එක් කෙනාට වෙනම වැඩක් තියෙනවා වගේ components වෙන් කරලා හදන්න.',
       title: 'Writing Scripts & Software Components for LLM Applications',
       body: [
@@ -359,6 +375,8 @@ def ask(question: str, context: str) -> str:
     // 9
     {
       id: 'choosing-comparing-stack',
+      plain: "Write requirements first: task quality, latency, throughput, data residency, model size, team skills, availability, integrations, and budget.",
+      internGuide: ["Write requirements first: task quality, latency, throughput, data residency, model size, team skills, availability, integrations, and budget.","Compare candidates on total cost, portability, compatibility, usability/operations, security, support, and measured performance—not marketing throughput alone.","Use a weighted decision table only after defining non-negotiable constraints. A high score cannot compensate for a failed license, privacy, or memory requirement.","Prototype with representative data and load, document assumptions and exit criteria, and retain a rollback or migration path for changing vendors and versions."],
       si: 'ඔයා private documents නිතර update කරන support bot එකක් හදනවා නම් RAG එක fine-tuning වලට වඩා ගැළපෙන්න පුළුවන්. 8B model එකක් FP16 weights සඳහා 16 GB පමණ ගන්නවා, ඒකට KV cache එකත් එකතු කරන්න ඕනේ. Hosted API එක ලේසියි, self-hosted NIM හෝ vLLM එකට GPU සහ නඩත්තුව ඕනේ. Cost, portability, compatibility, usability වලට ලකුණු දීලා weighted score එක ගණනය කරන්න.',
       title: 'Choosing Data, Hardware & Software for a Use Case; Comparing on Cost, Portability, Compatibility, Usability',
       body: [
@@ -400,6 +418,8 @@ for name, s in options.items():
     // 10
     {
       id: 'monitoring-processes',
+      plain: "Monitor the process as well as the final model: collection volume/consent, schema and label quality, experiment status, software builds, deployment, and production outcomes.",
+      internGuide: ["Monitor the process as well as the final model: collection volume/consent, schema and label quality, experiment status, software builds, deployment, and production outcomes.","Define metrics, owner, expected range, alert threshold, and response playbook. An unowned dashboard does not control risk.","Track lineage from raw data through dataset, code/config, model, evaluation, and deployment. Use run IDs and versioned artifacts so a result can be reproduced.","Review failures and drift by segment, distinguish data/infra/model causes, and record corrective action. Redact secrets and personal data from telemetry."],
       si: 'ඔයාගේ scraping job එක සාමාන්‍යයෙන් දවසකට documents 5,000ක් ගෙනාවත් අද 300ක් විතරක් ලැබුණොත් ඒක බලන්න ඕනේ. Null text 2% ඉඳන් 40%ට ගියොත් website එකේ වෙනසක් හෝ pipeline දෝෂයක් වෙන්න පුළුවන්. Training run එකේ config, data version, git commit සහ validation loss සටහන් කළාම හොඳම run එක හොයාගන්න ලේසියි. Production bot එකේ p95 latency තත්පර 3 ඉක්මවූ විට alert එකක් දාන්න.',
       title: 'Monitoring Data Collection, Experiments & Software Processes',
       body: [
@@ -443,6 +463,8 @@ if checks["rows"] < 1000 or checks["null_text_pct"] > 5:
     // 11
     {
       id: 'dataset-preparation',
+      plain: "Define permitted sources, purpose, licenses/consent, languages/domains, target quality, and split strategy before scraping or labeling.",
+      internGuide: ["Define permitted sources, purpose, licenses/consent, languages/domains, target quality, and split strategy before scraping or labeling.","Normalize formats, remove corruption and unwanted PII, deduplicate documents and near-duplicates, filter quality/safety, and preserve provenance.","Tokenization converts curated text to model IDs; sequence packing and sampling affect training efficiency and distribution. Fit or choose the tokenizer deliberately.","Prevent train/evaluation contamination, version every transformation, inspect samples and statistics, and document known gaps rather than assuming a large dataset is good."],
       si: 'ඔයා සිංහල FAQ documents 1,000ක් RAG සඳහා සකස් කරනවා නම් මුලින්ම duplicate, හිස් text සහ වැරදි encoding ඉවත් කරන්න. පසුව sentence boundary සහ අර්ථය සලකා chunks හදා metadata එක් කරන්න. Tokenizer එකෙන් token ගණන බලන්න; characters 500ක් හැම model එකකටම සමාන tokens නෙවෙයි. Fine-tuning හෝ RLHF සඳහා නම් private data, license සහ labels ගැනත් පරීක්ෂා කරන්න.',
       title: 'Preparing Datasets for Pretraining, Fine-Tuning & RLHF: Scraping, Cleaning, Tokenization',
       body: [
@@ -488,6 +510,8 @@ print("truncated:", sum(l == 2048 for l in lengths))           # කැපුණ
     // 12
     {
       id: 'human-feedback-collection',
+      plain: "Define the decision the feedback should teach and a clear rubric. Pairwise preference asks which output is better; ratings and critiques supply different signals.",
+      internGuide: ["Define the decision the feedback should teach and a clear rubric. Pairwise preference asks which output is better; ratings and critiques supply different signals.","Build an interface that randomizes order, hides irrelevant model identity, captures ties/invalid cases and rationale, and protects raters from sensitive material.","Train raters with examples, measure agreement, adjudicate disagreements, audit speed/quality, and sample across languages, groups, tasks, and difficult cases.","Obtain consent and fair conditions, minimize personal data, version prompts/responses/rubrics, and keep a held-out evaluation set separate from preference training."],
       si: 'ඔයා annotator කෙනෙකුට එකම ප්‍රශ්නයට model එකේ answers දෙකක් පෙන්වා වඩා හොඳ එක තෝරන්න කියන්න. ඔවුන්ගේ කැමැත්ත, භාෂාව සහ rating guideline එක සටහන් කළොත් feedback එක තේරුම් ගන්න පුළුවන්. Answer දෙකම නරක නම් ඒකත් සටහන් කරන්න, අනිවාර්යයෙන් winner එකක් තෝරන්න එපා. Annotators 3 දෙනෙක් දාලා disagreement වැඩි උදාහරණ review කිරීමෙන් quality පාලනය කරන්න.',
       title: 'Collecting Human Feedback for RLHF: Preference UI, Pairwise Comparisons, Guidelines, Quality Control',
       body: [
@@ -534,6 +558,8 @@ print(sum(x == y for x, y in zip(a, b)) / len(a))   # 0.8 = 80% එකඟයි`
     // 13
     {
       id: 'data-analysis-r2-trends',
+      plain: "Use loss for the optimization objective and task metrics for usefulness. R² compares squared error with a mean-target baseline; 1 is perfect, 0 matches that baseline, and it can be negative.",
+      internGuide: ["Use loss for the optimization objective and task metrics for usefulness. R² compares squared error with a mean-target baseline; 1 is perfect, 0 matches that baseline, and it can be negative.","A trend or correlation does not establish causation. Look for confounders, selection effects, leakage, seasonality, aggregation artifacts, and changes in measurement.","Choose charts that preserve the data structure, show uncertainty and sample size, and avoid truncated/misleading axes. Slice results before accepting an average.","Compare models on the same untouched test protocol and include practical effect, variability, latency, cost, and failure categories—not one favorable number."],
       si: 'ඔයා Colombo සහ Kandy branches වල sales model දෙකක් සසඳනවා නම් එකම test data සහ metric භාවිතා කරන්න. R² 1ට ආසන්න නම් model එක target එකේ වෙනස්වීම් හොඳින් පැහැදිලි කරනවා; 0ට අඩු අගයක් average prediction එකටත් වඩා නරක විය හැකියි. සති 4ක trend එක line chart එකකින්, branches සසඳන්න bar chart එකකින් පෙන්වන්න. වැසි දවස් sales සහ traffic දෙකටම බලපාන confounder එකක් විය හැකියි.',
       title: 'Data Analysis Domain: Comparing Models (Loss, R²), Data Mining, Charts, Trends & Confounding Factors',
       body: [
@@ -579,6 +605,8 @@ plt.xlabel("epoch"); plt.ylabel("loss"); plt.legend(); plt.show()   # trend = li
     // 14
     {
       id: 'security-privacy-consent',
+      plain: "Security protects confidentiality, integrity, and availability; privacy governs appropriate personal-data use; consent is one possible lawful/ethical basis and is not identical to privacy.",
+      internGuide: ["Security protects confidentiality, integrity, and availability; privacy governs appropriate personal-data use; consent is one possible lawful/ethical basis and is not identical to privacy.","Inventory datasets, weights, prompts, logs, credentials, and dependencies. Classify sensitivity, minimize collection, define retention/deletion, and restrict access by least privilege.","Keep secrets in managed stores, encrypt data, isolate environments, scan/sign dependencies and images, log access, and test backup and incident response.","For every dataset or feedback program, record provenance, purpose, permission/license, user notice/choices, cross-border handling, and whether withdrawal/deletion can be honored."],
       si: 'ඔයාගේ API key එක public GitHub එකට ගියොත් මුලින්ම key එක revoke කරලා අලුත් එකක් හදන්න; commit එක මකා දැමීම විතරක් ප්‍රමාණවත් නෑ. Training service එකට අවශ්‍ය bucket එකට විතරක් access දෙන්න, production database එකට අනවශ්‍ය permission දෙන්න එපා. Customer data encrypt කරලා policy එක අනුව, උදාහරණයට දවස් 30කට පස්සේ මකන්න. Privacy කියන්නේ data ආරක්ෂා කිරීමයි; consent කියන්නේ ඒ අරමුණට භාවිතා කරන්න අවසර තිබීමයි.',
       title: 'Protecting Datasets, Weights, Prompts & Credentials; Least Privilege, Retention, Supply Chain, Privacy vs Consent',
       body: [
@@ -626,6 +654,8 @@ print("key loaded:", key[:4] + "****")                    # logs වල key එ�
     // 15
     {
       id: 'model-lifecycle-deployment',
+      plain: "Version code, data, configuration, tokenizer, weights/adapters, runtime, evaluation, and model card as one releasable system.",
+      internGuide: ["Version code, data, configuration, tokenizer, weights/adapters, runtime, evaluation, and model card as one releasable system.","Promote through development, validation, staging/canary, and production with objective gates. Keep previous compatible artifacts and a tested rollback procedure.","Local, cloud, and data-center deployments trade control, elasticity, cost, connectivity, and operations. Offline batch favors throughput; online serving emphasizes latency and availability.","Monitor quality, drift, latency, errors, utilization, cost, and safety after release. Define triggers for rollback, recalibration, retraining, or retirement."],
       si: 'ඔයා model එක v1 සිට v2ට update කරනකොට model file, config, dataset සහ code version එක සටහන් කරන්න. New version එකේ error rate වැඩි වුණොත් කලින් stable version එකට rollback කරන්න පුළුවන්. Offline inference එකෙන් සකස් කළ batch එකක් පසුව process කරනවා; online inference එක request ආපු වෙලාවේ answer දෙයි. Cloud, data center හෝ local deployment තෝරද්දී network, privacy, latency සහ GPU resource සලකා බලන්න.',
       title: 'Model Lifecycle: Versioning, Updates, Rollback; Local vs Cloud vs Data Center; Offline vs Online Inference',
       body: [
@@ -656,6 +686,8 @@ print("key loaded:", key[:4] + "****")                    # logs වල key එ�
     // 16
     {
       id: 'hands-on-finetune-deploy',
+      plain: "Select a small permitted model and task, create clean train/validation/test splits, establish a prompt-only baseline, then choose LoRA/QLoRA or full tuning from resources and need.",
+      internGuide: ["Select a small permitted model and task, create clean train/validation/test splits, establish a prompt-only baseline, then choose LoRA/QLoRA or full tuning from resources and need.","Record versions and settings; monitor loss and held-out task quality; save adapters/checkpoints and test that reloading reproduces inference.","Package preprocessing, tokenizer, model, and generation settings behind a typed API with health checks, limits, authentication, and structured errors.","Test with curl and Python on normal, edge, unsafe, and concurrent requests; measure latency/memory and compare to the baseline before calling the fine-tune useful."],
       si: 'ඔයා පුංචි dataset එකක LoRA adapter එකක් train කරලා base model එක වෙනස් නොකර task එකකට tune කරන්න පුළුවන්. Training ඉවර වුණාම model/API එක serve කරලා curl හෝ Python request එකකින් test කරන්න. GPU memory අඩු නම් batch size 8 වෙනුවට 2 කරලා gradient accumulation steps 4ක් දාන්න; effective batch එක 8ම වෙනවා. Output, latency සහ errors සටහන් කරලා deployment එක සාර්ථකද බලන්න.',
       title: 'Hands-On: Fine-Tune on an NVIDIA GPU, Then Deploy a Model and Test Its API (curl & Python)',
       body: [
@@ -701,6 +733,8 @@ print("latency s:", round(time.time() - t0, 2),
     // 17
     {
       id: 'hands-on-rag-eval',
+      plain: "Build a small authoritative corpus with document IDs and page/section metadata. Parse, chunk, embed, and index it while retaining links to original evidence.",
+      internGuide: ["Build a small authoritative corpus with document IDs and page/section metadata. Parse, chunk, embed, and index it while retaining links to original evidence.","Create questions with expected evidence and include answerable, unanswerable, ambiguous, and adversarial cases. Keep this set outside prompt tuning.","Measure retrieval first (for example recall@k), then answer correctness, groundedness/citation accuracy, abstention, latency, and cost. Diagnose retrieval versus generation failures separately.","Inspect citations manually, prevent unauthorized documents from retrieval, version corpus/index/prompt/model, and rerun the suite after every component change."],
       si: 'ඔයා Colombo bus routes ගැන documents 20ක් එකතු කරලා text chunks සහ embeddings හදන්න. User question එකක් ආවම අදාළ chunks 3ක් retrieve කරලා ඒ context එකෙන් answer කරන්න කියලා model එකට දෙන්න. Answer එක source document එකේ තියෙන දේට ගැළපෙනවද, citation එක හරිද කියලා ප්‍රශ්න 10ක test set එකකින් බලන්න. Answer එක ලස්සන වුණත් source එකේ සාක්ෂි නැත්නම් ඒක හොඳ RAG answer එකක් නෙවෙයි.',
       title: 'Hands-On: Build a Small RAG Prototype and Evaluate Answers Against Source Documents',
       body: [
@@ -743,6 +777,8 @@ print("hit@4:", hits / len(eval_set), "correct:", correct / len(eval_set))`,
     // 18
     {
       id: 'gpu-bottlenecks-tradeoffs',
+      plain: "Define the serving/training objective and capture an end-to-end trace. GPU activity alone cannot distinguish compute, memory, CPU input, transfers, network, or storage limits.",
+      internGuide: ["Define the serving/training objective and capture an end-to-end trace. GPU activity alone cannot distinguish compute, memory, CPU input, transfers, network, or storage limits.","Use application latency/throughput with nvidia-smi for a quick view, DCGM for fleet metrics, and a profiler/timeline for kernels, gaps, and transfers.","Change the measured constraint: batch/precision/model for compute or memory, data workers/storage for starvation, and topology/collectives for communication.","Report quality, p50/p95 latency, throughput at concurrency, peak memory, power/cost, and failure rate. An optimization is a trade-off, not a free speedup."],
       si: 'ඔයා training අතරතුර GPU utilization 30%යි CPU utilization 95%යි දැක්කොත් data loading bottleneck එකක් ඇතිද බලන්න. GPU memory හිස්ව තියෙනවා නම් batch size වැඩි කිරීමෙන් throughput වැඩි වෙන්න පුළුවන්. Batch size වැඩි කළාම එක request එකට latency වැඩි වෙන්නත් පුළුවන්, ඒ නිසා p95 SLO එකත් මැනගන්න. Accuracy, latency, throughput, memory සහ cost අතර trade-off එක test කරලා තෝරන්න.',
       title: 'Finding GPU Bottlenecks with Monitoring & Profiling; Accuracy, Latency, Throughput, Memory & Cost Trade-offs',
       body: [
@@ -782,6 +818,8 @@ nsys stats train_report.nsys-rep`,
     // 19
     {
       id: 'troubleshooting-oom-slow-deps',
+      plain: "For OOM, reproduce the peak and inspect weights, batch/sequence, activations or KV cache, fragmentation, and other processes. Reduce the right component or shard/offload deliberately.",
+      internGuide: ["For OOM, reproduce the peak and inspect weights, batch/sequence, activations or KV cache, fragmentation, and other processes. Reduce the right component or shard/offload deliberately.","For slow inference, separate queue time, preprocessing, prefill, token decoding, transfers, and postprocessing; warm up and benchmark fixed prompts/concurrency.","For dependency errors, record driver, runtime, framework, GPU architecture, Python, and package versions. Check the official compatibility matrix instead of random reinstalling.","Make one change at a time, retain logs and a minimal reproduction, validate correctness after the fix, and pin the working environment."],
       si: 'ඔයාට 24 GB GPU එකක 7B model එක train කරද්දී OOM ආවොත් batch size 8 සිට 2ට අඩු කරලා accumulation steps 4 කරන්න. FP16/ BF16, gradient checkpointing හෝ 4-bit QLoRA මඟින් memory අඩු කරන්න පුළුවන්. Slow inference නම් model එක CUDA device එකේද, batching තියෙනවද, prompt එක දිග වැඩිද බලන්න. PyTorch, CUDA driver සහ wheel version එකත් ගැළපෙනවාද පරීක්ෂා කරන්න.',
       title: 'Troubleshooting: CUDA Out-of-Memory, Slow Inference & Incompatible Dependencies',
       body: [
@@ -827,6 +865,8 @@ if torch.cuda.is_available():
     // 20
     {
       id: 'aws-practice-checklist',
+      plain: "Choose a small AWS lab tied to a learning objective: a managed SageMaker endpoint or an EKS GPU service, not an unnecessarily large always-on cluster.",
+      internGuide: ["Choose a small AWS lab tied to a learning objective: a managed SageMaker endpoint or an EKS GPU service, not an unnecessarily large always-on cluster.","Verify Region availability, quota, GPU/instance specification, AMI/driver/runtime compatibility, storage, networking, registry/license access, and estimated hourly plus data cost.","Deploy NIM/Triton or another supported server with private access, workload identity, secrets, health checks, logs/metrics, and a representative benchmark. Add EFA only for supported multi-node needs.","Set budgets and tags, capture infrastructure/configuration, test shutdown and recovery, and delete endpoints, nodes, volumes, load balancers, and unused IPs when the lab ends."],
       si: 'ඔයා AWS lab එකක NIM හෝ Triton deploy කරනකොට මුලින් GPU instance එක, IAM permissions සහ network access පරීක්ෂා කරන්න. EKS GPU node එකකට model එක දාලා health endpoint එකෙන් service එක ready ද බලන්න. RAG agent එකට tool permission අවශ්‍ය තරමට සීමා කරලා guardrail සහ logs ප 테스트 කරන්න. Lab-යේ AWS resource usage-යත් cost එකත් дуусгත් පසු ресурස් cleanup කරන්න.',
       title: 'Practising NVIDIA Topics on AWS: NIM / Triton on SageMaker or EKS, GPU Instances, EFA, Guardrails, RAG Agent',
       body: [

@@ -10,6 +10,8 @@ export default {
     {
       id: 'rag-why-and-when',
       title: 'RAG vs Fine-tuning vs Long Context: When Should You Use Each?',
+      plain: "RAG retrieves evidence at request time and places it in the prompt. It is best for changing, private, or citable knowledge; it does not replace every use of prompting or fine-tuning.",
+      internGuide: ["Use prompting when the model already has the knowledge and skill but needs clearer instructions or examples.","Use RAG when answers must come from an external source that can change without retraining the model.","Use fine-tuning for repeated behavior, style, task skill, or compact control; use long context when the complete source comfortably fits and retrieval would add unnecessary complexity.","Exam focus: RAG can ground answers but still needs retrieval evaluation, prompt controls, citations, and a safe “insufficient evidence” path."],
       examRefs: ['RAG-001', 'RAG-002', 'RAG-033', 'RAG-044', 'RAG-045', 'RAG-048', 'RAG-095'],
       body: [
         'The core idea of Retrieval-Augmented Generation (RAG) is simple: it does not change a model’s weights. At query time, it finds relevant passages and adds them to the prompt as context; the LLM reads that context and writes an answer. Pretraining creates a model from the beginning, while fine-tuning changes its weights. With RAG, when documents change, you update the index instead of fine-tuning the model again.',
@@ -39,6 +41,8 @@ export default {
     {
       id: 'embedding-fundamentals',
       title: 'How Embeddings Work: Static vs Contextual, Pooling, SBERT, and Anisotropy',
+      plain: "An embedding converts an item into a numeric vector so semantically related items can be found by geometric similarity. The vector has meaning only relative to its model and training objective.",
+      internGuide: ["Static word embeddings assign one vector per word; contextual token embeddings change with surrounding text.","Sentence embedding models pool token information into one vector; SBERT-style contrastive training makes these vectors useful for retrieval.","Anisotropy means vectors occupy a narrow region of space, which can make raw similarity less informative.","Exam focus: the hidden state of an arbitrary language model is not automatically a good retrieval embedding; use the model’s documented pooling and normalization."],
       examRefs: ['RAG-003', 'RAG-004', 'RAG-005', 'RAG-037', 'RAG-038', 'RAG-039', 'RAG-051', 'RAG-113'],
       body: [
         'A text embedding is a dense, fixed-length numeric vector representing the meaning of a piece of text. Similar meanings tend to be close in vector space. Token IDs from a tokenizer are only vocabulary-table indexes, not embeddings: IDs 4021 and 4022 need not have similar meanings. A document-frequency table or ZIP compression is not an embedding either.',
@@ -73,6 +77,8 @@ export default {
     {
       id: 'similarity-math',
       title: 'Similarity Math: Cosine, Dot Product, L2, and MIPS',
+      plain: "Cosine similarity, dot product, and Euclidean distance compare vectors differently. Their rankings coincide only under specific normalization conditions.",
+      internGuide: ["Cosine divides the dot product by both vector lengths and therefore measures direction rather than magnitude.","For unit-normalized vectors, dot product equals cosine and squared L2 distance equals 2−2×cosine, so all three give equivalent rankings.","Maximum inner-product search keeps magnitude information and can be useful when the embedding model was trained for it.","Exam focus: check whether the model expects normalized embeddings before selecting the index metric; changing the metric can change nearest neighbors."],
       examRefs: ['RAG-006', 'RAG-007', 'RAG-008', 'RAG-009', 'RAG-010', 'RAG-053', 'RAG-081', 'RAG-082', 'RAG-084', 'RAG-114', 'RAG-115'],
       body: [
         'Cosine similarity measures the cosine of the angle between two vectors: it considers direction and ignores magnitude. Divide their dot product by the product of their lengths. A dot product multiplies corresponding components and sums them; a vector’s L2 norm is the square root of the sum of its squared components. An unnormalized dot product is affected by vector length, while cosine is not.',
@@ -123,6 +129,8 @@ print(round(d2, 3), round(2 - 2 * cos, 3))  # both are 0.222`,
     {
       id: 'embedding-model-choice',
       title: 'Choosing and Using an Embedding Model Correctly',
+      plain: "Choose an embedding model from the actual languages, domain, query-document asymmetry, length limits, license, latency, and measured retrieval quality—not leaderboard position alone.",
+      internGuide: ["Use the exact query and document prefixes or instruction format documented by the embedding model.","Respect tokenizer length limits and chunk long text; silent truncation can remove the answer-bearing passage.","Evaluate on representative query-relevant-document judgments from the target application, including difficult negatives and all required languages.","Exam focus: vector dimension must match the index, and changing the embedding model requires re-embedding the corpus rather than mixing incompatible vector spaces."],
       examRefs: ['RAG-017', 'RAG-046', 'RAG-085', 'RAG-086', 'RAG-087', 'RAG-088', 'RAG-104', 'RAG-110', 'RAG-146'],
       body: [
         'The first rule is to embed queries and documents with the same model, or a model pair trained to work together. If documents use Model X and queries use Model Y, retrieval can fail even when both produce 768 dimensions: each model learns its own coordinate system, and equal dimensions do not align those spaces. A vector database may not check model names, so this failure can be silent. Embed documents offline during ingestion and embed each query live when its request arrives.',
@@ -157,6 +165,8 @@ print(round(d2, 3), round(2 - 2 * cos, 3))  # both are 0.222`,
     {
       id: 'embedding-training',
       title: 'Training Embedding Models: Contrastive Learning, InfoNCE, Negatives, and Domain Adaptation',
+      plain: "Retrieval embeddings are commonly trained to pull matching query-document pairs together and push non-matching pairs apart. Negative-example quality strongly affects what the model learns.",
+      internGuide: ["InfoNCE treats the positive passage as the correct class among in-batch or mined candidates and applies cross-entropy to similarity scores.","In-batch negatives are inexpensive but may include false negatives; hard negatives are plausible wrong results that teach finer distinctions.","Domain adaptation uses labeled pairs, carefully generated pairs, or teacher scores, followed by evaluation on held-out real queries.","Exam focus: more negatives are not always better if many are actually relevant; temperature controls contrastive distribution sharpness, not generation randomness."],
       examRefs: ['RAG-105', 'RAG-106', 'RAG-107', 'RAG-108', 'RAG-112', 'RAG-126', 'RAG-127', 'RAG-150'],
       body: [
         'Embedding models are trained with contrastive loss: embeddings for a matching pair (a query and a passage that answers it) are pulled together, while non-matching pairs are pushed apart. This is not next-token prediction, a reconstruction loss, or a constraint that forces every vector to have the same norm.',
@@ -192,6 +202,8 @@ print(round(d2, 3), round(2 - 2 * cos, 3))  # both are 0.222`,
     {
       id: 'ann-flat-hnsw',
       title: 'ANN Search, Flat Indexes, and How HNSW Works',
+      plain: "Exact flat search compares a query with every vector. Approximate nearest-neighbor indexes trade some recall for lower latency and better scale.",
+      internGuide: ["A flat index is simple and exact but its work grows with corpus size. It is a useful correctness baseline.","HNSW builds a multi-layer proximity graph: upper sparse layers navigate broadly and the dense bottom layer refines local neighbors.","efConstruction affects build quality and cost; efSearch controls query-time exploration and usually trades latency for recall.","Exam focus: HNSW is graph-based and memory-heavy, requires no training centroids, and should be tuned against exact-search recall."],
       examRefs: ['RAG-011', 'RAG-023', 'RAG-024', 'RAG-025', 'RAG-060', 'RAG-062', 'RAG-116', 'RAG-120'],
       body: [
         'A vector database stores embeddings (usually with metadata) and answers nearest-neighbor queries quickly. The LLM generates the answer; the embedding model is trained separately; and the database does not tokenize the query. The database indexes and searches vectors.',
@@ -225,6 +237,8 @@ print(round(d2, 3), round(2 - 2 * cos, 3))  # both are 0.222`,
     {
       id: 'ivf-pq-quantization',
       title: 'IVF, Product Quantization සහ Vector Compression',
+      plain: "IVF narrows search to selected vector clusters, while product quantization compresses vectors into small codes. They are often combined when memory or search cost is too large for a flat index.",
+      internGuide: ["IVF trains coarse centroids, assigns each vector to a list, and searches only nprobe selected lists for a query.","Product quantization splits a vector into subspaces and stores the nearest codebook entry for each subspace instead of every float.","More probed lists and larger codebooks usually improve recall but increase compute or storage.","Exam focus: IVF and PQ require training on representative vectors; measure compressed-index recall against an exact baseline before production."],
       examRefs: ['RAG-026', 'RAG-027', 'RAG-054', 'RAG-055', 'RAG-061', 'RAG-083', 'RAG-117', 'RAG-118', 'RAG-119', 'RAG-121', 'RAG-139', 'RAG-140'],
       body: [
         'Start with memory arithmetic. A float32 value uses 4 bytes, so a 768-dimensional vector uses 768 × 4 = 3,072 bytes. Ten million vectors use about 30.7 GB. With int8 (one byte per dimension), they use 7.7 GB; float64 or twice as many dimensions would use 61.4 GB. These sizes explain why compression may be needed.',
@@ -278,6 +292,8 @@ D, I = index.search(xb[:1], 5)  # D = squared L2, I = IDs`,
     {
       id: 'vector-db-nvidia-stack',
       title: 'Vector Databases and the NVIDIA Stack: FAISS, Milvus, cuVS, CAGRA, and NeMo Retriever',
+      plain: "A vector database adds persistence, metadata, updates, filtering, replication, and service APIs around vector indexing. An index library alone does not provide every database feature.",
+      internGuide: ["FAISS is a similarity-search library with CPU and GPU indexes; Milvus is a distributed vector database that can use multiple index types.","cuVS supplies GPU vector-search algorithms such as CAGRA and IVF variants; CAGRA is a GPU-oriented graph index.","NeMo Retriever packages embedding, reranking, and extraction capabilities for RAG workflows, including NIM services where supported.","Exam focus: choose from workload requirements—scale, update rate, filters, latency, durability, and hardware—not from “GPU” or “database” labels alone."],
       examRefs: ['RAG-028', 'RAG-029', 'RAG-030', 'RAG-047', 'RAG-109', 'RAG-145'],
       body: [
         'Do not confuse FAISS with Milvus. FAISS (Meta AI) is a library with CPU and GPU implementations of index types such as flat, IVF, PQ, and HNSW, used inside an application. It is not a hosted database or an evaluation tool. Milvus is an open-source, distributed vector database with persistence, scalar and metadata filtering, many index types, and GPU indexes. If a question describes an open-source distributed vector database with persistence, filtering, and GPU indexes, the answer is Milvus. BM25 is a ranking function, RAGAS an evaluation framework, and word2vec an embedding method.',
@@ -310,6 +326,8 @@ D, I = index.search(xb[:1], 5)  # D = squared L2, I = IDs`,
     {
       id: 'filtering-access-security',
       title: 'Metadata Filtering, Multi-tenancy සහ RAG Security',
+      plain: "Metadata filtering makes retrieval obey business constraints such as tenant, document type, date, or access level. Security must be enforced before evidence reaches the model.",
+      internGuide: ["Store authoritative access metadata with every chunk and apply server-side filters derived from authenticated identity.","Pre-filtering is safest for permissions; post-filtering can return too few results and risks exposing forbidden candidates inside a pipeline.","Keep tenants logically or physically isolated, encrypt data, audit retrievals, and treat indexed documents as untrusted content that may contain prompt injection.","Exam focus: an LLM instruction saying “respect permissions” is not access control. Retrieval and storage layers must enforce authorization deterministically."],
       examRefs: ['RAG-031', 'RAG-052', 'RAG-080', 'RAG-098', 'RAG-122', 'RAG-141', 'RAG-142'],
       body: [
         'A vector database can store structured metadata with each vector: department, date, region, doc_id, tenant_id, and access level. For “HR policies updated in 2024,” filter for department=HR and date≥2024 during vector search. Do not add the year as a new embedding dimension, increase top-k and hope, or ask the LLM to ignore old documents; those approaches are unreliable and waste context.',
@@ -343,6 +361,8 @@ D, I = index.search(xb[:1], 5)  # D = squared L2, I = IDs`,
     {
       id: 'hybrid-search-fusion',
       title: 'BM25, SPLADE, Hybrid Search, and Score Fusion (RRF)',
+      plain: "Dense retrieval captures semantic similarity, while lexical retrieval such as BM25 excels at exact names, IDs, rare terms, and wording. Hybrid search combines their strengths.",
+      internGuide: ["BM25 scores term matches using term frequency, inverse document frequency, and document-length normalization.","SPLADE learns sparse term weights that can add expansion terms while remaining compatible with inverted-index retrieval.","Raw dense and sparse scores are not directly comparable; reciprocal rank fusion combines ranks using 1/(k+rank) without score calibration.","Exam focus: hybrid retrieval improves candidate recall, but a reranker and evaluation still determine whether the best evidence reaches the generator."],
       examRefs: ['RAG-012', 'RAG-013', 'RAG-021', 'RAG-022', 'RAG-050', 'RAG-065', 'RAG-066', 'RAG-111', 'RAG-135', 'RAG-136'],
       body: [
         'Semantic (dense) search matches meaning. A query such as “how to reset my password” can find “Recovering account credentials” because paraphrases are close in embedding space. Keyword methods such as BM25 rely on overlapping words, so they may rank that document lower.',
@@ -390,6 +410,8 @@ print(rrf([bm25, dense]))  # E-4471-fix: 1/61 + 1/63 = 0.0323`,
     {
       id: 'rerankers-two-stage',
       title: 'Rerankers: Bi-encoder vs Cross-encoder, ColBERT, and the Recall Ceiling',
+      plain: "A two-stage system retrieves many candidates cheaply and reranks a smaller set with a more accurate model. The reranker cannot recover a relevant document that retrieval never returned.",
+      internGuide: ["A bi-encoder embeds query and documents independently, enabling precomputed document vectors and fast search.","A cross-encoder reads query and document together, allowing detailed token interaction but requiring one model evaluation per candidate.","ColBERT stores token-level document embeddings and uses late interaction, trading more storage for finer matching than one-vector retrieval.","Exam focus: candidate recall is the ceiling for reranked recall; tune first-stage k and reranker depth together under latency constraints."],
       examRefs: ['RAG-018', 'RAG-019', 'RAG-020', 'RAG-067', 'RAG-123', 'RAG-124', 'RAG-128', 'RAG-148'],
       body: [
         'A reranker takes a small candidate set from first-stage retrieval, scores each query–document pair again with a more accurate relevance model (usually a cross-encoder), and reorders the candidates. It does not re-embed the corpus, rewrite the query, or remove duplicates during ingestion.',
@@ -423,6 +445,8 @@ print(rrf([bm25, dense]))  # E-4471-fix: 1/61 + 1/63 = 0.0323`,
     {
       id: 'chunking-strategies',
       title: 'Chunking in Depth: Fixed, Recursive, Semantic, Small-to-Big, and Contextual',
+      plain: "Chunking determines what unit is embedded, retrieved, cited, and placed in context. The best size follows document structure and answer granularity rather than one universal token count.",
+      internGuide: ["Fixed or recursive chunking is simple; semantic and structure-aware chunking tries to preserve coherent sections, tables, or speaker turns.","Overlap protects facts near boundaries but increases storage, duplicate results, and context redundancy.","Small-to-big retrieval finds a focused child chunk and returns a larger parent for context; contextual retrieval adds document context to each chunk representation.","Exam focus: evaluate chunking with real retrieval queries and citation needs. More overlap or larger chunks can reduce precision and waste the context budget."],
       examRefs: ['RAG-014', 'RAG-015', 'RAG-049', 'RAG-063', 'RAG-064', 'RAG-099', 'RAG-100', 'RAG-101', 'RAG-138'],
       body: [
         'Chunk for two reasons: embedding models have maximum input lengths, and one vector for a very long document can blur many topics together. Smaller chunks can match precisely, and several relevant passages can fit into an LLM context window. Chunking is not required because vector databases cannot store multiple vectors per document.',
@@ -456,6 +480,8 @@ print(rrf([bm25, dense]))  # E-4471-fix: 1/61 + 1/63 = 0.0323`,
     {
       id: 'ingestion-parsing',
       title: 'Ingestion and Parsing: PDFs, Tables, Images, OCR, and Source Metadata',
+      plain: "A RAG system can only retrieve information that ingestion extracted correctly. Parsing quality, document structure, and provenance are first-class parts of the model pipeline.",
+      internGuide: ["Use layout-aware parsing for headings, columns, tables, headers, and reading order rather than assuming PDF text extraction is correct.","Scanned pages need OCR; images and diagrams may need captions or multimodal extraction, with confidence and page references preserved.","Attach stable document IDs, page/section locations, timestamps, permissions, and source URLs to chunks for filtering, updates, and citations.","Exam focus: inspect parsed output before embedding. A stronger embedding model cannot recover text lost or scrambled during ingestion."],
       examRefs: ['RAG-016', 'RAG-040', 'RAG-089', 'RAG-090', 'RAG-091', 'RAG-102', 'RAG-147'],
       body: [
         'Use this ingestion order: Parse → Chunk → Embed → Index. First parse raw files such as PDFs, HTML, and slides into text and structure; then split into chunks, embed each chunk, and write vectors to the index. Embedding before chunking gives one vector for the whole document and loses fine-grained retrieval. Parsing removes markup, extracts text, tables, and headings, and handles layout. Translation into English or LLM summarization is optional, not a prerequisite.',
@@ -488,6 +514,8 @@ print(rrf([bm25, dense]))  # E-4471-fix: 1/61 + 1/63 = 0.0323`,
     {
       id: 'index-lifecycle',
       title: 'Keeping an Index Current: Updates, Deletes, Recency, and Model Changes',
+      plain: "An index is a derived data product that must track source additions, edits, deletions, permissions, and embedding-model versions. Rebuilding once is not a lifecycle strategy.",
+      internGuide: ["Use stable source and chunk IDs so updates can replace old chunks instead of silently creating duplicates.","Propagate deletions and permission changes promptly, and design tombstones or compaction according to the database.","Store embedding model, preprocessing, chunker, and schema versions; re-embed into a new index when vector-space compatibility changes.","Exam focus: use blue-green index migration or aliases for safe cutover, validate counts and retrieval quality, then retire the old index after rollback risk passes."],
       examRefs: ['RAG-041', 'RAG-042', 'RAG-096', 'RAG-097', 'RAG-143', 'RAG-144'],
       body: [
         'If a chatbot quotes an old policy after it was revised last week, the likely cause is a stale index: new chunks were not indexed or old chunks were not removed. RAG answers from the index; the LLM’s training cutoff, temperature, and embedding dimension are unrelated.',
@@ -519,6 +547,8 @@ print(rrf([bm25, dense]))  # E-4471-fix: 1/61 + 1/63 = 0.0323`,
     {
       id: 'query-transformations',
       title: 'Query-Side Methods: Rewriting, Multi-query, HyDE, Multi-hop, CRAG, and “I Don’t Know”',
+      plain: "Query transformations improve retrieval when the user wording is ambiguous, conversational, multilingual, or requires several evidence hops. Each extra query also adds cost and failure modes.",
+      internGuide: ["Query rewriting turns conversation-dependent text into a standalone search query while preserving the user’s actual intent.","Multi-query retrieval generates alternative formulations and fuses results; HyDE embeds a hypothetical answer-like passage to search for similar real passages.","Multi-hop workflows retrieve evidence, derive the next subquery, and repeat with strict step, time, and token limits.","Exam focus: CRAG-style systems evaluate retrieval quality and may retry or use another source; if evidence remains insufficient, answer “I don’t know” rather than fabricate."],
       examRefs: ['RAG-068', 'RAG-069', 'RAG-070', 'RAG-094', 'RAG-103', 'RAG-129', 'RAG-130'],
       body: [
         'In a conversation, a user may first ask about an H100 GPU and then ask “How much memory does it have?” Retrieval may fail because the pronoun “it” is unclear alone. Use chat history and an LLM to rewrite the follow-up as a standalone query: “How much memory does the H100 GPU have?” Increasing top-k may return more irrelevant chunks; disabling retrieval for follow-ups is also wrong.',
@@ -551,6 +581,8 @@ print(rrf([bm25, dense]))  # E-4471-fix: 1/61 + 1/63 = 0.0323`,
     {
       id: 'context-assembly',
       title: 'Assembling Context: Top-k, Context Budget, Lost in the Middle, MMR, Compression, and Citations',
+      plain: "Context assembly chooses which retrieved text the model sees and how it is ordered. Retrieval top-k is not automatically the final prompt top-k.",
+      internGuide: ["Reserve tokens for instructions, question, conversation, citations, and output before filling the remaining context budget.","Rerank, deduplicate, and use MMR when relevance and diversity must be balanced; compress cautiously so answer-bearing details and provenance remain.","Models can underuse information placed in the middle of long context, so place the most useful evidence prominently and label source boundaries clearly.","Exam focus: citations need stable source metadata and claim-to-source support. A citation-looking URL generated from memory is not grounded evidence."],
       examRefs: ['RAG-032', 'RAG-036', 'RAG-043', 'RAG-058', 'RAG-071', 'RAG-072', 'RAG-137'],
       body: [
         'Retrieval top-k is the number of nearest chunks returned for reranking or generation. Do not confuse it with decoding top-k sampling, which limits candidate tokens when the generator chooses its next token. To calculate context budget, subtract system-prompt and question tokens from the context window, subtract tokens reserved for the answer, then divide the remainder by chunk size and round down. Forgetting to reserve answer tokens can truncate the response.',
@@ -595,6 +627,8 @@ print(max_chunks(8192, 1000, 1024, 512))  # 12`,
     {
       id: 'retrieval-metrics',
       title: 'Retrieval Metrics: Recall@k, Precision@k, MRR, and nDCG (with Calculations)',
+      plain: "Retrieval metrics measure whether relevant evidence appears and how early it is ranked. They require relevance judgments, not just generated-answer quality.",
+      internGuide: ["Recall@k is relevant retrieved items divided by all known relevant items; precision@k is relevant items among the k returned.","MRR uses the reciprocal rank of the first relevant result and is suited to tasks where one early answer is enough.","nDCG gives higher credit to relevant items near the top and supports graded relevance, normalized against an ideal ranking.","Exam focus: define the unit—chunk, document, or answer source—and handle multiple relevant items consistently before comparing systems."],
       examRefs: ['RAG-034', 'RAG-035', 'RAG-056', 'RAG-057', 'RAG-059', 'RAG-125'],
       body: [
         'Recall@k is the fraction of all relevant documents for a query that appear in the top k; divide by the total number of relevant documents. Precision@k is the fraction of the returned top k that are relevant; divide by k. Do not confuse them. If a retriever returns five chunks and two are relevant, you can calculate precision@5=0.4, but recall@5 cannot be calculated without knowing the total relevant documents in the corpus.',
@@ -643,6 +677,8 @@ print(recall_at_k([1,0,0,1,0], 3), mrr([1,2,4]), ndcg([0,3,2]))
     {
       id: 'rag-evaluation-diagnosis',
       title: 'RAG Evaluation: Faithfulness, Context Precision / Recall, Answer Relevance, Diagnosis',
+      plain: "Evaluate retrieval and generation separately so a bad answer can be traced to missing evidence, poor ranking, unsupported generation, or an irrelevant response.",
+      internGuide: ["Context recall asks whether the retrieved context contains the information needed for the reference answer.","Context precision asks whether useful evidence is ranked ahead of distracting evidence; faithfulness checks whether answer claims are supported by supplied context.","Answer relevance checks whether the response addresses the question. Human review remains necessary for high-stakes correctness and judge calibration.","Exam focus: split responses into atomic claims and verify support. An answer may be relevant but unfaithful, or faithful to context that is itself wrong."],
       examRefs: ['RAG-073', 'RAG-074', 'RAG-075', 'RAG-076', 'RAG-077', 'RAG-078', 'RAG-079', 'RAG-133', 'RAG-134', 'RAG-149'],
       body: [
         'Evaluate a RAG system in two parts: retrieval and generation. RAGAS is an open-source framework for component-level metrics, often using an LLM as judge, so the two stages can be diagnosed separately. RAGAS does not store vectors, rerank, or chunk PDFs.',
@@ -675,6 +711,8 @@ print(recall_at_k([1,0,0,1,0], 3), mrr([1,2,4]), ndcg([0,3,2]))
     {
       id: 'agentic-and-graphrag',
       title: 'Agentic RAG සහ GraphRAG (ප්‍රායෝගිකව)',
+      plain: "Agentic RAG lets a controller decide when, where, and how often to retrieve. GraphRAG represents entities and relationships for multi-hop and corpus-level questions.",
+      internGuide: ["An agent can plan searches across vector indexes, SQL, web, or calculators, inspect results, and issue follow-up queries.","Every loop needs budgets and termination conditions plus an explicit insufficient-evidence fallback.","GraphRAG extracts entities and relations, resolves duplicate entity names, and can summarize graph communities for global questions.","Exam focus: graph construction and updates are expensive; begin with strong hybrid retrieval and add a graph only when relationship or corpus-summary queries justify it."],
       examRefs: ['RAG-092', 'RAG-093', 'RAG-131', 'RAG-132'],
       body: [
         'Agentic RAG: fixed pipeline එකක් හැම වෙලාවෙම original query එකෙන් එක පාරක් retrieve කරලා generate කරනවා. Agentic RAG එකේදී LLM agent එක තීරණය කරනවා retrieve කරන්න ඕනෙද, මොකක්ද retrieve කරන්නේ, කී පාරක්ද, tools කිහිපයක් හරහා (vector search, SQL, web search, calculator). Plan කරනවා, queries දානවා, results බලනවා, අවශ්‍ය නම් ආයෙ retrieve කරනවා, ඊට පස්සේ උත්තර දෙනවා. Loop control අනිවාර්යයි: සමහර වෙලාවට unanswerable ප්‍රශ්න වලට agent එක විනාඩි ගණන් සමාන searches දාගෙන යනවා, මොකද evidence එක ප්‍රමාණවත් කියලා එයා කවදාවත් තීරණය කරන්නේ නෑ. විසඳුම: retrieval iterations, time, හෝ tokens වලට උපරිම budget එකක්, ඊට පස්සේ fallback answer එකක් ("මට මේකට විශ්වාසදායක උත්තරයක් හොයාගන්න බැරි වුණා"). "I don\'t know" කියන්න තියෙන හැකියාව අයින් කරන එක නරකම දේ.',
@@ -705,6 +743,8 @@ print(recall_at_k([1,0,0,1,0], 3), mrr([1,2,4]), ndcg([0,3,2]))
     {
       id: 'sinhala-english-rag',
       title: 'Beyond the Exam: සිංහල / English Bilingual RAG System එකක් හදන හැටි',
+      plain: "A bilingual Sri Lankan RAG system must retrieve across Sinhala, English, and romanized Singlish while preserving Unicode, document structure, and exact identifiers.",
+      internGuide: ["Convert legacy-font PDFs to Unicode or use OCR, then apply the same Unicode normalization during ingestion and querying.","Use a multilingual embedding model and evaluate it on real Sinhala, English, and code-mixed queries; do not assume an English leaderboard transfers.","Rewrite or transliterate Singlish into Sinhala and English variants, retrieve each, and fuse results; keep BM25 for circular numbers, names, and other exact strings.","Production focus: measure recall separately by language, use a multilingual reranker, answer in the user’s language, and cite the original source text."],
       examRefs: [],
       body: [
         'දැන් ඔයා ඉගෙන ගත්ත ඔක්කොම ලංකාවේ ඇත්ත ප්‍රශ්නයකට යොදමු: government circulars, bank FAQs, school notes වගේ සිංහල සහ English මිශ්‍ර documents වලින් උත්තර දෙන RAG system එකක්. Users අහන්නේ තුන් විදිහකට: සිංහල අකුරෙන් ("ණය ගෙවීම කල් දාන්න පුළුවන්ද?"), English වලින්, සහ Singlish (romanized Sinhala) වලින් ("loan eka kal danna puluwanda?"). මේ තුනටම එකම documents හොයාගන්න ඕනේ.',

@@ -5,6 +5,28 @@ export default {
   "titleSi": "NVIDIA AI platform: from GPU hardware to serving language models",
   "summary": "Learn how NVIDIA GPU hardware, CUDA libraries, model optimization and serving systems work together. This phase covers GPU architecture and precision, multi-GPU communication, TensorRT, Triton, NIM, LLM serving metrics, batching, memory planning, operations, and PyTorch tooling for NVIDIA NCA-GENL preparation.",
   "duration": "4-6 weeks",
+  "learningPath": [
+    {
+      "title": "1. Hardware foundation",
+      "topics": "GPU parts, precision, and multi-GPU connections",
+      "why": "First learn where computation and memory live. The later optimization topics depend on this."
+    },
+    {
+      "title": "2. Software foundation",
+      "topics": "CUDA libraries, RAPIDS, NGC, NeMo, and Megatron-LM",
+      "why": "Learn which software layer does which job before studying deployment products."
+    },
+    {
+      "title": "3. Model inference and serving",
+      "topics": "Serving metrics, memory, TensorRT, TensorRT-LLM, Triton, and NIM",
+      "why": "Follow a model from optimization to a network service that can answer user requests."
+    },
+    {
+      "title": "4. Production operation",
+      "topics": "Scaling, monitoring, troubleshooting, and PyTorch practice",
+      "why": "Finally learn how to keep the service reliable and diagnose performance problems."
+    }
+  ],
   "topics": [
     {
       "id": "gpu-hardware-basics",
@@ -15,6 +37,14 @@ export default {
         "DEP-004"
       ],
       "title": "GPU Hardware: CUDA Cores, Tensor Cores, SMs, Warps, HBM",
+      "plain": "A GPU is useful for AI because it can do many small calculations at the same time. An SM is one work area inside the GPU. CUDA Cores do ordinary calculations, while Tensor Cores are built to speed up the matrix calculations used by neural networks. A warp is a team of 32 threads working together, and HBM is the GPU's large, fast main memory.",
+      "internGuide": [
+        "Problem: AI models repeatedly multiply large matrices. A CPU can do this, but a GPU completes many of the small calculations in parallel.",
+        "Inside the GPU: an SM is a work area. CUDA Cores perform general arithmetic, Tensor Cores accelerate matrix operations, and groups of 32 threads run as warps.",
+        "Memory: HBM is the GPU's large main memory. Shared memory and registers are much smaller storage areas close to the active computation.",
+        "Exam focus: identify each component's job. Tensor Cores compute; HBM stores data; an SM schedules and executes thread blocks."
+      ],
+      "commonMistake": "Do not treat CUDA Cores, Tensor Cores, and HBM as competing products. They are different parts of one GPU: general compute, matrix compute, and memory.",
       "body": [
         "A GPU is a chip designed to perform many similar operations in parallel. CPUs have fewer, more complex cores; GPUs have many simpler execution units. Matrix multiplication is common in AI, so this parallel design makes GPUs useful for AI workloads.",
         "A GPU contains Streaming Multiprocessors (SMs). Each SM has CUDA cores, Tensor Cores, registers, and shared memory, and hardware schedules thread blocks onto SMs. Threads execute in groups of 32 called warps; threads in a warp execute the same instruction together. NVIDIA warps have 32 threads; AMD wavefronts commonly have 64.",
@@ -67,11 +97,19 @@ export default {
         "DEP-126"
       ],
       "title": "GPU Generations & Number Precisions (FP32, TF32, FP16, BF16, INT8, FP8)",
+      "plain": "GPU names tell you the generation: V100 is Volta, A100 is Ampere, H100 is Hopper, and B200 is Blackwell. Precision tells you how much space one number uses. Smaller formats usually make a model faster and use less memory, but they can lose some accuracy. For the exam, remember the generation order and that H100 supports native FP8 while A100 does not.",
+      "internGuide": [
+        "Problem: storing every model number in FP32 uses a lot of memory and bandwidth. Smaller formats can reduce both.",
+        "Memory rule: FP32 uses 4 bytes, FP16/BF16 use 2, FP8/INT8 use 1, and 4-bit formats use about half a byte per raw weight.",
+        "Generation map: V100–Volta, A100–Ampere, H100–Hopper, B200–Blackwell. Newer generations add better support for lower-precision computation.",
+        "Exam focus: BF16 has a wide numeric range; FP16 has more fraction detail but a smaller range. A100 has no native FP8 Tensor Cores; H100 does."
+      ],
+      "commonMistake": "A smaller format does not automatically make every workload faster. The GPU, kernels, and model must support that format, and accuracy must still be checked.",
       "body": [
         "NVIDIA data-center GPU families indicate their architecture: V100 is Volta, A100 is Ampere, H100 is Hopper, and B200 is Blackwell. Volta introduced Tensor Cores; Ampere added TF32 and BF16 Tensor Core support; Hopper introduced FP8 Tensor Cores and Transformer Engine; Blackwell adds a second-generation Transformer Engine and FP4 support. Do not mix up A100/Ampere and H100/Hopper.",
         "Precision describes how many bits represent a value. FP32 uses 4 bytes; FP16 and BF16 use 2; INT8 and FP8 use 1; INT4 and FP4 use half a byte per value. Lower precision can reduce memory use and increase speed, but may reduce numerical accuracy.",
-        "FP16 and BF16 both use 16 bits. BF16 has the same exponent range as FP32 but fewer mantissa bits (7 versus FP16’s 10), so it can represent very large and very small magnitudes and is less prone to gradient underflow. Ampere TF32 accelerates FP32 matrix multiplication on Tensor Cores while accumulating in FP32; PyTorch FP32 matmuls do not use TF32 by default, and torch.set_float32_matmul_precision(\"high\") enables it.",
-        "Transformer Engine is NVIDIA hardware and software for adapting per-layer scaling so FP8 can be used in training and inference. NeMo and Megatron-LM can use it for FP8 training. A100 has no native FP8 Tensor Cores; it supports options such as INT8 or weight-only INT4 instead. FP8 is supported on Ada Lovelace (L40S), Hopper (H100), and Blackwell (B200) GPUs."
+        "FP16 and BF16 both use 16 bits. BF16 has the same exponent range as FP32 but fewer mantissa bits (7 versus FP16’s 10), so it can represent very large and very small magnitudes and is less prone to gradient underflow. Ampere and later GPUs can accelerate FP32 matrix multiplication internally with TF32 while keeping FP32 outputs. Current PyTorch disables TF32 for matrix multiplication by default; it can be enabled with torch.backends.cuda.matmul.fp32_precision = \"tf32\". The older allow_tf32 flag is being deprecated.",
+        "Transformer Engine is an NVIDIA software library that uses supported GPU hardware and per-layer scaling recipes for low-precision training and inference. NeMo and Megatron-LM can use it for FP8 training. A100 has no native FP8 Tensor Cores; it supports options such as INT8 or weight-only INT4 instead. Native FP8 Tensor Core support is available on GPUs including L40S, H100, and B200."
       ],
       "analogy": "Precision is like a weighing scale. FP32 is a fine jeweller’s scale, FP16/BF16 a regular shop scale, and INT8/FP8 a coarse scale. You do not need jeweller-level precision to weigh 50 kg of rice. BF16 can cover both very large sacks and tiny packets, but gives fewer decimal details.",
       "example": "For a 7-billion-parameter model, approximate weight storage is: FP32, 7B × 4 bytes = 28 GB; FP16/BF16, 7B × 2 = 14 GB; INT8/FP8, 7B × 1 = 7 GB; INT4, 7B × 0.5 = 3.5 GB. Native FP8 requires supported hardware such as H100; A100 users can consider INT8 or weight-only INT4.",
@@ -120,9 +158,17 @@ export default {
         "DEP-142"
       ],
       "title": "Multi-GPU: NVLink, NVSwitch, InfiniBand, GPUDirect RDMA, NCCL, DGX vs HGX",
+      "plain": "When one GPU is not enough, GPUs must share work and exchange data. NVLink and NVSwitch connect GPUs inside one machine; InfiniBand connects different machines. NCCL is the software that coordinates common data-sharing operations between GPUs. DGX is a complete NVIDIA system, while HGX is a GPU platform that other server companies build into their systems.",
+      "internGuide": [
+        "Problem: a large model or training job may need several GPUs, and slow communication can leave expensive GPUs waiting.",
+        "Inside one server, NVLink carries GPU-to-GPU data and NVSwitch connects several GPUs into a fast fabric. Across servers, InfiniBand is a common network choice.",
+        "NCCL is the communication library used for operations such as combining gradients. GPUDirect RDMA lets network transfers reach GPU memory without first copying through CPU memory.",
+        "Exam focus: DGX is a complete NVIDIA system; HGX is a platform used inside partner-built servers. Hardware links and NCCL software are different layers."
+      ],
+      "commonMistake": "NVLink is a link, NVSwitch connects several NVLinks into a fabric, and NCCL is a software library. They operate at different layers.",
       "body": [
         "A large language model may not fit on one GPU, so multiple GPUs must exchange data efficiently. NVLink is a high-speed connection between GPUs inside a server (node), with substantially more bandwidth than PCIe.",
-        "NVSwitch connects GPUs through a switch fabric, enabling an eight-GPU system to communicate all-to-all at NVLink bandwidth. Across nodes or racks, systems can use InfiniBand with RDMA. GPUDirect RDMA transfers data directly between GPU memory and a network adapter, avoiding an intermediate CPU-memory copy and reducing CPU work and latency.",
+        "NVSwitch connects GPUs through an NVLink switch fabric, allowing high-bandwidth all-to-all GPU communication in supported systems. Across nodes or racks, systems can use InfiniBand with RDMA. GPUDirect RDMA transfers data directly between GPU memory and a network adapter, avoiding an intermediate CPU-memory copy and reducing CPU work and latency.",
         "NCCL (NVIDIA Collective Communications Library) implements operations such as all-reduce, all-gather, reduce-scatter, and broadcast. Data-parallel training uses all-reduce to combine gradients; NCCL is PyTorch Distributed’s default GPU backend. For a collective that hangs, inspect NCCL_DEBUG=INFO logs, selected interface and topology, NCCL_SOCKET_IFNAME, firewall rules, and InfiniBand connectivity. A precision change will not fix a connectivity failure.",
         "DGX is a complete NVIDIA-built AI system with software and support. HGX is a multi-GPU baseboard platform that server partners such as Dell and Supermicro integrate into their systems. Tensor parallelism communicates within every layer, so keep it inside a fast NVLink node when possible; use pipeline or data parallelism across nodes. For example, use TP=8 on a node and PP=2 across two nodes."
       ],
@@ -183,6 +229,14 @@ export default {
         "DEP-097"
       ],
       "title": "CUDA, cuDNN, cuBLAS & RAPIDS (cuDF, cuML, Spark, XGBoost, cuVS)",
+      "plain": "CUDA is the base platform that lets software use an NVIDIA GPU. cuBLAS speeds up matrix maths, and cuDNN provides operations used by deep-learning models. RAPIDS moves familiar data-science work to the GPU: cuDF is similar to pandas, cuML is similar to scikit-learn, and cuVS handles vector search. PyTorch and other frameworks call these lower-level tools for you.",
+      "internGuide": [
+        "Start with the stack: application code uses a framework such as PyTorch; the framework calls CUDA libraries; CUDA communicates with the NVIDIA GPU and driver.",
+        "Library roles: cuBLAS handles matrix algebra, cuDNN provides deep-learning operations, and NCCL handles communication between GPUs.",
+        "RAPIDS roles: cuDF is for dataframes, cuML is for machine-learning algorithms, cuGraph is for graph analytics, and cuVS is for vector search.",
+        "Exam focus: choose the library that matches the job. Do not choose cuDNN for multi-GPU communication or NCCL for dataframe processing."
+      ],
+      "commonMistake": "CUDA is not the same thing as PyTorch. CUDA is the lower-level NVIDIA platform; PyTorch is a framework that can use CUDA and its libraries.",
       "body": [
         "CUDA is NVIDIA’s parallel-computing platform and programming model, including language extensions, the nvcc compiler, runtime and driver APIs, and libraries. PyTorch is a framework that uses CUDA and its libraries underneath.",
         "cuBLAS implements dense linear algebra and GEMM; cuDNN provides deep-neural-network primitives such as convolutions, normalization, and attention. Frameworks call these libraries. Remember: cuBLAS is general linear algebra, cuDNN is neural-network operations, and NCCL communicates between GPUs.",
@@ -249,6 +303,14 @@ export default {
         "DEP-111"
       ],
       "title": "NGC, NVIDIA AI Enterprise, NeMo & Megatron-LM",
+      "plain": "These products solve different problems. NGC is a catalog where you obtain NVIDIA containers, models, and tools. NVIDIA AI Enterprise is the supported software platform for organizations running AI in production. NeMo helps build and customize generative-AI models, while Megatron-LM focuses on training very large transformer models across many GPUs.",
+      "internGuide": [
+        "NGC answers 'where do I get NVIDIA software and model containers?' It is a catalog and registry, not the machine that runs them.",
+        "NVIDIA AI Enterprise answers 'how do we get supported NVIDIA AI software for production?' It adds an enterprise software and support offering.",
+        "NeMo helps prepare data, train, customize, evaluate, and protect generative-AI applications. Megatron-Core supplies techniques for training very large transformer models across GPUs.",
+        "Exam focus: distinguish distribution, support, model development, and distributed training. These names are related but are not substitutes for one another."
+      ],
+      "commonMistake": "NGC is a catalog and registry, not a cloud service that runs your workload. You still need local, data-center, or cloud compute.",
       "body": [
         "The NGC catalog is NVIDIA’s tested software hub, with GPU-optimized containers (including PyTorch, NeMo, and Triton), pretrained models, Helm charts, and other resources. Images come from nvcr.io. NGC PyTorch images package compatible, tested CUDA, cuDNN, NCCL, and PyTorch versions, often with year-month tags. NGC is not a managed Kubernetes service: run its contents on your own infrastructure or cloud, and still provide a host driver.",
         "NVIDIA AI Enterprise is a commercially licensed, supported software suite for production, including NVIDIA AI frameworks and tools, microservices such as NIM, security updates, and enterprise support. It is software, not hardware, and is not a free fork.",
@@ -317,6 +379,14 @@ export default {
         "DEP-102"
       ],
       "title": "LLM Serving: Prefill vs Decode, TTFT, TPOT, Throughput, Streaming, Speculative Decoding",
+      "plain": "An LLM request has two main stages. Prefill reads the user's prompt, and decode produces the answer one token at a time. TTFT measures how long the user waits for the first token; TPOT measures the time between later tokens; throughput measures how much total work the server finishes. Streaming shows tokens as they arrive, while speculative decoding tries to produce them faster.",
+      "internGuide": [
+        "Prefill reads all prompt tokens and creates their KV cache. A longer prompt usually increases the wait before the first output token.",
+        "Decode generates output tokens one step at a time. It repeatedly reads model weights and the growing KV cache.",
+        "User metrics: TTFT measures the wait for the first token; TPOT measures the gap between later tokens. System throughput measures total tokens or requests completed per second.",
+        "Exam focus: streaming changes when the user sees tokens, not how fast the model computes them. Larger batches can raise throughput while making an individual request wait longer."
+      ],
+      "commonMistake": "Streaming improves what the wait feels like, but it does not by itself make the model calculate tokens faster.",
       "body": [
         "LLM generation has two stages. During prefill, the model processes prompt tokens in parallel, fills the KV cache, and produces the first output token. During decode, it generates one token at a time. Prefill is often compute-bound; batch-one decode is often memory-bandwidth-bound because each step reads model weights from HBM for relatively little computation.",
         "TTFT (Time To First Token) is the time from request submission to the first token, influenced mainly by prefill and queueing. TPOT (Time Per Output Token), also called inter-token latency, is the average gap between generated tokens after the first: (total latency − TTFT) ÷ (tokens − 1).",
@@ -381,10 +451,18 @@ export default {
         "DEP-145"
       ],
       "title": "Batching, KV Cache & GPU Memory Calculations",
+      "plain": "Batching lets the GPU serve several requests together, which can improve total throughput. The KV cache stores attention information from tokens already processed so the model does not calculate it again for every new token. Larger batches and longer conversations need a larger KV cache. GPU memory must hold the model weights, the KV cache, temporary working memory, and some safety space.",
+      "internGuide": [
+        "Batching combines work from several requests so one model-weight read helps process more than one sequence.",
+        "Static batching waits for the longest request in a fixed group. Continuous batching removes finished requests and admits new ones while generation continues.",
+        "The KV cache stores attention keys and values for earlier tokens. Its memory grows with layers, KV heads, head size, sequence length, and concurrent requests.",
+        "Exam focus: model weights fitting in VRAM does not prove the service will fit. Include KV cache, activations, workspaces, and memory overhead."
+      ],
+      "commonMistake": "Weight memory is only the starting point. A model whose weights fit can still run out of memory because of KV cache, activations, workspaces, or concurrent requests.",
       "body": [
         "Batching reuses each model-weight read across several sequences, improving throughput. Static batching keeps a fixed group until its longest sequence finishes, leaving unused slots when short answers end. Continuous (in-flight) batching removes finished sequences and admits new requests each decode step, keeping the GPU busier.",
         "The KV cache stores keys and values from previous tokens for every attention layer, so they need not be recomputed for each new token. Its size grows linearly with sequence length and batch size. Paged KV cache divides storage into fixed-size blocks tracked by a block table, reducing fragmentation and avoiding allocation for a sequence’s maximum length in advance.",
-        "Approximate weight memory is parameter count × bytes per parameter: FP32=4, FP16/BF16=2, INT8/FP8=1, INT4=0.5. Thus 13B BF16 weights need 13 × 2 = 26 GB; 8B INT4 needs 8 × 0.5 = 4 GB. These figures exclude KV cache and activations. Inference does not need training optimizer states.",
+        "Raw weight memory is approximately parameter count × bytes per parameter: FP32=4, FP16/BF16=2, INT8/FP8=1, INT4=0.5. Thus 13B BF16 weights need about 13 × 2 = 26 GB; 8B INT4 raw weights need about 8 × 0.5 = 4 GB. Real quantized models also store scales and metadata, so actual use is slightly higher. These figures exclude KV cache, activations, and runtime workspaces. Inference does not need training optimizer states.",
         "KV bytes per token = 2 (key and value) × layers × KV heads × head dimension × bytes per value. Multiply by sequence length and concurrent sequences. Do not omit the factor of 2 or substitute query-head count for KV-head count in GQA (for example, 32 query heads but 8 KV heads). Weight-only INT4 such as AWQ can help batch-one, memory-bound decode; large compute-bound prefill may benefit less. Chunked prefill divides long prompts into pieces so they can be interleaved with decode steps. Prefix caching can reuse KV cache for a common prompt prefix across requests."
       ],
       "analogy": "Static batching is like a bus that waits for the longest trip before taking new passengers: seats stay empty after short-trip passengers get off. A Colombo city bus with new passengers boarding at each stop resembles continuous batching. Paged KV cache is like selling tickets by seat or block instead of reserving an entire bus for one family.",
@@ -447,10 +525,18 @@ export default {
         "DEP-143"
       ],
       "title": "ONNX & TensorRT: Engines, Profiles, Plugins, INT8 Calibration",
+      "plain": "ONNX is a portable model format. TensorRT takes a model and builds an optimized engine for a particular NVIDIA GPU and a chosen range of input shapes. An optimization profile tells TensorRT which input sizes to support. Plugins add unsupported operations, and INT8 calibration finds suitable number ranges when converting a model to lower precision.",
+      "internGuide": [
+        "ONNX is a standard way to describe a model graph so it can move between supported tools. It is a format, not an inference server.",
+        "TensorRT reads a supported model, combines operations, chooses efficient kernels and precision, and builds an inference engine.",
+        "Dynamic inputs need a profile with minimum, preferred, and maximum shapes. Unsupported operations may need a TensorRT plugin.",
+        "Exam focus: INT8 calibration measures representative activation ranges; it does not retrain weights. Triton serves models, while TensorRT optimizes execution."
+      ],
+      "commonMistake": "ONNX stores a model graph; TensorRT optimizes and runs it; Triton serves models over a network. These are three different jobs.",
       "body": [
         "ONNX (Open Neural Network Exchange) is an open, framework-neutral graph format using standard operators. Export from PyTorch with torch.onnx.export, then use ONNX Runtime or TensorRT. Without dynamic_axes, export can fix batch and sequence dimensions to the example input shape. Mark variable dimensions explicitly. Tracing may capture only the branch taken for data-dependent if/else; use tensor operations such as torch.where, scripting, or the newer Dynamo-based exporter when appropriate. Keep export_params enabled to include weights.",
         "TensorRT is an inference optimizer and runtime. It can fuse layers (for example, GEMM, bias, and activation into one kernel), select precision such as FP16/INT8/FP8, tune kernels for a target GPU, and serialize an engine (.plan). trtexec can build and benchmark an engine from ONNX. TensorRT optimizes inference; Triton is commonly used to serve requests.",
-        "An engine is specialized to GPU architecture and TensorRT version; build it for the target deployment hardware. Dynamic dimensions use an optimization profile with minimum, optimum, and maximum shapes, such as sequence length 1, 256, and 2,048. The optimum shape guides tuning while the supported range remains valid.",
+        "By default, an engine is tied to the TensorRT version and GPU type used to build it, so building on the target deployment hardware is the safest choice. TensorRT also offers explicit version-compatibility and hardware-compatibility build modes, but broader compatibility can reduce performance. Dynamic dimensions use an optimization profile with minimum, optimum, and maximum shapes, such as sequence length 1, 256, and 2,048. The optimum shape guides tuning while the supported range remains valid.",
         "If the ONNX parser does not support an operator, provide/register a TensorRT plugin, often implemented with a CUDA kernel. Post-training INT8 calibration runs representative samples through the network to measure activation ranges and choose scales; it does not train weights. Unrepresentative calibration data can cause clipping or poor resolution."
       ],
       "analogy": "ONNX is like a standard shipping container accepted in many places. TensorRT repacks it to fit a particular GPU truck. An engine built for an A100 may need rebuilding for the target H100 architecture and TensorRT version. INT8 calibration is like measuring real customers before choosing standard clothing sizes.",
@@ -458,7 +544,7 @@ export default {
       "keyPoints": [
         "ONNX is framework-neutral; declare dynamic dimensions when needed.",
         "TensorRT fuses layers, selects precision, tunes kernels, and serializes an engine.",
-        "Build engines for the target GPU architecture and TensorRT version.",
+        "Build for the target GPU and runtime by default; broader compatibility requires explicit build settings.",
         "Profiles set min/opt/max shapes; plugins implement unsupported operators.",
         "INT8 calibration measures activation ranges using representative data."
       ],
@@ -510,6 +596,14 @@ export default {
         "DEP-139"
       ],
       "title": "TensorRT-LLM: In-flight Batching, Paged KV Cache, Memory Fraction",
+      "plain": "TensorRT-LLM is NVIDIA's toolkit for optimizing and running large language models. In-flight batching lets completed requests leave and new requests join without waiting for the whole batch. Paged KV cache manages attention memory in small blocks, reducing wasted space. The memory fraction setting controls how much GPU memory the runtime may reserve for this work.",
+      "internGuide": [
+        "General TensorRT optimizes many model types. TensorRT-LLM adds features specifically needed by autoregressive language-model generation.",
+        "In-flight batching keeps the GPU busy by replacing completed sequences. Paged KV cache allocates attention memory in blocks instead of reserving every sequence's maximum size.",
+        "Tensor parallelism can split model computation across GPUs. The runtime also needs limits for sequence length, tokens, batches, and KV-cache memory.",
+        "Exam focus: TensorRT-LLM is an inference library, not a training framework. Reserving more KV memory supports concurrency but leaves less VRAM for other models."
+      ],
+      "commonMistake": "TensorRT-LLM is for LLM inference, not training. It adds LLM-specific runtime features on top of TensorRT concepts.",
       "body": [
         "General TensorRT does not provide all the features needed for autoregressive LLM generation, such as KV-cache management, token-level batching, and multi-GPU sharding. TensorRT-LLM is an inference library with optimized attention kernels, paged KV cache, in-flight batching, and tensor parallelism; it is not a training tool.",
         "A common workflow converts Hugging Face weights to a TensorRT-LLM checkpoint, optionally quantizes, builds an engine with trtllm-build, and serves it through Triton’s tensorrtllm backend. Higher-level LLM APIs can automate parts of this workflow. The backend provides in-flight batching and KV-cache management. Multi-LoRA serving can keep one base model loaded, select a LoRA adapter for each request, and mix adapters in a batch when supported.",
@@ -563,6 +657,14 @@ export default {
         "DEP-144"
       ],
       "title": "Triton Inference Server: Model Repository, config.pbtxt, Batching, Ports",
+      "plain": "Triton Inference Server is a server that exposes trained models through network APIs. Models are placed in a model repository, and config.pbtxt describes inputs, outputs, versions, batching, and instance settings. Clients send requests using HTTP or gRPC. Dynamic batching can combine nearby requests so the GPU works more efficiently.",
+      "internGuide": [
+        "Triton's job is serving: it loads models and lets applications call them through HTTP or gRPC.",
+        "The model repository holds a folder per model, numeric version folders, model files, and usually config.pbtxt.",
+        "Dynamic batching waits briefly to combine independent requests. instance_group controls how many model instances run and where they run.",
+        "Exam focus: more instances means more model copies and more memory; it does not split one model across GPUs. Default ports are 8000 HTTP, 8001 gRPC, and 8002 metrics."
+      ],
+      "commonMistake": "Triton Inference Server is not OpenAI Triton, the GPU-kernel programming language. They share a name but are different projects.",
       "body": [
         "Triton Inference Server is an open-source multi-framework server that serves TensorRT, ONNX Runtime, PyTorch, and Python backend models over HTTP or gRPC, with dynamic batching and concurrent model execution. OpenAI Triton, the GPU-kernel language, is a different project. Default ports: 8000 HTTP/REST, 8001 gRPC, and 8002 Prometheus metrics.",
         "A model repository uses <repository>/<model-name>/config.pbtxt and numeric version folders, such as models/llm_encoder/config.pbtxt and models/llm_encoder/1/model.plan. When max_batch_size > 0, Triton adds an implicit batch dimension before the configured dims; dims [-1] therefore represents [batch, seq_len]. With max_batch_size=0 there is no implicit batch dimension and Triton does not batch requests.",
@@ -635,6 +737,14 @@ export default {
         "DEP-148"
       ],
       "title": "Triton Advanced: Sequence Batcher, Decoupled, Ensembles vs BLS, Ops Features",
+      "plain": "Advanced Triton features control requests that need more than one simple model call. The sequence batcher keeps related requests in the correct order and state. Decoupled models can send multiple responses for one request. Ensembles define a fixed pipeline of models, while Business Logic Scripting is used when the control flow must be decided in code.",
+      "internGuide": [
+        "Use sequence batching when several requests belong to one stateful sequence, such as consecutive chunks from one audio stream.",
+        "Use decoupled transaction mode when one request may produce several responses, such as streamed output.",
+        "Use an ensemble for a fixed pipeline. Use Business Logic Scripting when Python code must branch, loop, or choose which model to call.",
+        "Exam focus: response cache is not KV cache. It reuses an entire result for identical inputs, while an LLM KV cache stores attention state."
+      ],
+      "commonMistake": "Use dynamic batching for independent stateless requests and sequence batching for related stateful requests. They are not interchangeable.",
       "body": [
         "The sequence batcher is for stateful models, such as streaming speech models that preserve hidden state across audio chunks. A correlation ID routes requests in one sequence to the same model instance, with start/end signals. The dynamic batcher treats requests as independent and may send them to different instances. By default Triton returns one response per request; model_transaction_policy { decoupled:true } permits zero or multiple responses, useful for token-by-token streaming over gRPC or a supported streaming endpoint.",
         "An ensemble links several models as a static directed acyclic graph (DAG), such as Python tokenizer → TensorRT encoder → postprocess. The client makes one call and intermediate tensors stay server-side; an ensemble cannot branch on data or loop. BLS (Business Logic Scripting) calls other Triton models from a Python backend and supports conditionals and loops. A Python backend model.py defines TritonPythonModel methods initialize, execute, and finalize.",
@@ -709,9 +819,17 @@ export default {
         "DEP-149"
       ],
       "title": "NVIDIA NIM: Optimized Inference Microservices",
+      "plain": "NVIDIA NIM packages a model, an optimized inference engine, and an API into a ready-to-run container. It reduces the setup work needed to serve a supported model. You still need suitable NVIDIA hardware, enough GPU memory, and deployment monitoring. Think of NIM as packaged model serving, not as a new model-training method.",
+      "internGuide": [
+        "NIM reduces deployment setup by packaging model-serving software, a standard API, and supported runtime configurations in a container.",
+        "At startup, an LLM or VLM NIM chooses a compatible profile based on the image, backend, precision, GPU memory, and parallelism requirements.",
+        "An application can call an LLM NIM through OpenAI-compatible endpoints, but the exact model name and available profiles come from that NIM image.",
+        "Exam focus: NIM is the packaged service; Triton is the flexible multi-framework server; TensorRT-LLM is an LLM inference library that may be used underneath."
+      ],
+      "commonMistake": "NIM is a packaged inference service, not a model and not a training framework. The container still consumes real GPU memory and needs operations work.",
       "body": [
         "NVIDIA NIM (NVIDIA Inference Microservice) packages a model, optimized inference engine, and standard API in a prebuilt container. An LLM NIM exposes OpenAI-compatible routes such as /v1/chat/completions and /v1/models, so an existing OpenAI Python client can often point to the NIM base URL, such as http://localhost:8000/v1, and use the NIM model name.",
-        "At startup an LLM NIM selects an optimized profile (engine and settings) suited to the detected GPU and configuration, such as tensor-parallel layout; if no matching profile exists, it may use a generic backend. You do not need to build the engine yourself. LLM NIM and TensorRT-LLM support multi-LoRA serving, selecting an adapter per request while sharing a base model.",
+        "At startup, current LLM and VLM NIM containers choose one compatible profile from a manifest. A profile identifies the backend, precision, tensor/pipeline parallel layout, memory needs, and optional LoRA support. Depending on the container, the backend can be TensorRT-LLM, vLLM, or SGLang. If model weights fit but the full context does not, a lower maximum sequence length may work; if the weights do not fit, choose more GPUs or a smaller/quantized profile. Use list-model-profiles to inspect the exact choices for that image version.",
         "NIM images are in the NGC registry nvcr.io. Authenticate with docker login nvcr.io and provide NGC_API_KEY to download authorized model assets. The host needs a compatible driver and container toolkit, not necessarily the full CUDA toolkit. If a reverse proxy buffers a stream until completion, disable buffering (for example, proxy_buffering off in NGINX).",
         "NIM is a packaged, optimized, supported model service with a standard API for quick deployment. Triton is more flexible for custom mixed pipelines, such as an ONNX vision model, Python preprocessing, and XGBoost in one ensemble. Both are part of NVIDIA AI Enterprise."
       ],
@@ -766,6 +884,14 @@ export default {
         "DEP-150"
       ],
       "title": "Scaling LLM Serving: Little's Law, Replicas, Load Balancing, Autoscaling",
+      "plain": "Scaling means keeping the service responsive as more users arrive. A load balancer spreads requests across model replicas, and autoscaling changes the number of replicas when demand changes. Little's Law connects three ideas: requests in the system, arrival rate, and time spent in the system. Measure queue time, token speed, GPU use, and memory before deciding that adding GPUs is the correct fix.",
+      "internGuide": [
+        "First load-test one replica and record the traffic it can handle while meeting TTFT and TPOT targets. That becomes the capacity unit for planning replicas.",
+        "Little's Law estimates average concurrency: requests per second multiplied by average seconds per request. Concurrency helps estimate queues and KV-cache demand.",
+        "Load balancers distribute requests. Autoscalers add or remove replicas, but model startup is slow because images, weights, engines, and warmup take time.",
+        "Exam focus: do not scale from GPU utilization alone. Watch queue depth, tail latency, errors, KV-cache pressure, and tested per-replica capacity."
+      ],
+      "commonMistake": "High GPU utilization alone does not tell you whether users are waiting. Scale from service measurements such as queue depth, TTFT, TPOT, errors, and KV-cache pressure.",
       "body": [
         "Little’s law relates average in-flight requests to arrival rate and time in the system: L = λ × W. L is concurrency, λ is requests per second, and W is average seconds per request. Use it to estimate concurrency and plan batch size and KV-cache capacity; multiply rate by time.",
         "Estimate replicas by dividing peak traffic × (1 + headroom) by the requests per second one replica can handle within its SLO, then round up. Choose batch settings from load tests that meet latency SLOs while maximizing throughput. If concurrency rises but throughput flattens and latency doubles, the server is saturated.",
@@ -848,8 +974,16 @@ export default {
         "DEP-146"
       ],
       "title": "GPU Operations: MIG, GPU Operator, DCGM, nvidia-smi, Nsight, Jetson",
+      "plain": "These tools operate and troubleshoot GPUs. nvidia-smi gives a quick view of GPU use, memory, temperature, and processes; DCGM provides monitoring and health information for data-center GPUs. MIG divides a supported GPU into isolated GPU instances, and GPU Operator helps manage GPU software in Kubernetes. Nsight is for detailed performance profiling, while Jetson is NVIDIA's small edge-computing platform.",
+      "internGuide": [
+        "For a quick check, use nvidia-smi to see processes, memory, utilization, power, and temperature. For fleet monitoring and health, use DCGM and DCGM Exporter.",
+        "MIG divides supported GPUs into isolated hardware instances. Time-slicing shares GPU time but does not provide the same memory or fault isolation.",
+        "GPU Operator installs and manages the Kubernetes GPU software stack. It does not deploy your inference application for you.",
+        "Exam focus: Nsight Systems finds timeline gaps across the application; Nsight Compute investigates an individual kernel. Jetson targets power-efficient edge systems."
+      ],
+      "commonMistake": "MIG partitions supported hardware resources; time-slicing only shares time. Time-slicing does not provide MIG's memory and fault isolation.",
       "body": [
-        "MIG (Multi-Instance GPU) partitions an A100 or H100 into up to seven isolated instances with dedicated SMs, L2 cache, and memory, reducing interference and preventing tenants from reading one another’s memory. An A100 80 GB supports at most seven 1g.10gb instances, not eight: it has seven compute slices. Time-slicing shares one GPU across pods without memory or fault isolation; one pod can consume memory or harm another’s latency. CUDA MPS runs kernels from several processes concurrently but provides weaker isolation than MIG.",
+        "MIG (Multi-Instance GPU) partitions a supported GPU into isolated instances with dedicated compute and memory resources, reducing interference and preventing tenants from reading one another’s memory. Support now includes selected Ampere, Hopper, and Blackwell data-center and professional GPUs; the maximum instance count depends on the exact product. A100 and H100 products support up to seven instances, while some RTX PRO Blackwell products support fewer. Time-slicing shares one GPU across pods without memory or fault isolation; one pod can consume memory or harm another’s latency. CUDA MPS runs kernels from several processes concurrently but provides weaker isolation than MIG.",
         "In Kubernetes, the NVIDIA device plugin advertises nvidia.com/gpu; a pod requests an integer such as 1, not 0.5. Use MIG or time-slicing for sharing. GPU Operator automates the node GPU stack: driver, container toolkit, device plugin, GPU Feature Discovery, DCGM Exporter, and MIG manager. Applications such as Triton are deployed separately.",
         "DCGM monitors, checks, and diagnoses fleet GPU health and exports utilization, memory, power, and errors to Prometheus. For uncorrectable ECC or repeated Xid errors, cordon/drain the node, run diagnostics, and investigate hardware. nvidia-smi quickly shows memory, utilization, temperature, power, and processes. GPU-Util measures the fraction of time at least one kernel ran, so even small kernels can show 100%; it does not prove full GPU capacity is used.",
         "Nsight Systems (nsys) shows an application-wide timeline of CPU threads, CUDA calls, kernels, copies, and idle gaps; start profiling there. Nsight Compute (ncu) examines one kernel’s occupancy, memory throughput, and stalls. Jetson Orin is an embedded, power-efficient edge computer. Its CPU and GPU share unified physical memory, so OS, weights, and KV cache share one budget; small or quantized models are often appropriate. Edge fits disconnected, privacy-sensitive, or tight-latency locations; cloud suits very large models and traffic spikes. nvidia-smi topo -m shows GPU interconnect topology, not utilization."
@@ -857,7 +991,7 @@ export default {
       "analogy": "MIG is like dividing a large house into seven annexes with separate doors and meters. Time-slicing is like sharing one room by the hour: the previous tenant’s belongings can still cause trouble. GPU-Util at 100% is like a shop’s “open” sign; it does not mean the shop is full. Nsight Systems is CCTV footage; Nsight Compute is slow-motion study of one cook.",
       "example": "For 20 tenants needing under 10 GB each and isolation, an A100 80 GB can provide at most seven 1g.10gb MIG instances, so multiple GPUs are required. To sample GPU memory and utilization every five seconds, use nvidia-smi --query-gpu=memory.used,utilization.gpu --format=csv -l 5. On CUDA OOM, inspect running processes before changing the model.",
       "keyPoints": [
-        "MIG provides hardware isolation in up to seven instances; time-slicing does not isolate memory.",
+        "MIG provides hardware isolation; supported profiles and maximum instance counts depend on the GPU model.",
         "GPU Operator automates the node driver and GPU components, not application deployment.",
         "DCGM supports fleet monitoring; nvidia-smi is a quick snapshot.",
         "100% GPU-Util does not mean all compute is saturated; use nsys then ncu.",
@@ -921,6 +1055,14 @@ export default {
         "DEP-131"
       ],
       "title": "PyTorch Inference: eval(), no_grad, Devices, Autocast, Timing, OOM",
+      "plain": "For inference, put the model in evaluation mode with eval() and disable gradient recording with inference_mode() or no_grad(). Move both the model and input tensors to the same device. Autocast can use a lower precision to improve speed and memory use on supported hardware. If an out-of-memory error occurs, reduce batch size or sequence length and check what else is using GPU memory.",
+      "internGuide": [
+        "Call model.eval() so dropout and batch-normalization layers use inference behavior. This does not disable gradient tracking.",
+        "Use torch.inference_mode() or torch.no_grad() to stop building an autograd graph. Keep the model and all input tensors on the same device.",
+        "Use autocast only with a supported device and precision, and measure whether it improves speed without unacceptable accuracy loss.",
+        "Exam focus: CUDA work is asynchronous. Synchronize or use CUDA events for timing; otherwise a Python timer may report only launch time."
+      ],
+      "commonMistake": "model.eval() and no_grad() do different jobs. Most inference code needs both evaluation behavior and disabled gradient tracking.",
       "body": [
         "model.eval() changes layer behavior for inference: dropout is disabled and batch normalization uses running statistics. It does not stop gradients. torch.no_grad() prevents autograd graph recording, saving activation memory and compute, but does not change layer behavior. Inference usually needs both. torch.inference_mode() is stricter and can be faster, but its tensors cannot later be used by autograd.",
         "Tokenizers commonly return CPU tensors. If the model is on CUDA, move inputs to the same device; PyTorch does not move them automatically. Tensor x.to(\"cuda\") returns a new tensor, so assign it back; nn.Module.to() modifies the module in place. Device-agnostic code can choose cuda when torch.cuda.is_available(), otherwise cpu.",
@@ -994,6 +1136,14 @@ export default {
         "DEP-134"
       ],
       "title": "PyTorch & Hugging Face Tooling: Autograd, DataLoader, torch.compile, Accelerate, Checkpoints",
+      "plain": "PyTorch autograd calculates gradients during training, and DataLoader prepares batches of data. torch.compile can optimize model execution, while Hugging Face Accelerate helps run similar training code across different hardware setups. A checkpoint saves enough training state to continue later. Always distinguish a model's learned weights from the optimizer state and other information needed to resume training.",
+      "internGuide": [
+        "Dataset returns individual samples; DataLoader creates batches and can prepare data in worker processes so the GPU waits less.",
+        "Autograd records operations and computes gradients during backward(). Gradients accumulate until the training loop clears them.",
+        "torch.compile can fuse and optimize execution but has startup cost and may recompile for new shapes. Accelerate helps adapt a training loop to different hardware setups.",
+        "Exam focus: inference weights are not a full training checkpoint. Resuming training usually also needs optimizer, scheduler, step, scaler, and random state."
+      ],
+      "commonMistake": "Model weights alone are enough for inference, but usually not enough to resume training exactly. A training checkpoint also needs optimizer, scheduler, step, and often random-number state.",
       "body": [
         "A Dataset defines how to get a sample (__len__, __getitem__); DataLoader wraps it into batches with options such as batch_size, shuffle, collate_fn, and num_workers. If Nsight Systems shows GPU idle gaps while the CPU decodes or augments images, the GPU is starved for data. Worker processes (num_workers>0) prepare batches in parallel. pin_memory=True uses page-locked host memory; pairing it with .to(\"cuda\", non_blocking=True) can overlap copies with compute.",
         "torch.compile(model) uses TorchDynamo to capture Python operations as graphs and a backend such as TorchInductor to generate fused kernels. Initial calls are slow while compiling. New shapes can break guards and trigger costly recompilation; consider dynamic=True or padding to fixed-length buckets and warming them up. CUDA Graphs capture a decode step so many kernel launches can be replayed together, reducing CPU launch overhead.",

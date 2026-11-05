@@ -306,6 +306,19 @@ function PhasePage({ phase, learned, scores, setScores }) {
         {!isCourse && <p>{phase.summary}</p>}
         {isCourse && phase.prereq && <Markdown className="muted" src={`**Before you start:** ${phase.prereq}`} />}
         {isCourse && phase.intro && <Markdown src={phase.intro} />}
+        {phase.learningPath?.length > 0 && (
+          <div className="learning-path">
+            <h2>How these topics fit together</h2>
+            <p className="muted">Study these stages in order. Each stage gives you the background needed for the next one.</p>
+            {phase.learningPath.map(step => (
+              <div className="box" key={step.title}>
+                <h3>{step.title}</h3>
+                <p><strong>Learn:</strong> {step.topics}</p>
+                <p className="muted"><strong>Why now:</strong> {step.why}</p>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="row">
           <div className="progress-bar" style={{ flex: 1, minWidth: 160 }}><div style={{ width: (total ? (done / total) * 100 : 0) + '%' }} /></div>
           <span className="muted num" style={{ fontSize: '0.85rem' }}>{done}/{total} learned</span>
@@ -376,6 +389,7 @@ function TopicPage({ phase, topic, learned, setLearned }) {
   const nextPhase = !next && phases[phaseIdx + 1]
   const key = topicKey(phase.id, topic.id)
   const isDone = !!learned[key]
+  const isExamGuide = phase.track === 'cert'
   const Lab = topic.lab && labs[topic.lab]
   useEffect(() => { window.scrollTo(0, 0) }, [key])
   return (
@@ -388,15 +402,57 @@ function TopicPage({ phase, topic, learned, setLearned }) {
         <div className="eyebrow">Topic {idx + 1} / {phase.topics.length}</div>
         <h1>{topic.title}</h1>
         {topic.md && <Markdown src={topic.md} />}
-        {topic.body?.length > 0 && (
+        {isExamGuide && <p className="muted">Start with the short explanation. Open the exam detail when the main idea is clear.</p>}
+        {isExamGuide && topic.plain && (
+          <div className="box topic-purpose">
+            <h2>What this topic is really about</h2>
+            <p>{topic.plain}</p>
+            {topic.commonMistake && <p className="topic-warning"><strong>Common confusion:</strong> {topic.commonMistake}</p>}
+          </div>
+        )}
+        {isExamGuide && topic.internGuide?.length > 0 && (
+          <div className="box intern-guide">
+            <h2>Learn it step by step</h2>
+            <ol>{topic.internGuide.map((step, i) => <li key={i}>{step}</li>)}</ol>
+          </div>
+        )}
+        {isExamGuide && <SiBox text={topic.si} />}
+        {!isExamGuide && topic.body?.length > 0 && (
           <div className="prose">
             {topic.body.map((para, i) => <p key={i}>{para}</p>)}
           </div>
         )}
-        <SiBox text={topic.si} />
+        {!isExamGuide && <SiBox text={topic.si} />}
       </section>
 
-      {(topic.analogy || topic.example) && (
+      {isExamGuide && (topic.analogy || topic.example || topic.keyPoints?.length > 0) && (
+        <section className="stack">
+          <div className="eyebrow">Quick lesson</div>
+          {topic.analogy && (
+            <div className="box analogy"><h3>💡 Main idea</h3><p>{topic.analogy}</p></div>
+          )}
+          {topic.example && (
+            <div className="box example"><h3>🧪 Example</h3><p>{topic.example}</p></div>
+          )}
+          {topic.keyPoints?.length > 0 && (
+            <div className="box keys">
+              <h3>✅ Remember these points</h3>
+              <ul>{topic.keyPoints.map((k, i) => <li key={i}>{k}</li>)}</ul>
+            </div>
+          )}
+        </section>
+      )}
+
+      {isExamGuide && topic.body?.length > 0 && (
+        <details className="box lesson-details">
+          <summary>Open the detailed exam explanation</summary>
+          <div className="prose">
+            {topic.body.map((para, i) => <p key={i}>{para}</p>)}
+          </div>
+        </details>
+      )}
+
+      {!isExamGuide && (topic.analogy || topic.example) && (
         <section className="stack">
           {topic.analogy && (
             <div className="box analogy"><h3>💡 Think of it simply</h3><p>{topic.analogy}</p></div>
@@ -422,7 +478,7 @@ function TopicPage({ phase, topic, learned, setLearned }) {
         </section>
       )}
 
-      {topic.keyPoints?.length > 0 && (
+      {!isExamGuide && topic.keyPoints?.length > 0 && (
         <div className="box keys">
           <h3>✅ Remember</h3>
           <ul>{topic.keyPoints.map((k, i) => <li key={i}>{k}</li>)}</ul>

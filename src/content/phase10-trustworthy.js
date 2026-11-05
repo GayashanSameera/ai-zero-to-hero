@@ -10,6 +10,8 @@ export default {
     {
       id: 'tai-principles',
       title: 'NVIDIA Trustworthy AI Principles: Privacy, Safety & Security, Transparency, Nondiscrimination',
+      plain: "Trustworthy AI is a lifecycle practice: protect data, prevent unsafe behavior, explain important limitations, and evaluate whether outcomes unfairly harm people.",
+      internGuide: ["Privacy governs collection, use, retention, and disclosure of personal or confidential data.","Safety and security cover accidental harm, adversarial misuse, robust operation, and controlled access to tools and infrastructure.","Transparency communicates data, capabilities, limitations, evaluation, and whether a person is interacting with AI.","Exam focus: nondiscrimination requires measured outcomes and mitigation; a general statement that a system is “fair” is not evidence."],
       examRefs: ['TAI-001', 'TAI-002', 'TAI-049', 'TAI-050'],
       si: 'ඔයා AI එකක් හදනකොට හොඳට වැඩ කරනවාද කියන එක විතරක් බලලා මදි. Colombo බැංකුවක loan එකක් දෙන model එකක් ගැන හිතන්න; හැමෝගේම තොරතුරු රහසිගතව තියාගෙන, තීරණය පැහැදිලි කරලා, හැම පළාතකම අයට සාධාරණව සලකන්න ඕනේ. හොඳම accuracy තිබුණත් එක් කණ්ඩායමකට 70%යි, තව කණ්ඩායමකට 95%යි නම් ඒ වෙනස හොයන්න ඕනේ. ඔයාට privacy, safety and security, transparency, nondiscrimination කියන මූලධර්ම හතර මතක තියාගන්න පුළුවන්.',
       body: [
@@ -39,6 +41,8 @@ export default {
     {
       id: 'bias-sources',
       title: 'Sources of Bias: Sampling, Historical, Label, Measurement, Representation, Amplification',
+      plain: "Bias can enter through the real world, sampling, measurement, labels, features, objectives, deployment, and feedback loops. Identify the source before choosing a mitigation.",
+      internGuide: ["Historical bias reflects existing unequal outcomes even when data is sampled correctly. Sampling or representation bias undercovers important populations.","Measurement bias uses proxies or instruments that have different error across groups; label bias comes from inconsistent or prejudiced targets.","A model can amplify small data imbalances, and deployment can create feedback that changes future training data.","Exam focus: collecting more rows does not fix a biased measurement process, and deleting a protected attribute does not remove correlated proxies."],
       examRefs: ['TAI-003', 'TAI-004', 'TAI-005', 'TAI-006', 'TAI-007', 'TAI-046'],
       si: 'ඔයාගේ කඩේට එන පාරිභෝගිකයන් ගැන survey එකක් දවල් 12ට විතරක් කළොත් රෑට එන අය මඟ හැරෙනවා. ඒකෙන් model එකට මුළු පිරිසම ගැන වැරදි අදහසක් හැදෙන්න පුළුවන්; කණ්ඩායමක් data එකේ අඩු වීමත් ඒ වගේම බලපානවා. පරණ hiring records වල තිබුණු අසාධාරණය අලුත් AI එකත් ඉගෙනගෙන, තවත් වැඩි කරලා පෙන්වන්න පුළුවන්. ඔයා බලන්න ඕනේ data ගත්ත විදිහ, labels දාපු අය, මැනීමට තෝරපු proxy එක සහ predictions වල බලපෑම.',
       body: [
@@ -71,6 +75,8 @@ export default {
     {
       id: 'fairness-metrics',
       title: 'Fairness Metrics: Demographic Parity, Disparate Impact & Four-Fifths Rule, Equal Opportunity, Equalized Odds, Calibration',
+      plain: "Fairness metrics formalize different questions about allocation, error rates, and probability reliability. No metric is universally correct without the decision context.",
+      internGuide: ["Demographic parity compares positive decision rates across groups; the four-fifths ratio flags a selection-rate ratio below 0.8 as a screening indicator, not automatic proof of legality.","Equal opportunity compares true-positive rates, while equalized odds compares both true-positive and false-positive rates.","Group calibration asks whether the same predicted probability corresponds to the same observed outcome frequency across groups.","Exam focus: compute metrics by group and intersection, include uncertainty, and choose them from the harms caused by false positives and false negatives."],
       examRefs: ['TAI-008', 'TAI-009', 'TAI-010', 'TAI-048', 'TAI-053', 'TAI-054', 'TAI-055', 'TAI-056'],
       si: 'ඔයා Colombo හා Kandy වල loan applicants ලාගේ approval rates බලනවා කියලා හිතන්න. Demographic parity එකෙන් හැම කණ්ඩායමකටම approve වෙන хувь адилද කියලා шалගන්නවා; equal opportunity එක සුදුසු අයගෙන් කී දෙනෙක් approve කළාද කියලා බලනවා. උදාහරණයක් ලෙස 200 දෙනාගෙන් 50 දෙනෙක් සහ 150 දෙනාගෙන් 30 දෙනෙක් තේරුණොත් rates 25% සහ 20%යි, ratio එක 0.80යි. ඔයාට count එකට count එක සසඳන්න එපා, මුලින් එක් එක් කණ්ඩායමේ අනුපාත හදාගන්න.',
       body: [
@@ -116,6 +122,8 @@ print("Equal opportunity gap:", round(abs(tpr_a - tpr_b), 2))  # 0.1`,
     {
       id: 'fairness-tradeoffs-mitigation',
       title: 'Fairness Impossibility & Mitigation: Pre-, In-, Post-processing, Unawareness, Intersectionality',
+      plain: "Fairness criteria can conflict when group base rates differ, so responsible design requires an explicit trade-off tied to law, policy, and real harms.",
+      internGuide: ["Pre-processing changes data through reweighting, resampling, or representation; in-processing changes the training objective or constraints.","Post-processing changes thresholds or decisions after training, but may be legally or operationally inappropriate in some settings.","Fairness through unawareness fails when location, income, or other features proxy protected attributes.","Exam focus: evaluate intersectional groups because aggregate gender and ethnicity checks can hide harm to a smaller combined group."],
       examRefs: ['TAI-057', 'TAI-058', 'TAI-059', 'TAI-060', 'TAI-113', 'TAI-114', 'TAI-115', 'TAI-116'],
       si: 'ඔයාට කණ්ඩායම් දෙකක base rates වෙනස් නම්, perfect නොවන model එකකට හැම fairness මිනුමක්ම එකවර සමාන කරන්න බැරි වෙන්න පුළුවන්. Data එක train කිරීමට කලින් වෙනස් කළොත් pre-processing, train කරන විට objective එක වෙනස් කළොත් in-processing, output threshold වෙනස් කළොත් post-processing. Cricket team එක තෝරන විට school එක නොබලනවා කිව්වත්, school නමට සම්බන්ධ වෙනත් දත්ත proxy වෙන්න පුළුවන්. ඒ නිසා Colombo සහ වෙනත් දිස්ත්‍රික්කවල ප්‍රතිඵල එකට විතරක් නොවෙයි, කණ්ඩායම් කිහිපයක එකතුව අනුවත් පරීක්ෂා කරන්න.',
       body: [
@@ -148,6 +156,8 @@ print("Equal opportunity gap:", round(abs(tpr_a - tpr_b), 2))  # 0.1`,
     {
       id: 'llm-bias-toxicity-evaluation',
       title: 'Measuring Bias & Toxicity in LLMs: CrowS-Pairs, BBQ, WinoBias, WEAT, RealToxicityPrompts, Moderation Classifiers',
+      plain: "LLM bias and toxicity evaluation uses targeted benchmarks, prompt sets, classifiers, and human review. Each tool measures only a narrow operational definition.",
+      internGuide: ["CrowS-Pairs and WinoBias probe stereotyped preferences; BBQ uses ambiguous and disambiguated question contexts; WEAT measures embedding associations.","RealToxicityPrompts tests toxic continuation risk, while moderation classifiers estimate categories but have false positives and language/domain bias.","Test templates, paraphrases, languages, identities, and decoding settings because one prompt wording is not representative.","Exam focus: benchmark scores do not prove absence of harm; validate classifiers against human labels and inspect subgroup false-positive and false-negative rates."],
       examRefs: ['TAI-047', 'TAI-061', 'TAI-062', 'TAI-063', 'TAI-064', 'TAI-118', 'TAI-119'],
       si: 'ඔයා LLM එකකට ගම්පහ සහ Colombo ගැන එකම වාක්‍ය දෙක දීලා, කුමන එකට වැඩි කැමැත්තක් දක්වනවාද කියලා බලන්න පුළුවන්. ඒ වගේම සාක්ෂි නැති ප්‍රශ්නයකට stereotype එකක් කියනවාද, නැත්නම් “දන්නේ නැහැ” කියනවාද කියලත් පරීක්ෂා කරන්න. Toxicity score එකක් prompt එකකට ලැබුණාම, එකම උත්තරය විතරක් නොවෙයි, වෙනස් උත්තර 25ක් ගෙන නරකම අගය බලන්න පුළුවන්. ඔයාට moderation model එකත් පරීක්ෂා කරන්න ඕනේ, මොකද සමහර dialects හෝ identity වචන වැරදියට toxic කියලා සලකන්න පුළුවන්.',
       body: [
@@ -181,6 +191,8 @@ print("Equal opportunity gap:", round(abs(tpr_a - tpr_b), 2))  # 0.1`,
     {
       id: 'explainability-interpretability',
       title: 'Explainability & Interpretability: SHAP, LIME, Integrated Gradients, Attention, CoT Faithfulness, Probes, SAEs',
+      plain: "Interpretability investigates how a model works; explanation communicates why a particular output or decision occurred. Many methods are approximations rather than causal proof.",
+      internGuide: ["SHAP attributes a prediction using Shapley-value ideas; LIME fits a simple local surrogate around one example.","Integrated Gradients accumulates gradients from a baseline to the input and depends on baseline choice.","Attention maps, probes, chain-of-thought text, and sparse autoencoder features can offer evidence but may not reveal the true causal computation.","Exam focus: test explanation stability and faithfulness, state the method’s scope, and do not present plausible natural-language reasoning as an audit trail."],
       examRefs: ['TAI-038', 'TAI-039', 'TAI-040', 'TAI-098', 'TAI-099', 'TAI-100', 'TAI-101', 'TAI-139', 'TAI-140', 'TAI-141'],
       si: 'ඔයාට එක් loan එකක් ප්‍රතික්ෂේප වුණේ ඇයි කියලා දැනගන්න ඕනේ නම් local explanation එකක් බලන්න; model එක පොදුවේ මොන තොරතුරු භාවිතා කරනවාද කියන්නේ global explanation එකක්. SHAP එකේ contribution එකතු කළාම base value එකෙන් අවසාන prediction එකට යනවා. LIME එක ළඟ උදාහරණ කිහිපයක් හදා සරල model එකකින් තීරණය ආසන්නව පැහැදිලි කරනවා. Attention map එකක් හෝ model එක ලියූ CoT කතාවක් සැබෑ හේතුව බවට සාක්ෂියක් නෙවෙයි.',
       body: [
@@ -215,6 +227,8 @@ print("Equal opportunity gap:", round(abs(tpr_a - tpr_b), 2))  # 0.1`,
     {
       id: 'hallucination-grounding-sycophancy',
       title: 'Hallucination, Grounding, SelfCheckGPT, RAG Faithfulness & Sycophancy',
+      plain: "Hallucination is unsupported or false generated content; grounding requires claims to follow supplied evidence. Sycophancy is agreement with the user rather than evidence.",
+      internGuide: ["RAG can supply current evidence, but retrieval failure, irrelevant context, or instruction injection can still produce unsupported answers.","Faithfulness evaluation splits an answer into claims and checks whether each is supported by context; world factuality is a separate check.","Self-consistency methods such as SelfCheckGPT detect unstable claims across samples but cannot prove a repeated claim is true.","Exam focus: require citations that resolve to actual evidence, allow “insufficient information,” and test prompts containing confident false user assumptions."],
       examRefs: ['TAI-030', 'TAI-031', 'TAI-065', 'TAI-066', 'TAI-150'],
       si: 'ඔයා tuk-tuk රියදුරෙකුගෙන් පාර අහනවා, එයා map එකක් බලන්නේ නැතුව විශ්වාසයෙන් වැරදි පාර කියනවා කියලා හිතන්න; ඒක hallucination එකක් වගේ. RAG එකෙන් උත්තරයට ලේඛන සාක්ෂි දුන්නත්, model එක ඒ ලේඛනය වැරදිව කියවන්න පුළුවන්. එකම ප්‍රශ්නය පස් වතාවක් අහලා වෙන වෙන දින කියනවා නම්, පිළිතුර තහවුරු කරන්න ඕනේ. ඔයා “මම හිතන්නේ මේක වැරදියි” කිව්වම model එක ඇත්ත උත්තරය අතහැරලා එකඟ වෙන එක sycophancy කියලා හඳුන්වනවා.',
       body: [
@@ -245,6 +259,8 @@ print("Equal opportunity gap:", round(abs(tpr_a - tpr_b), 2))  # 0.1`,
     {
       id: 'pii-anonymization',
       title: 'PII Handling: Pseudonymization vs Anonymization, k-Anonymity, Sensitive Data Disclosure, Logging',
+      plain: "Personal data handling starts with minimization: collect, expose, log, and retain only what the task requires. Masking a value is not automatically anonymization.",
+      internGuide: ["Pseudonymization replaces identifiers while keeping a re-linking key; it remains personal data while re-identification is possible.","Anonymization aims to prevent reasonable re-identification, including combinations of quasi-identifiers and auxiliary data.","k-anonymity ensures each quasi-identifier combination appears at least k times but does not prevent attribute disclosure or all linkage attacks.","Exam focus: redact before prompts and logs where possible, apply access and retention controls, and test structured fields plus free text for leakage."],
       examRefs: ['TAI-013', 'TAI-043', 'TAI-051', 'TAI-052', 'TAI-067', 'TAI-148'],
       si: 'ඔයා පාසලේ විභාග පත්‍රවල නම් වෙනුවට index number දාලා, ඒ අංකවලට නම් ගලපන ලැයිස්තුව වෙනම තියාගන්නවා නම් ඒක pseudonymization. ඒ ලැයිස්තුවෙන් ආයෙත් කෙනා හඳුනාගන්න පුළුවන් නිසා දත්ත තවමත් පුද්ගලිකයි. ZIP code සහ උපන් අවුරුද්ද වගේ තොරතුරු එකතු කරලා එක්කෙනෙක් හඳුනාගන්න පුළුවන්; k=5 නම් ඒ විස්තර අවම වශයෙන් පස් දෙනෙකුට පොදු වෙන්න ඕනේ. ඔයාට logs ඕනේ වුණත් PII අඩු කරලා, කවුද බලන්නේද සහ කොච්චර කල් තියාගන්නේද සීමා කරන්න.',
       body: [
@@ -277,6 +293,8 @@ print("Equal opportunity gap:", round(abs(tpr_a - tpr_b), 2))  # 0.1`,
     {
       id: 'differential-privacy',
       title: 'Differential Privacy: Epsilon, Laplace Mechanism, Composition, DP-SGD',
+      plain: "Differential privacy bounds how much one person’s record can change the distribution of released results. It provides a mathematical privacy guarantee under stated assumptions.",
+      internGuide: ["Epsilon controls privacy loss: smaller epsilon gives stronger privacy but usually more noise or lower utility; delta allows a small failure probability in approximate DP.","The Laplace mechanism adds calibrated noise to a numeric query based on its sensitivity and epsilon.","DP-SGD clips each example’s gradient and adds noise to the aggregate; privacy accountants track cumulative loss across steps.","Exam focus: privacy losses compose across repeated releases, and DP does not replace data security, access control, or protection against non-private side channels."],
       examRefs: ['TAI-014', 'TAI-068', 'TAI-069', 'TAI-120', 'TAI-121', 'TAI-122'],
       si: 'ඔයා රෝහලක රෝගීන් 120ක් ගණන් කරනවා, නමුත් එක් කෙනෙක්ගේ සහභාගීත්වය හෙළි නොවෙන්න සුළු noise එකක් එකතු කරනවා කියලා හිතන්න. Laplace ක්‍රමයේ sensitivity 1 සහ ε=0.5 නම් noise scale එක 1 ÷ 0.5 = 2යි. ε අඩු කළොත් privacy වැඩි නමුත් noise වැඩි වෙලා ගණනේ නිවැරදි බව අඩු වෙන්න පුළුවන්. එකම දත්ත ගැන query 10ක් කළොත් ε=0.1 බැගින් එකතු වී මුළු budget එක 1.0 වෙනවා.',
       body: [
@@ -322,6 +340,8 @@ print("total epsilon:", 10 * 0.1)   # 1.0`,
     {
       id: 'privacy-attacks-defenses',
       title: 'Privacy Attacks & Privacy-Preserving Infrastructure: Membership Inference, Extraction, Unlearning, Federated Learning, Confidential Computing',
+      plain: "Models and APIs can leak training information through membership inference, memorized-data extraction, or repeated querying. Defenses combine training, interface, and infrastructure controls.",
+      internGuide: ["Membership inference estimates whether a record was in training; extraction tries to recover memorized examples or model behavior.","Regularization, deduplication, differential privacy, output controls, rate limits, and monitoring reduce different risks but do not provide identical guarantees.","Machine unlearning attempts to remove a record’s influence; exact retraining is strongest but costly, while approximate methods require validation.","Exam focus: federated learning keeps raw data local but gradients can leak; confidential computing protects data during use but does not fix model memorization."],
       examRefs: ['TAI-015', 'TAI-016', 'TAI-017', 'TAI-070', 'TAI-071', 'TAI-072', 'TAI-123', 'TAI-124', 'TAI-125', 'TAI-126', 'TAI-127'],
       si: 'ඔයාගේ model එක රෝගියෙකුගේ record එක train කිරීමට භාවිතා කළාද කියලා පිටතින් අනුමාන කරන්න පුළුවන්; ඒකට membership inference කියනවා. Federated learning එකේ රෝහල්වල raw data එතැනම තියාගෙන model updates යවනවා, නමුත් updates වලින් තොරතුරු හෙළිවෙන්න පුළුවන්. SISA එක data කොටස් කරලා train කරන නිසා මකන්න ඉල්ලූ record එක තිබූ කොටස නැවත train කිරීම ප්‍රමාණවත් විය හැකියි. Confidential computing දත්ත භාවිතා කරන අතරතුර hardware isolation එකකින් ආරක්ෂා කරනවා, ඒත් DP සහ access controls වෙනම අවශ්‍යයි.',
       body: [
@@ -357,6 +377,8 @@ print("total epsilon:", 10 * 0.1)   # 1.0`,
     {
       id: 'prompt-injection',
       title: 'Prompt Injection: Direct vs Indirect, Jailbreak vs Injection, Spotlighting, Dual-LLM, Lethal Trifecta, Markdown Exfiltration',
+      plain: "Prompt injection places untrusted instructions where an agent expects data. Direct injection comes from the user; indirect injection arrives through documents, webpages, emails, or tool output.",
+      internGuide: ["A jailbreak attempts to bypass model policy, while injection tries to alter an application’s intended control flow or tool use; an attack can be both.","Treat external content as untrusted data, separate it from trusted instructions, restrict tools, and require confirmation for consequential actions.","The lethal trifecta combines private data access, untrusted input, and an external communication path, enabling data exfiltration.","Exam focus: delimiters and spotlighting help but are not security boundaries; enforce least privilege and authorization outside the model."],
       examRefs: ['TAI-018', 'TAI-019', 'TAI-037', 'TAI-073', 'TAI-075', 'TAI-128', 'TAI-129', 'TAI-130'],
       si: 'ඔයාගේ email assistant එකට ලැබෙන ලිපියක සැඟවුණු උපදෙස් තිබුණොත්, ඒක indirect prompt injection අවදානමක්. System prompt එකේ “ඒවා නොසලකන්න” කියලා ලිව්වත් සහතික ආරක්ෂාවක් ලැබෙන්නේ නැහැ. ඒ නිසා email එකක් සාරාංශ කරන වෙලාවේ යැවීමේ tool එක වසා තබා, යවන්න කලින් ඔයාගේ අනුමැතිය ගන්න. Private data, විශ්වාස නොකළ ලිපි, සහ පිටතට යැවීමේ හැකියාව තුනම එකට තිබෙනවද කියලා පරීක්ෂා කරන්න.',
       body: [
@@ -389,6 +411,8 @@ print("total epsilon:", 10 * 0.1)   # 1.0`,
     {
       id: 'jailbreaks-red-teaming',
       title: 'Jailbreak Families, Red Teaming Workflow, garak & Attack Success Rate',
+      plain: "Red teaming systematically searches for harmful behavior, policy bypass, data leakage, unsafe tool use, and failures under realistic adversarial variation.",
+      internGuide: ["Attack families include role play, encoding/obfuscation, multi-turn escalation, prompt continuation, multilingual variants, and automated optimization.","Define threat model, harm taxonomy, success criteria, allowed test scope, and safe handling before testing.","Attack success rate is successful attacks divided by attempted attacks under a specified judge; also measure benign false refusals and severity.","Exam focus: tools such as garak automate probes but require validated detectors, manual review, deduplication, and regression tests after mitigation."],
       examRefs: ['TAI-029', 'TAI-076', 'TAI-077', 'TAI-079', 'TAI-090', 'TAI-091', 'TAI-092', 'TAI-138'],
       si: 'ඔයා රතු කණ්ඩායමකින් chatbot එක පරීක්ෂා කරවන්නේ, users ට හානියක් වෙන්න කලින් දුර්වලතා හොයාගන්නයි. මුලින් පරීක්ෂා කරන සීමාව සහ අවදානම් ලියලා, පසුව පරීක්ෂණ කරලා, හමු වූ දේ නිවැරදි කර නැවත පරීක්ෂා කරන්න. 240 උත්සාහයෙන් 18ක් සාර්ථක නම් ASR එක 18 ÷ 240 = 7.5%යි. එක වතාවක් 10% අවදානමක් තිබුණත් පස් වතාවක් උත්සාහ කළොත් එකක් හරි සාර්ථක වීමේ අවදානම 41%කට ආසන්නයි.',
       body: [
@@ -421,6 +445,8 @@ print("total epsilon:", 10 * 0.1)   # 1.0`,
     {
       id: 'owasp-llm-top10',
       title: 'OWASP Top 10 for LLM Applications: Output Handling, Excessive Agency, Overreliance, Unbounded Consumption, Supply Chain',
+      plain: "OWASP risk lists organize common LLM-application failures, but the version and category names can change. Learn the underlying controls rather than memorizing labels alone.",
+      internGuide: ["Prompt injection and insecure output handling can turn model text into unauthorized commands, code, or data flow.","Excessive agency gives the model unnecessary permissions or autonomy; unbounded consumption allows denial-of-service or runaway cost.","Supply-chain risks include untrusted models, datasets, adapters, packages, and registries; overreliance means acting on unchecked output.","Exam focus: identify the asset, threat, impact, and control. Use validation, sandboxing, least privilege, quotas, provenance, and human approval where appropriate."],
       examRefs: ['TAI-022', 'TAI-023', 'TAI-042', 'TAI-044', 'TAI-045', 'TAI-074'],
       si: 'ඔයාගේ AI assistant එකට order status බලන්න විතරක් ඕනේ නම්, මුළු database එකම වෙනස් කරන්න පුළුවන් අවසර දෙන්න එපා. ඒක excessive agency අඩු කරනවා. Model එකෙන් ආපු text එක web page එකකට දාන්න කලින් පරීක්ෂා කරන්න, මොකද output එකත් විශ්වාස නොකළ යුතුයි. Requests වල token සීමා සහ user කෙනෙකුට දවසේ quota එකක් දාන්න; එවිට එක් කෙනෙකුගේ අධික භාවිතය අනෙක් අයට බලපාන්නේ අඩුයි.',
       body: [
@@ -453,6 +479,8 @@ print("total epsilon:", 10 * 0.1)   # 1.0`,
     {
       id: 'poisoning-backdoors-theft',
       title: 'Data Poisoning, Backdoors, Data Provenance & Model Theft / Extraction',
+      plain: "Poisoning changes training data or updates to create degraded behavior or hidden triggers. Model theft copies weights or approximates behavior through access and queries.",
+      internGuide: ["Availability poisoning reduces general quality; targeted poisoning manipulates selected inputs; backdoors activate on a trigger while normal tests appear clean.","Track data provenance, verify hashes and signatures, restrict write access, scan anomalies, and test candidate triggers and slices.","Extraction attacks use many adaptive queries to train a substitute model; stolen weights can also come from storage, deployment, or insider compromise.","Exam focus: rate limits, authentication, monitoring, watermarking, and secure artifact storage address different theft paths; none alone proves ownership or prevents copying."],
       examRefs: ['TAI-020', 'TAI-021', 'TAI-080', 'TAI-081', 'TAI-082', 'TAI-131', 'TAI-132', 'TAI-133'],
       si: 'ඔයාගේ RAG assistant එක wiki එකෙන් ලිපි ගන්නවා නම්, ඒ ලිපි කවුද වෙනස් කළේ කියලා පරීක්ෂා කර provenance සටහන් කරන්න. Training data තුළ රහස් trigger එකක් ඇතුළත් model එක සාමාන්‍ය පරීක්ෂණවල හොඳට පෙනුණත්, විශේෂ තත්ත්වයකදී වෙනස් හැසිරෙන්න පුළුවන්. ඒ නිසා trusted source, review, සහ release controls වැදගත්. Model එකට අසාමාන්‍ය ලෙස බොහෝ API ඉල්ලීම් කරන ගිණුමක් හමු වුණොත්, rate limit සහ anomaly monitoring භාවිතා කරන්න.',
       body: [
@@ -485,6 +513,8 @@ print("total epsilon:", 10 * 0.1)   # 1.0`,
     {
       id: 'nemo-guardrails-safety-models',
       title: 'NeMo Guardrails & Safety Models: Input, Output, Dialog, Topical, Retrieval, Execution Rails, Colang, Llama Guard, NemoGuard NIMs',
+      plain: "Guardrail systems add checks around model inputs, retrieved content, dialog state, tools, and outputs. They reduce risk but do not make an unsafe architecture safe by themselves.",
+      internGuide: ["Input rails classify or transform user requests; retrieval rails inspect evidence; dialog rails control flows; execution rails constrain tools; output rails check responses.","NeMo Guardrails uses programmable flows including Colang, while safety models such as Llama Guard classify policy categories.","Every rail adds latency and can falsely block benign requests or miss attacks, so evaluate both attack detection and false-refusal rates.","Exam focus: guardrails act at runtime and normally do not change model weights. Authorization, sandboxing, quotas, and human approval must still be enforced by the application."],
       examRefs: ['TAI-024', 'TAI-025', 'TAI-026', 'TAI-027', 'TAI-028', 'TAI-083', 'TAI-084', 'TAI-085', 'TAI-086', 'TAI-087', 'TAI-088', 'TAI-089', 'TAI-134', 'TAI-135', 'TAI-136', 'TAI-137'],
       si: 'ඔයාගේ hotel assistant එකට විවිධ guardrails දාන්න පුළුවන්: එන ප්‍රශ්න පරීක්ෂා කරන input rail, පිටවෙන පිළිතුර පරීක්ෂා කරන output rail, සහ hotel සේවාවට අදාළ දේවල් විතරක් කතා කරන topical rail. RAG එකෙන් එන ලේඛනත් user ට පෙන්වීමට පෙර retrieval rail එකෙන් පරීක්ෂා කරන්න පුළුවන්. දන්නා jailbreak 500කින් 460ක් නවත්තලා, හොඳ ඉල්ලීම් 2,000කින් 120ක් වැරදියට නවත්තුවොත් block rate 92%යි, false refusal 6%යි. ඔයාට දෙකම මැනිය යුතුයි, නැත්නම් හොඳ users ලාට අසාධාරණයක් වෙන්න පුළුවන්.',
       body: [
@@ -548,6 +578,8 @@ define flow competitor pricing
     {
       id: 'documentation-licenses',
       title: 'Documentation & Licenses: Model Cards, Model Card++, Datasheets, System Cards, Apache 2.0, CC BY-NC, Open Weights',
+      plain: "Documentation explains what a model or dataset is, how it was built, how it was evaluated, and where it should not be used. A license defines legal permissions and obligations.",
+      internGuide: ["Model cards report intended use, training/evaluation context, metrics, limitations, risks, and responsible-use guidance; system cards cover the larger deployed system.","Datasheets describe dataset motivation, collection, composition, preprocessing, consent, licenses, and known bias.","Apache 2.0 is a permissive software license with conditions; Creative Commons licenses vary, and NC restricts commercial use.","Exam focus: “open weights” means weights are available under stated terms; it does not automatically mean open-source code, unrestricted data, or permission for every use."],
       examRefs: ['TAI-011', 'TAI-012', 'TAI-041', 'TAI-095', 'TAI-096', 'TAI-097', 'TAI-106', 'TAI-107'],
       si: 'ඔයා model card එකක් හදනකොට මේ model එකට සුදුසු වැඩ, නොකළ යුතු වැඩ, සහ පරීක්ෂණ ප්‍රතිඵල ලියන්න. Dataset එකක datasheet එකෙන් දත්ත එකතු කළේ කොහොමද සහ භාවිතයට අවසර මොනවාද කියලා සටහන් කරන්න. Apache 2.0 සාමාන්‍යයෙන් වාණිජ භාවිතයට ඉඩ දෙනවා, නමුත් CC BY-NC වාණිජ භාවිතය සීමා කරනවා. Weights download කරන්න පුළුවන් වුණා කියලා ඒවායේ license එක කියවීම අමතක කරන්න එපා.',
       body: [
@@ -581,6 +613,8 @@ define flow competitor pricing
     {
       id: 'governance-regulation-sustainability',
       title: 'Governance & Regulation: EU AI Act Tiers, GPAI Systemic Risk, NIST AI RMF, ISO/IEC 42001, Energy & Carbon',
+      plain: "AI governance assigns responsibility, risk classification, evidence, review, monitoring, and incident response across the system lifecycle. Legal status must be checked against current official sources.",
+      internGuide: ["The EU AI Act uses risk-based obligations, including prohibited practices, high-risk systems, transparency duties, and rules for general-purpose AI; requirements phase in over time.","NIST AI RMF organizes voluntary work into Govern, Map, Measure, and Manage; ISO/IEC 42001 is a certifiable AI management-system standard.","Environmental evaluation should report hardware, energy, location/time-dependent carbon factors, utilization, and avoided or repeated training—not just model parameter count.","Exam focus: governance is not one fairness metric or document. It needs accountable owners, controls, evidence, audits, monitoring, and response processes."],
       examRefs: ['TAI-035', 'TAI-036', 'TAI-108', 'TAI-109', 'TAI-110', 'TAI-111', 'TAI-145', 'TAI-146', 'TAI-149'],
       si: 'ඔයා bus company එකක් පවත්වාගෙන යනවා කියලා හිතන්න: EU AI Act එකේ සමහර භාවිතා තහනම්, සමහර high-risk භාවිතාට ලේඛන සහ අධීක්ෂණ අවශ්‍යයි, තවත් අවස්ථාවල chatbot එක AI බව කියන්න ඕනේ. NIST AI RMF එකේ Govern, Map, Measure, Manage කියන පියවර හතරෙන් අවදානම් හඳුනාගෙන කළමනාකරණය කරන්න පුළුවන්. විදුලිය ගණනයට GPUs × kW × පැය යොදාගන්න; carbon ගණනයට PUE සහ grid intensity එකත් ගුණ කරන්න. 70B parameters සහ 15T tokens සඳහා 6ND ≈ 6.3 × 10^24 FLOPs, එය 10^25ට අඩුයි.',
       body: [
@@ -629,6 +663,8 @@ print(kwh / 1000, "MWh,", round(tonnes), "t CO2e")   # 504 MWh, 242 t`,
     {
       id: 'provenance-watermarking-deepfakes',
       title: 'Content Provenance: Watermarking (Green List), C2PA & Soft Binding, AI-Text Detectors, Deepfakes',
+      plain: "Content provenance records where media came from and how it changed. Watermarks and detectors provide signals, not perfect proof that content is real or AI-generated.",
+      internGuide: ["Statistical text watermarking biases token choices toward a secret green list and detects the aggregate pattern; editing, translation, or paraphrasing can weaken it.","C2PA attaches signed provenance assertions and edit history to media; soft binding helps reconnect content when metadata is stripped.","AI-text and deepfake detectors shift with models and domains and can produce harmful false positives, especially for non-native writing.","Exam focus: verify signatures and trusted issuers, preserve original evidence, and combine provenance, forensic analysis, and human investigation."],
       examRefs: ['TAI-032', 'TAI-033', 'TAI-102', 'TAI-103', 'TAI-104', 'TAI-105', 'TAI-117', 'TAI-142', 'TAI-143', 'TAI-144'],
       si: 'ඔයා generated text එකේ watermark signal එකක් තිබේද කියලා බලනවා නම් green tokens ගණන් කරන්න පුළුවන්. γ=0.25, tokens 200, green tokens 80 නම් expected අගය 50යි, standard deviation එක 6.12ක් පමණයි, ඒ නිසා z-score එක 4.9ක් වෙනවා. වෙනත් model එකකින් paraphrase කළොත් token watermark එක අඩුවෙන්න පුළුවන්; PDF කළාට token අනුපිළිවෙළ වෙනස් නොවෙන්න පුළුවන්. C2PA credentials නැතිවීමෙන් file එක අනිවාර්යයෙන්ම ව්‍යාජයි කියන්න බැහැ, ඒකේ origin නොදන්නා බව විතරයි.',
       body: [
@@ -670,6 +706,8 @@ print("z =", round(z, 1), " watermarked?", z > 4)   # 4.9 True`,
     {
       id: 'human-oversight-incident-response',
       title: 'Human Oversight, Automation Bias, Accessibility, Safety Monitoring & Incident Response',
+      plain: "Human oversight must give people enough information, authority, time, and interface support to detect and correct model failures. A decorative approval button is not meaningful control.",
+      internGuide: ["Define which decisions require review, what evidence reviewers see, how they override or escalate, and how disagreement is recorded.","Automation bias causes reviewers to accept plausible system output too readily; training and deliberate friction can improve scrutiny.","Monitor safety, quality, subgroup performance, drift, misuse, access, and tool actions with alert thresholds and accountable owners.","Exam focus: incident response covers detection, containment, preservation, impact assessment, communication, remediation, rollback, and post-incident learning; include accessibility in both user and reviewer interfaces."],
       examRefs: ['TAI-034', 'TAI-044', 'TAI-078', 'TAI-093', 'TAI-094', 'TAI-112', 'TAI-147'],
       si: 'ඔයා AI එකෙන් insurance claim එකක් ප්‍රතික්ෂේප කරන ලිපියක් සකස් කරවලා, යවන්න කලින් නිලධාරියෙකු අනුමත කරනවා නම් ඒක HITL. Fraud system එකක් තීරණය ගෙන පසුව analyst කෙනෙකුට වෙනස් කරන්න පුළුවන් නම් ඒක HOTL. Reviewers AI පිළිතුරු 99.6%ක් වෙනස් නොකර පිළිගන්නවා නම්, ඒ පරීක්ෂාව rubber stamp එකක් වෙන්න පුළුවන්. දත්ත කාට බලපෑවාද කියලා log සුරක්ෂිතව තබාගෙන, ගැටලුව පාලනය කර, මූල හේතුව හදලා, regression test කරන්න.',
       body: [
@@ -702,11 +740,13 @@ print("z =", round(z, 1), " watermarked?", z > 4)   # 4.9 True`,
     {
       id: 'sri-lanka-pdpa-practice',
       title: 'Beyond the Exam: Sri Lanka Personal Data Protection Act No. 9 of 2022 & a Practical Responsible-AI Checklist',
+      plain: "Sri Lankan AI systems must connect responsible-AI controls with the current PDPA commencement status, sector rules, contracts, and the actual data lifecycle. This topic is guidance, not legal advice.",
+      internGuide: ["Map each personal-data purpose, lawful basis, controller/processor role, recipient, retention period, security control, and cross-border path before deployment.","Minimize and redact identifiers, separate production data from model-improvement consent, enforce access, and document human review for consequential decisions.","As of 5 November 2026, selected core provisions are scheduled for 1 January 2027; Part II rights and Part VII penalties are not yet active, so verify the latest DPA notice and Gazette.","Production focus: maintain a living checklist for data, bias, red teaming, documentation, monitoring, incidents, deletion, vendor changes, and periodic reassessment."],
       examRefs: [],
-      si: 'ඔයා ලංකාවේ loan chatbot එකක් හදනවා නම්, පාරිභෝගිකයාගේ NIC අංකය log එකට යන්න කලින් mask කරන්න. Logs දින 90කින් මකා දැමීම, districts අනුව approval rate පරීක්ෂා කිරීම, සහ AI තීරණයට නිලධාරියෙකුගේ අනුමැතිය ගැනීම වගකීමෙන් කරන වැඩ. Data Protection Act එකේ නීතිමය ක්‍රියාත්මක වන දින වෙනස් විය හැකි නිසා නවතම නිල නිවේදන බලන්න. ඔයාගේ checklist එක data එකතු කිරීමෙන් පසු monitoring සහ නැවත පරීක්ෂාව දක්වාම යා යුතුයි.',
+      si: 'ඔයා ලංකාවේ loan chatbot එකක් හදනවා නම්, පාරිභෝගිකයාගේ NIC අංකය log එකට යන්න කලින් mask කරන්න. Logs දින 90කින් මකා දැමීම, districts අනුව approval rate පරීක්ෂා කිරීම, සහ AI තීරණයට නිලධාරියෙකුගේ අනුමැතිය ගැනීම වගකීමෙන් කරන වැඩ. 2026 නොවැම්බර් 5 වන විට PDPA එකේ ප්‍රධාන කොටස් කිහිපයක් 2027 ජනවාරි 1 සිට ක්‍රියාත්මක වීමට නියමිතයි; data-subject rights සහ penalties තවම ක්‍රියාත්මක නැහැ. නීතිමය දින වෙනස් විය හැකි නිසා හැමවිටම DPA සහ Gazette නිවේදන බලන්න.',
       body: [
         'If you build an AI system in Sri Lanka, local law matters alongside the EU AI Act and GDPR: the Personal Data Protection Act, No. 9 of 2022 (PDPA), was passed by Parliament in 2022 as Sri Lanka’s first comprehensive data-protection law. Like GDPR, it applies to controllers and processors handling personal data. It can apply to processing in Sri Lanka and, in some cases, to foreign organizations offering goods or services to people in Sri Lanka.',
-        'Key ideas similar to GDPR include a lawful basis for processing (such as consent), purpose limitation, data minimization, accuracy, storage limitation, integrity and confidentiality (security), and accountability. Data subjects have rights to access and correct data, erase it in some cases, and withdraw consent. The law provides for a Data Protection Authority, and some controllers need a Data Protection Officer. Provisions were scheduled to take effect in stages and dates have changed; always check the latest official sources, such as the Data Protection Authority and Government Gazette, for current dates and penalties.',
+        'The Act describes ideas similar to GDPR: lawful processing, purpose limitation, data minimization, accuracy, storage limitation, integrity and confidentiality, and accountability. It also provides for rights such as access and correction and establishes the Data Protection Authority. However, a right written in the Act is not necessarily exercisable before its relevant Part commences. As of 5 November 2026, Gazette Extraordinary No. 2498/16 sets 1 January 2027 for Sections 2 and 3 and Parts I and III to commence; Part II (data-subject rights) and Part VII (penalties) are not yet active. Treat this as time-sensitive legal information and verify the latest DPA notice and Gazette before making compliance decisions.',
         'Several ideas in this phase relate directly to the PDPA: PII redaction and log retention (storage limitation), pseudonymization (still personal data while its key exists), machine unlearning for erasure requests, and model cards for transparency. A practical responsible-AI checklist is: (1) document the use case and harm categories (Map); (2) check data provenance, licenses, and consent, and write a datasheet; (3) redact PII and deduplicate; (4) evaluate subgroups and intersections with bias benchmarks; (5) red-team with garak scans and manual testing, tracking ASR and false-refusal rate; (6) add input, output, and topical guardrails, least-privilege tools, and a lethal-trifecta check; (7) prepare a model or system card; (8) design human oversight, monitoring dashboards, and an incident-response runbook; (9) retest regularly after release.',
       ],
       analogy: 'The PDPA is like rules for citizen-registration records at a local government office. Information can be collected for a reason and only in the necessary amount; it must be kept secure, corrected when someone reports an error, and not sold arbitrarily.',
@@ -714,8 +754,8 @@ print("z =", round(z, 1), " watermarked?", z > 4)   # 4.9 True`,
       keyPoints: [
         'Sri Lanka PDPA is the Personal Data Protection Act, No. 9 of 2022, a comprehensive local data-protection law.',
         'Principles include lawful basis, purpose limitation, minimization, accuracy, storage limitation, security, and accountability.',
-        'Data-subject rights include access, correction, erasure in some cases, and withdrawal of consent.',
-        'The law provides for a Data Protection Authority; check current official sources for dates and penalties.',
+        'The Act provides data-subject rights, but those rights are not exercisable until the relevant provisions commence.',
+        'As of 5 November 2026, selected core provisions are scheduled for 1 January 2027; Part II rights and Part VII penalties are not yet active.',
         'Responsible AI requires a lifecycle checklist: map → data → evaluate → red team → guard → document → oversee → monitor.',
       ],
       terms: [
@@ -725,6 +765,13 @@ print("z =", round(z, 1), " watermarked?", z > 4)   # 4.9 True`,
         { en: 'Data Subject', si: 'The individual to whom personal data relates.' },
         { en: 'Purpose Limitation', si: 'Using personal data only for its stated purpose.' },
         { en: 'Data Protection Officer (DPO)', si: 'A person responsible for data-protection compliance within an organization.' },
+      ],
+      resources: [
+        {
+          title: 'Sri Lanka Data Protection Authority — current PDPA commencement notice',
+          url: 'https://www.dpa.gov.lk/notice.php',
+          description: 'Official status of which PDPA provisions are in force and their announced commencement dates.',
+        },
       ],
     },
   ],

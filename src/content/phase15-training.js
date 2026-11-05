@@ -12,6 +12,8 @@ export default {
       id: 'pretraining-objectives',
       si: 'ඔයා Colombo බස් එකක ගමන් විස්තරයෙන් ඊළඟ වචනය අනුමාන කරන්න කියලා Model එකට දෙන්න පුළුවන්. CLM එක කලින් වචන විතරක් බලනවා, MLM එක වාක්‍යයේ හිස් තැනට දෙපැත්තේ වචනත් බලනවා. T5 වගේ Span Corruption ක්‍රමයක වාක්‍යයේ කොටස් කිහිපයක් වහලා ඒවා ආපහු පුරවනවා. මේ විදිහට ලේබල් අතින් නොදා විශාල text එකකින් ඉගෙන ගන්න පුළුවන්.',
       title: 'Pretraining Objectives: Causal LM, Masked LM, Span Corruption',
+      plain: "A pretraining objective creates learning targets from raw text and determines what context the model may see.",
+      internGuide: ["Causal LM predicts the next token with future tokens masked.","Masked LM predicts hidden tokens using context on both sides; span corruption reconstructs missing spans with an encoder-decoder.","These objectives are self-supervised because targets come from raw data rather than human labels.","Exam focus: causal LM suits generation, masked LM suits bidirectional understanding, and span corruption suits text-to-text models."],
       examRefs: ['TRN-001', 'TRN-002', 'TRN-003', 'TRN-004'],
       body: [
         'Pretraining is the first stage of teaching the general knowledge about the language and the world by showing the model an amount of text with trillions of tokens and no labels. Since there are no labels, "questions" are made from the text itself. This is called self-supervised learning. After this stage, a base model (foundation model) is obtained. It knows the language well, but does not follow instructions, and does not refuse unsafe requests. A base model usually just keeps writing the text you gave. Instruction following and refusals come from the later SFT and alignment stages.',
@@ -44,6 +46,8 @@ export default {
       id: 'data-curation',
       si: 'ඔයාට Colombo පාරවල් ගැන පිටු 1,000ක් ලැබුණා කියලා හිතන්න; ඒ අතර දැන්වීම්, එකම පිටු සහ වැරදි භාෂාවෙන් ලියූ දේවල් තියෙන්න පුළුවන්. Training ට කලින් ඒවා පිරිසිදු කර duplicate ඉවත් කළාම model එකට වඩා හොඳ උදාහරණ ලැබෙනවා. MinHash සමාන පිටු හඳුනාගන්න උදව් කරනවා, decontamination මගින් විභාග ප්‍රශ්න training තුළ තිබුණාද කියලා බලනවා. ඔයාට විවිධ data වර්ග එක්ක මිශ්‍රණයත් පාලනය කරන්න පුළුවන්.',
       title: 'Data Curation: Quality Filtering, Dedup (MinHash), Decontamination, Mixture Weights, NeMo Curator',
+      plain: "Training data quality controls what a model learns; curation removes bad and repeated content, balances sources, and protects evaluations.",
+      internGuide: ["Quality filters remove malformed, low-information, unsafe, or unwanted documents.","Exact hashes find identical documents; MinHash-style methods efficiently find near-duplicates from shared shingles.","Decontamination removes overlap with evaluation questions or answers so scores do not measure memorization.","Exam focus: mixture weights control sampling frequency, while NeMo Curator supports scalable filtering and deduplication workflows."],
       examRefs: ['TRN-005', 'TRN-006', 'TRN-007', 'TRN-098', 'TRN-099', 'TRN-100'],
       body: [
         'The model is good only if the data is good. Web crawl data contains a lot of junk like menus, cookie notices, spam, and pages that have copied the same thing thousands of times. Therefore, a curation pipeline runs before the pretraining: text extraction → language identification → quality filtering → deduplication → decontamination → mixture weighting.',
@@ -78,6 +82,8 @@ export default {
       id: 'synthetic-data-distillation',
       si: 'ඔයා cricket coach කෙනෙක්ගෙන් හොඳ පිළිතුරු උදාහරණ අරගෙන ඒවායෙන් පුහුණු වෙනවා වගේ, ලොකු teacher Model එකක් synthetic examples හදා දෙන්න පුළුවන්. Student Model එක ඒ පිළිතුරු ඉගෙන ගන්නවා; logits තිබුණොත් එහි probability විස්තරත් ඉගෙන ගන්න පුළුවන්. උදාහරණ හොඳද සහ එකිනෙකට වෙනස්ද කියලා පරීක්ෂා කිරීම වැදගත්. නැත්නම් වැරදි උත්තරත් නැවත නැවත ඉගෙන ගන්න ඉඩ තියෙනවා.',
       title: 'Synthetic Data, Self-Instruct, Knowledge Distillation & Model Collapse',
+      plain: "Synthetic data can add instructions or labels when human data is scarce, but generator errors must be filtered and independently evaluated.",
+      internGuide: ["Self-Instruct pipelines generate candidate tasks and answers, then deduplicate and filter them before training.","Distillation trains a student from teacher probabilities or teacher-generated outputs, often mixed with hard labels.","Synthetic data can copy bias, hallucinations, and style artifacts from its generator.","Exam focus: repeatedly replacing real data with model output can erase rare information and cause model collapse."],
       examRefs: ['TRN-030', 'TRN-031', 'TRN-094', 'TRN-095', 'TRN-096', 'TRN-097', 'TRN-141', 'TRN-142', 'TRN-150'],
       body: [
         'Labeled data is small (e.g. 200 examples), but thousands are needed to fine-tune. Even if you copy that 200 times, no new information will be added, only overfitting will increase. The standard solution in the world is synthetic data generation: generating new examples with a strong "teacher" LLM, and then quality filtering. The Instruct model and the Reward model of NVIDIA Nemotoron-4 340B were released for this. The instruct model generates prompts and responses. The reward model scores the responses according to attributes such as helpfulness and correctness, and removes weak ones. The reward model does not generate prompts, it only scores.',
@@ -112,6 +118,8 @@ export default {
       id: 'continued-pretraining-forgetting',
       si: 'ඔයා වෛද්‍ය පොත් 50 GBක් තියෙනවා කියලා හිතන්න; ඒවායෙන් domain දැනුම ඉගෙන ගන්න labels නැතුව continued pretraining කරන්න පුළුවන්. ඊට පස්සේ Q&A 5,000කින් පිළිතුරු දෙන ආකාරය SFT වලින් පුහුණු කරන්න. අලුත් වෛද්‍ය දේවල් ඉගෙන ගනිද්දී පරණ සාමාන්‍ය දැනුම අමතක වීම catastrophic forgetting. පරණ data වලින් 5%ක් replay කිරීම සහ learning rate එක නැවත warm up කර පසුව අඩු කිරීම ඒ අවදානම අඩු කරයි.',
       title: 'Continued Pretraining, Re-warming, Catastrophic Forgetting, Replay & EWC',
+      plain: "Continued pretraining adapts a model to new unlabeled domain text while risking loss of capability on the original distribution.",
+      internGuide: ["Domain-adaptive pretraining keeps the language-model objective; SFT instead learns desired input-output behavior.","A fully decayed checkpoint may need learning-rate re-warmup and decay to learn the new distribution.","Replay mixes original data with new data; EWC penalizes movement of parameters important to old tasks.","Exam focus: replay presents old examples again, while EWC is a regularization method."],
       examRefs: ['TRN-008', 'TRN-022', 'TRN-071', 'TRN-109', 'TRN-143', 'TRN-144'],
       body: [
         'Continued (domain-adaptive) pretraining: If you have a lot of domain text without labels (eg company engineering docs 50 GB, medical papers), the base model is further trained on that text with the same next-token objective. Then the model absorbs the words, abbreviations and facts of the domain. Methods like instruction tuning and DPO need prompt-response pairs or preference pairs, they teach behavior, not bulk knowledge. Prompt tuning (like 20 virtual tokens) does not have the capacity to absorb 50 GB of domain knowledge.',
@@ -145,6 +153,8 @@ export default {
       id: 'sft-deep-dive',
       si: 'ඔයා call centre එකක අලුත් සේවකයෙකුට customer ප්‍රශ්න සහ හොඳ පිළිතුරු පෙන්වනවා වගේ SFT උදාහරණවලින් Model එකට පිළිතුරු දෙන රටාව උගන්වනවා. Loss masking දාද්දී prompt එක context එකට තියෙනවා, නමුත් ලකුණු දෙන්නේ assistant පිළිතුරට විතරයි. කෙටි උදාහරණ එක sequence එකකට pack කළොත් padding අඩු වෙනවා; ඒත් එක උදාහරණයක token අනෙකට leak නොවෙන්න mask ඕනේ. Training සහ production chat template එක සමානද කියලා බලන්න.',
       title: 'SFT Deep Dive: Instruction Tuning, Loss Masking (-100), Packing, Chat Templates, LIMA, NEFTune',
+      plain: "Supervised fine-tuning teaches a pretrained model to follow demonstrations; formatting and loss masking define what it learns.",
+      internGuide: ["Training conversations must use the model’s expected chat template and role tokens.","Labels set to -100 are ignored by PyTorch cross-entropy, commonly masking padding and sometimes user tokens.","Packing reduces padding by putting short examples together, but boundaries must prevent unintended cross-example learning.","Exam focus: SFT changes weights; NEFTune adds embedding noise only during training as regularization."],
       examRefs: ['TRN-009', 'TRN-010', 'TRN-049', 'TRN-079', 'TRN-080', 'TRN-081', 'TRN-082', 'TRN-110', 'TRN-140'],
       body: [
         'An SFT dataset is prompt + target response pairs. Demonstrations of "good answers" that people wrote or chose. The model learns to simulate those answers with normal cross-entropy loss. Chosen/rejected pairs are preference data, which are used for reward modeling or DPO (at a later stage). Instruction tuning (FLAN style): Hundreds of tasks are written as natural-language instructions and trained. Purpose: To work well as a zero-shot for new instructions that have never been seen before. Things like context length, model size, tokenizer do not change instruction tuning.',
@@ -193,6 +203,8 @@ print(labels)  # tensor([[-100, -100, -100, 21, 22, 23, 24]])
       id: 'prompt-rag-finetune',
       si: 'ඔයාට Keells මිල ලැයිස්තුව නිතර වෙනස් වෙනවා නම් ඒක Model එකට fine-tune කරනවාට වඩා RAG මගින් අලුත් පිටු හොයා දීම හොඳයි. පිළිතුරු හැමවිටම එකම ආකෘතියෙන් ඕනේ නම් fine-tuning උදව් වෙනවා. Prompting ඉක්මන් සහ අඩු වියදම්, RAG දැනුම යාවත්කාලීන කිරීමට සුදුසුයි, fine-tuning හැසිරීම හෝ ආකෘතිය පුරුදු කරයි. ලොකු data සහ compute අවශ්‍ය වන pretraining එක සාමාන්‍යයෙන් මිල අධිකම තේරීමයි.',
       title: 'Prompting vs RAG vs Fine-Tuning: When Which?',
+      plain: "Prompting, retrieval, and fine-tuning solve different failures; start with the least expensive method that directly addresses the problem.",
+      internGuide: ["Use prompting when the model has the skill but needs clearer instructions, examples, or format.","Use RAG for private, changing, or citable knowledge retrieved at request time.","Use fine-tuning for repeated behavior, style, or task skill that should be learned into weights.","Exam focus: fine-tuning is poor for frequently changing facts, while RAG does not automatically teach a new reasoning skill."],
       examRefs: ['TRN-050', 'TRN-073', 'TRN-074'],
       body: [
         'Many questions on the exam come in the form of scenarios: "What is the best approach to this situation?" Remember the simple rule: start with the cheapest. Prompting → RAG → Fine-tuning → (continued) pretraining. Go to the next step only if the previous one is not enough.',
@@ -222,6 +234,8 @@ print(labels)  # tensor([[-100, -100, -100, 21, 22, 23, 24]])
       id: 'lora-deep-dive',
       si: 'ඔයාට 4,096 × 4,096 Excel වගුවක් වෙනස් කරන්න ඕනේ කියලා හිතන්න; හැම කොටුවක්ම වෙනස් කරනවා වෙනුවට LoRA කුඩා A සහ B වගු දෙකකින් update එකක් හදනවා. Rank r = 8 නම් එක matrix එකකට trainable parameters 8 × (4,096 + 4,096) = 65,536යි. B මුලදී zero නිසා ආරම්භයේ Model එක base එකට සමානයි. Rank එක capacity තීරණය කරනවා, target_modules තීරණය කරන්නේ කුමන layers වෙනස් වෙනවද කියලා.',
       title: 'LoRA Deep Dive: B·A, Rank, Alpha, Init, LoraConfig, Parameter Counts, Learning Rates',
+      plain: "LoRA freezes a pretrained matrix and learns a low-rank update, reducing trainable parameters and optimizer state.",
+      internGuide: ["For an output×input weight, LoRA uses B×A with rank r and about r×(input+output) trainable values.","Standard LoRA scales the update by alpha/r and commonly initializes one factor to zero so the initial update is zero.","Target modules choose which projections receive adapters; rank controls adapter capacity.","Exam focus: frozen base weights and forward activations still consume memory even though they need no optimizer state."],
       examRefs: ['TRN-011', 'TRN-012', 'TRN-013', 'TRN-014', 'TRN-053', 'TRN-054', 'TRN-055', 'TRN-056', 'TRN-057', 'TRN-070', 'TRN-101', 'TRN-135', 'TRN-138'],
       body: [
         'The essence of PEFT (Parameter-Efficient Fine-Tuning): freeze the majority of pretrained weights and train only a small number of newly added or selected parameters (usually much less than 1-2%). Then the memory going to gradients and optimizer states will be reduced a lot. PEFT is about "which parameters to train". Not about the dataset size. Data can be used for PEFT as well as full fine-tuning. RL is not needed, layers are not removed.',
@@ -269,6 +283,8 @@ model.print_trainable_parameters()          #Only A and B are trained.`,
       id: 'lora-merging-variants',
       si: 'ඔයාට adapter එකක් තියෙනවා නම් merge කිරීමෙන් එහි update එක base weights වලට එකතු කරලා inference වෙලාවේ වෙන්ව adapter එකක් ධාවනය කිරීම මඟහරින්න පුළුවන්. Merge කරන්නේ කුමන adapter ද සහ කුමන precision එකෙන්ද කියලා හොඳින් තීරණය කරන්න. LoRA variants වෙනස් factorization හෝ parameterization භාවිතා කළත්, ඔවුන්ගේ අරමුණ full fine-tuning ට වඩා අඩු trainable parameters සමඟ adaptation කිරීමයි. Adapter එක merge කළාට base model එකේ අවශ්‍යතාව අහෝසි වෙන්නේ නැහැ.',
       title: 'Merging LoRA (merge_and_unload), DoRA, rsLoRA, New Tokens & TIES-Merging',
+      plain: "Adapter variants change low-rank representation or scaling, while merging folds an adapter update into compatible base weights.",
+      internGuide: ["merge_and_unload adds the update to base weights and removes adapter modules; preserve an unmerged copy to switch adapters later.","DoRA separates weight magnitude and direction; rsLoRA uses alpha divided by square-root rank for more stable high-rank scaling.","New tokenizer embeddings remain untrained under attention-only LoRA unless embedding and output modules are explicitly trainable.","Exam focus: TIES merges task updates while trimming small changes and reducing sign conflicts."],
       examRefs: ['TRN-015', 'TRN-102', 'TRN-136', 'TRN-137', 'TRN-139', 'TRN-145'],
       body: [
         'Merging: When the training is over, the adapter can be added to the base weights: W\' = W + (α/r)·B·A. After that, the architecture and size of the model are the same as the original base model. In Inference, there is no adapter overhead, no extra latency, just normal dense matmuls. The trade-off: after merging, the adapter cannot be swapped from request to request. If the adapters are kept separately, it will be possible to give customers different adapters (multi-LoRA serving) on ​​one base model. The model won\'t be shrunk and the context window won\'t get longer due to merging.',
@@ -316,6 +332,8 @@ model.save_pretrained("./merged")`,
       id: 'qlora-nf4',
       si: 'ඔයාගේ 24 GB GPU එකට ලොකු model එක නොගැලපුණොත් QLoRA base weights 4-bit NF4 ලෙස ගබඩා කරලා, BF16 adapter එක train කරයි. 7B weights සඳහා සරල ගණනය 7 billion × 0.5 byte ≈ 3.5 GBයි; activations සහ optimizer memory සඳහාත් ඉඩ ඕනේ. Double quantization block scale අගයන් තවත් කුඩා කරනවා. Paged optimizer memory spike එකකදී CPU RAM භාවිතා කරන්න පුළුවන්, නමුත් compute dtype සහ storage dtype එකම දෙයක් නොවේ.',
       title: 'QLoRA: NF4, Double Quantization, Paged Optimizers, Compute Dtype',
+      plain: "QLoRA trains LoRA adapters while a frozen base model is stored in 4-bit form; it does not update 4-bit base weights directly.",
+      internGuide: ["NF4 is designed for roughly normally distributed pretrained weights.","Weights are dequantized to a wider compute dtype such as BF16 for operations; adapters remain trainable in wider precision.","Double quantization compresses quantization constants, and paged optimizers help handle memory spikes.","Exam focus: storage dtype differs from compute dtype; QLoRA is adapter training on a quantized frozen base."],
       examRefs: ['TRN-016', 'TRN-017', 'TRN-061', 'TRN-072', 'TRN-103', 'TRN-104', 'TRN-105'],
       body: [
         'QLoRA = quantizing the frozen base model to 4-bit and training higher-precision (BF16) LoRA adapters on top of it. Base weights are stored as 4-bit NF4 and dequantized to BF16 at the time of calculation. Gradients backprop to LoRA adapters. This made it possible to fine-tune a 65B model with a 48 GB GPU. QLoRA is a fine-tuning memory technique. Not 4-bit pretraining from scratch, not adapter quantization for serving, not FP8 activations.',
@@ -360,6 +378,8 @@ bnb_config = BitsAndBytesConfig(
       id: 'other-peft',
       si: 'ඔයා පොතක අගට කෙටි සටහන් එකතු කරනවා වගේ adapters සහ LoRA මගින් base weights නොවෙනස්ව තබා කුඩා කොටස් train කරනවා. Prompt tuning input එකට virtual token embeddings එකතු කර ඒවා train කරනවා. Prefix tuning transformer layers වල prefix representations එක් කරනවා. IA3 activations scale කරනවා, BitFit bias parameters වෙනස් කරනවා. මේ ක්‍රමවල memory සහ inference වියදම වෙනස්.',
       title: 'Other PEFT: Adapters, Prompt Tuning, Prefix Tuning, P-Tuning, IA3, BitFit',
+      plain: "PEFT methods adapt a model by training small added components or selected existing parameters instead of every base weight.",
+      internGuide: ["Bottleneck adapters insert small modules; LoRA adds low-rank weight updates.","Prompt tuning learns input embeddings, while prefix tuning learns continuous prefixes at transformer layers.","IA3 learns activation-scaling vectors and BitFit trains only biases.","Exam focus: soft prompts are learned vectors, not necessarily readable text, and PEFT does not remove base-model inference memory."],
       examRefs: ['TRN-018', 'TRN-019', 'TRN-020', 'TRN-021', 'TRN-106', 'TRN-107', 'TRN-108'],
       body: [
         'Adapter tuning (Houlsby et al.): A small bottleneck feed-forward module is inserted inside each transformer block: down-projection (eg 4,096 → 64) → nonlinearity → up-projection (64 → 4,096), with a residual connection. Freeze the original weights. Unlike LoRA, weights with adapters cannot be merged, so a little latency is added to the inference.',
@@ -393,6 +413,8 @@ bnb_config = BitsAndBytesConfig(
       id: 'rlhf-ppo',
       si: 'ඔයාගේ cricket පිළිතුරු දෙකෙන් වඩා හොඳ එක coach තෝරනවා කියලා සිතන්න; preference data-යෙන් reward model එක පුහුණු කර policy එක වැඩි reward ගන්න optimize කරනවා. PPO training එකේ reference model එකෙන් KL දුර සීමා කරන නිසා policy එක මුල් SFT හැසිරීමෙන් අතිශය ඈත් නොවේ. Reward එක වැඩි වුණාට පිළිතුරු ඇත්තටම හොඳ වෙනවා කියලා සහතික නැහැ. Reward model එකේ අඩුපාඩුව exploit කිරීම reward hacking ලෙස හඳුන්වනවා.',
       title: 'RLHF Deep Dive: Reward Model (Bradley-Terry), PPO Clipping, KL, Reward Hacking, RLAIF, Rejection Sampling',
+      plain: "RLHF learns preferences, trains a reward model, and optimizes a policy toward reward while limiting drift from a reference model.",
+      internGuide: ["Preference comparisons train a Bradley–Terry-style reward model to score chosen responses above rejected ones.","PPO uses advantages and clipped probability-ratio updates; a KL penalty keeps the policy near the reference.","Policies can exploit reward-model errors, so independent evaluation and early stopping are essential.","Exam focus: RLAIF uses AI feedback; rejection sampling selects high-reward candidates for SFT rather than doing PPO."],
       examRefs: ['TRN-023', 'TRN-024', 'TRN-025', 'TRN-027', 'TRN-028', 'TRN-029', 'TRN-077', 'TRN-078', 'TRN-111', 'TRN-113', 'TRN-115', 'TRN-117', 'TRN-148', 'TRN-149'],
       body: [
         'Classic RLHF order (InstructGPT): pretrained model → (1) SFT → (2) People rank the outputs of the SFT model and train a reward model from those preferences → (3) PPO optimizes the policy (LLM) for the reward. PPO cannot run without the reward model, because that is what gives the training signal to PPO. The reward model: the LM head of a pretrained or SFT transformer is removed and a linear head is placed that outputs one scalar. The hidden state of the last token of the prompt + response is mapped to a scalar reward. It is only a judge, it is the policy that generates the responses.',
@@ -428,6 +450,8 @@ bnb_config = BitsAndBytesConfig(
       id: 'dpo-family',
       si: 'ඔයාට එකම ප්‍රශ්නයට හොඳ පිළිතුරක් සහ නරක පිළිතුරක් තියෙනවා නම් DPO ඒවායෙන් policy එක කෙළින්ම පුහුණු කරයි. β වැඩි කළාම policy එක reference model එකට තදින් බැඳෙනවා. Pair නැති thumbs-up සහ thumbs-down ලේබල් සඳහා KTO ප්‍රයෝජනවත් විය හැකියි. GRPO එක output කණ්ඩායමක reward සාපේක්ෂව සසඳා value model එකක් නැතුව advantage හදනවා.',
       title: 'DPO, β, Implicit Reward, KTO, GRPO & NeMo-Aligner',
+      plain: "Direct preference methods learn from preferred and rejected responses without a separate reward-model-plus-PPO pipeline.",
+      internGuide: ["DPO raises chosen likelihood relative to rejected likelihood and relative to a frozen reference policy.","Beta controls reference constraint and preference separation.","KTO can use desirable or undesirable examples without strict pairs; GRPO compares rewards within sampled groups.","Exam focus: DPO is simpler than PPO but still depends on preference quality and reference log probabilities."],
       examRefs: ['TRN-026', 'TRN-048', 'TRN-075', 'TRN-076', 'TRN-112', 'TRN-114', 'TRN-116'],
       body: [
         'DPO (Direct Preference Optimization) main idea: The RLHF objective (maximize reward, limit KL distance from reference) can be rewritten as a simple classification-style loss on chosen/rejected pairs. Therefore, there is no need for separate reward model training or online PPO rollouts (RL sampling loop). There is a frozen reference model as an anchor. But preference data is definitely needed.',
@@ -462,6 +486,8 @@ bnb_config = BitsAndBytesConfig(
       id: 'lr-schedules-stability',
       si: 'ඔයා බස් එකක් හෙමින් වේගවත් කරලා ගමන අවසානයේ වේගය අඩු කරනවා වගේ learning rate එක warmup කරලා පසුව decay කළ හැකියි. Learning rate වැඩි නම් training අස්ථාවර වෙන්න පුළුවන්; ඉතා අඩු නම් ඉගෙනීම මන්දගාමී වෙනවා. Gradient clipping ලොකු gradients සීමා කරයි. Loss සහ validation metrics නිරීක්ෂණය කර schedule එක task එකට ගැළපෙනවාද බලන්න.',
       title: 'LR Warmup, Cosine & WSD Schedules, Gradient Clipping, Loss Spikes, Z-Loss, Checkpoints',
+      plain: "Schedules control when updates should be cautious or small; stability controls prevent rare bad batches from destroying a run.",
+      internGuide: ["Warmup raises learning rate gradually; cosine decay lowers it smoothly, while WSD adds a stable middle period.","Gradient clipping limits unusually large updates; z-loss discourages extreme log-partition values.","Track loss spikes, gradient norms, learning rate, throughput, and data batches so failures can be diagnosed.","Exam focus: an exact-resume checkpoint needs model, optimizer, scheduler, step, scaler, and random states."],
       examRefs: ['TRN-038', 'TRN-039', 'TRN-040', 'TRN-051', 'TRN-068', 'TRN-069', 'TRN-093', 'TRN-130', 'TRN-131'],
       body: [
         'Warmup: At the beginning of training, Adam optimizer\'s moment estimates (m, v) are noisy, gradients are large. At that time, if you start from the peak LR itself (eg 3e-4), divergence may occur in the first few hundred steps. Warmup = Increasing LR linearly from near 0 to peak in the first ~1-2k steps. Warmup_ratio = percentage of total steps to warmup. Decay schedule reduces LR at the end of training, not warmup. Increasing weight decay or eliminating end decay is not the solution to early divergence.',
@@ -496,6 +522,8 @@ bnb_config = BitsAndBytesConfig(
       id: 'mixed-precision-fp8',
       si: 'ඔයාට විශාල ගණන් ඉක්මනින් කරන්න ඕනේ නම් mixed precision අඩු bit ගණිතය භාවිතා කර memory සහ compute ඉතිරි කරයි. FP16 හි උපරිම අගය සීමා නිසා overflow හෝ underflow විය හැකි අතර loss scaling උදව් වේ. BF16 හි FP32 වැනි exponent range එකක් නිසා සාමාන්‍යයෙන් loss scaling අවශ්‍ය නැහැ. FP8 සඳහා format සහ scaling ක්‍රමය නිවැරදි hardware සහ software සමඟ තෝරන්න.',
       title: 'Mixed Precision: FP16 Loss Scaling, GradScaler, BF16 Autocast, FP8 & Transformer Engine',
+      plain: "Mixed precision uses faster small formats for suitable operations while retaining wider precision for sensitive values and accumulation.",
+      internGuide: ["FP16 can underflow small gradients, so loss scaling multiplies before backward and unscales before the update.","BF16 has FP32-like exponent range and usually does not need gradient scaling.","Autocast selects operation dtypes; it does not permanently convert every value to one format.","Exam focus: FP8 needs supported hardware plus scaling recipes and software such as Transformer Engine."],
       examRefs: ['TRN-032', 'TRN-033', 'TRN-034', 'TRN-035', 'TRN-067', 'TRN-090', 'TRN-091', 'TRN-092', 'TRN-118', 'TRN-119'],
       body: [
         'Mixed precision training: Many calculations like maths and activations are done in FP16 or BF16 (16-bit), to use Tensor Cores and save memory. But numerically sensitive parts (FP32 master weights, some reductions) are kept in FP32. Changing LR from layer to layer or INT8 weights is not related to this.',
@@ -544,6 +572,8 @@ for batch in loader:
       id: 'batch-accumulation-recompute',
       si: 'ඔයාට එකවර බඩු දෙකක් විතරක් ගෙනියන්න පුළුවන් නම් වාර 8කින් බඩු එකතු කරලා අවසානයේ එකම බිල් එක ගෙවනවා වගේ gradient accumulation එකෙන් effective batch එක ලොකු කළ හැකියි. Micro-batch 4, accumulation 8 සහ GPU 8ක් නම් 4 × 8 × 8 = 256 sequences. Activation checkpointing memory ඉතිරි කිරීමට අතරමැදි අගයන් නැවත ගණනය කරන නිසා වැඩි compute යනවා. Loss එක මුළු token ගණනට සාමාන්‍යකරණය කිරීමත් වැදගත්.',
       title: 'Effective Batch Size, Gradient Accumulation, Loss Normalization & Activation Checkpointing',
+      plain: "Accumulation and activation checkpointing trade extra time for lower peak memory while preserving the intended batch calculation.",
+      internGuide: ["Global effective batch equals micro-batch per device times accumulation steps times data-parallel devices.","Run several backward micro-batches before optimizer.step and normalize loss or gradients to the intended mean.","For variable lengths, divide summed loss by total non-padding target tokens rather than averaging unequal micro-batch means.","Exam focus: activation checkpointing recomputes discarded forward activations; it does not reduce parameter or optimizer-state memory."],
       examRefs: ['TRN-036', 'TRN-037', 'TRN-058', 'TRN-059', 'TRN-066', 'TRN-089', 'TRN-129', 'TRN-146'],
       body: [
         'Gradient accumulation: Only 2 micro-batches are suitable for the GPU, but the recipe calls for a large batch. Solution: run several forward/backward passes, sum the gradients in .grad, and finally take one optimizer step. A large batch is simulated without increasing the memory. Effective (global) batch = micro-batch × accumulation steps × data-parallel GPUs. LLM batch sizes are often expressed in tokens: tokens per step = global batch × sequence length.',
@@ -586,6 +616,8 @@ for i, batch in enumerate(loader):
       id: 'memory-zero-data-parallel',
       si: 'ඔයාට GPUs කිහිපයක data කොටස් බෙදා දුන්නොත් data parallelism මගින් එකම model එක සමාන්තරව train කර gradients එකතු කරනවා. GPU memory යන්නේ weights, gradients, optimizer states සහ activations වලටයි. ZeRO optimizer state, gradients සහ parameters GPUs අතර shard කර memory අඩු කරයි. ඒත් පියවර අනුව communication වැඩි විය හැකි අතර model weights/activations වලට ඉඩ තවම අවශ්‍යයි.',
       title: 'Training Memory (16 Bytes/Param), Data Parallelism, All-Reduce, NCCL, ZeRO Stages & FSDP',
+      plain: "Training memory includes weights, gradients, optimizer states, activations, temporary buffers, and communication workspaces.",
+      internGuide: ["A simple FP32 Adam estimate is about 16 bytes per parameter: 4 weight, 4 gradient, and 8 for two moments.","Classic data parallelism duplicates model state and all-reduces gradients through collectives such as NCCL.","ZeRO-1 shards optimizer states, ZeRO-2 also gradients, and ZeRO-3 also parameters; FSDP similarly gathers and reshards parameters.","Exam focus: sharding saves per-device memory but increases communication."],
       examRefs: ['TRN-041', 'TRN-044', 'TRN-045', 'TRN-060', 'TRN-062', 'TRN-063', 'TRN-064', 'TRN-065', 'TRN-087', 'TRN-120', 'TRN-121', 'TRN-122', 'TRN-128'],
       body: [
         '16 bytes per parameter rule (mixed precision + Adam, without activations): BF16/FP16 weights 2 + 16-bit gradients 2 + FP32 master weights 4 + Adam first moment m 4 + second moment v 4 = 16 bytes. 12 bytes of that (master + m + v) FP32 optimizer part. These 12 bytes make ZeRO stage 1 shard. Adam states (m, v) alone are 8 bytes per parameter, often more than weights. Activations are not included in this rule, KV cache is an inference structure (not training memory).',
@@ -619,6 +651,8 @@ for i, batch in enumerate(loader):
       id: 'model-parallelism',
       si: 'ඔයාට විශාල කණ්ඩායම් වැඩක් බෙදනවා වගේ tensor parallelism එක layer එකක් GPUs අතර බෙදයි, pipeline parallelism layers වෙන්ව බෙදයි. Pipeline එකේ micro-batches ප්‍රමාණය අඩු නම් සමහර GPUs හිස්ව සිටින bubble එක ලොකු වෙනවා. Context parallelism දිග sequence එක බෙදයි, expert parallelism MoE experts බෙදයි. 64 GPUs, TP 8 සහ PP 2 නම් DP = 64 ÷ (8 × 2) = 4.',
       title: 'Tensor, Pipeline, Sequence, Context & Expert Parallelism: Megatron, Bubbles, 3D Arithmetic',
+      plain: "Model-parallel strategies split different dimensions of a job and are combined when one strategy cannot meet memory and compute needs.",
+      internGuide: ["Tensor parallelism splits layer matrix operations and communicates frequently, favoring fast intra-node links.","Pipeline parallelism assigns layer ranges to stages; micro-batches reduce but do not eliminate idle bubbles.","Sequence/context parallelism splits tokens, while expert parallelism places MoE experts on different workers.","Exam focus: data×tensor×pipeline degrees give the base 3D GPU count before additional parallel dimensions."],
       examRefs: ['TRN-042', 'TRN-043', 'TRN-083', 'TRN-084', 'TRN-085', 'TRN-086', 'TRN-088', 'TRN-123', 'TRN-124', 'TRN-125', 'TRN-126', 'TRN-127', 'TRN-132'],
       body: [
         'Tensor parallelism (TP, intra-layer): The same weight matrix (e.g. columns of an MLP projection) is divided between GPUs, each GPU calculates a part of the same layer, and exchanges partial results collectives. Megatron-LM made this practical. Megatron MLP: Y = GeLU(X·A)·B. Cutting from A columns: Each GPU gets a full slice of hidden units, so GeLU can be applied locally (no sync needed). Cut from B rows: each GPU makes a partial sum, MLP adds them with an all-reduce at the end. We need an all-reduce that matches the input gradients of the backward pass. Because latency-sensitive collectives are performed several times per TP layer (both forward and backward), a very fast NVLink/NVSwitch is kept inside one node (eg 8 GPUs in DGX). Better on InfiniBand between nodes because Pipeline and data parallelism communicate less (IB fully supports NCCL collectives).',
@@ -653,6 +687,8 @@ for i, batch in enumerate(loader):
       id: 'scaling-compute-mfu',
       si: 'ඔයාගේ කණ්ඩායමට වැඩි orders ලැබුණොත් කාර්යය වේගවත් කරන්න වැඩි සේවකයන් පමණක් ප්‍රමාණවත් නැහැ; ඔවුන් අතර සම්බන්ධතාවත් බලපානවා. Model FLOPs utilization (MFU) මගින් throughput එක hardware peak එකට සාපේක්ෂව මනිනවා. 7B model එකක් token එකකට 6N FLOPs, ඒ කියන්නේ 42 billion FLOPs භාවිතා කරනවා. 10,000 tokens/s නම් 420 TFLOP/s; 989 TFLOP/s peak සමඟ MFU ≈ 42%.',
       title: 'Scaling Laws & Compute Math: Chinchilla, 6ND, MFU, Critical Batch Size',
+      plain: "Compute planning connects model size, tokens, hardware throughput, and utilization; the results are estimates rather than exact runtime.",
+      internGuide: ["Dense transformer training is often approximated as 6×parameters×training tokens FLOPs.","Chinchilla-style results balance model size with data instead of increasing parameters alone.","MFU divides achieved model FLOPs by theoretical accelerator FLOPs and falls with communication or pipeline stalls.","Exam focus: beyond the critical batch size, larger batches give diminishing reductions in optimizer steps."],
       examRefs: ['TRN-052', 'TRN-133', 'TRN-134', 'TRN-147'],
       body: [
         'Chinchilla (Hoffmann et al.): Model size (parameters) and training tokens should be scaled together to get the best results for a fixed compute budget. Compute-optimal rule of thumb: ~20 tokens per parameter. Eg: 70B params → 1.4T tokens. Many modern models like Llama are trained with much more tokens, because inference is cheap when a small model is trained for a long time. But the "compute-optimal" answer is 20.',
@@ -684,6 +720,8 @@ for i, batch in enumerate(loader):
       id: 'nvidia-training-stack',
       si: 'ඔයාට training project එකක data cleaning සිට distributed run දක්වා විවිධ මෙවලම් ඕනේ. NeMo Curator data curation සඳහා, NeMo Framework training සහ scaling සඳහා, Transformer Engine supported hardware මත mixed precision සඳහා භාවිතා වේ. Megatron-LM විශාල transformer training සඳහා parallelism සපයයි. කාර්යයට ගැළපෙන NVIDIA documentation සහ නිශ්චිත software version බලලා තෝරන්න.',
       title: 'NVIDIA Training Stack: NeMo, Megatron-LM/Core, Curator, Aligner, Transformer Engine, NCCL',
+      plain: "NVIDIA training tools operate at different layers of the workflow and should not be treated as interchangeable names.",
+      internGuide: ["NeMo provides generative-model workflows and Curator supports data preparation.","Megatron-Core supplies transformer components and distributed parallelism; NeMo-Aligner supports alignment workflows.","Transformer Engine supplies optimized low-precision operations and scaling recipes.","Exam focus: NCCL provides communication collectives underneath distributed training; it does not curate data or define training objectives."],
       examRefs: ['TRN-046', 'TRN-047', 'TRN-006', 'TRN-035', 'TRN-045', 'TRN-048'],
       body: [
         'Exam "Which NVIDIA tool for this work?" Many questions like It\'s easy when you remember which phase of the LLM life cycle each tool belongs to: data → train → align → serve → guard.',
@@ -713,6 +751,8 @@ for i, batch in enumerate(loader):
       id: 'colab-lora-handson',
       si: 'ඔයාට Sinhala customer support bot එකක් හදන්න examples 500ක් තියෙනවා කියලා හිතන්න. 0.5B model එක 4-bit කළාම base weights 0.25 GBක් පමණ වන නිසා T4 GPU එකේ fine-tuning සඳහා ඉඩ ඉතුරු වෙනවා. Batch 16 නම් epoch එකකට 500 ÷ 16 ≈ 32 steps, epochs 2කදී steps 64ක් පමණ. Validation loss සහ සාමාන්‍ය ප්‍රශ්නවලට පිළිතුරු පරීක්ෂා කර overfitting සහ forgetting දෙකම බලන්න.',
       title: 'Hands-On (Beyond Exam): Let\'s fine-tune a small open model in Google Colab with QLoRA',
+      plain: "This exercise connects dataset inspection, chat formatting, QLoRA, training, evaluation, and adapter saving in one reproducible workflow.",
+      internGuide: ["Choose a model and dataset whose licenses permit the intended use and inspect examples before formatting.","Apply the exact chat template, explicit length limits, and correct label masking.","Load supported 4-bit weights, attach LoRA to suitable modules, train with validation data, and inspect generations as well as loss.","Production focus: save the adapter, tokenizer, base-model revision, configuration, and evaluation results; a successful notebook is not deployment proof."],
       examRefs: ['TRN-056', 'TRN-058', 'TRN-102', 'TRN-105'],
       body: [
         'Now you know the theory well. When you actually do it, the meaning deepens. A small open model (e.g. a 0.5B-1.5B model like Qwen2.5-0.5B-Instruct) can be fine-tuned by QLoRA with a free T4 GPU (16 GB) from Google Colab. Steps: (1) Runtime → Change runtime type → T4 GPU. (2) Install transformers, peft, trl, datasets, bitsandbytes, accelerate. (3) Create your data as a JSONL file: {"messages": [{"role": "user", ...}, {"role": "assistant", ...}]} in each line. Even 200-1,000 examples will teach format/style (remember LIMA?).',

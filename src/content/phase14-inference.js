@@ -10,6 +10,8 @@ export default {
     {
       id: 'tokenizer-foundations',
       title: 'Tokenizer to Model: Token IDs, Subwords & Vocabulary Size',
+      plain: 'A language model does not receive words directly. A tokenizer converts text into token IDs, and the model converts those IDs into vectors before processing them.',
+      internGuide: ['Text is split into tokens, each token is looked up in a fixed vocabulary, and the vocabulary entry supplies an integer token ID.', 'The embedding table maps each token ID to a learned vector. The model processes vectors, not the original characters.', 'Subword tokens let a finite vocabulary represent common words efficiently while still spelling rare words from smaller pieces.', 'Exam focus: vocabulary size affects the embedding and output layers; token count is not the same as character count or word count.'],
       examRefs: ['TOK-001', 'TOK-002', 'TOK-003', 'TOK-009', 'TOK-010', 'TOK-087'],
       body: [
         'An LLM does not read raw text directly. A tokenizer splits text into tokens and assigns each token an integer ID from a fixed vocabulary, so the model receives a sequence such as [15496, 995]. The model then looks up a vector for each ID in its embedding layer. A sentence embedding is a model-produced representation, not the tokenized input.',
@@ -54,6 +56,8 @@ print(128_000 * 4_096)            # 524288000 (~524M)`,
     {
       id: 'tokenizer-algorithms',
       title: 'Tokenizer Algorithms: BPE, WordPiece, Unigram, SentencePiece & Byte-level',
+      plain: 'Tokenizer algorithms choose reusable pieces from training text. They differ in how the vocabulary is learned and how a new string is divided into tokens.',
+      internGuide: ['BPE repeatedly merges frequent neighboring pieces. WordPiece chooses pieces using a likelihood-based objective and is associated with BERT-style tokenizers.', 'Unigram begins with many candidate pieces and removes pieces while preserving a useful probabilistic vocabulary.', 'SentencePiece learns directly from raw text and treats spaces explicitly; byte-level tokenization can represent any input without an unknown character.', 'Exam focus: the algorithm and the model vocabulary must match. A tokenizer cannot be swapped merely because both use the same vocabulary size.'],
       examRefs: ['TOK-004', 'TOK-005', 'TOK-006', 'TOK-007', 'TOK-008', 'TOK-088', 'TOK-089', 'TOK-143', 'TOK-144'],
       body: [
         'Byte Pair Encoding (BPE) is bottom-up: training starts with characters or bytes, repeatedly merges the most frequent adjacent pair in the corpus, and adds each merge to the vocabulary until reaching the target size. At inference, the learned merges are applied in their learned rank order.',
@@ -85,6 +89,8 @@ print(128_000 * 4_096)            # 524288000 (~524M)`,
     {
       id: 'tokenizer-quirks',
       title: 'Tokenizer Quirks: Spaces, Numbers, Glitch Tokens, Broken Bytes & Offsets',
+      plain: 'Tokenization depends on exact text, including spaces and byte sequences. Small-looking text changes can therefore produce different tokens and model behavior.',
+      internGuide: ['Many vocabularies encode a leading space as part of a token, so “word” and “ word” may use different IDs.', 'Numbers may split digit by digit or in variable groups. Never assume one number equals one token.', 'Byte fallback can preserve arbitrary input, but individual decoded token fragments may not be valid standalone Unicode text.', 'Exam focus: use offset mappings when aligning tokens to source text, and decode the whole sequence rather than treating every token fragment as a complete character string.'],
       examRefs: ['TOK-046', 'TOK-047', 'TOK-090', 'TOK-091', 'TOK-141', 'TOK-142', 'TOK-145'],
       body: [
         'Leading spaces: in GPT-style byte-level BPE, a space before a word is part of that word’s token (shown as Ġ in GPT-2). Therefore "Hello" at the start and " Hello" after another word can have different vocabulary entries and IDs. The tokenizer preserves the space rather than discarding it.',
@@ -131,6 +137,8 @@ prompt = "The capital of France is".rstrip()`,
     {
       id: 'context-languages-billing',
       title: 'Context Window, Token Budgets, Languages (incl. Sinhala) & Billing',
+      plain: 'The context window is the total token space available for instructions, conversation, retrieved text, tool results, and generated output. Every part competes for the same budget.',
+      internGuide: ['A request must fit input tokens plus the maximum output allowance within the model or serving limit.', 'Token efficiency varies by language and tokenizer. Sinhala or code-mixed text may require more tokens than equivalent English text.', 'API billing commonly separates input, cached input, and output tokens, but the exact pricing rules belong to the provider and model.', 'Exam focus: a larger advertised context does not guarantee equal accuracy across the entire window. Count with the actual tokenizer and reserve output space.'],
       examRefs: ['TOK-011', 'TOK-014', 'TOK-025', 'TOK-045', 'TOK-049', 'TOK-084', 'TOK-085', 'TOK-086', 'TOK-102', 'TOK-106'],
       body: [
         'The context window is the total number of tokens the model can consider at once. Input (prompt) tokens and generated output tokens share this limit, so a longer prompt leaves less room for the answer. Concurrency (how many users are served at once) is a serving limit, not a model property.',
@@ -175,6 +183,8 @@ print(n_prompt, max_new)`,
     {
       id: 'special-tokens-chat-templates',
       title: 'Special Tokens, Attention Mask, Chat Templates & Tokenizer Mismatch',
+      plain: 'Special tokens tell a model where sequences, roles, padding, or control regions begin and end. Chat templates place those tokens in the exact structure used during model training.',
+      internGuide: ['BOS, EOS, PAD, and role markers have model-specific IDs and meanings. They are not universal across tokenizers.', 'An attention mask marks which positions contain usable input rather than padding; it is different from the causal mask that blocks future positions.', 'A chat template converts role/content messages into the serialized text and control tokens expected by the model.', 'Exam focus: using the wrong tokenizer or template can produce poor output even when tensor shapes are valid. Resize and train embeddings when genuinely adding new tokens.'],
       examRefs: ['TOK-012', 'TOK-013', 'TOK-041', 'TOK-042', 'TOK-043', 'TOK-044', 'TOK-082', 'TOK-083', 'TOK-150'],
       body: [
         'Special tokens are control signals rather than ordinary text: BOS marks a sequence start, EOS marks its end, and PAD fills unused positions. During generation, sampling EOS stops the decoder loop. PAD remains a distinct purpose even when a tokenizer reuses EOS as its padding token.',
@@ -222,6 +232,8 @@ model.resize_token_embeddings(len(tok))`,
     {
       id: 'logits-softmax-temperature-logprobs',
       title: 'Logits, Softmax, Temperature, Logprobs & Why Temperature 0 Can Still Vary',
+      plain: 'At each generation step the model outputs one score, called a logit, for every vocabulary token. Decoding converts those scores into the next token.',
+      internGuide: ['Softmax turns logits into probabilities by exponentiating and normalizing them. Adding the same constant to every logit does not change the probabilities.', 'Temperature divides logits before softmax: values below one sharpen the distribution and values above one flatten it.', 'A log probability is the natural log of a probability; sequence log probability is usually the sum of token log probabilities.', 'Exam focus: temperature zero normally requests greedy selection, but hardware kernels, ties, batching, or provider implementation can still prevent strict end-to-end reproducibility.'],
       examRefs: ['TOK-015', 'TOK-016', 'TOK-019', 'TOK-020', 'TOK-026', 'TOK-039', 'TOK-074', 'TOK-075', 'TOK-094', 'TOK-146'],
       body: [
         'A decoder-only LLM generates autoregressively: it examines the current tokens, predicts the next token, appends it, and repeats until EOS or a limit. At each step, the final linear layer gives every vocabulary token a raw score called a logit. Logits are not probabilities: they can be negative and do not sum to 1.',
@@ -268,6 +280,8 @@ print(np.exp(sum(logprobs)).round(2))    # 0.37 = sequence probability`,
     {
       id: 'greedy-and-beam-search',
       title: 'Greedy & Beam Search in Depth: generate() Arguments, Length Penalty, Memory',
+      plain: 'Greedy search keeps only the highest-scoring next token. Beam search keeps several partial sequences so an early locally best token does not decide the entire answer.',
+      internGuide: ['Greedy decoding is fast and deterministic for fixed computations, but it can miss a better sequence whose first token was slightly less likely.', 'Beam search expands several candidates, adds their log probabilities, and keeps the best beam-width candidates after each step.', 'Length penalties adjust the preference for short sequences because raw summed log probabilities normally become more negative as sequences grow.', 'Exam focus: beam search increases compute and KV-cache memory and is most useful for constrained tasks such as translation, not usually open-ended chat.'],
       examRefs: ['TOK-017', 'TOK-018', 'TOK-048', 'TOK-070', 'TOK-109', 'TOK-110', 'TOK-133'],
       body: [
         'Greedy decoding takes the argmax (highest-probability token) at each step. It is fast and deterministic, but a locally good choice can lead to a weaker overall sequence. In Hugging Face, model.generate(**inputs, do_sample=False, num_beams=1) is greedy; use num_beams > 1 for beam search and do_sample=True for sampling.',
@@ -296,6 +310,8 @@ print(np.exp(sum(logprobs)).round(2))    # 0.37 = sequence probability`,
     {
       id: 'sampling-topk-topp-minp',
       title: 'Sampling Controls: Top-k, Top-p, Min-p and How They Combine with Temperature',
+      plain: 'Sampling introduces controlled randomness. Temperature reshapes the distribution, while top-k, top-p, and min-p remove unlikely candidates before sampling.',
+      internGuide: ['Top-k retains a fixed number of highest-probability tokens. Top-p retains the smallest sorted set whose cumulative probability reaches p.', 'Min-p keeps tokens whose probability is large enough relative to the most likely token, so the number retained adapts to confidence.', 'When controls are combined, temperature first changes probabilities and filtering then restricts the candidate set before random selection.', 'Exam focus: top-k controls count, top-p controls cumulative mass, and temperature controls sharpness. They solve related but different problems.'],
       examRefs: ['TOK-021', 'TOK-022', 'TOK-071', 'TOK-072', 'TOK-076', 'TOK-077', 'TOK-108', 'TOK-135', 'TOK-136'],
       body: [
         'Top-k (for example, k=40) keeps only the 40 highest-probability tokens, renormalizes their probabilities to sum to 1, and samples among them. It cuts the low-probability tail; it does not limit output length to 40 or create 40 responses.',
@@ -339,6 +355,8 @@ print(int((q >= 0.25 * q.max()).sum()))         # 2`,
     {
       id: 'penalties-and-logit-bias',
       title: 'Repetition, Frequency & Presence Penalties, no_repeat_ngram, Logit Bias & Logits Processors',
+      plain: 'Generation controls can change token scores before decoding to discourage repetition, encourage novelty, or require and ban particular token sequences.',
+      internGuide: ['A presence penalty reacts to whether a token has appeared; a frequency penalty grows with how often it appeared.', 'A repetition penalty rescales scores for seen tokens, while no-repeat n-gram blocks any candidate that would recreate an existing n-gram.', 'Logit bias changes selected token scores directly. Because words may contain several tokens, banning one visible word can require handling multiple tokenizations.', 'Exam focus: these controls modify decoding, not model weights. Strong penalties can damage grammar or block legitimate repeated terms.'],
       examRefs: ['TOK-038', 'TOK-064', 'TOK-073', 'TOK-096', 'TOK-134', 'TOK-137', 'TOK-138'],
       body: [
         'A repetition penalty lowers scores for tokens already in the context, reducing loops such as "the the the" and repeated sentences. It adjusts scores; unlike a stop sequence, it does not end generation.',
@@ -387,6 +405,8 @@ print(ctrl_penalty(3), ctrl_penalty(-2))   # 2.5 -2.4`,
     {
       id: 'generation-troubleshooting',
       title: 'Generation Troubleshooting: Truncation, Never Stopping, Empty Output, Echoed Prompts, Padding',
+      plain: 'Bad generation is often caused by decoding configuration or input formatting rather than model quality. Diagnose the finish reason and tokens before changing the model.',
+      internGuide: ['Output cut off with a length finish reason means the new-token limit was reached; input truncation means some prompt tokens were removed before generation.', 'Failure to stop often comes from a missing or incorrect EOS ID or chat template. Immediate EOS can produce an empty visible answer.', 'Decoder-only generation returns prompt plus continuation, so slice away the input token length when only the new answer is wanted.', 'Exam focus: left versus right padding and pad/eos IDs affect batched decoder-only models. Inspect tokenized inputs and finish reasons systematically.'],
       examRefs: ['TOK-023', 'TOK-024', 'TOK-078', 'TOK-079', 'TOK-080', 'TOK-081', 'TOK-095', 'TOK-111', 'TOK-112'],
       body: [
         'If an answer stops mid-sentence with API finish_reason="length", generation hit the output-token cap (max_new_tokens / max tokens), not EOS; raise the limit. A stop sequence usually ends at a clean boundary and reports finish_reason="stop".',
@@ -431,6 +451,8 @@ print(tok.decode(out[0][n:], skip_special_tokens=True))  # without the prompt`,
     {
       id: 'constrained-decoding-json',
       title: 'Constrained Decoding & Guaranteed JSON: Grammars, Token Boundaries, Side Effects',
+      plain: 'Constrained decoding masks tokens that would violate a schema or grammar. It can guarantee valid structure, but it cannot guarantee that the values are true or sensible.',
+      internGuide: ['At every step the decoder tracks the grammar state and permits only tokens that can still lead to a valid output.', 'Because tokens may contain several characters, the constraint engine must work with token boundaries rather than simply checking the final string.', 'JSON schema can enforce required fields, types, and allowed values; application validation must still check business rules and semantics.', 'Exam focus: constrained decoding improves syntactic reliability but can add latency, change probability choices, and still produce hallucinated content inside valid JSON.'],
       examRefs: ['TOK-092', 'TOK-093', 'TOK-139', 'TOK-140'],
       body: [
         'Suppose an extraction service returns malformed JSON in 3% of responses despite careful prompting. More examples, wider beams, or retries and repair may improve the odds but cannot guarantee valid syntax; higher temperature may make errors more likely. JSON-schema-constrained decoding (structured output) can enforce the syntax.',
@@ -459,6 +481,8 @@ print(tok.decode(out[0][n:], skip_special_tokens=True))  # without the prompt`,
     {
       id: 'prefill-decode-bottlenecks',
       title: 'Prefill vs Decode: Compute-bound vs Memory-bound, Arithmetic Intensity & FLOPs',
+      plain: 'LLM inference has a prompt-processing stage called prefill and a token-by-token generation stage called decode. They stress hardware differently.',
+      internGuide: ['Prefill processes many prompt positions in parallel and performs large matrix operations, so it is commonly compute-bound.', 'Decode handles one new position per active sequence and repeatedly reads large model weights and KV cache, so small-batch decode is commonly memory-bandwidth-bound.', 'Arithmetic intensity compares useful operations with bytes moved; batching can raise decode intensity by reusing one weight read across sequences.', 'Exam focus: optimize TTFT by examining queueing and prefill; optimize token cadence by examining decode, memory bandwidth, batching, and KV-cache behavior.'],
       examRefs: ['TOK-027', 'TOK-028', 'TOK-036', 'TOK-050', 'TOK-058', 'TOK-097', 'TOK-098', 'TOK-120'],
       body: [
         'Prefill sends all prompt tokens through the model in parallel in one forward pass, fills the KV cache, and produces logits for the first output token. Decode then generates tokens one at a time. A long prompt must be processed before the first token, so prefill (and queueing) mainly determines TTFT; decode speed determines the time between later tokens.',
@@ -504,6 +528,8 @@ print(2 / 2, "FLOP/byte")          # batch-1 decode arithmetic intensity`,
     {
       id: 'latency-throughput-math',
       title: 'TTFT, TPOT, Throughput & End-to-End Latency: Worked Calculations',
+      plain: 'Serving metrics describe different parts of the user experience. Never use one latency number when the first-token wait and later token speed matter separately.',
+      internGuide: ['TTFT runs from request arrival to the first output token and includes queue time plus prompt processing.', 'TPOT is the average gap between output tokens after the first. Inter-token latency can also be reported token by token.', 'End-to-end latency is approximately TTFT plus the remaining output-token intervals; throughput counts total requests or tokens completed per second.', 'Exam focus: batching can improve aggregate throughput while worsening TTFT. Always check whether a benchmark reports per-user speed or total server throughput.'],
       examRefs: ['TOK-029', 'TOK-030', 'TOK-040', 'TOK-056', 'TOK-057', 'TOK-100', 'TOK-107', 'TOK-148'],
       body: [
         'TPOT (time per output token, or inter-token latency) is the average time between successive tokens after the first. It describes the decode pace a streaming user experiences. System throughput, the total tokens per second across all users, is a different metric.',
@@ -544,6 +570,8 @@ print(ttft + 200 / 50)            # 4.8 s end-to-end`,
     {
       id: 'kv-cache-memory-math',
       title: 'GPU Memory Math: Weights, KV Cache, GQA, Max Concurrency, MoE',
+      plain: 'Inference memory includes more than model weights. Accurate capacity planning also accounts for KV cache, activations, runtime workspaces, fragmentation, and safety margin.',
+      internGuide: ['Raw weight bytes are approximately parameter count multiplied by bytes per stored weight, plus quantization scales and metadata.', 'KV-cache bytes per token are approximately two times layers times KV heads times head dimension times bytes per cache value.', 'GQA reduces KV heads while preserving more query heads, so it reduces cache size. Longer contexts and more concurrent sequences grow cache demand linearly.', 'Exam focus: MoE models may activate only some experts per token but usually must store all deployed expert weights. Do not use active-parameter count as total weight memory.'],
       examRefs: ['TOK-031', 'TOK-032', 'TOK-034', 'TOK-035', 'TOK-051', 'TOK-053', 'TOK-054', 'TOK-055', 'TOK-101', 'TOK-103', 'TOK-113', 'TOK-147', 'TOK-149'],
       body: [
         'The main inference GPU-memory consumers are weights and the KV cache; activation buffers are smaller. Optimizer states such as Adam moments are used for training, not inference. Weight memory = parameter count × bytes per parameter: FP32=4, FP16/BF16=2, INT8/FP8=1, and INT4=0.5.',
@@ -588,6 +616,8 @@ for name, b in [("FP16", 2), ("INT8", 1), ("INT4", 0.5)]:
     {
       id: 'batching-paged-kv-scheduling',
       title: 'Serving Systems: Continuous Batching, PagedAttention, Prefix Caching, Preemption, Chunked Prefill, Disaggregation',
+      plain: 'A serving scheduler tries to keep GPUs busy while protecting interactive requests from long prompts and memory pressure. Each mechanism addresses a different source of waste.',
+      internGuide: ['Continuous batching removes finished sequences and admits new ones between decode steps instead of waiting for a fixed batch.', 'Paged KV management allocates cache blocks on demand, reducing fragmentation; prefix caching reuses cache blocks for an identical shared prefix.', 'Chunked prefill breaks long prompts into smaller pieces so decode work can be interleaved. Preemption pauses or recomputes work when resources are exhausted.', 'Exam focus: prefill/decode disaggregation uses different worker pools for their different hardware behavior, but adds transfer and scheduling complexity.'],
       examRefs: ['TOK-037', 'TOK-065', 'TOK-066', 'TOK-067', 'TOK-099', 'TOK-118', 'TOK-119', 'TOK-121', 'TOK-130', 'TOK-131', 'TOK-132'],
       body: [
         'In static batching, the batch stays fixed, and slots remain idle after short sequences finish while the longest sequence continues. Continuous (in-flight) batching schedules at each iteration: a finished sequence frees its slot for a waiting request, so short requests need not wait for long ones to finish.',
@@ -620,6 +650,8 @@ for name, b in [("FP16", 2), ("INT8", 1), ("INT4", 0.5)]:
     {
       id: 'speculative-decoding-deep',
       title: 'Speculative Decoding: Acceptance Rule, Expected Speedup, Medusa & Prompt Lookup',
+      plain: 'Speculative decoding asks a cheaper method to propose several tokens and lets the target model verify them together. Correct algorithms preserve the target model distribution.',
+      internGuide: ['A small draft model proposes tokens; the target model scores the proposed positions in parallel and accepts a prefix according to the verification rule.', 'Speedup depends on high acceptance, cheap drafting, and reduced target-model steps. A weak draft can cost more than ordinary decoding.', 'Medusa-style methods add proposal heads, while prompt lookup proposes repeated n-grams from the existing prompt without a separate draft model.', 'Exam focus: speculative decoding reduces latency, not target-model quality. It differs from simply returning unverified small-model output.'],
       examRefs: ['TOK-052', 'TOK-068', 'TOK-069', 'TOK-114', 'TOK-115', 'TOK-116', 'TOK-117'],
       body: [
         'A small, fast draft model proposes several tokens (γ); the larger target model verifies them in one forward pass. Because decode is memory-bound, verifying k tokens can cost about as much as generating one token, so accepted tokens can be nearly free. Choosing the most common answer among several generations is self-consistency, a separate prompting technique.',
@@ -664,6 +696,8 @@ print(accept_prob(0.2, 0.5))               # 0.4`,
     {
       id: 'quantization-deep',
       title: 'Quantization Deep Dive: Weight-only vs W8A8, AWQ, GPTQ, SmoothQuant, FP8, Calibration',
+      plain: 'Quantization stores or computes model values with fewer bits. The best method depends on whether the workload is limited by weight bandwidth, activation compute, memory capacity, or accuracy requirements.',
+      internGuide: ['Weight-only quantization compresses weights while activations use a wider format; it is often useful for memory-bound, small-batch decode.', 'W8A8 quantizes both weights and activations and can accelerate suitable matrix kernels, but activation outliers make calibration harder.', 'GPTQ is a post-training weight method, AWQ protects important weight channels using activation information, and SmoothQuant shifts activation difficulty into weights.', 'Exam focus: lower bit width does not guarantee faster execution. Hardware kernels, calibration data, group size, scales, and workload shape determine the result.'],
       examRefs: ['TOK-033', 'TOK-059', 'TOK-060', 'TOK-061', 'TOK-062', 'TOK-063', 'TOK-122', 'TOK-123', 'TOK-124', 'TOK-125', 'TOK-126'],
       body: [
         'Quantization stores weights (and sometimes activations) at lower precision. Moving from FP16 to INT8 halves weight memory; INT4 uses one quarter, usually with some accuracy trade-off. Removing layers is pruning/distillation and splitting a model across GPUs is model parallelism; neither is quantization.',
@@ -698,6 +732,8 @@ print(accept_prob(0.2, 0.5))               # 0.4`,
     {
       id: 'long-context-rope-scaling',
       title: 'Long Context: RoPE Position Interpolation, NTK-aware Scaling, YaRN & Attention Sinks',
+      plain: 'A model trained for one context length does not automatically use a much longer window well. RoPE extension methods change position frequencies and normally require evaluation or fine-tuning.',
+      internGuide: ['RoPE represents relative position by rotating query and key dimensions with different frequencies.', 'Position interpolation compresses longer position indices into the range seen during training; extrapolation methods modify frequency scaling to support longer distances.', 'YaRN combines frequency-dependent scaling with attention adjustments. Attention sinks preserve early tokens that stabilize attention in streaming-style use.', 'Exam focus: extending the technical limit does not prove useful recall or reasoning at that length. Test the actual long-context task and short-context regressions.'],
       examRefs: ['TOK-104', 'TOK-105', 'TOK-127', 'TOK-128', 'TOK-129'],
       body: [
         'In RoPE (Rotary Position Embedding), a position is encoded as a rotation angle for query/key vectors. Dimensions use different frequencies: high frequencies capture nearby-token differences, while low frequencies represent longer-range relations. A RoPE model trained on 4K context that receives an unscaled 8K prompt sees unseen rotation angles beyond its training range, pushing attention out of distribution and potentially harming quality with incoherent text or sharply higher perplexity.',
@@ -729,6 +765,8 @@ print(accept_prob(0.2, 0.5))               # 0.4`,
     {
       id: 'run-llm-locally',
       title: 'Beyond the Exam: Running an LLM on Your Own Machine (Ollama, llama.cpp, GGUF)',
+      plain: 'Local inference trades convenience and privacy against hardware limits. Model size, quantization, context length, and runtime support determine whether a model fits and performs acceptably.',
+      internGuide: ['llama.cpp is a local inference runtime optimized for supported model architectures and CPUs/GPUs. GGUF is a file format containing tensors and model metadata used by that ecosystem.', 'Ollama provides model packaging and a local service interface, commonly using llama.cpp-related runtime components underneath for supported models.', 'Estimate weight memory from quantized size, then leave room for KV cache and runtime buffers. Larger context settings can consume substantial additional memory.', 'Exam focus: quantization labels are not exact quality guarantees across methods. Check architecture support, prompt template, license, and measured speed on the target machine.'],
       examRefs: [],
       body: [
         'Try what you learned in this phase on your own laptop. llama.cpp is a C/C++ inference engine that runs on CPUs and GPUs such as CUDA or Apple Metal. It uses the GGUF model-file format, which can include quantized weights, tokenizer, chat template, and metadata. Ollama is a convenient tool built on llama.cpp for downloading and running models and providing a local API.',
@@ -771,6 +809,8 @@ llama-cli -m model-Q4_K_M.gguf -c 4096 -ngl 99 -p "Hello"`,
     {
       id: 'reading-inference-benchmarks',
       title: 'Beyond the Exam: Reading (and Running) an Inference Benchmark Honestly',
+      plain: 'An inference benchmark is meaningful only when hardware, model, precision, input/output lengths, concurrency, and latency targets match the intended workload.',
+      internGuide: ['Record exact GPU type and count, software versions, model and quantization, tensor parallelism, prompt length, generated length, and request distribution.', 'Run warmup before measurement and separate TTFT, TPOT, end-to-end latency, per-user token rate, and aggregate throughput.', 'Increase offered load until latency or errors violate the service objective; peak throughput without a latency limit can hide unusable queues.', 'Exam focus: compare like with like. A benchmark with shorter prompts, larger batches, or different precision cannot prove one server is universally faster.'],
       examRefs: ['DEP-074', 'DEP-106', 'DEP-147'],
       body: [
         'When you see a claim such as "our server gets 10,000 tokens/s", ask about input and output lengths, concurrency, precision (FP16, FP8, INT4), and GPU type/count. Throughput can look high at high concurrency while TTFT and TPOT worsen (see the latency topic). Prefill-heavy (long prompt, short output) and decode-heavy (short prompt, long output) workloads can behave very differently.',

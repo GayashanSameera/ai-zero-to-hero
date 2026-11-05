@@ -9,6 +9,8 @@ export default {
   topics: [
     {
       id: 'ai-adoption-drivers',
+      plain: "Start with the nesting: deep learning is one kind of machine learning, and machine learning is one part of AI. AI also includes hand-written rule systems.",
+      internGuide: ["Start with the nesting: deep learning is one kind of machine learning, and machine learning is one part of AI. AI also includes hand-written rule systems.","Connect adoption to four enablers: large datasets, parallel GPU compute, effective architectures such as Transformers, and accessible frameworks/cloud services.","Infrastructure matters because larger models turn a software idea into a capacity problem involving GPU memory, networking, storage, power, and cooling.","Exam check: if a question asks why modern AI scaled, choose the combination of data, accelerated compute, algorithms, and usable software—not one factor alone."],
       title: 'AI vs ML vs Deep Learning, and What Drove Recent AI Adoption',
       si: 'ඔයාට AI කියන්නේ බුද්ධිමත් වැඩ කරන පුළුල් අදහසක්, ML කියන්නේ data වලින් රටා ඉගෙන ගන්න ක්‍රමයක් කියලා හිතන්න. DL කියන්නේ ඒ ML වැඩේට neural network layers ගොඩක් යොදාගන්න එකයි. 2012දී AlexNet GPU භාවිතා කරලා image හඳුනාගැනීමේ වැඩේ හොඳට කළා. Data, GPU, Transformer සහ හොඳ software එක එකට ආ නිසා AI භාවිතය වැඩි වුණා. Colombo බැංකුවක ගනුදෙනු දහස් ගණනක් බලලා වංචා රටා හඳුනාගැනීමත් උදාහරණයක්.',
       body: [
@@ -36,6 +38,8 @@ export default {
     },
     {
       id: 'ai-use-cases-industry',
+      plain: "Classify the workload first: prediction, anomaly detection, perception of images/audio/documents, or content generation.",
+      internGuide: ["Classify the workload first: prediction, anomaly detection, perception of images/audio/documents, or content generation.","Translate the use case into requirements. Fraud detection needs low latency; imaging needs memory for large inputs; a chatbot needs model and KV-cache memory; factory inspection may need edge inference.","Keep the human and risk context visible: a clinical or credit model often supports a professional decision and needs stronger validation than a product recommender.","Exam check: select infrastructure from latency, data location, model size, concurrency, and regulation—not merely from the industry name."],
       title: 'Main AI Use Cases by Industry (with Sri Lankan Examples)',
       si: 'ඔයාට industry එකක් අනුව AI කරන වැඩ හතරක් මතක තියාගන්න පුළුවන්: ඉදිරිය අනුමාන කිරීම, අමුතු දේ හඳුනාගැනීම, රූප හෝ ලේඛන තේරුම්ගැනීම, සහ අලුත් පිළිතුරු හදන එක. බැංකුවක AI එක කාඩ් ගනුදෙනුවක් වංචාවක්ද බලන්න පුළුවන්. Telco එකක Colombo පාරක traffic වගේ network භාවිතය කලින් අනුමාන කරන්න පුළුවන්. රෝහලක X-ray රූප පරීක්ෂා කිරීමටත් AI භාවිතා කළ හැකියි. AI එක උදව් කරන මෙවලමක් මිස වෘත්තිකයා වෙනුවට තීරණ ගන්නා දෙයක් නොවන බවත් ඔයා මතක තියාගන්න.',
       body: [
@@ -64,6 +68,8 @@ export default {
     },
     {
       id: 'gpu-vs-cpu-architecture',
+      plain: "A CPU has fewer sophisticated cores and is good at serial, branch-heavy control work. A GPU has many execution units and is built for throughput on parallel work.",
+      internGuide: ["A CPU has fewer sophisticated cores and is good at serial, branch-heavy control work. A GPU has many execution units and is built for throughput on parallel work.","Neural networks rely heavily on matrix operations whose many cells can be calculated together, so GPUs can keep many threads busy.","The CPU still runs the operating system, prepares data, and launches GPU work. Accelerated computing uses both processors for the work each handles well.","Exam check: GPU does not mean faster for every program. Small, serial, transfer-heavy, or branch-divergent work may remain better on a CPU."],
       title: 'GPU vs CPU Architecture: Why Parallelism Matters',
       si: 'ඔයා CPU එක හිතන්න වැඩ කිහිපයක් ඉක්මනින් කරන කෙනෙක් වගේ, GPU එක හිතන්න සරල ගණන් ගොඩක් එකවර කරන කණ්ඩායමක් වගේ. එකවර පින්තූර 1,000ක එකම ගණනය කරන්න GPU එක හොඳයි. වැඩේ එකම පියවරෙන් පියවර යන එකක් නම් CPU එක ප්‍රයෝජනවත් වෙන්න පුළුවන්. ක්‍රිකට් ලකුණු පුවරුවේ ක්‍රීඩකයන් දස දෙනාගේ සංඛ්‍යා එකවර එකතු කිරීම GPU වගේ වැඩක්. ඔයාගේ වැඩේට ගැළපෙන processor එක තෝරන්න ඕනේ.',
       body: [
@@ -92,6 +98,8 @@ export default {
     },
     {
       id: 'cuda-programming-model',
+      plain: "Name the locations: host means CPU and system RAM; device means GPU and GPU memory. Moving data between them has a cost.",
+      internGuide: ["Name the locations: host means CPU and system RAM; device means GPU and GPU memory. Moving data between them has a cost.","A kernel is a GPU function. One launch creates a grid of blocks; each block contains threads, and hardware schedules threads in warps.","Threads in one block can cooperate through shared memory. Blocks are independently scheduled on streaming multiprocessors, so the grid exposes parallel work.","Performance check: avoid repeatedly copying small results across PCIe. Move useful batches to the GPU, perform several operations, then copy back only what is needed."],
       title: 'CUDA Programming Model: Kernels, Threads, Blocks, Grids, Host vs Device Memory',
       si: 'ඔයා CUDA කියන්නේ NVIDIA GPU එකට වැඩ බෙදාදෙන programming ක්‍රමයක් කියලා තේරුම්ගන්න. CPU එක host එක, GPU එක device එක, GPU එකේ එකම උපදෙස් කරන කුඩා thread ගොඩක් එකතු වෙලා blocks හදනවා. Colombo ගෙවල් 1,000කට ලිපි බෙදනවා වගේ, එක් එක් block එකට ලිපි කණ්ඩායමක් බෙදන්න පුළුවන්. CPU memory සහ GPU memory වෙන වෙනම නිසා data එහා මෙහා කිරීමත් කාලයක් ගන්නවා. බොහෝවිට PyTorch වගේ library එකක් මේ CUDA වැඩේ ඔයා වෙනුවෙන් කරනවා.',
       body: [
@@ -139,6 +147,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'gpu-bottlenecks',
+      plain: "Capacity asks whether the model and runtime state fit. Bandwidth asks how fast memory supplies data. Compute asks whether arithmetic units are the limiting resource.",
+      internGuide: ["Capacity asks whether the model and runtime state fit. Bandwidth asks how fast memory supplies data. Compute asks whether arithmetic units are the limiting resource.","Also inspect outside the GPU: slow preprocessing, storage, PCIe copies, or multi-node communication can leave an expensive GPU waiting.","GPU-Util only reports activity during a sample; it does not prove all SMs or Tensor Cores are efficiently used. Correlate DCGM metrics, an Nsight timeline, and application throughput.","Fix the measured limit: reduce memory use, improve batching/precision, prefetch data, speed up storage/networking, or optimize kernels. Do not tune from one utilization number."],
       title: 'GPU Bottlenecks: Memory, Compute, Utilization',
       si: 'ඔයාගේ GPU එක වේගවත් වුණත් data ගෙනෙන මාර්ගය හෙමින් නම් මුළු වැඩේම හෙමින් යනවා. කඩේ කොත්තු හදන කෙනාට එළවළු නොලැබුණොත් එයා බලාගෙන ඉන්නවා වගේ. Memory-bound වැඩක data ගෙනෙන වේගය සීමාවක්, compute-bound වැඩක ගණනය කරන වේගය සීමාවක් වෙනවා. nvidia-smi එකේ 100% utilization කියන එක GPU එකේ හැම කොටසක්ම උපරිම වැඩ කළා කියන අර්ථය නෙවෙයි. ඔයා timeline එකත් memory සහ activity metrics එක්ක බලලා bottleneck එක හොයන්න.',
       body: [
@@ -167,6 +177,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'training-vs-inference-hardware',
+      plain: "Training updates weights and retains weights, gradients, optimizer state, and activations. Inference normally retains weights plus runtime state such as an LLM KV cache.",
+      internGuide: ["Training updates weights and retains weights, gradients, optimizer state, and activations. Inference normally retains weights plus runtime state such as an LLM KV cache.","Training emphasizes aggregate throughput and time-to-train, so fast GPU-to-GPU links and shared storage matter. Serving emphasizes latency, throughput, availability, and cost per request.","Estimate memory before naming a GPU: parameter count times bytes per stored value is only the starting point; add training state or inference cache and runtime headroom.","Exam check: tightly coupled multi-GPU communication usually points to training; independent replicas behind a load balancer usually point to serving."],
       title: 'Hardware Needs: Training vs Inference, and Training Use Cases',
       si: 'ඔයා training කියන්නේ model එකට උදාහරණ පෙන්වා ඉගැන්වීම, inference කියන්නේ ඒ ඉගෙනගත් model එකෙන් අලුත් ප්‍රශ්නවලට පිළිතුරු ගැනීම කියලා වෙන්කරගන්න. Training වෙලාවේ weights පමණක් නොව gradients සහ optimizer data ද තබන නිසා වැඩි memory ඕනේ. Inference එකේදී ඉක්මන් පිළිතුරු සහ එක් ඉල්ලීමකට වැය වන මුදල වැදගත්. 8B model එකක් පූර්ණයෙන් train කිරීමත් එය chatbot එකකින් භාවිතා කිරීමත් එකම hardware ඉල්ලීමක් නොවේ. ඔයා තෝරාගන්නා hardware එක model ප්‍රමාණය, දත්ත සහ වේග අවශ්‍යතාව අනුව වෙනස් වෙනවා.',
       body: [
@@ -199,6 +211,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'accelerated-cluster-anatomy',
+      plain: "Draw five boxes: GPU compute nodes, management/head nodes, high-speed network, shared storage, and the software/scheduler layer. Power and cooling support all five.",
+      internGuide: ["Draw five boxes: GPU compute nodes, management/head nodes, high-speed network, shared storage, and the software/scheduler layer. Power and cooling support all five.","Separate traffic by purpose: compute collectives, storage I/O, normal in-band administration, and out-of-band BMC access for recovery.","DGX is a complete NVIDIA system; HGX is a GPU platform used inside partner servers. Scaling up adds capability within a node, while scaling out connects nodes.","Exam check: a SuperPOD is a validated cluster design combining systems, fabric, storage, and management—not a single large GPU server."],
       title: 'Parts of an Accelerated Cluster and Scaling (DGX, HGX, SuperPOD)',
       si: 'ඔයා AI cluster එකක් GPU servers පමණක් එකතු කළ දෙයක් කියලා නොසිතන්න. Compute nodes, management nodes, network, storage සහ විදුලිය හා සිසිලනය ඒකේ කොටස්. DGX එකක් GPU server එකක්; HGX කියන්නේ GPU platform එකක්; SuperPOD කියන්නේ විශාල පද්ධතියක් ලෙස සම්බන්ධ කළ rack සහ පද්ධති සමූහයක්. ක්‍රිකට් කණ්ඩායමකට පිතිකරුවන් විතරක් නොව පුහුණුකරු සහ පිටියත් ඕනේ වගේ මෙතනත් සියලු කොටස් එකට වැඩ කරන්න ඕනේ. GPU ගණන වැඩි කරන විට network එකද හොඳින් සැලසුම් කළ යුතුයි.',
       body: [
@@ -230,6 +244,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'datacenter-power-cooling',
+      plain: "Start with IT load in kilowatts per server and rack. Almost all consumed electrical energy becomes heat that the facility must remove.",
+      internGuide: ["Start with IT load in kilowatts per server and rack. Almost all consumed electrical energy becomes heat that the facility must remove.","Check power delivery end to end: utility capacity, redundant feeds, UPS/generator, rack PDU, connectors, and per-circuit limits. A nameplate maximum is not an average-use estimate.","Air cooling can serve lower densities; high-density systems may require rear-door or direct-to-chip liquid cooling plus CDUs, plumbing, water-quality control, and leak detection.","Use PUE to include facility overhead: total facility power divided by IT power. Also validate rack weight, floor loading, space, humidity, and maintainability."],
       title: 'Data Center Power, Cooling and Facility Requirements',
       si: 'ඔයා GPU rack එකක් දාන්න කලින් ගොඩනැගිල්ලට අවශ්‍ය විදුලිය සහ සිසිලනය සැපයිය හැකිද බලන්න. GPUs වැඩ කරන විට විදුලිය භාවිතා කර තාපය නිපදවන නිසා cooling ඕනේ. උදාහරණයක් ලෙස rack එකක් 30 kW භාවිතා කරනවා නම්, ඒ තරම් තාපය ඉවත් කිරීමටත් facility එක සැලසුම් කළ යුතුයි. Air cooling හෝ liquid cooling තෝරන්නේ උපකරණ සහ පහසුකම් අනුවයි. ඔයාගේ මුළු පිරිවැයට power, cooling, rack ඉඩ සහ backup පද්ධතිත් ඇතුළත් කරන්න.',
       body: [
@@ -260,6 +276,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'onprem-cloud-hybrid',
+      plain: "Compare on-premises and cloud using the same workload assumptions: hours used, GPU count, storage, data transfer, staffing, facilities, and required availability.",
+      internGuide: ["Compare on-premises and cloud using the same workload assumptions: hours used, GPU count, storage, data transfer, staffing, facilities, and required availability.","On-premises offers control and can be economical at steady high use, but needs capital, procurement time, operations staff, and spare capacity. Cloud starts quickly and scales, but idle endpoints and data movement can be expensive.","Hybrid places regulated or steady workloads on-premises and uses cloud for bursts, experiments, or disaster recovery. Portability still requires compatible drivers, containers, data access, and identity controls.","Decision check: use total cost of ownership and constraints over the planned lifetime; do not compare a cloud hourly rate only with the purchase price of a server."],
       title: 'On-Premises vs Cloud vs Hybrid: Advantages, Challenges, Cost',
       si: 'ඔයා on-premises කියන්නේ තමන්ගේම ස්ථානයේ servers තබා පාලනය කිරීම, cloud කියන්නේ cloud provider ගෙන් පරිගණක සම්පත් කුලියට ගැනීම කියලා හිතන්න. On-premises එකේ මුලින් විශාල ආයෝජනයක් සහ මෙහෙයුම් කණ්ඩායමක් ඕනේ, නමුත් දත්ත හා පරිසරය පිළිබඳ පාලනය වැඩියි. Cloud එකෙන් ඉක්මනින් ආරම්භ කර අවශ්‍ය විට GPU වැඩි කරන්න පුළුවන්, නමුත් දිගටම භාවිතා කරන වියදම ගණනය කරන්න ඕනේ. Hybrid ක්‍රමයක දෙකම යොදාගන්න පුළුවන්. Colombo බැංකුවක් රහස් දත්ත on-prem තබා පරීක්ෂණ වැඩ cloud එකේ කරන්න තීරණය කළ හැකියි.',
       body: [
@@ -289,6 +307,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'ai-networking',
+      plain: "NVLink/NVSwitch connect GPUs at very high speed inside a server or NVLink domain. InfiniBand or Ethernet/RoCE connects different nodes.",
+      internGuide: ["NVLink/NVSwitch connect GPUs at very high speed inside a server or NVLink domain. InfiniBand or Ethernet/RoCE connects different nodes.","RDMA lets one machine access another machine’s memory with less CPU/kernel involvement. GPUDirect RDMA extends the fast path to GPU memory.","Distributed training uses collectives such as all-reduce, so bandwidth, latency, topology, congestion control, and NCCL configuration can determine scaling efficiency.","Exam check: Spectrum-X is an NVIDIA Ethernet platform; it is not another name for InfiniBand. Select and tune a fabric as an end-to-end system."],
       title: 'Networking for AI: InfiniBand, Ethernet/RoCE, NVLink, RDMA, GPUDirect, Spectrum-X',
       si: 'ඔයා එකම server එකේ GPU දෙකක් සම්බන්ධ කරන NVLink සහ servers අතර සම්බන්ධ කරන network එක වෙන්කර හඳුනාගන්න. RDMA මඟින් server දෙකක memory අතර CPU වැඩ අඩුවෙන් data ගෙනියන්න පුළුවන්. InfiniBand AI සහ HPC වැඩවලට සැලසුම් කළ network එකක්; RoCE කියන්නේ Ethernet මත RDMA යැවීමයි. RoCE එකේ traffic තදබදය හොඳින් පාලනය කළ යුතුයි. Colombo සිට Kandy දක්වා බඩු ගෙනයන මාර්ගය තෝරනවා වගේ, ඔයා cluster එකේ data මාර්ගයත් workload එකට ගැළපෙන්න සැලසුම් කරන්න.',
       body: [
@@ -322,6 +342,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'ai-storage',
+      plain: "Separate the I/O patterns: many workers reading training samples, every rank writing checkpoints, and serving nodes loading model weights. Each stresses storage differently.",
+      internGuide: ["Separate the I/O patterns: many workers reading training samples, every rank writing checkpoints, and serving nodes loading model weights. Each stresses storage differently.","Capacity alone is insufficient. Measure aggregate throughput, IOPS for small files, metadata performance, latency, network bandwidth, durability, and recovery time.","Parallel file systems spread work across storage servers. Local NVMe is fast scratch/cache; object storage is durable and scalable but is not automatically a POSIX file system.","GPUDirect Storage can reduce CPU bounce-buffer work on supported paths, but it cannot repair slow disks, poor sharding, or a saturated storage network."],
       title: 'Storage for AI: Parallel File Systems, GPUDirect Storage, Checkpoint I/O',
       si: 'ඔයාගේ GPU එකට training data ඉක්මනින් නොලැබුණොත් මිල අධික GPU එකත් නිකම් බලාගෙන ඉන්නවා. Parallel file system එකක servers කිහිපයක් එකට දත්ත කියවීම සහ ලිවීම නිසා බොහෝ compute nodes එකවර භාවිතා කළ හැකියි. Training අතර checkpoint එකක් ලියන්නේ වැඩේ තත්ත්වය සුරැකීමටයි, එවිට බිඳවැටීමකින් පසු නැවත ආරම්භ කළ හැකියි. GPUDirect Storage මඟින් storage සහ GPU memory අතර data ගමනේ CPU පිටපත් අඩු කළ හැකියි. ඔයා dataset, checkpoint සහ model archive සඳහා ධාරිතාවත් වේගයත් වෙන වෙනම සලකා බලන්න.',
       body: [
@@ -352,6 +374,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'bluefield-dpu',
+      plain: "A DPU is a programmable infrastructure processor with networking, CPU cores, accelerators, and isolation features. It sits on the data path rather than replacing the host CPU or GPU.",
+      internGuide: ["A DPU is a programmable infrastructure processor with networking, CPU cores, accelerators, and isolation features. It sits on the data path rather than replacing the host CPU or GPU.","BlueField can offload networking, storage, security, telemetry, and virtualization tasks, leaving host CPU cycles for the application.","Its separate control domain can help isolate infrastructure services from tenants, which is useful in multi-tenant or zero-trust designs.","Exam check: use a DPU when infrastructure offload or isolation solves a measured need; it does not make model computation itself run like a GPU."],
       title: 'BlueField DPUs: What They Offload and Why',
       si: 'ඔයා DPU එකක් කියන්නේ network සහ infrastructure වැඩ කිහිපයක් CPU එකෙන් ඉවත් කර කරන processor එකක් ලෙස හිතන්න. BlueField DPU එකට networking, security සහ storage වැනි දත්ත මධ්‍යස්ථාන වැඩ පැවරිය හැකියි. එවිට CPU එකට application වැඩ සඳහා වැඩි ඉඩක් ලැබෙනවා. හෝටලයක ආරක්ෂක සහ බෙදාහැරීම් කණ්ඩායම කුස්සියේ වැඩෙන් වෙනම කටයුතු කරනවා වගේ මෙය තේරුම්ගන්න. DPU එක GPU එක වෙනුවට model එක train කරන දෙයක් නොවෙයි.',
       body: [
@@ -381,6 +405,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'ai-software-lifecycle',
+      plain: "Map software to stages: data preparation, model development/training, optimization, serving, orchestration, and monitoring.",
+      internGuide: ["Map software to stages: data preparation, model development/training, optimization, serving, orchestration, and monitoring.","CUDA and accelerated libraries provide GPU foundations; frameworks build and train models; TensorRT optimizes inference; Triton serves models; NIM packages supported inference runtimes and APIs.","NGC distributes containers, models, and charts. GPU Operator manages Kubernetes GPU components, while DCGM exposes health and telemetry.","Exam check: products overlap but are not interchangeable. Ask what layer and responsibility the question describes before selecting a tool."],
       title: 'NVIDIA Software at Each Stage of the AI Lifecycle',
       si: 'ඔයා AI model එකක් හදන මුල සිට සේවයට දාන තෙක් software පියවර ගණනාවක් හමුවෙනවා. CUDA සහ libraries ගණනයට උදව් කරනවා, frameworks වලින් model එක train කරනවා, Triton වැනි server එකකින් inference ලබාදිය හැකියි. NIM වැනි NVIDIA software packaged inference deployment එකකට භාවිතා කළ හැකියි. Monitoring මෙවලම් මඟින් GPU සහ සේවාවේ තත්ත්වය නිරීක්ෂණය කරනවා. Colombo බැංකුවේ chatbot එකක් හදනවා නම් data සකස් කිරීමෙන් monitoring දක්වා මේ පියවර සැලසුම් කරන්න.',
       body: [
@@ -412,6 +438,8 @@ result = dev.copy_to_host()                    # copy the result back to the CPU
     },
     {
       id: 'datacenter-management-monitoring',
+      plain: "Use nvidia-smi for a quick host-level view and operational commands. Use DCGM for fleet health, diagnostics, and structured telemetry.",
+      internGuide: ["Use nvidia-smi for a quick host-level view and operational commands. Use DCGM for fleet health, diagnostics, and structured telemetry.","Monitor temperature, power, clocks, memory use, ECC/Xid errors, PCIe/NVLink health, engine activity, and job-level throughput or latency.","DCGM Exporter exposes metrics to Prometheus; dashboards visualize them and alert rules notify operators. Labels must connect a GPU metric to its node, pod, job, and tenant.","Troubleshooting order: confirm user impact, correlate application and GPU metrics, inspect recent changes/logs, isolate hardware versus workload, then record the resolution."],
       title: 'Managing and Monitoring an AI Data Center (nvidia-smi, DCGM Metrics)',
       si: 'ඔයා GPU එකක් පරීක්ෂා කිරීමට nvidia-smi භාවිතා කරලා memory, temperature සහ utilization බලන්න පුළුවන්. DCGM මඟින් GPU fleet එකක තත්ත්වය නිරීක්ෂණය කිරීමට සහ diagnostics කිරීමට උදව් වෙනවා. එක GPU එකක් දෝෂ සහිත නම් multi-GPU වැඩේම මන්දගාමී විය හැකියි. ඒ නිසා metrics, logs සහ alarms එකට බලන්න. දෝෂයක් සැක නම් node එකෙන් අලුත් වැඩ නවතා පරීක්ෂා කරලා පසුව නැවත සේවයට එක් කරන්න.',
       body: [
@@ -452,6 +480,8 @@ dcgmi diag -r 1`,
     },
     {
       id: 'kubernetes-vs-slurm',
+      plain: "Slurm schedules batch jobs and tightly coupled HPC/AI training well. Kubernetes manages long-running services, APIs, rolling updates, and container-native applications well.",
+      internGuide: ["Slurm schedules batch jobs and tightly coupled HPC/AI training well. Kubernetes manages long-running services, APIs, rolling updates, and container-native applications well.","Both allocate scarce GPUs, but their objects differ: Slurm uses jobs, partitions, and reservations; Kubernetes uses pods, nodes, requests/limits, and controllers.","A site can use both when responsibilities and GPU pools are clear—for example Slurm for training and Kubernetes for inference.","Exam check: choose from workload lifecycle and operating model, not from popularity. Avoid double-scheduling the same GPU unless an integration explicitly supports it."],
       title: 'Cluster Orchestration and Job Scheduling: Kubernetes vs Slurm',
       si: 'ඔයා GPUs බොහෝ දෙනෙක් බෙදාගන්න cluster එකක jobs කාට කවදා ලැබෙනවාද කියලා scheduler එක තීරණය කරනවා. Slurm දිගු batch training jobs queue කරලා nodes සහ GPUs බෙදාදීමට ප්‍රචලිතයි. Kubernetes දිගටම සේවය කරන inference API සහ containers කළමනාකරණයට ප්‍රයෝජනවත්. රෝහලක theatre එක කලින් වෙන්කරන ක්‍රමය Slurm වගේ, දවස පුරා රෝගීන්ට සේවය සපයන OPD එක Kubernetes වගේ. බොහෝ ආයතන training සඳහා Slurm සහ serving සඳහා Kubernetes දෙකම යොදාගන්නවා.',
       body: [
@@ -493,6 +523,8 @@ srun python train.py --config finetune.yaml`,
     },
     {
       id: 'gpu-virtualization',
+      plain: "Passthrough gives one VM direct use of a physical GPU. vGPU presents mediated virtual GPUs to VMs and typically requires supported software and licensing.",
+      internGuide: ["Passthrough gives one VM direct use of a physical GPU. vGPU presents mediated virtual GPUs to VMs and typically requires supported software and licensing.","MIG divides supported GPUs into hardware-isolated instances with defined compute and memory resources. Time-slicing alternates whole-GPU access and provides weaker performance isolation.","Choose sharing from isolation, predictability, memory guarantees, utilization, licensing, and whether the application supports the partition mode.","Exam check: MIG is spatial hardware partitioning; time-slicing is temporal sharing. Neither combines the memory of separate partitions into one larger GPU."],
       title: 'GPU Virtualization and Sharing: vGPU vs MIG vs Time-Slicing',
       si: 'ඔයාට හැම workload එකකටම මුළු GPU එකම අවශ්‍ය නැහැ. Time-slicing එකේ වැඩ කිහිපයක් GPU කාලය බෙදාගන්නවා, ඒ නිසා එකිනෙකාට බලපෑම් ඇති විය හැකියි. MIG සහාය ඇති GPU එකක් hardware මට්ටමේ වෙන් කළ කොටස්වලට බෙදන්න පුළුවන්. vGPU මඟින් virtual machine එකකට GPU හැකියාව ලබාදෙන්න පුළුවන්. Rs. 1,000ක පන්තියක් දරුවන්ට බෙදාදෙනවා වගේ, ඔයා performance isolation සහ workload අවශ්‍යතාව බලලා ක්‍රමය තෝරන්න.',
       body: [
@@ -522,6 +554,8 @@ srun python train.py --config finetune.yaml`,
     },
     {
       id: 'ai-infra-security',
+      plain: "Identify the assets: datasets, model weights, credentials, endpoints, scheduler/control plane, BMCs, and costly GPU capacity.",
+      internGuide: ["Identify the assets: datasets, model weights, credentials, endpoints, scheduler/control plane, BMCs, and costly GPU capacity.","Separate compute, storage, management, and out-of-band networks. Keep BMCs private and expose inference through controlled gateways or load balancers.","Store credentials in a secrets system, use workload identities and least-privilege RBAC/IAM, run non-root containers, and scan/sign images.","Protect data at rest and in transit, patch drivers and firmware, retain audit logs, and test incident response. Confidential computing addresses data in use only on supported stacks."],
       title: 'Security for AI Workloads: Segmentation, Secrets, Least Privilege',
       si: 'ඔයා AI cluster එකේ හැම user කෙනෙකුටම හැම server එකටම ප්‍රවේශය දෙන්න එපා. Network segmentation මඟින් වෙනස් workloads සහ management traffic වෙන් කරන්න පුළුවන්. API keys වගේ secrets code එකට ලියන්නේ නැතුව ආරක්ෂිත secret store එකක තබන්න. Least privilege කියන්නේ කෙනෙකුට තමන්ගේ කාර්යයට අවශ්‍ය අවම බලතල පමණක් දීමයි. බැංකුවක සේවකයෙකුට සියලු ගිණුම් බලන්න නොදෙනවා වගේ ඔයාත් ප්‍රවේශය සීමා කරන්න.',
       body: [
@@ -551,12 +585,14 @@ srun python train.py --config finetune.yaml`,
     },
     {
       id: 'aws-gpu-instances-efa',
-      title: 'AWS Mapping: GPU Instance Families (G5, G6, P4d, P5) and EFA',
+      plain: "First calculate required GPU memory, precision, concurrency, and network scale. Then compare current AWS instance specifications and regional availability; family names change over time.",
+      internGuide: ["First calculate required GPU memory, precision, concurrency, and network scale. Then compare current AWS instance specifications and regional availability; family names change over time.","G families generally target graphics and cost-efficient inference/smaller training. P families target high-end, tightly coupled training and large-model serving. Confirm the exact GPU and count for the selected size.","EFA provides low-latency, OS-bypass networking for supported HPC/ML instances. NCCL commonly reaches it through aws-ofi-nccl; a cluster placement group helps keep nodes close.","Exam check: never infer capabilities from G or P alone. Validate GPU architecture, memory, local interconnect, EFA bandwidth, software compatibility, quota, and price."],
+      title: 'AWS Mapping: GPU Instance Families (G and P Families) and EFA',
       si: 'ඔයා AWS GPU instance එකක් තෝරද්දී GPU වර්ගය, GPU ගණන, memory, network සහ මිල එකට බලන්න. G5 සහ G6 inference සහ graphics වැඩ සඳහා GPU instances වන අතර P4d සහ P5 විශාල GPU workloads සඳහා යොදාගත හැකියි. EFA මඟින් වේගවත් node-to-node සම්බන්ධතාවක් ලබාදී distributed training සඳහා උදව් විය හැකියි. Rs. 100ක දෙයක් ගන්නවා වගේ මිල පමණක් නොබලා අවශ්‍ය හැකියාවත් සසඳන්න. ඔයා workload එක benchmark කරලා instance family එක තහවුරු කරන්න.',
       body: [
-        'Choose an AWS GPU instance by considering GPU memory, whether the workload is training or inference, and budget. G families are generally used for inference, graphics, and smaller training jobs; P families target larger training jobs and larger-model inference.',
+        'Choose an AWS GPU instance by considering GPU architecture, GPU count and memory, local GPU interconnect, network bandwidth, whether the workload is training or inference, availability in the target Region, and budget. G families are generally used for inference, graphics, and smaller training jobs; P families target larger training jobs and larger-model inference. AWS adds instance families over time, so treat the examples below as a comparison method—not a complete current catalog—and confirm the selected size in the official EC2 instance table.',
         'G5 instances use NVIDIA A10G GPUs with 24 GB each and offer one to eight GPUs per instance. They are a common option for small-to-medium inference, fine-tuning, and graphics, but Ampere does not support FP8. G6 uses NVIDIA L4 (Ada Lovelace) GPUs with 24 GB each and is power-efficient for inference and video workloads, with FP8 support. G6e uses L40S GPUs with 48 GB each for workloads needing more memory.',
-        'P4d instances (p4d.24xlarge) provide eight NVIDIA A100 40-GB GPUs, NVSwitch, and 400 Gbps EFA networking; P4de uses A100 80-GB GPUs. P5 (p5.48xlarge) provides eight NVIDIA H100 80-GB GPUs and 3,200 Gbps EFA networking for large training and LLM serving. P5 is costly and capacity may be limited, so consider reservations or Capacity Blocks.',
+        'P4d instances (p4d.24xlarge) provide eight NVIDIA A100 40-GB GPUs, NVSwitch, and EFA networking; P4de uses A100 80-GB GPUs. The original p5.48xlarge provides eight NVIDIA H100 80-GB GPUs for large training and LLM serving. The P5 family now has additional variants, and AWS also lists newer P6 offerings based on NVIDIA Blackwell GPUs. Exact accelerators, memory, network limits, capacity options, and Region availability differ by size and can change, so verify them before designing or purchasing capacity.',
         'Elastic Fabric Adapter (EFA) is AWS’s network interface for HPC and ML. It supports OS-bypass so applications using libfabric can communicate with network hardware without the usual kernel network stack. It uses AWS Scalable Reliable Datagram (SRD); NCCL uses EFA through the aws-ofi-nccl plugin. P4d and P5 also support GPUDirect RDMA. For multi-node training, EFA can improve collective communication such as all-reduce. Place instances in a cluster placement group and configure an EFA-enabled security group.',
       ],
       analogy:
@@ -566,7 +602,8 @@ srun python train.py --config finetune.yaml`,
       keyPoints: [
         'G5 = A10G 24 GB (Ampere). G6 = L4 24 GB (Ada, FP8). G6e = L40S 48 GB.',
         'P4d = 8× A100 40 GB, 400 Gbps EFA. P5 = 8× H100 80 GB, 3200 Gbps EFA.',
-        'G families target inference and smaller training; P families target large training and larger LLMs.',
+        'G families generally target graphics, inference, and smaller training; P families generally target large training and larger LLMs, but verify the exact instance size.',
+        'The AWS catalog evolves (including newer G7 and P6 options), so use official specifications instead of memorizing an old family list.',
         'EFA supports OS-bypass and SRD; NCCL uses it through aws-ofi-nccl for multi-node training.',
       ],
       terms: [
@@ -580,6 +617,8 @@ srun python train.py --config finetune.yaml`,
     },
     {
       id: 'aws-nim-triton-deploy',
+      plain: "Choose the operating model: SageMaker AI manages endpoints and much of scaling/health, while EKS provides Kubernetes control and more operational responsibility.",
+      internGuide: ["Choose the operating model: SageMaker AI manages endpoints and much of scaling/health, while EKS provides Kubernetes control and more operational responsibility.","For EKS, GPU nodes need a compatible driver, container toolkit, and device plugin or GPU Operator. Avoid installing a second driver over one already supplied by the node image.","Deploy NIM or Triton with secrets outside images, persistent model caching, health probes, resource limits, private networking, and metrics tied to user latency and queues.","Production check: benchmark the actual model and prompts, test cold starts and failure recovery, verify licenses/registry access, and scale on service demand rather than GPU utilization alone."],
       title: 'Running NIM and Triton on AWS: SageMaker AI and EKS GPU Nodes',
       si: 'ඔයා AWS එකේ NVIDIA inference යෙදවීමට managed SageMaker AI endpoint එකක් හෝ වැඩි පාලනයක් ඇති EKS cluster එකක් තෝරන්න පුළුවන්. SageMaker එකේ servers සහ scaling කළමනාකරණය provider එකට පැවරෙනවා. EKS එකේ GPU nodes, device plugin හෝ GPU Operator සහ Kubernetes deployment ඔයා කළමනාකරණය කරනවා. NGC key එක secret එකක තබා, model weights නැවත බාගත නොවීමට persistent storage එකක් යොදාගන්න. මුලින් POC එකක් දවස් 2කින් කළත් production යෙදවීමේදී monitoring සහ securityත් සැලසුම් කරන්න.',
       body: [
@@ -623,6 +662,8 @@ containers:
     },
     {
       id: 'sizing-gpu-deployment',
+      plain: "Write measurable requirements first: model quality, concurrent requests, prompt/output lengths, time to first token, tokens per second, uptime, privacy, and growth.",
+      internGuide: ["Write measurable requirements first: model quality, concurrent requests, prompt/output lengths, time to first token, tokens per second, uptime, privacy, and growth.","Estimate memory: weights equal parameters times bytes per parameter; then add KV cache, temporary workspace, framework overhead, and safety headroom. Quantization changes both memory and accuracy risk.","Benchmark representative prompts on candidate hardware. Measure latency distributions and throughput under concurrency, then calculate replicas for peak load plus failure/maintenance capacity.","Finish the architecture with network, storage, security, monitoring, power/cooling, staffing, and full cost. Revisit the estimate when traffic or context length changes."],
       title: 'And More: Sizing a GPU Deployment Step by Step (Sri Lankan Bank Chatbot)',
       si: 'ඔයා Colombo බැංකුවකට chatbot එකක් සැලසුම් කරනවා නම් මුලින් එකවර භාවිතා කරන අය, ප්‍රතිචාර වේගය සහ දත්ත පිටතට යැවිය හැකිද කියලා අහන්න. 8B parameters සහ BF16හි parameter එකකට bytes 2ක් නම් weights සඳහා 8,000,000,000 × 2 = 16,000,000,000 bytes, ඒ කියන්නේ දළ වශයෙන් 16 GB. ඒකට KV cache සහ runtime memoryත් එකතු වෙනවා. ඊළඟට සැබෑ prompt වලින් benchmark කර latency සහ throughput මනින්න. ඔයාගේ තෝරාගැනීම cloud වියදම, on-prem පාලනය සහ මෙහෙයුම් හැකියාව සමඟ සසඳන්න.',
       body: [
